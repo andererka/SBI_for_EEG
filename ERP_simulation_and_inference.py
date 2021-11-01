@@ -163,7 +163,7 @@ fig, axes = analysis.pairplot(samples,
                            points_colors='r');
 
 
-from dataloads_storage import write_to_file
+from data_load_writer import write_to_file
 
 file_writer = write_to_file.WriteToFile(experiment='ERP_results', num_sim=number_simulations,
                 true_params=true_params)
