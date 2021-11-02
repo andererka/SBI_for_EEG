@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference.base import infer
-from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
+
 
 
 ## defining neuronal network model
@@ -70,31 +70,10 @@ net.add_evoked_drive(
     synaptic_delays=synaptic_delays_prox, event_seed=4)
 
 
-def simulation_wrapper(params):   #input possibly array of 1 or more params
-    """
-    Returns summary statistics from conductance values in `params`.
-
-    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
-    """
-    
-    
-    window_len, scaling_factor = 30, 3000
-    net._params['t_evdist_1'] = params[0]
-    net._params['sigma_t_evdist_1'] = params[1]
-    net._params['t_evprox_2'] = params[2]
-    net._params['sigma_t_evprox_2'] = params[3]
-
-    ##simulates 8 trials at a time like this
-    dpls = simulate_dipole(net, tstop=170., n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
-
-    #left out summary statistics for a start
-    sum_stats = calculate_summary_stats(torch.from_numpy(obs))
-    return sum_stats
+from utils import simulation_wrapper
 
 
-
+simulation_wrapper = simulation_wrapper.simulation_wrapper
 
 window_len = 30
 prior_min = [1.0, 1 , 1.0, 3]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
@@ -104,29 +83,11 @@ prior_max = [175.0, 8, 175, 15]
 prior = utils.torchutils.BoxUniform(low=prior_min, 
                                     high=prior_max)
 
-number_simulations = 500
+number_simulations = 3
 
+from utils import inference
 
-
-def run_simulation_inference(prior, simulation_wrapper, num_simulations=1000):
-
-
-    #posterior = infer(simulation_wrapper, prior, method='SNPE_C', 
-                  #num_simulations=number_simulations, num_workers=4)     
-
-    simulator, prior = prepare_for_sbi(simulation_wrapper, prior)
-    inference = SNPE(prior)
-
-
-    theta, x = simulate_for_sbi(simulator, proposal=prior, num_simulations=num_simulations)
-
-    inference = inference.append_simulations(theta, x)
-    density_estimator = inference.train()
-    posterior = inference.build_posterior(density_estimator) 
-
-    return posterior, theta, x
-
-posterior, theta, x = run_simulation_inference(prior, simulation_wrapper, number_simulations)
+posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations)
 
 window_len, scaling_factor = 30, 3000
 
@@ -164,18 +125,16 @@ fig, axes = analysis.pairplot(samples,
 
 
 from data_load_writer import write_to_file
+import pickle
 
 file_writer = write_to_file.WriteToFile(experiment='ERP_results', num_sim=number_simulations,
                 true_params=true_params)
 
-file_writer.save_posterior(posterior)
 
-file_writer.save_prior(prior)
+file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig)
 
-file_writer.save_thetas(theta)
+##save class 
 
-file_writer.save_observations(x)
 
-file_writer.save_fig(fig)
-
-file_writer.save_class()
+with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
+    pickle.dump(file_writer, pickle_file)

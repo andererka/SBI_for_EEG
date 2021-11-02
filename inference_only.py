@@ -1,5 +1,5 @@
-from dataloads_storage import load_from_file as lf
-from dataloads_storage import write_to_file
+from data_load_writer import load_from_file as lf
+from data_load_writer import write_to_file
 import matplotlib.pyplot as plt
 
 
@@ -28,13 +28,29 @@ net = jones_2009_model()
 import os
 
 print(os.getcwd())
-prior = lf.load_prior('results/ERP_results10-31-2021_11:27:06')
+import pickle
 
-posterior = lf.load_posterior('results/ERP_results10-31-2021_11:27:06')
 
-x = lf.load_obs('results/ERP_results10-31-2021_11:27:06')
 
-theta = lf.load_thetas('results/ERP_results10-31-2021_11:27:06')
+
+### loading the simulated data:
+with open('results/ERP_results11-02-2021_15:37:00/class', 'rb') as pickle_file:
+    file_writer = pickle.load(pickle_file)
+
+
+prior = lf.load_prior(file_writer.folder)
+thetas = lf.load_thetas(file_writer.folder)
+x = lf.load_obs(file_writer.folder)
+
+true_params = lf.load_true_params(file_writer.folder)
+print(thetas.shape)
+
+
+print(type(thetas))
+
+from utils import inference
+
+posterior = inference.run_only_inference(theta=thetas, x=x, prior=prior)
 
 
 
@@ -53,7 +69,7 @@ for dpl in dpls:
 
 obs_real = calculate_summary_stats(torch.from_numpy(obs))
 
-samples = posterior.sample((1000,), 
+samples = posterior.sample((100,), 
                            x=obs_real)
 
 
@@ -73,6 +89,6 @@ fig, axes = analysis.pairplot(samples,
                            points_colors='r');
 
 
-file_writer = write_to_file.WriteToFile(experiment='ERP_results')
+file_writer = write_to_file.WriteToFile(experiment='ERP_inference_only')
 
-file_writer.save_fig(fig)
+file_writer.save_all(posterior, prior, theta, x, fig)
