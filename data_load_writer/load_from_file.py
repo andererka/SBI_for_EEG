@@ -26,3 +26,8 @@ def load_thetas(path_to_file):
 
     thetas = torch.load(path_to_file+ '/thetas.pt')
     return thetas
+
+def load_true_params(path_to_file):
+
+    params = torch.load(path_to_file+ '/true_params.pt')
+    return params

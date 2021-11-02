@@ -2,6 +2,7 @@ import sys, os, datetime
 import torch
 import json
 import datetime
+import pickle
 
 
 class WriteToFile:
@@ -38,19 +39,10 @@ class WriteToFile:
         os.mkdir(self.folder)
         torch.save(true_params, '{}/true_params.pt'.format(self.folder))
 
-
-
-
-    def create_file(self, file_name):
-        os.chdir(self.folder)
-        os.system('touch ' + file_name)
-        os.chdir(os.pardir)
-        os.chdir(os.pardir)
     
 
     def save_posterior(self, posterior):
     
-        self.create_file('posterior.pt')
         torch.save(posterior, '{}/posterior.pt'.format(self.folder))
     
 
@@ -71,7 +63,7 @@ class WriteToFile:
         fig.savefig('{}/figure'.format(self.folder))
 
     
-    def save_class(self):
+    def save_meta(self):
         json_dict = {'date':self.date,
         'path':self.folder,
         'experiment name':self.experiment,
@@ -79,6 +71,16 @@ class WriteToFile:
         with open(self.folder+'/meta.json', 'a') as f:
             json.dump(json_dict, f)
             f.close()
+
+    def save_all(self, posterior, prior, theta, x, fig):
+        self.save_posterior(posterior)
+        self.save_prior(prior)
+        self.save_thetas(theta)
+        self.save_observations(x)
+        self.save_fig(fig)
+        self.save_meta()
+
+
 
    
 
