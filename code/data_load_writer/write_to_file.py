@@ -23,13 +23,15 @@ class WriteToFile:
         path_parent: str = "results/",
         true_params: list = [] ,
         num_sim: int = None,
-        experiment: str = 'erp'     
+        experiment: str = 'erp',
+        density_estimator = 'maf'     
     ):
         self.date = datetime.datetime.now().strftime("%m-%d-%Y_%H:%M:%S")
         self.path_parent = path_parent
         self.experiment = experiment
         self.num_sim = num_sim
         self.true_params = true_params
+        self.density_estimator = density_estimator
 
 
 
@@ -88,7 +90,8 @@ class WriteToFile:
         json_dict = {'date':self.date,
         'path':self.folder,
         'experiment name':self.experiment,
-        'number of simulations':self.num_sim}
+        'number of simulations':self.num_sim,
+        'type of density estimator': self.density_estimator}
         with open(self.folder+'/meta.json', 'a') as f:
             json.dump(json_dict, f)
             f.close()

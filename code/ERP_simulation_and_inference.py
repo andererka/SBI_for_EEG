@@ -78,16 +78,17 @@ simulation_wrapper = simulation_wrapper.simulation_wrapper
 window_len = 30
 prior_min = [1.0, 1 , 1.0, 3]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
 
-prior_max = [175.0, 8, 175, 15]  
+prior_max = [250.0, 8, 250, 15]  
 
 prior = utils.torchutils.BoxUniform(low=prior_min, 
                                     high=prior_max)
 
-number_simulations = 3
+number_simulations = 100
+density_estimator = 'nsf'
 
 from utils import inference
 
-posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations)
+posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator)
 
 window_len, scaling_factor = 30, 3000
 
@@ -104,7 +105,7 @@ for dpl in dpls:
 
 obs_real = calculate_summary_stats(torch.from_numpy(obs))
 
-samples = posterior.sample((1000,), 
+samples = posterior.sample((100,), 
                            x=obs_real)
 
 
@@ -127,8 +128,8 @@ fig, axes = analysis.pairplot(samples,
 from data_load_writer import write_to_file
 import pickle
 
-file_writer = write_to_file.WriteToFile(experiment='ERP_results', num_sim=number_simulations,
-                true_params=true_params)
+file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
+                true_params=true_params, density_estimator=density_estimator)
 
 
 file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig)
