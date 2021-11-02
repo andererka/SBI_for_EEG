@@ -33,11 +33,12 @@ import pickle
 
 
 
-### loading the simulated data:
-with open('results/ERP_results11-02-2021_15:37:00/class', 'rb') as pickle_file:
+### loading the class:
+with open('results/ERP_results11-02-2021_16:22:47/class', 'rb') as pickle_file:
     file_writer = pickle.load(pickle_file)
 
 
+##loading the prior, thetas and observations for later inference
 prior = lf.load_prior(file_writer.folder)
 thetas = lf.load_thetas(file_writer.folder)
 x = lf.load_obs(file_writer.folder)
@@ -63,7 +64,7 @@ net._params['sigma_t_evprox_2'] = 8.33
 
 window_len = 30
 scaling_factor = 3000
-dpls = simulate_dipole(net, tstop=170., n_trials=4)
+dpls = simulate_dipole(net, tstop=170., n_trials=1)
 for dpl in dpls:
     obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
@@ -89,6 +90,7 @@ fig, axes = analysis.pairplot(samples,
                            points_colors='r');
 
 
-file_writer = write_to_file.WriteToFile(experiment='ERP_inference_only')
 
-file_writer.save_all(posterior, prior, theta, x, fig)
+
+file_writer.save_posterior(posterior)
+file_writer.save_fig(fig)
