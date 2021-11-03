@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import hnn_core
 from hnn_core import simulate_dipole, jones_2009_model
 from hnn_core.viz import plot_dipole
-#from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_statistics_alternative
+from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_statistics_alternative
 
 import numpy as np
 import torch
@@ -78,9 +78,9 @@ simulation_wrapper = simulation_wrapper.simulation_wrapper
 window_len = 30
 
 ##defining the prior lower and upper bounds
-prior_min = [1.0, 1.0]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
+prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
 
-prior_max = [250.0, 250]  
+prior_max = [79.9, 152.96]  
 
 prior = utils.torchutils.BoxUniform(low=prior_min, 
                                     high=prior_max)
