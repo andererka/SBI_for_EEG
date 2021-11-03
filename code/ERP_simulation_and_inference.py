@@ -35,6 +35,8 @@ net = jones_2009_model()
 
 ## defining weights
 
+from utils.simulation_wrapper import event_seed
+
 weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
                    'L5_pyramidal': 0.142300}
 weights_nmda_d1 = {'L2_basket': 0.019482, 'L2_pyramidal': 0.004317,
@@ -44,7 +46,7 @@ synaptic_delays_d1 = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
 net.add_evoked_drive(
     'evdist1', mu=63.53, sigma=3.85, numspikes=1, weights_ampa=weights_ampa_d1,
     weights_nmda=weights_nmda_d1, location='distal',
-    synaptic_delays=synaptic_delays_d1, event_seed=4)
+    synaptic_delays=synaptic_delays_d1, event_seed=event_seed())
 
 
 
@@ -58,7 +60,7 @@ synaptic_delays_prox = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
 net.add_evoked_drive(
     'evprox1', mu=26.61, sigma=2.47, numspikes=1, weights_ampa=weights_ampa_p1,
     weights_nmda=None, location='proximal',
-    synaptic_delays=synaptic_delays_prox, event_seed=4)
+    synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
 
 # Second proximal evoked drive. NB: only AMPA weights differ from first
 weights_ampa_p2 = {'L2_basket': 0.000003, 'L2_pyramidal': 1.438840,
@@ -67,7 +69,7 @@ weights_ampa_p2 = {'L2_basket': 0.000003, 'L2_pyramidal': 1.438840,
 net.add_evoked_drive(
     'evprox2', mu=137.12, sigma=8.33, numspikes=1,
     weights_ampa=weights_ampa_p2, location='proximal',
-    synaptic_delays=synaptic_delays_prox, event_seed=4)
+    synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
 
 
 from utils import simulation_wrapper
