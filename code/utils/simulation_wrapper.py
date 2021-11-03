@@ -30,3 +30,10 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
     #left out summary statistics for a start
     sum_stats = calculate_summary_stats(torch.from_numpy(obs))
     return sum_stats
+
+
+from random import randrange
+
+def event_seed():
+    seed = randrange(200)
+    return seed
