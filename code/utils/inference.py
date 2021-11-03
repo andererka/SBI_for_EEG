@@ -36,7 +36,7 @@ def run_only_sim(samples, net):
                   #num_simulations=number_simulations, num_workers=4)     
     window_len = 30
     scaling_factor = 3000
-    obs = []
+    s_x = []
     for sample in samples:
         net._params['t_evdist_1'] = sample[0]
         #net._params['sigma_t_evdist_1'] = 3.85
@@ -48,5 +48,5 @@ def run_only_sim(samples, net):
             obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
         x = calculate_summary_stats(torch.from_numpy(obs))
-        obs.append(x)
-    return obs
+        s_x.append(x)
+    return s_x
