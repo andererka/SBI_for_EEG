@@ -23,7 +23,7 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
     #net._params['L5Pyr_apical1_diam'] = params[5]     # 7.48
 
     ##simulates 8 trials at a time like this
-    dpls = simulate_dipole(net, tstop=230., n_trials=1)
+    dpls = simulate_dipole(net, tstop=170., n_trials=1)
     for dpl in dpls:
         obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
