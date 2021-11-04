@@ -27,55 +27,9 @@ from sbi.inference.base import infer
 
 
 
-## defining neuronal network model
-
-net = jones_2009_model()
-#net.plot_cells()
-#net.cell_types['L5_pyramidal'].plot_morphology()
-
-## defining weights
-
-from utils.simulation_wrapper import event_seed
-
-weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
-                   'L5_pyramidal': 0.142300}
-weights_nmda_d1 = {'L2_basket': 0.019482, 'L2_pyramidal': 0.004317,
-                   'L5_pyramidal': 0.080074}
-synaptic_delays_d1 = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
-                      'L5_pyramidal': 0.1}
-net.add_evoked_drive(
-    'evdist1', mu=63.53, sigma=3.85, numspikes=1, weights_ampa=weights_ampa_d1,
-    weights_nmda=weights_nmda_d1, location='distal',
-    synaptic_delays=synaptic_delays_d1, event_seed=event_seed())
+from utils.simulation_wrapper import event_seed, simulation_wrapper
 
 
-
-
-weights_ampa_p1 = {'L2_basket': 0.08831, 'L2_pyramidal': 0.01525,
-                   'L5_basket': 0.19934, 'L5_pyramidal': 0.00865}
-synaptic_delays_prox = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
-                        'L5_basket': 1., 'L5_pyramidal': 1.}
-
-# all NMDA weights are zero; pass None explicitly
-net.add_evoked_drive(
-    'evprox1', mu=26.61, sigma=2.47, numspikes=1, weights_ampa=weights_ampa_p1,
-    weights_nmda=None, location='proximal',
-    synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
-
-# Second proximal evoked drive. NB: only AMPA weights differ from first
-weights_ampa_p2 = {'L2_basket': 0.000003, 'L2_pyramidal': 1.438840,
-                   'L5_basket': 0.008958, 'L5_pyramidal': 0.684013}
-# all NMDA weights are zero; omit weights_nmda (defaults to None)
-net.add_evoked_drive(
-    'evprox2', mu=137.12, sigma=8.33, numspikes=1,
-    weights_ampa=weights_ampa_p2, location='proximal',
-    synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
-
-
-from utils import simulation_wrapper
-
-
-simulation_wrapper = simulation_wrapper.simulation_wrapper
 
 window_len = 30
 
@@ -97,7 +51,17 @@ posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, num
 window_len, scaling_factor = 30, 3000
 
 
+
+## defining neuronal network model
+
+
+#net.plot_cells()
+#net.cell_types['L5_pyramidal'].plot_morphology()
+
+## defining weights
 ## set params as the 'true parameters'
+
+net = jones_2009_model()
 net._params['t_evdist_1'] = 63.53
 net._params['sigma_t_evdist_1'] = 3.85
 net._params['t_evdist_2'] = 137.12
