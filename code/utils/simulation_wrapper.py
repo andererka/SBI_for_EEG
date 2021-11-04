@@ -1,18 +1,18 @@
 
 import hnn_core
-from hnn_core import simulate_dipole
+from hnn_core import simulate_dipole, jones_2009_model
 from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_statistics_alternative
 import torch
 
 
 
-def simulation_wrapper(net, params):   #input possibly array of 1 or more params
+def simulation_wrapper(params):   #input possibly array of 1 or more params
     """
     Returns summary statistics from conductance values in `params`.
 
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
-    net._reset_drives()
+    net = jones_2009_model()
 
 
     weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
@@ -45,7 +45,7 @@ def simulation_wrapper(net, params):   #input possibly array of 1 or more params
                    'L5_basket': 0.008958, 'L5_pyramidal': 0.684013}
     # all NMDA weights are zero; omit weights_nmda (defaults to None)
     net.add_evoked_drive(
-    'evprox2', mu=params[2], sigma=8.33, numspikes=1,
+    'evprox2', mu=params[1], sigma=8.33, numspikes=1,
     weights_ampa=weights_ampa_p2, location='proximal',
     synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
     
