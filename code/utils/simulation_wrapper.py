@@ -36,7 +36,7 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
 from random import randrange
 
 def event_seed():
-    seed = randrange(200)
+    seed = randrange(2000)
     return seed
 
 
