@@ -47,14 +47,14 @@ class WriteToFile:
         file_name = '{}/posterior.pt'.format(self.folder)
         if os.path.isfile(file_name):
             expand = 1
-        while True:
-            expand += 1
-            new_file_name = file_name.split(".pt")[0] + str(expand) + ".pt"
-            if os.path.isfile(new_file_name):
-                continue
-            else:
-                file_name = new_file_name
-                break
+            while True:
+                expand += 1
+                new_file_name = file_name.split(".pt")[0] + str(expand) + ".pt"
+                if os.path.isfile(new_file_name):
+                    continue
+                else:
+                    file_name = new_file_name
+                    break
         torch.save(posterior, file_name)
     
 
@@ -75,14 +75,14 @@ class WriteToFile:
         file_name = '{}/figure.png'.format(self.folder)
         if os.path.isfile(file_name):
             expand = 1
-        while True:
-            expand += 1
-            new_file_name = file_name.split(".png")[0] + str(expand) + ".png"
-            if os.path.isfile(new_file_name):
-                continue
-            else:
-                file_name = new_file_name
-                break
+            while True:
+                expand += 1
+                new_file_name = file_name.split(".png")[0] + str(expand) + ".png"
+                if os.path.isfile(new_file_name):
+                    continue
+                else:
+                    file_name = new_file_name
+                    break
         fig.savefig(file_name)
 
     
