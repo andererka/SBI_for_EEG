@@ -4,6 +4,7 @@
 
 import os.path as op
 import tempfile
+import datetime
 
 import matplotlib.pyplot as plt
 
@@ -28,8 +29,9 @@ from sbi.inference.base import infer
 
 
 from utils.simulation_wrapper import event_seed, simulation_wrapper
+from utils.helpers import get_time
 
-
+start_time = get_time()
 
 window_len = 30
 
@@ -41,7 +43,7 @@ prior_max = [79.9, 152.96]
 prior = utils.torchutils.BoxUniform(low=prior_min, 
                                     high=prior_max)
 
-number_simulations = 3
+number_simulations = 1000     #min is 3
 density_estimator = 'nsf'
 
 from utils import inference
@@ -100,6 +102,8 @@ file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estim
                 true_params=true_params, density_estimator=density_estimator)
 
 
+
+finish_time = get_time()
 file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig)
 
 ##save class 

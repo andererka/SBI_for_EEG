@@ -85,24 +85,27 @@ class WriteToFile:
                     break
         fig.savefig(file_name)
 
+
     
-    def save_meta(self):
+    def save_meta(self, start_time, finish_time):
         json_dict = {'date':self.date,
         'path':self.folder,
         'experiment name':self.experiment,
         'number of simulations':self.num_sim,
-        'type of density estimator': self.density_estimator}
+        'type of density estimator': self.density_estimator,
+        'start time:': start_time,
+        'finish_time': finish_time}
         with open(self.folder+'/meta.json', 'a') as f:
             json.dump(json_dict, f)
             f.close()
 
-    def save_all(self, posterior, prior, theta, x, fig):
+    def save_all(self, posterior, prior, theta, x, fig, start_time, finish_time):
         self.save_posterior(posterior)
         self.save_prior(prior)
         self.save_thetas(theta)
         self.save_observations(x)
         self.save_fig(fig)
-        self.save_meta()
+        self.save_meta(start_time, finish_time)
 
 
 
