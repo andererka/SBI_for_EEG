@@ -29,7 +29,7 @@ Summary statistics: `torch.stack([p50, N100, P200, arg_p50, arg_N100, arg_P200,`
 
 ​    `P200_moment1,P200_moment2, P200_moment3, P200_moment4]`
 
-![image-20211105000042727](/home/kathi/Documents/Master_thesis/week_summaries/figures/histogram_sum_stat.png)
+![image-20211105084724889](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/hist_100_samples.png)
 
 
 
