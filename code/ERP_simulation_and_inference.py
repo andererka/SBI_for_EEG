@@ -41,7 +41,7 @@ prior_max = [79.9, 152.96]
 prior = utils.torchutils.BoxUniform(low=prior_min, 
                                     high=prior_max)
 
-number_simulations = 3
+number_simulations = 50
 density_estimator = 'nsf'
 
 from utils import inference
