@@ -31,83 +31,99 @@ from sbi.inference.base import infer
 from utils.simulation_wrapper import event_seed, simulation_wrapper
 from utils.helpers import get_time
 
-start_time = get_time()
 
-window_len = 30
-
-##defining the prior lower and upper bounds
-prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
-
-prior_max = [79.9, 152.96]  
-
-prior = utils.torchutils.BoxUniform(low=prior_min, 
-                                    high=prior_max)
-
-number_simulations = 1000     #min is 3
-density_estimator = 'nsf'
 
 from utils import inference
-
-posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator)
-
-window_len, scaling_factor = 30, 3000
+import sys
 
 
+def main(argv):
+    start_time = get_time()
 
-## defining neuronal network model
+    window_len = 30
 
+    ##defining the prior lower and upper bounds
+    prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
 
-#net.plot_cells()
-#net.cell_types['L5_pyramidal'].plot_morphology()
+    prior_max = [79.9, 152.96]  
 
-## defining weights
-## set params as the 'true parameters'
+    prior = utils.torchutils.BoxUniform(low=prior_min, 
+                                        high=prior_max)
+    try:
+        number_simulations = int(argv[0])
+    except:
+        number_simulations = 50
+    try:
+        density_estimator = argv[1]
+    except:
+        density_estimator ='nsf'
+    try:
+        num_workers = int(argv[2])
+    except:
+        num_workers = 8
+    posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
-net = jones_2009_model()
-net._params['t_evdist_1'] = 63.53
-net._params['sigma_t_evdist_1'] = 3.85
-net._params['t_evdist_2'] = 137.12
-net._params['sigma_t_evprox_2'] = 8.33
-
-dpls = simulate_dipole(net, tstop=170., n_trials=1)
-for dpl in dpls:
-    obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
-
-obs_real = calculate_summary_stats(torch.from_numpy(obs))
-
-samples = posterior.sample((100,), 
-                           x=obs_real)
-
-
-
-
-true_params = torch.Tensor([63.53, 137.12])
+    window_len, scaling_factor = 30, 3000
 
 
 
+    ## defining neuronal network model
 
-fig, axes = analysis.pairplot(samples,
-                           #limits=[[.5,80], [1e-4,15.]],
-                           #ticks=[[.5,80], [1e-4,15.]],
-                           figsize=(5,5),
-                           points=true_params,
-                           points_offdiag={'markersize': 6},
-                           points_colors='r');
+    ## defining weights
+    ## set params as the 'true parameters'
 
+    net = jones_2009_model()
+    net._params['t_evdist_1'] = 63.53
+    net._params['sigma_t_evdist_1'] = 3.85
+    net._params['t_evdist_2'] = 137.12
+    net._params['sigma_t_evprox_2'] = 8.33
 
-from data_load_writer import write_to_file
-import pickle
+    dpls = simulate_dipole(net, tstop=170., n_trials=1)
+    for dpl in dpls:
+        obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
-file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
-                true_params=true_params, density_estimator=density_estimator)
+    obs_real = calculate_summary_stats(torch.from_numpy(obs))
 
-
-
-finish_time = get_time()
-file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig)
-
-##save class 
+    samples = posterior.sample((100,), 
+                            x=obs_real)
 
 
-with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
-    pickle.dump(file_writer, pickle_file)
+
+
+    true_params = torch.Tensor([63.53, 137.12])
+
+
+
+
+    fig, axes = analysis.pairplot(samples,
+                            #limits=[[.5,80], [1e-4,15.]],
+                            #ticks=[[.5,80], [1e-4,15.]],
+                            figsize=(5,5),
+                            points=true_params,
+                            points_offdiag={'markersize': 6},
+                            points_colors='r');
+
+
+    from data_load_writer import write_to_file
+    import pickle
+
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
+                    true_params=true_params, density_estimator=density_estimator)
+
+
+
+    finish_time = get_time()
+    file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig, start_time=start_time, finish_time=finish_time)
+
+    ##save class 
+
+
+    with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
+        pickle.dump(file_writer, pickle_file)
+    
+
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
+
+
