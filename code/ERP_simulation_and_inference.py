@@ -72,17 +72,17 @@ def main(argv):
     ## defining weights
     ## set params as the 'true parameters'
 
-    net = jones_2009_model()
-    net._params['t_evdist_1'] = 63.53
-    net._params['sigma_t_evdist_1'] = 3.85
-    net._params['t_evdist_2'] = 137.12
-    net._params['sigma_t_evprox_2'] = 8.33
+    #net = jones_2009_model()
+    #net._params['t_evdist_1'] = 63.53
+    #net._params['sigma_t_evdist_1'] = 3.85
+    #net._params['t_evdist_2'] = 137.12
+    #net._params['sigma_t_evprox_2'] = 8.33
 
-    dpls = simulate_dipole(net, tstop=170., n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
+    #dpls = simulate_dipole(net, tstop=170., n_trials=1)
+    #for dpl in dpls:
+    #    obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
-    obs_real = calculate_summary_stats(torch.from_numpy(obs))
+    obs_real = inference.run_only_sim([63.53, 137.12])
 
     samples = posterior.sample((100,), 
                             x=obs_real)
