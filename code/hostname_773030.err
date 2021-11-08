@@ -1,23 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 2 simulations.:   0%|          | 0/2 [00:00<?, ?it/s]Running 2 simulations.:  50%|█████     | 1/2 [02:01<02:01, 121.25s/it]Running 2 simulations.: 100%|██████████| 2/2 [04:07<00:00, 124.35s/it]Running 2 simulations.: 100%|██████████| 2/2 [04:07<00:00, 123.89s/it]
-Traceback (most recent call last):
-  File "ERP_simulation_and_inference.py", line 49, in <module>
-    posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator)
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/inference.py", line 20, in run_sim_inference
-    density_estimator = inference.train()
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/sbi/inference/snpe/snpe_c.py", line 187, in train
-    return super().train(**kwargs)
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/sbi/inference/snpe/snpe_base.py", line 247, in train
-    theta[self.train_indices], x[self.train_indices]
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/sbi/utils/get_nn_models.py", line 247, in build_fn
-    return build_nsf(batch_x=batch_theta, batch_y=batch_x, **kwargs)
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/sbi/neural_nets/flow.py", line 286, in build_nsf
-    transform_zx = standardizing_transform(batch_x)
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/sbi/utils/sbiutils.py", line 102, in standardizing_transform
-    return transforms.AffineTransform(shift=-t_mean / t_std, scale=1 / t_std)
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/nflows/transforms/standard.py", line 86, in __init__
-    super().__init__(shift, scale)
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/nflows/transforms/standard.py", line 34, in __init__
-    raise ValueError("Scale must be strictly positive.")
-ValueError: Scale must be strictly positive.
