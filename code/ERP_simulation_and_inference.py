@@ -47,12 +47,11 @@ def main(argv):
     """
     start_time = get_time()
 
-    window_len = 30
 
     ##defining the prior lower and upper bounds
-    prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
+    prior_min = [43.8, 3.01, 11.364, 1.276, 89.49, 5.29]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
-    prior_max = [79.9, 152.96]  
+    prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]  
 
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
@@ -77,11 +76,12 @@ def main(argv):
     # next two lines are not necessary if we have a real observation from experiment
     # here we simulate this 'real observation' by simulation
 
-    true_params = torch.tensor([63.53, 137.12])
+    true_params = torch.tensor([61.89, 6.022, 19.01, 2.55, 121.23, 10.58])    
+    # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
+
 
     obs_real = inference.run_only_sim(true_params)
 
-    print(obs_real)
 
     samples = posterior.sample((num_samples,), 
                             x=obs_real)
@@ -100,7 +100,7 @@ def main(argv):
     from data_load_writer import write_to_file
     import pickle
 
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}num_params:{}'.format(density_estimator, torch.size(true_params, dim=0)), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
 
