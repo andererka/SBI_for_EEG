@@ -6,16 +6,11 @@ import os.path as op
 import tempfile
 import datetime
 
-import matplotlib.pyplot as plt
-
-
-import hnn_core
-from hnn_core import simulate_dipole, jones_2009_model
-from hnn_core.viz import plot_dipole
-from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_statistics_alternative
 
 import numpy as np
 import torch
+from data_load_writer import write_to_file
+import pickle
 
 # visualization
 import matplotlib as mpl
@@ -28,7 +23,7 @@ from sbi.inference.base import infer
 
 
 
-from utils.simulation_wrapper import event_seed, simulation_wrapper
+from utils.simulation_wrapper import simulation_wrapper
 from utils.helpers import get_time
 
 
@@ -39,6 +34,11 @@ import sys
 
 def main(argv):
     """
+
+    description: is simulating an event related potential with the hnn-core package and then uses sbi to
+    infer parameters and draw samples from parameter posteriors. One can choose the following
+    argument settings:
+
     arg 1: number of simulations; default is 50
     arg 2: density estimator; default is nsf
     arg 3: number of workers; should be set to the number of available cpus; default is 8
@@ -97,10 +97,8 @@ def main(argv):
                             points_colors='r');
 
 
-    from data_load_writer import write_to_file
-    import pickle
 
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}num_params:{}'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
 
