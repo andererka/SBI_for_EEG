@@ -100,7 +100,7 @@ def main(argv):
     from data_load_writer import write_to_file
     import pickle
 
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}num_params:{}'.format(density_estimator, torch.Size(true_params, dim=0)), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}num_params:{}'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
 
