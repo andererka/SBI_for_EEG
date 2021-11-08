@@ -15,8 +15,8 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
 
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
-    #net = set_network_2_params(params)
-    net = set_network_6_params(params)
+    net = set_network_2_params(params)
+    #net = set_network_6_params(params)
     
     window_len, scaling_factor = 30, 3000
 
