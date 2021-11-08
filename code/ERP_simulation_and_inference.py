@@ -38,6 +38,13 @@ import sys
 
 
 def main(argv):
+    """
+    arg 1: number of simulations; default is 50
+    arg 2: density estimator; default is nsf
+    arg 3: number of workers; should be set to the number of available cpus; default is 8
+    arg 4: number of samples that should be drawn from posterior; default is 100
+    
+    """
     start_time = get_time()
 
     window_len = 30
@@ -61,37 +68,23 @@ def main(argv):
         num_workers = int(argv[2])
     except:
         num_workers = 8
+    try: 
+        num_samples = int(argv[3])
+    except:
+        num_samples = 100
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
-    window_len, scaling_factor = 30, 3000
+    # next two lines are not necessary if we have a real observation from experiment
+    # here we simulate this 'real observation' by simulation
 
+    true_params = torch.tensor([63.53, 137.12])
 
+    obs_real = inference.run_only_sim(true_params)
 
-    ## defining neuronal network model
+    print(obs_real)
 
-    ## defining weights
-    ## set params as the 'true parameters'
-
-    #net = jones_2009_model()
-    #net._params['t_evdist_1'] = 63.53
-    #net._params['sigma_t_evdist_1'] = 3.85
-    #net._params['t_evdist_2'] = 137.12
-    #net._params['sigma_t_evprox_2'] = 8.33
-
-    #dpls = simulate_dipole(net, tstop=170., n_trials=1)
-    #for dpl in dpls:
-    #    obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
-
-    obs_real = inference.run_only_sim([63.53, 137.12])
-
-    samples = posterior.sample((100,), 
+    samples = posterior.sample((num_samples,), 
                             x=obs_real)
-
-
-
-
-    true_params = torch.Tensor([63.53, 137.12])
-
 
 
 
@@ -116,8 +109,6 @@ def main(argv):
     file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig, start_time=start_time, finish_time=finish_time)
 
     ##save class 
-
-
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)
     

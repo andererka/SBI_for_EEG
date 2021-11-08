@@ -21,76 +21,63 @@ from sbi import analysis as analysis
 from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
+from utils import inference
+import sys
 
-## defining neuronal network model
 
-net = jones_2009_model()
+
 import os
-
-print(os.getcwd())
 import pickle
 
 
 
+def main(argv):
 
-### loading the class:
-with open('results/ERP_results11-02-2021_16:22:47/class', 'rb') as pickle_file:
-    file_writer = pickle.load(pickle_file)
-
-
-##loading the prior, thetas and observations for later inference
-prior = lf.load_prior(file_writer.folder)
-thetas = lf.load_thetas(file_writer.folder)
-x = lf.load_obs(file_writer.folder)
-
-true_params = lf.load_true_params(file_writer.folder)
-print(thetas.shape)
+    try:
+        file = argv[0]
+    except: 
+        file = 'results/ERP_results11-02-2021_16:22:47/class'
+    ### loading the class:
+    with open(file, 'rb') as pickle_file:
+        file_writer = pickle.load(pickle_file)
 
 
-print(type(thetas))
+    ##loading the prior, thetas and observations for later inference
+    prior = lf.load_prior(file_writer.folder)
+    thetas = lf.load_thetas(file_writer.folder)
+    x = lf.load_obs(file_writer.folder)
 
-from utils import inference
-
-posterior = inference.run_only_inference(theta=thetas, x=x, prior=prior)
-
-
-
-# set params as the 'true parameters'
-net._params['t_evdist_1'] = 63.53
-net._params['sigma_t_evdist_1'] = 3.85
-net._params['t_evdist_2'] = 137.12
-net._params['sigma_t_evprox_2'] = 8.33
+    true_params = lf.load_true_params(file_writer.folder)
 
 
-window_len = 30
-scaling_factor = 3000
-dpls = simulate_dipole(net, tstop=170., n_trials=1)
-for dpl in dpls:
-    obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
-
-obs_real = calculate_summary_stats(torch.from_numpy(obs))
-
-samples = posterior.sample((100,), 
-                           x=obs_real)
+    posterior = inference.run_only_inference(theta=thetas, x=x, prior=prior)
 
 
 
 
-true_params = torch.Tensor([63.53, 3.85, 137.12, 8.33])
+
+    obs_real = inference.run_only_sim(true_params)
+
+    samples = posterior.sample((100,), 
+                            x=obs_real)
 
 
 
 
-fig, axes = analysis.pairplot(samples,
-                           #limits=[[.5,80], [1e-4,15.]],
-                           #ticks=[[.5,80], [1e-4,15.]],
-                           figsize=(5,5),
-                           points=true_params,
-                           points_offdiag={'markersize': 6},
-                           points_colors='r');
+    fig, axes = analysis.pairplot(samples,
+                            #limits=[[.5,80], [1e-4,15.]],
+                            #ticks=[[.5,80], [1e-4,15.]],
+                            figsize=(5,5),
+                            points=true_params,
+                            points_offdiag={'markersize': 6},
+                            points_colors='r');
 
 
 
 
-file_writer.save_posterior(posterior)
-file_writer.save_fig(fig)
+    file_writer.save_posterior(posterior)
+    file_writer.save_fig(fig)
+
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
