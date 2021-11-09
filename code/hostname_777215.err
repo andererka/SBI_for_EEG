@@ -1,11 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 5000 simulations in 5000 batches.:   0%|          | 0/5000 [00:00<?, ?it/s]Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 5000 simulations in 5000 batches.:   0%|          | 1/5000 [04:15<354:30:48, 255.30s/it]Running 5000 simulations in 5000 batches.:   0%|          | 2/5000 [04:16<146:38:06, 105.62s/it]Running 5000 simulations in 5000 batches.:   0%|          | 3/5000 [04:17<80:19:29, 57.87s/it]  Running 5000 simulations in 5000 batches.:   0%|          | 4/5000 [04:17<48:58:15, 35.29s/it]slurmstepd: error: *** JOB 777215 ON slurm-cpu-hm-3 CANCELLED AT 2021-11-07T22:19:35 ***
