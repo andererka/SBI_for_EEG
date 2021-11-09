@@ -1,35 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 1000 simulations in 1000 batches.:   0%|          | 0/1000 [00:00<?, ?it/s]Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 1000 simulations in 1000 batches.:   0%|          | 1/1000 [02:55<48:47:08, 175.80s/it]Running 1000 simulations in 1000 batches.:   0%|          | 2/1000 [02:58<20:29:58, 73.95s/it] Running 1000 simulations in 1000 batches.:   0%|          | 3/1000 [02:58<11:10:34, 40.36s/it]slurmstepd: error: *** JOB 777434 ON slurm-cpu-hm-5 CANCELLED AT 2021-11-08T12:59:52 DUE TO PREEMPTION ***

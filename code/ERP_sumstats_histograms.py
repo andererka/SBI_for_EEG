@@ -33,7 +33,7 @@ from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
 from utils.simulation_wrapper import event_seed, set_network_default
 
-import seaborn as sns
+
 import matplotlib.gridspec as gridspec
 
 from utils import inference
@@ -41,6 +41,7 @@ from utils.simulation_wrapper import event_seed, simulation_wrapper
 from utils.helpers import get_time
 
 from data_load_writer import write_to_file
+from summary_features.calculate_summary_features import calculate_summary_stats
 
 
 import sys
@@ -78,6 +79,13 @@ def main(argv):
 
     start_time = get_time()
 
+    true_params = torch.tensor([63.53, 137.12])
+
+    #writes to result folder
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size()), num_sim=number_simulations,
+                    true_params=true_params, density_estimator=density_estimator)
+
+
     prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
 
     prior_max = [79.9, 152.96]  
@@ -86,21 +94,25 @@ def main(argv):
                                         high=prior_max)
 
 
+    s_real = inference.run_only_sim(true_params)
+    
+
 
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
 
-
-    true_params = torch.tensor([63.53, 137.12])
-    s_real = inference.run_only_sim(true_params)
+    _, sum_stats_names = calculate_summary_stats(x)
 
 
 
-    fig = plt.figure()
 
-    gs = gridspec.GridSpec(nrows=x.size(dim=1), ncols=1)
+    ### creating histogram that shows the summary statistics predictions of the observations ###
+    fig = plt.figure(figsize=(2,40), frameon = False, dpi = 100, tight_layout=True)
+
+    gs = gridspec.GridSpec(nrows=18, ncols=1)
 
 
     for i in range(x.size(dim=1)):
+        print(i)
         
         globals()['ax%s' % i] = fig.add_subplot(gs[i])
 
@@ -112,20 +124,22 @@ def main(argv):
 
 
         globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
-        globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(i))
+        globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(sum_stats_names[i]))
+        globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
+        globals()['ax%s' % i].legend(loc='upper right')
 
 
 
 
-    plt.savefig('Histograms_from_prior.pdf')
+    file_writer.save_fig('Histograms_from_prior.pdf')
 
 
+    ### samples from posterior to then with 'run_only_sim' make a prediction how our observation would look like
+    ### given the sampled parameter values.
+    ### this is visualized in histogram plots for every single summary statistics
 
     samples = posterior.sample((num_samples,), 
-                            x=s_real[0])
-
-
-
+                            x=s_real)
 
 
     s_x = inference.run_only_sim(samples)
@@ -172,7 +186,7 @@ def main(argv):
     ax1.set_title('Summary statistics 10-18 of real parameters')
     #ax1.set(ylim=(-500, 7000))
     
-    plt.savefig('summary_stats2')
+    file_writer.save_fig('summary_stats2')
 
 
     # In[50]:
@@ -203,17 +217,13 @@ def main(argv):
         globals()['ax%s' % i].set_title('Histogram of summary stat {} (drawn 100 samples)'.format(i))
         #ax0.set(ylim=(-500, 7000))
 
-
-        globals()['ax%s' % i].axvline(s_real[0][i], color='red')
+        globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
+        globals()['ax%s' % i].legend(loc='upper right')
 
 
 
 
     plt.savefig('Histograms_sumstats_from_posterior.pdf')
-
-
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
-                    true_params=true_params, density_estimator=density_estimator)
 
 
 
