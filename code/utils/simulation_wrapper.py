@@ -26,7 +26,7 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
         obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
     #left out summary statistics for a start
-    sum_stats, _ = calculate_summary_stats(torch.from_numpy(obs))
+    sum_stats= calculate_summary_stats(torch.from_numpy(obs))
 
     return sum_stats
 

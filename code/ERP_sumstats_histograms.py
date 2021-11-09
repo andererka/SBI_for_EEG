@@ -41,6 +41,7 @@ from utils.simulation_wrapper import event_seed, simulation_wrapper
 from utils.helpers import get_time
 
 from data_load_writer import write_to_file
+from summary_features.calculate_summary_features import calculate_summary_stats
 
 
 import sys
@@ -79,6 +80,8 @@ def main(argv):
     start_time = get_time()
 
     true_params = torch.tensor([63.53, 137.12])
+
+    #writes to result folder
     file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size()), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
@@ -92,16 +95,17 @@ def main(argv):
 
 
     s_real = inference.run_only_sim(true_params)
+    
 
 
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
 
+    _, sum_stats_names = calculate_summary_stats(x)
 
 
 
 
-
-
+    ### creating histogram that shows the summary statistics predictions of the observations ###
     fig = plt.figure(figsize=(2,40), frameon = False, dpi = 100, tight_layout=True)
 
     gs = gridspec.GridSpec(nrows=18, ncols=1)
@@ -120,7 +124,7 @@ def main(argv):
 
 
         globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
-        globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(i))
+        globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(sum_stats_names[i]))
         globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
         globals()['ax%s' % i].legend(loc='upper right')
 
@@ -130,12 +134,12 @@ def main(argv):
     file_writer.save_fig('Histograms_from_prior.pdf')
 
 
+    ### samples from posterior to then with 'run_only_sim' make a prediction how our observation would look like
+    ### given the sampled parameter values.
+    ### this is visualized in histogram plots for every single summary statistics
 
     samples = posterior.sample((num_samples,), 
                             x=s_real)
-
-
-
 
 
     s_x = inference.run_only_sim(samples)

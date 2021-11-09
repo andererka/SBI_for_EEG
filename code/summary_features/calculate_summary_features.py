@@ -9,6 +9,7 @@ import torch
 
 def calculate_summary_stats(x):
     """
+    Input: observations or simulations
     Returns summary statistics 
     specific for event related potentials
     extracts the following:
@@ -75,7 +76,7 @@ def calculate_summary_stats(x):
     P200_moment1,P200_moment2, P200_moment3, P200_moment4
             ]    
     
-    return sum_stats_vec, sum_stats_names
+    return sum_stats_vec
 
 
 
