@@ -85,22 +85,26 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
+    true_params = torch.tensor([63.53, 137.12])
+    s_real = inference.run_only_sim(true_params)
 
+    print(s_real)
 
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
 
 
-    true_params = torch.tensor([63.53, 137.12])
-    s_real = inference.run_only_sim(true_params)
 
 
 
-    fig = plt.figure()
+
+
+    fig = plt.figure(figsize=(20,400), frameon = False, dpi = 100)
 
     gs = gridspec.GridSpec(nrows=x.size(dim=1), ncols=1)
 
 
     for i in range(x.size(dim=1)):
+        print(i)
         
         globals()['ax%s' % i] = fig.add_subplot(gs[i])
 
@@ -113,6 +117,8 @@ def main(argv):
 
         globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
         globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(i))
+
+        globals()['ax%s' % i].axvline(s_real[i], color='red')
 
 
 
@@ -204,7 +210,7 @@ def main(argv):
         #ax0.set(ylim=(-500, 7000))
 
 
-        globals()['ax%s' % i].axvline(s_real[0][i], color='red')
+        globals()['ax%s' % i].axvline(s_real[i], color='red')
 
 
 
