@@ -33,7 +33,7 @@ from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
 from utils.simulation_wrapper import event_seed, set_network_default
 
-import seaborn as sns
+
 import matplotlib.gridspec as gridspec
 
 from utils import inference
