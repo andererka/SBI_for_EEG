@@ -15,8 +15,8 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
 
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
-    #net = set_network_2_params(params)
-    net = set_network_6_params(params)
+    net = set_network_2_params(params)
+    #net = set_network_6_params(params)
     
     window_len, scaling_factor = 30, 3000
 
@@ -33,11 +33,20 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
 from random import randrange
 
 def event_seed():
+    """
+    description: makes sure that one does not take the same random seed for each simulation as it would be the default in the hnn core code;
+    permalink to the hnn code location: https://github.com/jonescompneurolab/hnn-core/blob/0406ed1a2b2335b786e83eb1698f27a5c3dcdadc/hnn_core/drives.py#L262
+
+    """
     seed = randrange(2000)
     return seed
 
 
 def set_network_default(params=None):
+
+    """
+    description: sets network to default values for an ERP as described in hnn tutorial
+    """
 
     net = jones_2009_model()
     weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
@@ -78,6 +87,13 @@ def set_network_default(params=None):
 
 def set_network_2_params(params=None):
 
+    """
+    description: changes the network due to parameter settings drawn during sbi
+
+    here one changes only the first distal drive and the second proximal drive, which was 
+    used as toy example to see if the sbi is working for the case of the hnn simulator.
+    """
+
     net = jones_2009_model()
     weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
                    'L5_pyramidal': 0.142300}
@@ -117,6 +133,11 @@ def set_network_2_params(params=None):
 
 
 def set_network_6_params(params=None):
+
+    """
+    description: changes the network due to parameter settings drawn during sbi
+
+    """
 
     net = jones_2009_model()
     weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,

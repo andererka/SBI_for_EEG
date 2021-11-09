@@ -33,3 +33,13 @@ Summary statistics: `torch.stack([p50, N100, P200, arg_p50, arg_N100, arg_P200,`
 
 
 
+Toy example with the first distal drive and the second proximal drive as parameters. 1000 simulations, 500 samples drawn from posterior.
+
+Meta-data can be found here: sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:05:33
+
+![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:05:33/figure4.png)
+
+![figure5](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:05:33/figure5.png)
+
+
+
