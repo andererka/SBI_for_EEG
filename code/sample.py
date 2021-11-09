@@ -1,11 +1,7 @@
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
-import matplotlib.pyplot as plt
 
 
-import hnn_core
-from hnn_core import simulate_dipole, jones_2009_model
-from hnn_core.viz import plot_dipole
 from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_statistics_alternative
 
 import numpy as np
@@ -18,8 +14,7 @@ import matplotlib.pyplot as plt
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
-from sbi.inference.base import infer
-from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
+
 
 import pickle
 import sys
@@ -28,6 +23,11 @@ import sys
 
 def main(argv):
     """
+
+    description: assuming to already have a posterior from previous simulations, this function is 
+    drawing samples with respect to an observation (synthetic or real) and is saving the pairplot figures
+    in the result file of the previous gained posterior
+    
     arg 1: file directory to the results file with the posterior pt file
     arg 2: number of samples that one wants to draw from the posterior
     arg 3: number of rounds; how many times to 'true' observation should be simulated 
