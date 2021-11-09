@@ -70,11 +70,6 @@ def calculate_summary_stats(x):
     #print(sum_stats_list)
     #sum_stats_vec = torch.stack(sum_stats_list)
 
-    sum_stats_names = [p50, N100, P200, arg_p50, arg_N100, arg_P200,
-    p50_moment1, p50_moment2, p50_moment3, p50_moment4,
-    N100_moment1, N100_moment2, N100_moment3, N100_moment4,
-    P200_moment1,P200_moment2, P200_moment3, P200_moment4
-            ]    
     
     return sum_stats_vec
 

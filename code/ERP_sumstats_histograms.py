@@ -100,8 +100,14 @@ def main(argv):
 
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
 
-    _, sum_stats_names = calculate_summary_stats(x)
+    sum_stats_names = ['value_p50', 'value_N100', 'value_P200', 'value_arg_p50', 'arg_N100', 'arg_P200',
+    'p50_moment1', 'p50_moment2', 'p50_moment3', 'p50_moment4',
+    'N100_moment1', 'N100_moment2', 'N100_moment3', 'N100_moment4',
+    'P200_moment1','P200_moment2', 'P200_moment3', 'P200_moment4'
+            ]
 
+    finish_time = get_time()
+    file_writer.save_all(posterior, prior, theta=theta, x =x, start_time=start_time, finish_time=finish_time)
 
 
 
@@ -225,10 +231,6 @@ def main(argv):
 
     plt.savefig('Histograms_sumstats_from_posterior.pdf')
 
-
-
-    finish_time = get_time()
-    file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig, start_time=start_time, finish_time=finish_time)
 
 
 
