@@ -79,7 +79,7 @@ def main(argv):
     start_time = get_time()
 
     true_params = torch.tensor([63.53, 137.12])
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size()), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
 
@@ -93,7 +93,6 @@ def main(argv):
 
     s_real = inference.run_only_sim(true_params)
 
-    print(s_real)
 
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
 

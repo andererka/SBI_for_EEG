@@ -27,6 +27,7 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
 
     #left out summary statistics for a start
     sum_stats = calculate_summary_stats(torch.from_numpy(obs))
+    print(sum_stats)
     return sum_stats
 
 
