@@ -43,3 +43,15 @@ Meta-data can be found here: sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:
 
 
 
+HNN paper: biophysical constraints on the origin of the current dipoles signal will dictate the output of the model and necessarily limit the space of parameter adjustments that can accurately account for the recorded data
+
+(https://senselab.med.yale.edu/modeldb
+
+https://doi.org/10.1016/0165-0270(93)90151-G
+
+Next: 
+
+- visualize the ERP which is simulated with parameters from the highest density regions
+- how constrained is the model already? maybe we can investigate whether or not taking randomly distal and proximal drive parameters from the prior ranges will change signals  a lot or not
+
+how constrained is the model already? maybe we can investigate whether or not taking randomly distal and proximal drive parameters from the prior ranges will change signals  a lot or not
