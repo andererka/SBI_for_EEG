@@ -78,6 +78,11 @@ def main(argv):
 
     start_time = get_time()
 
+    true_params = torch.tensor([63.53, 137.12])
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
+                    true_params=true_params, density_estimator=density_estimator)
+
+
     prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
 
     prior_max = [79.9, 152.96]  
@@ -85,7 +90,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
-    true_params = torch.tensor([63.53, 137.12])
+
     s_real = inference.run_only_sim(true_params)
 
     print(s_real)
@@ -98,9 +103,9 @@ def main(argv):
 
 
 
-    fig = plt.figure(figsize=(20,400), frameon = False, dpi = 100)
+    fig = plt.figure(figsize=(2,40), frameon = False, dpi = 100, tight_layout=True)
 
-    gs = gridspec.GridSpec(nrows=x.size(dim=1), ncols=1)
+    gs = gridspec.GridSpec(nrows=18, ncols=1)
 
 
     for i in range(x.size(dim=1)):
@@ -117,18 +122,18 @@ def main(argv):
 
         globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
         globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(i))
-
-        globals()['ax%s' % i].axvline(s_real[i], color='red')
-
-
+        globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
+        globals()['ax%s' % i].legend(loc='upper right')
 
 
-    plt.savefig('Histograms_from_prior.pdf')
+
+
+    file_writer.save_fig('Histograms_from_prior.pdf')
 
 
 
     samples = posterior.sample((num_samples,), 
-                            x=s_real[0])
+                            x=s_real)
 
 
 
@@ -178,7 +183,7 @@ def main(argv):
     ax1.set_title('Summary statistics 10-18 of real parameters')
     #ax1.set(ylim=(-500, 7000))
     
-    plt.savefig('summary_stats2')
+    file_writer.save_fig('summary_stats2')
 
 
     # In[50]:
@@ -209,17 +214,13 @@ def main(argv):
         globals()['ax%s' % i].set_title('Histogram of summary stat {} (drawn 100 samples)'.format(i))
         #ax0.set(ylim=(-500, 7000))
 
-
-        globals()['ax%s' % i].axvline(s_real[i], color='red')
+        globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
+        globals()['ax%s' % i].legend(loc='upper right')
 
 
 
 
     plt.savefig('Histograms_sumstats_from_posterior.pdf')
-
-
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
-                    true_params=true_params, density_estimator=density_estimator)
 
 
 
