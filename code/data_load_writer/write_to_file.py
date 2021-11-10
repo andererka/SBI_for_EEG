@@ -24,7 +24,8 @@ class WriteToFile:
         true_params: list = [] ,
         num_sim: int = None,
         experiment: str = 'erp',
-        density_estimator = 'maf'     
+        density_estimator = 'maf' , 
+        num_params = None   
     ):
         self.date = datetime.datetime.now().strftime("%m-%d-%Y_%H:%M:%S")
         self.path_parent = path_parent
@@ -32,6 +33,7 @@ class WriteToFile:
         self.num_sim = num_sim
         self.true_params = true_params
         self.density_estimator = density_estimator
+        self.num_params = num_params
 
 
 
@@ -92,6 +94,7 @@ class WriteToFile:
         'path':self.folder,
         'experiment name':self.experiment,
         'number of simulations':self.num_sim,
+        'number of parameters':self.num_params,
         'type of density estimator': self.density_estimator,
         'start time:': start_time,
         'finish_time': finish_time}

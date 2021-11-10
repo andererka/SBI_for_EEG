@@ -29,6 +29,14 @@ Summary statistics: `torch.stack([p50, N100, P200, arg_p50, arg_N100, arg_P200,`
 
 ​    `P200_moment1,P200_moment2, P200_moment3, P200_moment4]`
 
+
+
+predictions from prior:
+
+![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/Histograms_x_50_samples.png)
+
+predictions from posterior:
+
 ![image-20211105084724889](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/hist_100_samples.png)
 
 
@@ -53,5 +61,7 @@ Next:
 
 - visualize the ERP which is simulated with parameters from the highest density regions
 - how constrained is the model already? maybe we can investigate whether or not taking randomly distal and proximal drive parameters from the prior ranges will change signals  a lot or not
+- Jones study abput tactile stimuli --> there was something about testing predictions with real data.. should ask about it
+- Speed up: hierarchical
+- time resolution: comparison 
 
-how constrained is the model already? maybe we can investigate whether or not taking randomly distal and proximal drive parameters from the prior ranges will change signals  a lot or not
