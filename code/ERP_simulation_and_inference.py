@@ -104,7 +104,7 @@ def main(argv):
 
 
     obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
-
+    print(obs_real)
 
     samples = posterior.sample((num_samples,), 
                             x=obs_real)
