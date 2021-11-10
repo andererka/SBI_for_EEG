@@ -1,1 +1,1 @@
-![](/home/kathi/Downloads/Summary_stats_post_prior.png)
+![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/Summary_stats_post_prior.png)
