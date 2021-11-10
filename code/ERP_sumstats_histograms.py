@@ -115,7 +115,7 @@ def main(argv):
     print('here', samples)
 
 
-    s_x = inference.run_only_sim(samples)[0]
+    s_x = inference.run_only_sim(samples, num_workers=num_workers)[0]
    
 
 
