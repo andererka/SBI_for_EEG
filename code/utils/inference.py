@@ -35,9 +35,15 @@ def run_only_inference(theta, x, prior):
 
 def run_only_sim(samples, num_workers=1):
  
+<<<<<<< HEAD
     print('samples', samples)
     for sample in samples:
         print('sample', sample)
+=======
+    print(samples)
+    for sample in samples:
+        print(sample)
+>>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
     s_x = Parallel(n_jobs=num_workers, verbose=100, pre_dispatch='1.5*n_jobs', backend='multiprocessing')(delayed(simulation_util)(sample) for sample in samples)
     print('done')
     return s_x
