@@ -79,10 +79,10 @@ def main(argv):
 
     start_time = get_time()
 
-    true_params = torch.tensor([63.53, 137.12])
+    true_params = torch.tensor([[63.53, 137.12]])
 
     #writes to result folder
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size()), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
 
@@ -94,55 +94,29 @@ def main(argv):
                                         high=prior_max)
 
 
-    s_real = inference.run_only_sim(true_params)
+    s_real = inference.run_only_sim(true_params)[0]
     
 
 
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
 
-    _, sum_stats_names = calculate_summary_stats(x)
+    sum_stats_names = ['value_p50', 'value_N100', 'value_P200', 'value_arg_p50', 'arg_N100', 'arg_P200',
+    'p50_moment1', 'p50_moment2', 'p50_moment3', #'p50_moment4',
+    'N100_moment1', 'N100_moment2', 'N100_moment3', #'N100_moment4',
+    'P200_moment1','P200_moment2', 'P200_moment3', #'P200_moment4'
+            ]
+
+    finish_time = get_time()
 
 
-
-
-    ### creating histogram that shows the summary statistics predictions of the observations ###
-    fig = plt.figure(figsize=(2,40), frameon = False, dpi = 100, tight_layout=True)
-
-    gs = gridspec.GridSpec(nrows=18, ncols=1)
-
-
-    for i in range(x.size(dim=1)):
-        print(i)
-        
-        globals()['ax%s' % i] = fig.add_subplot(gs[i])
-
-        globals()['sum_stats%s' % i] = []
-
-        for j in range(x.size(dim=0)):
-            globals()['sum_stats%s' % i].append(x[j][i])
-
-
-
-        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
-        globals()['ax%s' % i].set_title('Summary stat {} (from simulation)'.format(sum_stats_names[i]))
-        globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
-        globals()['ax%s' % i].legend(loc='upper right')
-
-
-
-
-    file_writer.save_fig('Histograms_from_prior.pdf')
-
-
-    ### samples from posterior to then with 'run_only_sim' make a prediction how our observation would look like
-    ### given the sampled parameter values.
-    ### this is visualized in histogram plots for every single summary statistics
 
     samples = posterior.sample((num_samples,), 
                             x=s_real)
+    print('here', samples)
 
 
-    s_x = inference.run_only_sim(samples)
+    s_x = inference.run_only_sim(samples)[0]
+   
 
 
 
@@ -161,7 +135,7 @@ def main(argv):
         ax0.set(ylim=(-500, 7000))
     
 
-    ax1.plot(s_real[0][:10])
+    ax1.plot(s_real[:10])
     ax1.set_title('Summary statistics 1-10 of real parameters')
     ax1.set(ylim=(-500, 7000))
 
@@ -182,11 +156,11 @@ def main(argv):
         #ax0.set(ylim=(-500, 7000))
     
 
-    ax1.plot(s_real[0][10:])
+    ax1.plot(s_real[10:])
     ax1.set_title('Summary statistics 10-18 of real parameters')
     #ax1.set(ylim=(-500, 7000))
     
-    file_writer.save_fig('summary_stats2')
+    file_writer.save_fig(fig)
 
 
     # In[50]:
@@ -195,40 +169,41 @@ def main(argv):
     import math
     import numpy as np
 
-    fig = plt.figure(figsize=(20,400))
+    fig = plt.figure(figsize=(2,40))
 
     gs = gridspec.GridSpec(nrows=len(s_x)-1, ncols=1)
 
 
 
 
-    for i in range(len(s_x[0])-1):
-        
+    for i in range(len(s_x)-1):
+
         globals()['ax%s' % i] = fig.add_subplot(gs[i])
 
         globals()['sum_stats%s' % i] = []
+        globals()['x%s' % i] = []
 
         for j in range(len(s_x)-1):
             globals()['sum_stats%s' % i].append(s_x[j][i])
+            globals()['x%s' % i].append(x[j][i])
 
 
 
-        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
-        globals()['ax%s' % i].set_title('Histogram of summary stat {} (drawn 100 samples)'.format(i))
+        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='stepfilled', label='from posterior')
+        globals()['ax%s' % i].hist(globals()['x%s' % i], bins=20, density=True, alpha=0.75, histtype='stepfilled', label='from obs')
+        globals()['ax%s' % i].set_title('Histogram of summary stat {} '.format(sum_stats_names[i]))
         #ax0.set(ylim=(-500, 7000))
 
         globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
         globals()['ax%s' % i].legend(loc='upper right')
 
 
+    fig.suptitle('Summary stats histogram from posterior predictions.', fontsize=16)
+
+    file_writer.save_fig(fig)
 
 
-    plt.savefig('Histograms_sumstats_from_posterior.pdf')
-
-
-
-    finish_time = get_time()
-    file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig, start_time=start_time, finish_time=finish_time)
+    file_writer.save_all(posterior, prior, theta=theta, x =x, start_time=start_time, finish_time=finish_time)
 
 
 
