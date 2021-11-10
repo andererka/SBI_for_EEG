@@ -65,7 +65,7 @@ Relevante Dinge, die in Thesis beachtet werden sollten:
 
 4 parameters, 100 simulations, ~6 summary statistics values (max, min, abs_diff, argmin, argmax, moments)
 
-![image-20211029083336833](/home/kathi/snap/typora/42/.config/Typora/typora-user-images/image-20211029083336833.png)
+![image-20211029083336833](figures/image-20211029083336833.png)
 
 Next steps?
 

@@ -1,6 +1,6 @@
 Controlling summary stats after having induced stochasticity into the code:
 
-![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/notebooks/summary_stats1.png)
+![](notebooks/summary_stats1.png)
 
 ![summary_stats2](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/notebooks/summary_stats2.png)
 
@@ -33,11 +33,11 @@ Summary statistics: `torch.stack([p50, N100, P200, arg_p50, arg_N100, arg_P200,`
 
 predictions from prior:
 
-![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/Histograms_x_50_samples.png)
+![](figures/Histograms_x_50_samples.png)
 
 predictions from posterior:
 
-![image-20211105084724889](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/hist_100_samples.png)
+![image-20211105084724889](figures/hist_100_samples.png)
 
 
 
@@ -45,9 +45,9 @@ Toy example with the first distal drive and the second proximal drive as paramet
 
 Meta-data can be found here: sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:05:33
 
-![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:05:33/figure4.png)
+![](figures/pairplot_figure4.png)
 
-![figure5](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/code/results/ERP_nsf11-08-2021_00:05:33/figure5.png)
+![figure5](figures/pairplot_figure5.png)
 
 
 
