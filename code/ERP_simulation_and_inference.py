@@ -13,13 +13,11 @@ from data_load_writer import write_to_file
 import pickle
 
 # visualization
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
-from sbi.inference.base import infer
 
 
 
@@ -48,13 +46,6 @@ def main(argv):
     start_time = get_time()
 
 
-    ##defining the prior lower and upper bounds
-    prior_min = [43.8, 3.01, 11.364, 1.276, 89.49, 5.29]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
-
-    prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]  
-
-    prior = utils.torchutils.BoxUniform(low=prior_min, 
-                                        high=prior_max)
     try:
         number_simulations = int(argv[0])
     except:
@@ -71,16 +62,48 @@ def main(argv):
         num_samples = int(argv[3])
     except:
         num_samples = 100
+
+    try:
+        num_params = int(argv[4])
+    except:
+        num_params = 10
+
+
+
+    ##defining the prior lower and upper bounds
+    if (num_params==6):
+        prior_min = [43.8, 3.01, 11.364, 1.276, 89.49, 5.29]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
+
+        prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]  
+        
+        true_params = torch.tensor([[61.89, 6.022, 19.01, 2.55, 121.23, 10.58]])   
+    
+
+    if (num_params==2):
+        prior_min = [43.8, 89.49] 
+        prior_max = [79.9, 152.96]
+
+        true_params = torch.tensor([[63.53, 137.12]]) 
+
+    else:
+        print('number of parameters must be defined in the arguments')
+        sys.exit()
+        
+
+    prior = utils.torchutils.BoxUniform(low=prior_min, 
+                                        high=prior_max)
     posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
+
+
 
     # next two lines are not necessary if we have a real observation from experiment
     # here we simulate this 'real observation' by simulation
 
-    true_params = torch.tensor([61.89, 6.022, 19.01, 2.55, 121.23, 10.58])    
+
     # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
 
-    obs_real = inference.run_only_sim(true_params)
+    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
 
 
     samples = posterior.sample((num_samples,), 
@@ -99,7 +122,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size(dim=0)), num_sim=number_simulations,
-                    true_params=true_params, density_estimator=density_estimator)
+                    true_params=true_params, density_estimator=density_estimator, num_params=num_params)
 
 
 
