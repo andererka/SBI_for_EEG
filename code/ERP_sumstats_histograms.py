@@ -79,7 +79,7 @@ def main(argv):
 
     start_time = get_time()
 
-    true_params = torch.tensor([63.53, 137.12])
+    true_params = torch.tensor([[63.53, 137.12]])
 
     #writes to result folder
     file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
@@ -94,7 +94,7 @@ def main(argv):
                                         high=prior_max)
 
 
-    s_real = inference.run_only_sim(true_params)
+    s_real = inference.run_only_sim(true_params)[0]
     
 
 
