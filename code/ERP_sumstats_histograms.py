@@ -80,7 +80,11 @@ def main(argv):
     start_time = get_time()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     true_params = torch.tensor([[63.53, 137.12]])
+=======
+    true_params = torch.tensor([63.53, 137.12])
+>>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
 =======
     true_params = torch.tensor([63.53, 137.12])
 >>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
@@ -99,7 +103,11 @@ def main(argv):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     s_real = inference.run_only_sim(true_params)[0]
+=======
+    s_real = inference.run_only_sim(true_params)
+>>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
 =======
     s_real = inference.run_only_sim(true_params)
 >>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
@@ -154,12 +162,15 @@ def main(argv):
     samples = posterior.sample((num_samples,), 
                             x=s_real)
 <<<<<<< HEAD
+<<<<<<< HEAD
     print('here', samples)
 
 
     s_x = inference.run_only_sim(samples)
    
 =======
+=======
+>>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
     print(samples)
 
     s_x = []
@@ -167,6 +178,9 @@ def main(argv):
 
         x = inference.run_only_sim(sample)
         s_x.append(x)
+<<<<<<< HEAD
+>>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
+=======
 >>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
 
 
@@ -239,7 +253,11 @@ def main(argv):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75)
+=======
+        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
+>>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
 =======
         globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
 >>>>>>> 308630f23aa8dd2e0ce2644136bb11c00f72cf54
