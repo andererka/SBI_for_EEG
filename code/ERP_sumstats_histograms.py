@@ -79,7 +79,7 @@ def main(argv):
 
     start_time = get_time()
 
-    true_params = torch.tensor([63.53, 137.12])
+    true_params = torch.tensor([[63.53, 137.12]])
 
     #writes to result folder
     file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
@@ -94,7 +94,7 @@ def main(argv):
                                         high=prior_max)
 
 
-    s_real = inference.run_only_sim(true_params)
+    s_real = inference.run_only_sim(true_params)[0]
     
 
 
@@ -145,13 +145,11 @@ def main(argv):
 
     samples = posterior.sample((num_samples,), 
                             x=s_real)
-    print(samples)
+    print('here', samples)
 
-    s_x = []
-    for sample in samples:
 
-        x = inference.run_only_sim(sample)
-        s_x.append(x)
+    s_x = inference.run_only_sim(samples)
+   
 
 
 
@@ -222,7 +220,7 @@ def main(argv):
 
 
 
-        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='barstacked')
+        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75)
         globals()['ax%s' % i].set_title('Histogram of summary stat {} (drawn 100 samples)'.format(i))
         #ax0.set(ylim=(-500, 7000))
 
