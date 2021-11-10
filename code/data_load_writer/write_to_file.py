@@ -99,12 +99,15 @@ class WriteToFile:
             json.dump(json_dict, f)
             f.close()
 
-    def save_all(self, posterior, prior, theta, x, fig, start_time, finish_time):
+    def save_all(self, posterior, prior, theta, x, start_time=None, finish_time=None, fig=None):
         self.save_posterior(posterior)
         self.save_prior(prior)
         self.save_thetas(theta)
         self.save_observations(x)
-        self.save_fig(fig)
+        if (fig!= None):
+            self.save_fig(fig)
+        else:
+            print('no fig')
         self.save_meta(start_time, finish_time)
 
 

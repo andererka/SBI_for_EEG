@@ -82,7 +82,7 @@ def main(argv):
     true_params = torch.tensor([63.53, 137.12])
 
     #writes to result folder
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, true_params.size()), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator)
 
 
@@ -107,7 +107,6 @@ def main(argv):
             ]
 
     finish_time = get_time()
-    file_writer.save_all(posterior, prior, theta=theta, x =x, start_time=start_time, finish_time=finish_time)
 
 
 
@@ -135,9 +134,9 @@ def main(argv):
         globals()['ax%s' % i].legend(loc='upper right')
 
 
+    fig.suptitle('Summary stats histogram from simulated obs.', fontsize=16)
 
-
-    file_writer.save_fig('Histograms_from_prior.pdf')
+    file_writer.save_fig(fig)
 
 
     ### samples from posterior to then with 'run_only_sim' make a prediction how our observation would look like
@@ -146,9 +145,13 @@ def main(argv):
 
     samples = posterior.sample((num_samples,), 
                             x=s_real)
+    print(samples)
 
+    s_x = []
+    for sample in samples:
 
-    s_x = inference.run_only_sim(samples)
+        x = inference.run_only_sim(sample)
+        s_x.append(x)
 
 
 
@@ -167,7 +170,7 @@ def main(argv):
         ax0.set(ylim=(-500, 7000))
     
 
-    ax1.plot(s_real[0][:10])
+    ax1.plot(s_real[:10])
     ax1.set_title('Summary statistics 1-10 of real parameters')
     ax1.set(ylim=(-500, 7000))
 
@@ -188,7 +191,7 @@ def main(argv):
         #ax0.set(ylim=(-500, 7000))
     
 
-    ax1.plot(s_real[0][10:])
+    ax1.plot(s_real[10:])
     ax1.set_title('Summary statistics 10-18 of real parameters')
     #ax1.set(ylim=(-500, 7000))
     
@@ -201,7 +204,7 @@ def main(argv):
     import math
     import numpy as np
 
-    fig = plt.figure(figsize=(20,400))
+    fig = plt.figure(figsize=(2,40))
 
     gs = gridspec.GridSpec(nrows=len(s_x)-1, ncols=1)
 
@@ -227,9 +230,13 @@ def main(argv):
         globals()['ax%s' % i].legend(loc='upper right')
 
 
+    fig.suptitle('Summary stats histogram from posterior predictions.', fontsize=16)
+
+    file_writer.save_fig(fig)
 
 
-    plt.savefig('Histograms_sumstats_from_posterior.pdf')
+    file_writer.save_all(posterior, prior, theta=theta, x =x, start_time=start_time, finish_time=finish_time)
+
 
 
 
