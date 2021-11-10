@@ -38,7 +38,7 @@ def run_only_sim(samples, num_workers=1):
     print(samples)
     for sample in samples:
         print(sample)
-    s_x = Parallel(n_jobs=num_workers, verbose=100, pre_dispatch='1.5*n_jobs', backend='multiprocessing')(delayed(simulation_util(sample))() for sample in samples)
+    s_x = Parallel(n_jobs=num_workers, verbose=100, pre_dispatch='1.5*n_jobs', backend='multiprocessing')(delayed(simulation_util)(sample) for sample in samples)
     print('done')
     return s_x
 
