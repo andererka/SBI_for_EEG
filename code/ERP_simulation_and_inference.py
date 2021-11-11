@@ -66,7 +66,7 @@ def main(argv):
     try:
         num_params = int(argv[4])
     except:
-        num_params = 10
+        num_params = None
 
 
     print(num_params)
@@ -85,7 +85,7 @@ def main(argv):
 
         true_params = torch.tensor([[63.53, 137.12]]) 
 
-    else:
+    elif (num_params==None):
         print('number of parameters must be defined in the arguments')
         sys.exit()
         
