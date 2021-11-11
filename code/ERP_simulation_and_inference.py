@@ -69,7 +69,7 @@ def main(argv):
         num_params = 10
 
 
-
+    print(num_params)
     ##defining the prior lower and upper bounds
     if (num_params==6):
         prior_min = [43.8, 3.01, 11.364, 1.276, 89.49, 5.29]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
