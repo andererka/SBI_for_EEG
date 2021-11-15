@@ -67,6 +67,10 @@ def main(argv):
         num_params = int(argv[4])
     except:
         num_params = None
+    try:
+        sample_method = argv[5]
+    except:
+        sample_method = 'rejection'
 
 
     print(num_params)
@@ -107,7 +111,7 @@ def main(argv):
     print(obs_real[0])
 
     samples = posterior.sample((num_samples,), 
-                            x=obs_real[0])
+                            x=obs_real[0], sample_with=sample_method)
 
 
 
