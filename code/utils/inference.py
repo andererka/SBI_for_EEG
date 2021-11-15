@@ -1,6 +1,6 @@
 
 from utils.simulation_wrapper import set_network_default
-from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
+from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
 from summary_features.calculate_summary_features import calculate_summary_stats
 from hnn_core import simulate_dipole
 import torch
@@ -15,7 +15,7 @@ def run_sim_inference(prior, simulation_wrapper, num_simulations=1000, density_e
              
 
     simulator, prior = prepare_for_sbi(simulation_wrapper, prior)
-    inference = SNPE(prior, density_estimator=density_estimator)
+    inference = SNPE_C(prior, density_estimator=density_estimator)
 
 
     theta, x = simulate_for_sbi(simulator, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
@@ -27,7 +27,7 @@ def run_sim_inference(prior, simulation_wrapper, num_simulations=1000, density_e
     return posterior, theta, x
 
 def run_only_inference(theta, x, prior):
-    inference = SNPE(prior)
+    inference = SNPE_C(prior)
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
     posterior = inference.build_posterior(density_estimator) 
