@@ -121,49 +121,49 @@ def main(argv):
 
 
 
-    fig = plt.figure(figsize=(20,5))
+    # fig = plt.figure(figsize=(20,5))
 
-    gs = gridspec.GridSpec(nrows=1, ncols=2)
-    ax0 = fig.add_subplot(gs[0, 0])
-    ax1 = fig.add_subplot(gs[0, 1])
+    # gs = gridspec.GridSpec(nrows=1, ncols=2)
+    # ax0 = fig.add_subplot(gs[0, 0])
+    # ax1 = fig.add_subplot(gs[0, 1])
 
-    for sample in s_x:
+    # for sample in s_x:
         
-        #assert torch.equal(sample, s_real[0])
-        ax0.plot(sample.detach().numpy()[:5])
-        ax0.set_title('Summary statistics 1-10 of samples')
-        ax0.set(ylim=(-500, 7000))
+    #     #assert torch.equal(sample, s_real[0])
+    #     ax0.plot(sample.detach().numpy()[:5])
+    #     ax0.set_title('Summary statistics 1-10 of samples')
+    #     ax0.set(ylim=(-500, 7000))
     
 
-    ax1.plot(s_real[:10])
-    ax1.set_title('Summary statistics 1-10 of real parameters')
-    ax1.set(ylim=(-500, 7000))
+    # ax1.plot(s_real[:10])
+    # ax1.set_title('Summary statistics 1-10 of real parameters')
+    # ax1.set(ylim=(-500, 7000))
 
-    plt.savefig('summary_stats1')
+    # plt.savefig('summary_stats1')
 
 
-    fig = plt.figure(figsize=(20,5))
+    # fig = plt.figure(figsize=(20,5))
 
-    gs = gridspec.GridSpec(nrows=1, ncols=2)
-    ax0 = fig.add_subplot(gs[0, 0])
-    ax1 = fig.add_subplot(gs[0, 1])
+    # gs = gridspec.GridSpec(nrows=1, ncols=2)
+    # ax0 = fig.add_subplot(gs[0, 0])
+    # ax1 = fig.add_subplot(gs[0, 1])
 
-    for sample in s_x:
+    # for sample in s_x:
         
-        #assert torch.equal(sample, s_real[0])
-        ax0.plot(sample.detach().numpy()[5:])
-        ax0.set_title('Summary statistics 10-18 of samples')
-        #ax0.set(ylim=(-500, 7000))
+    #     #assert torch.equal(sample, s_real[0])
+    #     ax0.plot(sample.detach().numpy()[5:])
+    #     ax0.set_title('Summary statistics 10-18 of samples')
+    #     #ax0.set(ylim=(-500, 7000))
     
 
-    ax1.plot(s_real[5:])
-    ax1.set_title('Summary statistics 10-18 of real parameters')
-    #ax1.set(ylim=(-500, 7000))
+    # ax1.plot(s_real[5:])
+    # ax1.set_title('Summary statistics 10-18 of real parameters')
+    # #ax1.set(ylim=(-500, 7000))
     
-    file_writer.save_fig(fig)
+    # file_writer.save_fig(fig)
 
 
-    # In[50]:
+    # # In[50]:
 
 
     import math
