@@ -145,7 +145,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, num_params), num_sim=number_simulations,
-                    true_params=true_params, density_estimator=density_estimator, num_params=num_params)
+                    true_params=true_params, density_estimator=density_estimator, num_params=num_params, num_samples=num_samples)
 
 
 
