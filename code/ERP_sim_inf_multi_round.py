@@ -33,7 +33,11 @@ def main(argv):
     """
 
     description: is simulating an event related potential with the hnn-core package and then uses sbi to
-    infer parameters and draw samples from parameter posteriors. One can choose the following
+    infer parameters and draw samples from parameter posteriors. Special here is that we use a multi-round approach 
+    that can make training more efficient, but not amortized anymore because it is optimized regarding one single observation
+    every round.
+    
+    One can choose the following
     argument settings:
 
     arg 1: number of simulations; default is 50
