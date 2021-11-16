@@ -20,7 +20,6 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-
 from utils.simulation_wrapper import simulation_wrapper
 from utils.helpers import get_time
 
@@ -83,6 +82,12 @@ def main(argv):
         true_params = torch.tensor([[61.89, 6.022, 19.01, 2.55, 121.23, 10.58]])   
     
 
+    if (num_params==3):
+        prior_min = [43.8, 89.49, 7.9] 
+        prior_max = [79.9, 152.96, 30]
+
+        true_params = torch.tensor([[63.53, 137.12, 18.97]]) 
+
     if (num_params==2):
         prior_min = [43.8, 89.49] 
         prior_max = [79.9, 152.96]
@@ -123,6 +128,20 @@ def main(argv):
                             points_offdiag={'markersize': 6},
                             points_colors='r');
 
+    corr_matrix_marginal = np.corrcoef(samples.T)
+    fig2, ax = plt.subplots(1,1, figsize=(4, 4))
+    im = plt.imshow(corr_matrix_marginal, clim=[-1, 1], cmap='PiYG')
+    _ = fig2.colorbar(im)
+
+    condition = posterior.sample((1,))
+    cond_coeff_mat = analysis.conditional_corrcoeff(
+    density=posterior,
+    condition=condition,
+    limits=torch.tensor([[-2., 2.]]*3),)
+    fig3, ax = plt.subplots(1,1, figsize=(4,4))
+    im = plt.imshow(cond_coeff_mat, clim=[-1, 1], cmap='PiYG')
+    _ = fig3.colorbar(im)
+
 
 
     file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, num_params), num_sim=number_simulations,
@@ -133,6 +152,8 @@ def main(argv):
     finish_time = get_time()
     file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig, start_time=start_time, finish_time=finish_time)
 
+    file_writer.save_fig(fig2)
+    file_writer.save_fig(fig3)
     ##save class 
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)
