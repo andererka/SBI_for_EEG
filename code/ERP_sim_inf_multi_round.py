@@ -144,14 +144,14 @@ def main(argv):
     im = plt.imshow(corr_matrix_marginal, clim=[-1, 1], cmap='PiYG')
     _ = fig2.colorbar(im)
 
-    condition = posterior.sample((1,))
-    cond_coeff_mat = analysis.conditional_corrcoeff(
-    density=posterior,
-    condition=condition,
-    limits=torch.tensor([[-2., 2.]]*3),)
-    fig3, ax = plt.subplots(1,1, figsize=(4,4))
-    im = plt.imshow(cond_coeff_mat, clim=[-1, 1], cmap='PiYG')
-    _ = fig3.colorbar(im)
+    # condition = posterior.sample((1,))
+    # cond_coeff_mat = analysis.conditional_corrcoeff(
+    # density=posterior,
+    # condition=condition,
+    # limits=torch.tensor([[-2., 2.]]*3),)
+    # fig3, ax = plt.subplots(1,1, figsize=(4,4))
+    # im = plt.imshow(cond_coeff_mat, clim=[-1, 1], cmap='PiYG')
+    # _ = fig3.colorbar(im)
 
 
 
