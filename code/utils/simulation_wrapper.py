@@ -15,15 +15,18 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
 
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
-    print(params.size(dim=0))
-    print(params)
-    if (params.size(dim=0)==2):
+    if (params.dim()>1):
+        param_size = params.size(dim=1)
+    else:
+        param_size = params.size(dim=0)
+ 
+    if (param_size==2):
         net = set_network_2_params(params)
         print('2 params are investigated')
-    elif (params.size(dim=0)==6):
+    elif (param_size==6):
         net = set_network_6_params(params)
         print('6 params are investigated')
-    elif (params.size(dim=0)==3):
+    elif (param_size==3):
         net = set_network_3_params(params)
         print('3 params are investigated')
     else:
