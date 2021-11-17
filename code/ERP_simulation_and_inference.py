@@ -121,7 +121,7 @@ def main(argv):
 
     s_x = inference.run_only_sim_without(samples, num_workers=num_workers)
 
-    limits = [list(tup) for tup in zip(prior_min,prior_max) for i in tup]
+    limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
     fig, axes = analysis.pairplot(samples,
                             limits=limits,
