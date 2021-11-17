@@ -25,5 +25,12 @@ complexity.'
 - specialized neural network architectures can be used to exploit known structure in the
   data, as we have shown using RNNs and CNNs for time series and image data
 
+**Questions for meeting:**
+
+- difference between sequential SNPE and multi-round?(in paper (Rodrigues, 2021): 'we also describe the
+  training procedure for learning the parameters of the network using a multi-round procedure known
+  as sequential neural posterior estimation or SNPE-C')
+- **paper (Rodrigues, 2021)**: what is Phi? I thought it's the transformation made by the normalizing flows, but why does it have to be estimated at the end? To what extend are the transformations flexible?
+
 
 

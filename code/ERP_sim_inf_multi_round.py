@@ -33,7 +33,11 @@ def main(argv):
     """
 
     description: is simulating an event related potential with the hnn-core package and then uses sbi to
-    infer parameters and draw samples from parameter posteriors. One can choose the following
+    infer parameters and draw samples from parameter posteriors. Special here is that we use a multi-round approach 
+    that can make training more efficient, but not amortized anymore because it is optimized regarding one single observation
+    every round.
+    
+    One can choose the following
     argument settings:
 
     arg 1: number of simulations; default is 50
@@ -101,9 +105,17 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
-    posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
+    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)[0]
+    posteriors = []
+    proposal = prior
 
+    for _ in range(5):
+        posterior, theta, x = inference.run_sim_inference(proposal, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
+
+        posteriors.append(posterior)
+        proposal = posterior.set_default_x(obs_real)
+ 
 
     # next two lines are not necessary if we have a real observation from experiment
     # here we simulate this 'real observation' by simulation
@@ -112,11 +124,10 @@ def main(argv):
     # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
 
-    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
-    print(obs_real[0])
+
 
     samples = posterior.sample((num_samples,), 
-                            x=obs_real[0], sample_with=sample_method)
+                            x=obs_real, sample_with=sample_method)
 
 
 
@@ -144,7 +155,7 @@ def main(argv):
 
 
 
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}_num_params:{}_'.format(density_estimator, num_params), num_sim=number_simulations,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_multi_round{}_num_params:{}_'.format(density_estimator, num_params), num_sim=number_simulations,
                     true_params=true_params, density_estimator=density_estimator, num_params=num_params, num_samples=num_samples)
 
 
