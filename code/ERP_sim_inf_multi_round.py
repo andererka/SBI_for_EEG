@@ -106,7 +106,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
-    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)[0]
+    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)[0]
     posteriors = []
     proposal = prior
 
@@ -127,10 +127,10 @@ def main(argv):
 
 
     samples = posterior.sample((num_samples,), 
-                            x=obs_real, sample_with=sample_method)
+                            x=obs_real[0], sample_with=sample_method)
 
 
-    s_x = inference.run_only_sim(samples, num_workers=8)
+    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
 
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
     fig, axes = analysis.pairplot(samples,
@@ -148,8 +148,14 @@ def main(argv):
 
 
     fig3, ax = plt.subplots(1,1, figsize=(4, 4))
-    ax.set_title('Simulating from posterior')
-    im = plt.plot(s_x)
+    ax.set_title('Simulating from posterior (with summary stats')
+    for s in s_x_stats:
+        im = plt.plot(s)
+
+    fig4, ax = plt.subplots(1,1)
+    ax.set_title('Simulating from posterior (without summary stats)')
+    for s in s_x:
+        im = plt.plot(s)
 
     # condition = posterior.sample((1,))
     # cond_coeff_mat = analysis.conditional_corrcoeff(
@@ -172,6 +178,7 @@ def main(argv):
 
     file_writer.save_fig(fig2)
     file_writer.save_fig(fig3)
+    file_writer.save_fig(fig4)
     ##save class 
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)
