@@ -113,13 +113,13 @@ def main(argv):
     # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
 
-    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
+    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)
 
 
     samples = posterior.sample((num_samples,), 
                             x=obs_real[0], sample_with=sample_method)
 
-    s_x = inference.run_only_sim_without(samples, num_workers=num_workers)
+    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
 
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
@@ -138,8 +138,14 @@ def main(argv):
 
 
     fig3, ax = plt.subplots(1,1, figsize=(4, 4))
-    ax.set_title('Simulating from posterior')
-    im = plt.plot(s_x)
+    ax.set_title('Simulating from posterior (with summary stats')
+    for s in s_x_stats:
+        im = plt.plot(s)
+
+    fig4, ax = plt.subplots(1,1)
+    ax.set_title('Simulating from posterior (without summary stats)')
+    for s in s_x:
+        im = plt.plot(s)
 
 
 
@@ -154,6 +160,7 @@ def main(argv):
 
     file_writer.save_fig(fig2)
     file_writer.save_fig(fig3)
+    file_writer.save_fig(fig4)
     ##save class 
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)
