@@ -106,7 +106,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
-    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)
+    _, obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
     posteriors = []
     proposal = prior
 
@@ -114,7 +114,7 @@ def main(argv):
         posterior, theta, x = inference.run_sim_inference(proposal, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
         posteriors.append(posterior)
-        proposal = posterior.set_default_x(obs_real)
+        proposal = posterior.set_default_x(obs_real[0])
  
 
     # next two lines are not necessary if we have a real observation from experiment

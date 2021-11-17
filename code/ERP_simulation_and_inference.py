@@ -113,7 +113,7 @@ def main(argv):
     # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
 
-    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)
+    _, obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
 
 
     samples = posterior.sample((num_samples,), 
