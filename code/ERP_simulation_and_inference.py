@@ -119,11 +119,13 @@ def main(argv):
     samples = posterior.sample((num_samples,), 
                             x=obs_real[0], sample_with=sample_method)
 
+    s_x = inference.run_only_sim_without(samples, num_workers=num_workers)
 
+    limits = [list(tup) for tup in zip(prior_min,prior_max) for i in tup]
 
     fig, axes = analysis.pairplot(samples,
-                            #limits=[[.5,80], [1e-4,15.]],
-                            #ticks=[[.5,80], [1e-4,15.]],
+                            limits=limits,
+                            ticks=limits,
                             figsize=(5,5),
                             points=true_params,
                             points_offdiag={'markersize': 6},
@@ -133,6 +135,12 @@ def main(argv):
     fig2, ax = plt.subplots(1,1, figsize=(4, 4))
     im = plt.imshow(corr_matrix_marginal, clim=[-1, 1], cmap='PiYG')
     _ = fig2.colorbar(im)
+
+
+    fig3, ax = plt.subplots(1,1, figsize=(4, 4))
+    ax.set_title('Simulating from posterior')
+    im = plt.plot(s_x)
+
 
 
 
