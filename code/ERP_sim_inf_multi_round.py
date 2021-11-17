@@ -106,7 +106,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
-    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)[0]
+    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)
     posteriors = []
     proposal = prior
 
