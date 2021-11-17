@@ -32,9 +32,9 @@ def calculate_summary_stats(x):
     p50 = torch.max(x[0:arg70ms])
 
     arg_p50 = torch.argmax(x[0:arg70ms])
-    p50_moment1 = torch.tensor(moment(x[0:arg70ms], moment=1) )  #mean
-    p50_moment2 = torch.tensor(moment(x[0:arg70ms], moment=2) )   #variance
-    p50_moment3 = torch.tensor(moment(x[0:arg70ms], moment=3) )  #skewness
+    #p50_moment1 = torch.tensor(moment(x[0:arg70ms], moment=1) )  #mean
+    #p50_moment2 = torch.tensor(moment(x[0:arg70ms], moment=2) )   #variance
+    #p50_moment3 = torch.tensor(moment(x[0:arg70ms], moment=3) )  #skewness
     #p50_moment4 = torch.tensor(moment(x[0:arg70ms], moment=4) )  #kurtosis
 
     ## search for N100 
@@ -44,27 +44,28 @@ def calculate_summary_stats(x):
     N100 = torch.min(x[:arg200ms])
 
     arg_N100 = torch.argmin(x[:arg200ms])
-    N100_moment1 = torch.tensor(moment(x[0:arg200ms], moment=1))   #mean
-    N100_moment2 = torch.tensor(moment(x[0:arg200ms], moment=2))    #variance
-    N100_moment3 = torch.tensor(moment(x[0:arg200ms], moment=3))    #skewness
+    #N100_moment1 = torch.tensor(moment(x[0:arg200ms], moment=1))   #mean
+    #N100_moment2 = torch.tensor(moment(x[0:arg200ms], moment=2))    #variance
+    #N100_moment3 = torch.tensor(moment(x[0:arg200ms], moment=3))    #skewness
     #N100_moment4 = torch.tensor(moment(x[0:arg200ms], moment=4))    #kurtosis
 
 
     P200 = torch.max(x[arg70ms:])
 
     arg_P200 = torch.argmax(x[arg70ms:])
-    P200_moment1 = torch.tensor(moment(x[arg70ms:], moment=1))   #mean
-    P200_moment2 = torch.tensor(moment(x[arg70ms:], moment=2))    #variance
-    P200_moment3 = torch.tensor(moment(x[arg70ms:], moment=3))   #skewness
+    #P200_moment1 = torch.tensor(moment(x[arg70ms:], moment=1))   #mean
+    #P200_moment2 = torch.tensor(moment(x[arg70ms:], moment=2))    #variance
+    #P200_moment3 = torch.tensor(moment(x[arg70ms:], moment=3))   #skewness
     #P200_moment4 = torch.tensor(moment(x[arg70ms:], moment=4))    #kurtosis
 
 
 
     
-    sum_stats_vec = torch.stack([p50, N100, P200, arg_p50, arg_N100, arg_P200,
-    p50_moment1, p50_moment2, p50_moment3, #p50_moment4,
-    N100_moment1, N100_moment2, N100_moment3, #N100_moment4,
-    P200_moment1,P200_moment2, P200_moment3, #P200_moment4
+    sum_stats_vec = torch.stack([p50, N100, P200, arg_p50, 
+    arg_N100, arg_P200,
+    #p50_moment1, p50_moment2, p50_moment3, #p50_moment4,
+    #N100_moment1, N100_moment2, N100_moment3, #N100_moment4,
+    #P200_moment1,P200_moment2, P200_moment3, #P200_moment4
             ])
 
     #print(sum_stats_list)
