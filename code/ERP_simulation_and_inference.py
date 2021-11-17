@@ -83,7 +83,8 @@ def main(argv):
     
 
     if (num_params==3):
-        prior_min = [43.8, 89.49, 7.9] 
+        prior_min = [43.8, 89.49, 7.9]    # 't_evdist_1', 't_evprox_1', 't_evprox_2'
+
         prior_max = [79.9, 152.96, 30]
 
         true_params = torch.tensor([[63.53, 137.12, 18.97]]) 
@@ -113,7 +114,7 @@ def main(argv):
 
 
     obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
-    print(obs_real[0])
+
 
     samples = posterior.sample((num_samples,), 
                             x=obs_real[0], sample_with=sample_method)
@@ -132,15 +133,6 @@ def main(argv):
     fig2, ax = plt.subplots(1,1, figsize=(4, 4))
     im = plt.imshow(corr_matrix_marginal, clim=[-1, 1], cmap='PiYG')
     _ = fig2.colorbar(im)
-
-    condition = posterior.sample((1,))
-    cond_coeff_mat = analysis.conditional_corrcoeff(
-    density=posterior,
-    condition=condition,
-    limits=torch.tensor([[-2., 2.]]*3),)
-    fig3, ax = plt.subplots(1,1, figsize=(4,4))
-    im = plt.imshow(cond_coeff_mat, clim=[-1, 1], cmap='PiYG')
-    _ = fig3.colorbar(im)
 
 
 
