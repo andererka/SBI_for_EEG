@@ -13,4 +13,4 @@
 scontrol show job $SLURM_JOB_ID 
 
 # insert your commands here
-python3 ERP_simulation_and_inference.py 5000 'nsf' 64 1000 6 'rejection'
+python3 ERP_simulation_and_inference.py 5000 'nsf' 64 500 3 rejection
