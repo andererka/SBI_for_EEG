@@ -20,7 +20,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import simulation_wrapper
+
 from utils.helpers import get_time
 
 
@@ -71,6 +71,11 @@ def main(argv):
     except:
         sample_method = 'rejection'
 
+    try:
+        prior_check = argv[6]
+    except:
+        prior_check=False
+
 
     print(num_params)
     ##defining the prior lower and upper bounds
@@ -102,7 +107,10 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
-    posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
+    if prior_check:
+        posterior, theta, x, x_without = inference.run_sim_inference(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator, prior_check=prior_check)
+    else:
+        posterior, theta, x = inference.run_sim_inference(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator, prior_check=prior_check)
 
 
 
@@ -142,6 +150,12 @@ def main(argv):
     for s in s_x_stats:
         im = plt.plot(s)
 
+
+    fig5, ax = plt.subplots(1,1, figsize=(4, 4))
+    ax.set_title('Simulating from proposol')
+    for x_w in x_without:
+        im = plt.plot(x_w)
+
     fig4, ax = plt.subplots(1,1)
     ax.set_title('Simulating from posterior (without summary stats)')
     for s in s_x:
@@ -161,6 +175,7 @@ def main(argv):
     file_writer.save_fig(fig2)
     file_writer.save_fig(fig3)
     file_writer.save_fig(fig4)
+    file_writer.save_fig(fig5)
     ##save class 
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)
