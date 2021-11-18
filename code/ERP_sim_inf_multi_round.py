@@ -110,7 +110,7 @@ def main(argv):
     posteriors = []
     proposal = prior
 
-    for _ in range(5):
+    for _ in range(2):
         posterior, theta, x = inference.run_sim_inference(proposal, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
         posteriors.append(posterior)
