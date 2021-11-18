@@ -151,10 +151,11 @@ def main(argv):
         im = plt.plot(s)
 
 
-    fig5, ax = plt.subplots(1,1, figsize=(4, 4))
-    ax.set_title('Simulating from proposol')
-    for x_w in x_without:
-        im = plt.plot(x_w)
+    if prior_check:
+        fig5, ax = plt.subplots(1,1, figsize=(4, 4))
+        ax.set_title('Simulating from proposol')
+        for x_w in x_without:
+            im = plt.plot(x_w)
 
     fig4, ax = plt.subplots(1,1)
     ax.set_title('Simulating from posterior (without summary stats)')
