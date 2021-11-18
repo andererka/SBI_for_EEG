@@ -1,131 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 500 simulations in 500 batches.:   0%|          | 0/500 [00:00<?, ?it/s]Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 500 simulations in 500 batches.:   0%|          | 1/500 [04:52<40:36:41, 292.99s/it]Running 500 simulations in 500 batches.:   1%|          | 3/500 [04:53<10:31:32, 76.24s/it] Running 500 simulations in 500 batches.:   1%|          | 4/500 [04:55<6:57:16, 50.48s/it] Running 500 simulations in 500 batches.:   1%|          | 5/500 [04:55<4:39:42, 33.90s/it]Running 500 simulations in 500 batches.:   1%|▏         | 7/500 [04:56<2:23:54, 17.51s/it]Running 500 simulations in 500 batches.:   2%|▏         | 8/500 [04:56<1:48:01, 13.17s/it]Running 500 simulations in 500 batches.:   2%|▏         | 11/500 [04:57<51:20,  6.30s/it] Running 500 simulations in 500 batches.:   2%|▏         | 12/500 [04:57<41:15,  5.07s/it]Running 500 simulations in 500 batches.:   3%|▎         | 13/500 [04:57<32:33,  4.01s/it]Running 500 simulations in 500 batches.:   3%|▎         | 16/500 [04:57<16:43,  2.07s/it]Running 500 simulations in 500 batches.:   4%|▎         | 18/500 [04:57<11:42,  1.46s/it]Running 500 simulations in 500 batches.:   4%|▍         | 20/500 [04:59<09:20,  1.17s/it]Running 500 simulations in 500 batches.:   4%|▍         | 22/500 [04:59<07:09,  1.11it/s]Running 500 simulations in 500 batches.:   5%|▍         | 24/500 [04:59<05:06,  1.55it/s]Running 500 simulations in 500 batches.:   5%|▌         | 25/500 [05:00<04:48,  1.65it/s]Running 500 simulations in 500 batches.:   5%|▌         | 26/500 [05:00<04:03,  1.94it/s]Running 500 simulations in 500 batches.:   5%|▌         | 27/500 [05:00<03:44,  2.10it/s]Running 500 simulations in 500 batches.:   6%|▌         | 28/500 [05:00<03:20,  2.36it/s]Running 500 simulations in 500 batches.:   6%|▌         | 30/500 [05:01<02:20,  3.35it/s]Running 500 simulations in 500 batches.:   6%|▌         | 31/500 [05:01<02:03,  3.81it/s]Running 500 simulations in 500 batches.:   6%|▋         | 32/500 [05:02<03:51,  2.02it/s]Running 500 simulations in 500 batches.:   7%|▋         | 33/500 [05:02<03:22,  2.30it/s]Running 500 simulations in 500 batches.:   7%|▋         | 34/500 [05:03<02:53,  2.69it/s]Running 500 simulations in 500 batches.:   7%|▋         | 36/500 [05:03<02:09,  3.58it/s]Running 500 simulations in 500 batches.:   8%|▊         | 38/500 [05:03<01:29,  5.17it/s]Running 500 simulations in 500 batches.:   8%|▊         | 40/500 [05:03<01:17,  5.92it/s]Running 500 simulations in 500 batches.:   9%|▊         | 43/500 [05:03<00:52,  8.73it/s]Running 500 simulations in 500 batches.:   9%|▉         | 45/500 [05:04<01:17,  5.91it/s]Running 500 simulations in 500 batches.:   9%|▉         | 47/500 [05:04<01:31,  4.98it/s]Running 500 simulations in 500 batches.:  10%|▉         | 48/500 [05:05<01:23,  5.40it/s]Running 500 simulations in 500 batches.:  10%|▉         | 49/500 [05:05<01:23,  5.41it/s]Running 500 simulations in 500 batches.:  10%|█         | 50/500 [05:05<01:16,  5.85it/s]Running 500 simulations in 500 batches.:  10%|█         | 51/500 [05:05<01:42,  4.37it/s]Running 500 simulations in 500 batches.:  10%|█         | 52/500 [05:06<01:40,  4.46it/s]Running 500 simulations in 500 batches.:  11%|█         | 53/500 [05:06<02:00,  3.72it/s]Running 500 simulations in 500 batches.:  11%|█         | 56/500 [05:07<01:44,  4.26it/s]Running 500 simulations in 500 batches.:  11%|█▏        | 57/500 [05:07<01:44,  4.25it/s]Running 500 simulations in 500 batches.:  12%|█▏        | 59/500 [05:07<01:14,  5.90it/s]Running 500 simulations in 500 batches.:  12%|█▏        | 60/500 [05:07<01:30,  4.89it/s]Running 500 simulations in 500 batches.:  12%|█▏        | 62/500 [05:08<02:05,  3.49it/s]Running 500 simulations in 500 batches.:  13%|█▎        | 63/500 [05:10<03:53,  1.87it/s]Running 500 simulations in 500 batches.:  13%|█▎        | 64/500 [05:11<05:11,  1.40it/s]Running 500 simulations in 500 batches.:  13%|█▎        | 65/500 [08:45<6:28:18, 53.56s/it]Running 500 simulations in 500 batches.:  13%|█▎        | 66/500 [08:45<4:47:11, 39.71s/it]Running 500 simulations in 500 batches.:  13%|█▎        | 67/500 [08:48<3:33:26, 29.58s/it]Running 500 simulations in 500 batches.:  14%|█▎        | 68/500 [08:48<2:34:23, 21.44s/it]Running 500 simulations in 500 batches.:  14%|█▍        | 70/500 [08:49<1:26:10, 12.02s/it]Running 500 simulations in 500 batches.:  14%|█▍        | 71/500 [08:49<1:05:37,  9.18s/it]Running 500 simulations in 500 batches.:  14%|█▍        | 72/500 [08:49<49:05,  6.88s/it]  Running 500 simulations in 500 batches.:  15%|█▍        | 73/500 [08:51<39:53,  5.61s/it]Running 500 simulations in 500 batches.:  15%|█▍        | 74/500 [08:52<29:18,  4.13s/it]Running 500 simulations in 500 batches.:  15%|█▌        | 77/500 [08:52<13:36,  1.93s/it]Running 500 simulations in 500 batches.:  16%|█▌        | 79/500 [08:52<09:16,  1.32s/it]Running 500 simulations in 500 batches.:  16%|█▌        | 80/500 [08:52<07:44,  1.11s/it]Running 500 simulations in 500 batches.:  16%|█▌        | 81/500 [08:53<06:26,  1.08it/s]Running 500 simulations in 500 batches.:  16%|█▋        | 82/500 [08:53<05:48,  1.20it/s]Running 500 simulations in 500 batches.:  17%|█▋        | 84/500 [08:55<05:31,  1.25it/s]Running 500 simulations in 500 batches.:  17%|█▋        | 85/500 [08:55<05:21,  1.29it/s]Running 500 simulations in 500 batches.:  17%|█▋        | 87/500 [08:58<06:25,  1.07it/s]Running 500 simulations in 500 batches.:  18%|█▊        | 88/500 [08:58<05:13,  1.31it/s]Running 500 simulations in 500 batches.:  18%|█▊        | 89/500 [08:59<06:09,  1.11it/s]Running 500 simulations in 500 batches.:  18%|█▊        | 90/500 [09:00<06:19,  1.08it/s]Running 500 simulations in 500 batches.:  18%|█▊        | 91/500 [09:01<06:00,  1.13it/s]Running 500 simulations in 500 batches.:  18%|█▊        | 92/500 [09:02<07:14,  1.06s/it]Running 500 simulations in 500 batches.:  19%|█▊        | 93/500 [09:04<07:34,  1.12s/it]Running 500 simulations in 500 batches.:  19%|█▉        | 94/500 [09:04<06:18,  1.07it/s]Running 500 simulations in 500 batches.:  19%|█▉        | 96/500 [09:04<03:38,  1.85it/s]Running 500 simulations in 500 batches.:  19%|█▉        | 97/500 [09:04<03:05,  2.17it/s]Running 500 simulations in 500 batches.:  20%|█▉        | 98/500 [09:05<02:36,  2.57it/s]Running 500 simulations in 500 batches.:  20%|█▉        | 99/500 [09:05<03:03,  2.18it/s]Running 500 simulations in 500 batches.:  20%|██        | 100/500 [09:06<02:32,  2.62it/s]Running 500 simulations in 500 batches.:  20%|██        | 101/500 [09:06<02:38,  2.52it/s]Running 500 simulations in 500 batches.:  20%|██        | 102/500 [09:06<02:28,  2.68it/s]Running 500 simulations in 500 batches.:  21%|██        | 104/500 [09:06<01:40,  3.93it/s]Running 500 simulations in 500 batches.:  21%|██▏       | 107/500 [09:07<01:22,  4.78it/s]Running 500 simulations in 500 batches.:  22%|██▏       | 110/500 [09:07<00:57,  6.77it/s]Running 500 simulations in 500 batches.:  22%|██▏       | 111/500 [09:08<01:12,  5.40it/s]Running 500 simulations in 500 batches.:  22%|██▏       | 112/500 [09:08<01:06,  5.81it/s]Running 500 simulations in 500 batches.:  23%|██▎       | 114/500 [09:08<00:58,  6.60it/s]Running 500 simulations in 500 batches.:  23%|██▎       | 115/500 [09:08<01:15,  5.11it/s]Running 500 simulations in 500 batches.:  23%|██▎       | 116/500 [09:09<01:27,  4.40it/s]Running 500 simulations in 500 batches.:  23%|██▎       | 117/500 [09:09<01:19,  4.85it/s]Running 500 simulations in 500 batches.:  24%|██▎       | 118/500 [09:10<02:24,  2.63it/s]Running 500 simulations in 500 batches.:  24%|██▍       | 119/500 [09:10<03:09,  2.01it/s]Running 500 simulations in 500 batches.:  24%|██▍       | 120/500 [09:11<03:12,  1.97it/s]Running 500 simulations in 500 batches.:  24%|██▍       | 121/500 [09:11<02:30,  2.51it/s]Running 500 simulations in 500 batches.:  24%|██▍       | 122/500 [09:12<02:38,  2.39it/s]Running 500 simulations in 500 batches.:  25%|██▍       | 123/500 [09:13<04:12,  1.49it/s]Running 500 simulations in 500 batches.:  25%|██▍       | 124/500 [09:15<06:53,  1.10s/it]Running 500 simulations in 500 batches.:  25%|██▌       | 126/500 [09:19<09:51,  1.58s/it]Running 500 simulations in 500 batches.:  25%|██▌       | 127/500 [09:21<09:38,  1.55s/it]Running 500 simulations in 500 batches.:  26%|██▌       | 128/500 [09:23<10:28,  1.69s/it]slurmstepd: error: *** JOB 821869 ON slurm-cpu-hm-6 CANCELLED AT 2021-11-17T18:55:32 ***
