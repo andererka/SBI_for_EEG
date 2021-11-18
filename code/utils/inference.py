@@ -27,7 +27,7 @@ def run_sim_inference(prior, num_simulations=1000, density_estimator='nsf', num_
     posterior = inference.build_posterior(density_estimator) 
 
     if prior_check:
-        simulator_stats, prior = prepare_for_sbi(simulation_wrapper(stats=False), prior)
+        simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
         _, x_without = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
         return posterior, theta, x, x_without
 
