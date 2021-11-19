@@ -85,6 +85,8 @@ def main(argv):
         prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]  
         
         true_params = torch.tensor([[61.89, 6.022, 19.01, 2.55, 121.23, 10.58]])   
+
+        parameter_names =  ['t_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2']
     
 
     if (num_params==3):
@@ -93,12 +95,14 @@ def main(argv):
         prior_max = [79.9, 152.96, 30]
 
         true_params = torch.tensor([[63.53, 137.12, 18.97]]) 
+        parameter_names =  ['t_evdist_1',  't_evprox_1',  't_evprox_2']
 
     if (num_params==2):
         prior_min = [43.8, 89.49] 
         prior_max = [79.9, 152.96]
 
         true_params = torch.tensor([[63.53, 137.12]]) 
+        parameter_names =  ['t_evdist_1',  't_evprox_1']
 
     elif (num_params==None):
         print('number of parameters must be defined in the arguments')
@@ -137,7 +141,8 @@ def main(argv):
                             figsize=(5,5),
                             points=true_params,
                             points_offdiag={'markersize': 6},
-                            points_colors='r');
+                            points_colors='r',
+                            tick_labels=parameter_names);
 
     corr_matrix_marginal = np.corrcoef(samples.T)
     fig2, ax = plt.subplots(1,1, figsize=(4, 4))
