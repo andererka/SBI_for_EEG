@@ -147,7 +147,8 @@ def main(argv):
                             points=true_params,
                             points_offdiag={'markersize': 6},
                             points_colors='r',
-                            labels=parameter_names);
+                            labels=parameter_names,
+                            tick_labels=parameter_names);
 
     corr_matrix_marginal = np.corrcoef(samples.T)
     fig2, ax = plt.subplots(1,1, figsize=(4, 4))
