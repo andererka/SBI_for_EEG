@@ -181,7 +181,8 @@ def main(argv):
     file_writer.save_fig(fig2)
     file_writer.save_fig(fig3)
     file_writer.save_fig(fig4)
-    file_writer.save_fig(fig5)
+    if prior_check:
+        file_writer.save_fig(fig5)
     ##save class 
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)

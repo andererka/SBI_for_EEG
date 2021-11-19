@@ -1,5 +1,5 @@
 
-from utils.simulation_wrapper import set_network_default, simulation_wrapper, simulation_wrapper_extended
+from utils.simulation_wrapper import set_network_default, simulation_wrapper, simulation_wrapper_extended, simulation_wrapper_obs
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
 from summary_features.calculate_summary_features import calculate_summary_stats
 from hnn_core import simulate_dipole
@@ -27,7 +27,7 @@ def run_sim_inference(prior, num_simulations=1000, density_estimator='nsf', num_
     posterior = inference.build_posterior(density_estimator) 
 
     if prior_check:
-        simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
+        simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)
         _, x_without = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
         return posterior, theta, x, x_without
 
