@@ -86,6 +86,45 @@ def simulation_wrapper_extended(params):   #input possibly array of 1 or more pa
     return sum_stats, obs
 
 
+def simulation_wrapper_obs(params):   #input possibly array of 1 or more params
+    """
+    Returns summary statistics from conductance values in `params`.
+
+    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
+    in order to infer more than 2 parameters
+
+    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
+    """
+    if (params.dim()>1):
+        param_size = params.size(dim=1)
+    else:
+        param_size = params.size(dim=0)
+ 
+    if (param_size==2):
+        net = set_network_2_params(params)
+        print('2 params are investigated')
+    elif (param_size==6):
+        net = set_network_6_params(params)
+        print('6 params are investigated')
+    elif (param_size==3):
+        net = set_network_3_params(params)
+        print('3 params are investigated')
+    else:
+        print('there is no simulation wrapper defined for this number of parameters!')
+        exit()
+    
+    window_len, scaling_factor = 30, 3000
+
+
+    dpls = simulate_dipole(net, tstop=170., n_trials=1)
+    for dpl in dpls:
+        obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
+
+
+    return obs
+
+
+
 
 from random import randrange
 

@@ -153,7 +153,7 @@ def main(argv):
 
     if prior_check:
         fig5, ax = plt.subplots(1,1, figsize=(4, 4))
-        ax.set_title('Simulating from proposol')
+        ax.set_title('Simulating from proposal (without summary stats')
         for x_w in x_without:
             im = plt.plot(x_w)
 
