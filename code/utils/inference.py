@@ -21,7 +21,7 @@ def run_sim_inference(prior, num_simulations=1000, density_estimator='nsf', num_
     
     theta, x_without = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
 
-    x = calculate_summary_stats(torch.from_numpy(x_without))
+    x = calculate_summary_stats(x_without)
 
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
