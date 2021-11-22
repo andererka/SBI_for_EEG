@@ -7,32 +7,28 @@ import torch
 from joblib import Parallel, delayed
 from math import sqrt
 
-def run_sim_inference(prior, num_simulations=1000, density_estimator='nsf', num_workers=8, prior_check=False):
+def run_sim_inference(prior, num_simulations=1000, density_estimator='nsf', num_workers=8):
 
 
     #posterior = infer(simulation_wrapper, prior, method='SNPE_C', 
                   #num_simulations=number_simulations, num_workers=4)    
              
 
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)
 
     inference = SNPE_C(prior, density_estimator=density_estimator)
 
     
-    theta, x = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
+    theta, x_without = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
 
- 
+    x = calculate_summary_stats(torch.from_numpy(x_without))
+
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
     posterior = inference.build_posterior(density_estimator) 
 
-    if prior_check:
-        simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)
-        _, x_without = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
-        return posterior, theta, x, x_without
 
-
-    return posterior, theta, x
+    return posterior, theta, x, x_without
 
 def run_only_inference(theta, x, prior):
     inference = SNPE_C(prior)
