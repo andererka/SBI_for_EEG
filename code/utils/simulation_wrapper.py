@@ -121,7 +121,7 @@ def simulation_wrapper_obs(params):   #input possibly array of 1 or more params
         obs = dpl.smooth(window_len).scale(scaling_factor).data['agg']
 
 
-    return obs
+    return torch.from_numpy(obs)
 
 
 
