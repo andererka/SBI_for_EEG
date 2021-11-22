@@ -71,11 +71,6 @@ def main(argv):
     except:
         sample_method = 'rejection'
 
-    try:
-        prior_check = argv[6]
-    except:
-        prior_check=False
-
 
     print(num_params)
     ##defining the prior lower and upper bounds
@@ -111,10 +106,8 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
-    if prior_check:
-        posterior, theta, x, x_without = inference.run_sim_inference(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator, prior_check=prior_check)
-    else:
-        posterior, theta, x = inference.run_sim_inference(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator, prior_check=prior_check)
+
+    posterior, theta, x, x_without = inference.run_sim_inference(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
 
 
@@ -156,11 +149,10 @@ def main(argv):
         im = plt.plot(s)
 
 
-    if prior_check:
-        fig5, ax = plt.subplots(1,1, figsize=(4, 4))
-        ax.set_title('Simulating from proposal (without summary stats')
-        for x_w in x_without:
-            im = plt.plot(x_w)
+    fig5, ax = plt.subplots(1,1, figsize=(4, 4))
+    ax.set_title('Simulating from proposal (without summary stats')
+    for x_w in x_without:
+        im = plt.plot(x_w)
 
     fig4, ax = plt.subplots(1,1)
     ax.set_title('Simulating from posterior (without summary stats)')
@@ -176,13 +168,12 @@ def main(argv):
 
 
     finish_time = get_time()
-    file_writer.save_all(posterior, prior, theta=theta, x =x, fig=fig, start_time=start_time, finish_time=finish_time)
+    file_writer.save_all(posterior, prior, theta=theta, x =x, x_without=x_without, fig=fig, start_time=start_time, finish_time=finish_time)
 
     file_writer.save_fig(fig2)
     file_writer.save_fig(fig3)
     file_writer.save_fig(fig4)
-    if prior_check:
-        file_writer.save_fig(fig5)
+    file_writer.save_fig(fig5)
     ##save class 
     with open('{}/class'.format(file_writer.folder), 'wb') as pickle_file:
         pickle.dump(file_writer, pickle_file)

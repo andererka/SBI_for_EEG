@@ -70,6 +70,9 @@ class WriteToFile:
 
     def save_observations(self, x):
         torch.save(x, '{}/obs.pt'.format(self.folder))
+
+    def save_obs_without(self, x_without):
+        torch.save(x_without, '{}/obs_without.pt'.format(self.folder))
     
 
     def save_thetas(self, thetas):
@@ -106,11 +109,12 @@ class WriteToFile:
             json.dump(json_dict, f)
             f.close()
 
-    def save_all(self, posterior, prior, theta, x, start_time=None, finish_time=None, fig=None):
+    def save_all(self, posterior, prior, theta, x, x_without, start_time=None, finish_time=None, fig=None):
         self.save_posterior(posterior)
         self.save_prior(prior)
         self.save_thetas(theta)
         self.save_observations(x)
+        self.save_obs_without(x)
         if (fig!= None):
             self.save_fig(fig)
         else:
