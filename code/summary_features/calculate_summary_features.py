@@ -36,7 +36,7 @@ def calculate_summary_stats(x):
         ##search for P50 between 0 and 70ms:
 
         arg70ms = int(np.round(batch.size(dim=0) /total_steps_ms *70 ))
-        p50 = torch.max(x[0:arg70ms])
+        p50 = torch.max(batch[0:arg70ms])
 
         arg_p50 = torch.argmax(batch[0:arg70ms])
         #p50_moment1 = torch.tensor(moment(x[0:arg70ms], moment=1) )  #mean
