@@ -30,7 +30,7 @@ def calculate_summary_stats(x):
         total_steps_ms = batch.size(dim=0)/time_window
 
         #sets the first value as baseline
-        batch = torch.sub(x, torch.index_select(batch,0,torch.tensor([0])))
+        batch = torch.sub(batch, torch.index_select(batch,0,torch.tensor([0])))
 
 
         ##search for P50 between 0 and 70ms:
