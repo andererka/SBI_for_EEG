@@ -39,8 +39,9 @@ def run_only_inference(theta, x, prior):
 
 def run_only_sim(samples, num_workers=1):
  
-    s_x, obs_real = zip(*Parallel(n_jobs=num_workers, verbose=100, pre_dispatch='1.5*n_jobs', backend='multiprocessing')(delayed(simulation_wrapper_extended)(sample) for sample in samples))
+    obs_real = Parallel(n_jobs=num_workers, verbose=100, pre_dispatch='1.5*n_jobs', backend='multiprocessing')(delayed(simulation_wrapper_obs)(sample) for sample in samples)
     print('done')
+    s_x = calculate_summary_stats(obs_real)
     return s_x, obs_real
 
 
