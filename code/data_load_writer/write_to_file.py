@@ -79,18 +79,21 @@ class WriteToFile:
         torch.save(thetas, '{}/thetas.pt'.format(self.folder))
    
 
-    def save_fig(self, fig):
-        file_name = '{}/figure.png'.format(self.folder)
-        if os.path.isfile(file_name):
-            expand = 1
-            while True:
-                expand += 1
-                new_file_name = file_name.split(".png")[0] + str(expand) + ".png"
-                if os.path.isfile(new_file_name):
-                    continue
-                else:
-                    file_name = new_file_name
-                    break
+    def save_fig(self, fig, figname=None):
+        if figname==None:
+            file_name = '{}/figure.png'.format(self.folder)
+            if os.path.isfile(file_name):
+                expand = 1
+                while True:
+                    expand += 1
+                    new_file_name = file_name.split(".png")[0] + str(expand) + ".png"
+                    if os.path.isfile(new_file_name):
+                        continue
+                    else:
+                        file_name = new_file_name
+                        break
+        else:
+            file_name = '{}/figure{}.png'.format(self.folder, figname)
         fig.savefig(file_name)
 
 
