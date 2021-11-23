@@ -154,7 +154,7 @@ def main(argv):
         im = plt.plot(s)
 
     #file_writer.save_fig(fig2, figname='With_9_stats')
-    file_writer.save_fig(fig3, figname="With_9_stats")
+    file_writer.save_fig(fig3, figname="Without_9_stats")
     file_writer.save_fig(fig4, figname="With_9_stats")
 
     
