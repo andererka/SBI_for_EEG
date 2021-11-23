@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
+from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
+
+from utils import inference
 
 
 import pickle
@@ -34,19 +37,25 @@ def main(argv):
             (only for the case where we do not have a real observation, but take a simulated one where we 
             set the parameter values to the same values all the times)
     """
+
+    
     try:
         file = argv[0]
     except:
-        file = 'results/ERP_save_sim_nsf_num_params:3_11-23-2021_11:36:42/class'
+        file = 'results/ERP_save_sim_nsf_num_params:3_11-23-2021_15:58:04/class'
     try:
         num_samples = int(argv[1])
     except:
-        num_samples = 1000
+        num_samples = 20
 
     try: 
         num_rounds = int(argv[2])
     except:
         num_rounds = 1
+    try:
+        num_workers = int(argv[3])
+    except:
+        num_workers = 4
 
 
 
@@ -93,24 +102,26 @@ def main(argv):
         
 
     ###calculating summary statistics:
+    prior = lf.load_prior(file_writer.folder)
+    inf = SNPE_C(prior, density_estimator='nsf')
+    print('x_without', x_without)
+    x_9 = calculate_summary_stats9(x_without)
 
-    print(x_without.size())
-    print(x.size())
-    x = calculate_summary_stats9(x_without)
-    inference = inference.append_simulations(theta, x)
-    density_estimator = inference.train()
+    inf = inf.append_simulations(theta, x_9)
+    density_estimator = inf.train()
     
 
-    posterior = inference.build_posterior(density_estimator)
+    posterior = inf.build_posterior(density_estimator)
 
 
     true_params = lf.load_true_params(file_writer.folder)
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
-    from utils import inference
 
     for i in range(num_rounds):
-        obs_real = inference.run_only_sim(true_params)
+        _, obs_real = inference.run_only_sim(true_params)
+
+        obs_real = calculate_summary_stats9(obs_real)
 
         samples = posterior.sample((num_samples,), 
                                 x=obs_real)
@@ -128,6 +139,23 @@ def main(argv):
                                 label_samples=parameter_names);
 
         file_writer.save_fig(fig)
+
+    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
+
+
+    fig3, ax = plt.subplots(1,1)
+    ax.set_title('Simulating from posterior (with summary stats)')
+    for s in s_x_stats:
+        im = plt.plot(s)
+
+    fig4, ax = plt.subplots(1,1)
+    ax.set_title('Simulating from posterior (with summary stats)')
+    for s in s_x:
+        im = plt.plot(s)
+
+    #file_writer.save_fig(fig2, figname='With_9_stats')
+    file_writer.save_fig(fig3, figname="With_9_stats")
+    file_writer.save_fig(fig4, figname="With_9_stats")
 
     
 
