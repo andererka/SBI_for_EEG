@@ -114,7 +114,7 @@ class WriteToFile:
         self.save_prior(prior)
         self.save_thetas(theta)
         self.save_observations(x)
-        self.save_obs_without(x)
+        self.save_obs_without(x_without)
         if (fig!= None):
             self.save_fig(fig)
         else:
