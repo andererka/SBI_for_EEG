@@ -21,6 +21,11 @@ def load_obs(path_to_file):
     obs = torch.load(path_to_file+ '/obs.pt')
     return obs
 
+def load_obs_without(path_to_file):
+
+    obs = torch.load(path_to_file+ '/obs_without.pt')
+    return obs
+
 
 def load_thetas(path_to_file):
 
