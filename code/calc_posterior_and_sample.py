@@ -37,7 +37,7 @@ def main(argv):
     try:
         file = argv[0]
     except:
-        file = 'results/ERP_save_sim_nsf_num_params:3_11-23-2021_02:39:18/class'
+        file = 'results/ERP_save_sim_nsf_num_params:3_11-23-2021_11:36:42/class'
     try:
         num_samples = int(argv[1])
     except:
@@ -105,6 +105,7 @@ def main(argv):
 
 
     true_params = lf.load_true_params(file_writer.folder)
+    limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
     from utils import inference
 
@@ -118,12 +119,13 @@ def main(argv):
 
 
         fig, axes = analysis.pairplot(samples,
-                                #limits=[[.5,80], [1e-4,15.]],
-                                #ticks=[[.5,80], [1e-4,15.]],
+                                limits=limits,
+                                ticks=limits,
                                 figsize=(5,5),
                                 points=true_params,
                                 points_offdiag={'markersize': 6},
-                                points_colors='r');
+                                points_colors='r',
+                                label_samples=parameter_names);
 
         file_writer.save_fig(fig)
 

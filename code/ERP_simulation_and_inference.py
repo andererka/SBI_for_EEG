@@ -138,7 +138,7 @@ def main(argv):
                             #tick_labels=parameter_names
                             label_samples=parameter_names
                             );
-    axes.set_xlabel(parameter_names)
+    #axes.set_xlabel(parameter_names)
 
 
     corr_matrix_marginal = np.corrcoef(samples.T)
