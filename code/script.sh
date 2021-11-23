@@ -13,4 +13,4 @@
 scontrol show job $SLURM_JOB_ID 
 
 # insert your commands he
-python3 calc_posterior_and_sample.py None None None 64 
+python3 calc_posterior_and_sample.py results/ERP_save_sim_nsf_num_params:3_11-23-2021_15:58:04/class 20 1 64 
