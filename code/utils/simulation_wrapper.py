@@ -18,6 +18,9 @@ def simulation_wrapper(params):   #input possibly array of 1 or more params
         param_size = params.size(dim=1)
     else:
         param_size = params.size(dim=0)
+    if (param_size==1):
+        net = set_network_1_params(params)
+        print('1 params are investigated')
  
     if (param_size==2):
         net = set_network_2_params(params)
@@ -95,21 +98,28 @@ def simulation_wrapper_obs(params):   #input possibly array of 1 or more params
 
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
+
+    
     if (params.dim()>1):
         param_size = params.size(dim=1)
     else:
         param_size = params.size(dim=0)
- 
-    if (param_size==2):
-        net = set_network_2_params(params)
-        print('2 params are investigated')
-    elif (param_size==6):
-        net = set_network_6_params(params)
-        print('6 params are investigated')
-    elif (param_size==3):
-        net = set_network_3_params(params)
-        print('3 params are investigated')
-    else:
+    print(param_size)
+    try:
+        if (param_size==1):
+            net = set_network_1_params(params)
+            print('1 params are investigated')
+    
+        if (param_size==2):
+            net = set_network_2_params(params)
+            print('2 params are investigated')
+        elif (param_size==6):
+            net = set_network_6_params(params)
+            print('6 params are investigated')
+        elif (param_size==3):
+            net = set_network_3_params(params)
+            print('3 params are investigated')
+    except:
         print('there is no simulation wrapper defined for this number of parameters!')
         exit()
     
@@ -181,6 +191,31 @@ def set_network_default(params=None):
 
     return net
 
+def set_network_1_params(params=None):
+
+    """
+    description: changes the network due to parameter settings drawn during sbi
+
+    here one changes only the first distal drive and the second proximal drive, which was 
+    used as toy example to see if the sbi is working for the case of the hnn simulator.
+    """
+
+    net = jones_2009_model()
+    weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
+                   'L5_pyramidal': 0.142300}
+    weights_nmda_d1 = {'L2_basket': 0.019482, 'L2_pyramidal': 0.004317,
+                   'L5_pyramidal': 0.080074}
+    synaptic_delays_d1 = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
+                      'L5_pyramidal': 0.1}
+    net.add_evoked_drive(
+    'evdist1', mu=63.53, sigma=3.85, numspikes=1, weights_ampa=weights_ampa_d1,
+    weights_nmda=weights_nmda_d1, location='distal',
+    synaptic_delays=synaptic_delays_d1, event_seed=event_seed())
+
+
+
+    return net
+
 def set_network_2_params(params=None):
 
     """
@@ -212,17 +247,8 @@ def set_network_2_params(params=None):
 
     # all NMDA weights are zero; pass None explicitly
     net.add_evoked_drive(
-    'evprox1', mu=26.61, sigma=2.47, numspikes=1, weights_ampa=weights_ampa_p1,
+    'evprox1', mu=params[1], sigma=2.47, numspikes=1, weights_ampa=weights_ampa_p1,
     weights_nmda=None, location='proximal',
-    synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
-
-    # Second proximal evoked drive. NB: only AMPA weights differ from first
-    weights_ampa_p2 = {'L2_basket': 0.000003, 'L2_pyramidal': 1.438840,
-                   'L5_basket': 0.008958, 'L5_pyramidal': 0.684013}
-    # all NMDA weights are zero; omit weights_nmda (defaults to None)
-    net.add_evoked_drive(
-    'evprox2', mu=params[1], sigma=8.33, numspikes=1,
-    weights_ampa=weights_ampa_p2, location='proximal',
     synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
 
     return net

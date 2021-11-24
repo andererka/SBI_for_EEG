@@ -2,7 +2,7 @@ from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
 
-from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_stats9, calculate_summary_statistics_alternative
+from summary_features.calculate_summary_features import calculate_summary_stats_N100, calculate_summary_stats_P200, calculate_summary_stats_P50, calculate_summary_stats_P200, calculate_summary_stats9, calculate_summary_statistics_alternative
 
 import numpy as np
 import torch
@@ -101,45 +101,128 @@ def main(argv):
         sys.exit()
         
 
-    ###calculating summary statistics:
-    prior = lf.load_prior(file_writer.folder)
-    inf = SNPE_C(prior, density_estimator='nsf')
-    print('x_without', x_without)
-    x_9 = calculate_summary_stats9(x_without)
+    ###### starting with P50 parameters/summary stats:
+    prior1 = utils.torchutils.BoxUniform(low=[prior_min[1]], 
+                                        high=[prior_max[1]])
 
-    inf = inf.append_simulations(theta, x_9)
+    inf = SNPE_C(prior1, density_estimator='nsf')
+
+    posterior, theta, _, x_without = inference.run_sim_inference(prior1, num_simulations=100, num_workers =num_workers, density_estimator='nsf')
+
+
+
+    x_P50 = calculate_summary_stats_P50(x_without)
+   
+
+    inf = inf.append_simulations(theta, x_P50)
     density_estimator = inf.train()
     
 
     posterior = inf.build_posterior(density_estimator)
 
+    _, obs_real = inference.run_only_sim(true_params[1], num_workers=num_workers)   # first output gives summary statistics, second without
+
+    obs_real = calculate_summary_stats_P50(obs_real)
+
+    samples = posterior.sample((num_samples,), 
+                            x=calculate_summary_stats_P50(obs_real))
+
+    P50_sample_mean = torch.mean(samples)
+    P50_sample_std = torch.std(samples)
+
+    print('P50 sample mean', P50_sample_mean)
+
+
+    prior_min[1] = P50_sample_mean-P50_sample_std
+    prior_max[1] = P50_sample_mean+P50_sample_std
+
+    print('prior_min', prior_min)
+    print('prior max', prior_max)
+
+
+
+    ###### continuing with N199 parameters/summary stats:
+    prior2 = utils.torchutils.BoxUniform(low=prior_min[0:1], 
+                                        high=prior_max[0:1])
+
+    inf = SNPE_C(prior2, density_estimator='nsf')
+
+    posterior, theta, _, x_without = inference.run_sim_inference(prior2, num_simulations=100, num_workers =num_workers, density_estimator='nsf')
+
+
+
+    x_N100 = calculate_summary_stats_N100(x_without)
+   
+
+    inf = inf.append_simulations(theta, x_N100)
+    density_estimator = inf.train()
+    
+
+    posterior = inf.build_posterior(density_estimator)
+
+    _, obs_real = inference.run_only_sim(true_params[0:1], num_workers=num_workers)   # first output gives summary statistics, second without
+
+    obs_real = calculate_summary_stats_N100(obs_real)
+
+    samples = posterior.sample((num_samples,), 
+                            x=calculate_summary_stats_P50(obs_real))
+
+    N100_sample_mean = torch.mean(samples)
+    N100_sample_std = torch.std(samples)
+
+    print('N100 sample mean', N100_sample_mean)
+
+
+    prior_min[0] = N100_sample_mean-N100_sample_std
+    prior_max[0] = N100_sample_mean+N100_sample_std
+
+    print('prior_min', prior_min)
+    print('prior max', prior_max)
+
+
+
+    ###### continuing with P200 parameters/summary stats:
+    prior3 = utils.torchutils.BoxUniform(low=prior_min, 
+                                        high=prior_max)
+
+    inf = SNPE_C(prior3, density_estimator='nsf')
+
+    posterior, theta, _, x_without = inference.run_sim_inference(prior3, num_simulations=100, num_workers =num_workers, density_estimator='nsf')
+
+
+
+    x_P200 = calculate_summary_stats_P200(x_without)
+   
+
+    inf = inf.append_simulations(theta, x_P200)
+    density_estimator = inf.train()
+    
+
+    posterior = inf.build_posterior(density_estimator)
+
+    _, obs_real = inference.run_only_sim(true_params, num_workers=num_workers)   # first output gives summary statistics, second without
+
+    obs_real = calculate_summary_stats_P200(obs_real)
+
+    samples = posterior.sample((num_samples,), 
+                            x=calculate_summary_stats_P200(obs_real))
+
+
 
     true_params = lf.load_true_params(file_writer.folder)
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
+    fig, axes = analysis.pairplot(samples,
+                            limits=limits,
+                            ticks=limits,
+                            figsize=(5,5),
+                            points=true_params,
+                            points_offdiag={'markersize': 6},
+                            points_colors='r',
+                            label_samples=parameter_names);
 
-    for i in range(num_rounds):
-        _, obs_real = inference.run_only_sim(true_params)
+    file_writer.save_fig(fig, figname='sequential_approach')
 
-        obs_real = calculate_summary_stats9(obs_real)
-
-        samples = posterior.sample((num_samples,), 
-                                x=obs_real)
-
-
-
-
-        fig, axes = analysis.pairplot(samples,
-                                limits=limits,
-                                ticks=limits,
-                                figsize=(5,5),
-                                points=true_params,
-                                points_offdiag={'markersize': 6},
-                                points_colors='r',
-                                label_samples=parameter_names);
-
-        file_writer.save_fig(fig, figname='summary_stats_9')
-        axes[0,0].set_xlabel(parameter_names[0])
 
     s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
 
