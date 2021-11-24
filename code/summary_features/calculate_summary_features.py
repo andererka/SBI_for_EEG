@@ -120,7 +120,7 @@ def calculate_summary_stats9(x):
         p50 = torch.max(batch[0:arg70ms])
 
         arg_p50 = torch.argmax(batch[0:arg70ms])
-        p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1) , dtype=torch.float32)  #mean
+        p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1) , dtype=torch.float32git )  #mean
         #p50_moment2 = torch.tensor(moment(x[0:arg70ms], moment=2) )   #variance
         #p50_moment3 = torch.tensor(moment(x[0:arg70ms], moment=3) )  #skewness
         #p50_moment4 = torch.tensor(moment(x[0:arg70ms], moment=4) )  #kurtosis

@@ -136,7 +136,7 @@ def main(argv):
                                 points=true_params,
                                 points_offdiag={'markersize': 6},
                                 points_colors='r',
-                                labels=parameter_names);
+                                label_samples=parameter_names);
 
         file_writer.save_fig(fig, figname='summary_stats_9')
         axes[0,0].set_xlabel(parameter_names[0])
