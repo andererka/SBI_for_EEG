@@ -1,3 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 20 posterior samples:   0%|          | 0/20 [00:00<?, ?it/s]Drawing 20 posterior samples: 8325it [00:00, 82895.52it/s]          Drawing 20 posterior samples: 8325it [00:00, 82460.92it/s]
