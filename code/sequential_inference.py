@@ -87,6 +87,7 @@ def main(argv):
     
 
     posterior = inf.build_posterior(density_estimator)
+    print(true_params, [true_params[0][1]])
 
     _, obs_real = inference.run_only_sim([true_params[0][1]], num_workers=num_workers)   # first output gives summary statistics, second without
 
