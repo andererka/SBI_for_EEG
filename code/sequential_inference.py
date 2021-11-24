@@ -96,10 +96,14 @@ def main(argv):
     samples = posterior.sample((num_samples,), 
                             x=calculate_summary_stats_P50(obs_real))
 
+
+    print('samples', samples[0:10])
+
     P50_sample_mean = torch.mean(samples)
     P50_sample_std = torch.std(samples)
 
     print('P50 sample mean', P50_sample_mean)
+    print('P50 sample std', P50_sample_std)
 
 
     prior_min[1] = P50_sample_mean-P50_sample_std

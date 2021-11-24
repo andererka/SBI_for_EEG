@@ -185,9 +185,7 @@ def calculate_summary_stats_P50(x):
     batch_list = []
 
     for batch in x:
-        print(batch)
-        print(batch.size())
-        print(type(batch))
+   
 
         total_steps_ms = batch.size(dim=0)/time_window
 
