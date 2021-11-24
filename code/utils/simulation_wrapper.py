@@ -199,20 +199,19 @@ def set_network_1_params(params=None):
     here one changes only the first distal drive and the second proximal drive, which was 
     used as toy example to see if the sbi is working for the case of the hnn simulator.
     """
-
     net = jones_2009_model()
-    weights_ampa_d1 = {'L2_basket': 0.006562, 'L2_pyramidal': .000007,
-                   'L5_pyramidal': 0.142300}
-    weights_nmda_d1 = {'L2_basket': 0.019482, 'L2_pyramidal': 0.004317,
-                   'L5_pyramidal': 0.080074}
-    synaptic_delays_d1 = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
-                      'L5_pyramidal': 0.1}
+
+
+    weights_ampa_p1 = {'L2_basket': 0.08831, 'L2_pyramidal': 0.01525,
+                   'L5_basket': 0.19934, 'L5_pyramidal': 0.00865}
+    synaptic_delays_prox = {'L2_basket': 0.1, 'L2_pyramidal': 0.1,
+                        'L5_basket': 1., 'L5_pyramidal': 1.}
+
+    # all NMDA weights are zero; pass None explicitly
     net.add_evoked_drive(
-    'evdist1', mu=63.53, sigma=3.85, numspikes=1, weights_ampa=weights_ampa_d1,
-    weights_nmda=weights_nmda_d1, location='distal',
-    synaptic_delays=synaptic_delays_d1, event_seed=event_seed())
-
-
+    'evprox1', mu=params[0], sigma=2.47, numspikes=1, weights_ampa=weights_ampa_p1,
+    weights_nmda=None, location='proximal',
+    synaptic_delays=synaptic_delays_prox, event_seed=event_seed())
 
     return net
 
