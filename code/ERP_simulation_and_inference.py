@@ -138,6 +138,8 @@ def main(argv):
                             #tick_labels=parameter_names
                             label_samples=parameter_names
                             );
+
+    print(axes)
     #axes.set_xlabel(parameter_names)
 
 
