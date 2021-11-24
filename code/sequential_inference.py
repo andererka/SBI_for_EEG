@@ -97,7 +97,7 @@ def main(argv):
                             x=calculate_summary_stats_P50(obs_real))
 
 
-    print('samples', samples[0:10])
+    print('samples', samples)
 
     P50_sample_mean = torch.mean(samples)
     P50_sample_std = torch.std(samples)

@@ -214,8 +214,6 @@ def calculate_summary_stats_P50(x):
 
     sum_stats = torch.stack(batch_list)
 
-    print('sum stats', type(sum_stats))
-    print(sum_stats)
 
     
     return sum_stats

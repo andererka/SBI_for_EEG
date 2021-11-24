@@ -104,7 +104,7 @@ def simulation_wrapper_obs(params):   #input possibly array of 1 or more params
         param_size = params.size(dim=1)
     else:
         param_size = params.size(dim=0)
-    print(param_size)
+   
     try:
         if (param_size==1):
             net = set_network_1_params(params)
