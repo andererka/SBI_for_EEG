@@ -59,11 +59,11 @@ def main(argv):
 
 
 
-    prior_min = [43.8, 89.49, 7.9]    # 't_evdist_1', 't_evprox_1', 't_evprox_2'
+    prior_min = [43.8, 7.9, 89.49]    # 't_evdist_1', 't_evprox_1', 't_evprox_2'
 
-    prior_max = [79.9, 152.96, 30]
+    prior_max = [79.9, 30, 152.96]
 
-    true_params = torch.tensor([[63.53, 137.12, 18.97]]) 
+    true_params = torch.tensor([[63.53, 26.61, 137.12]]) 
     parameter_names =  ['t_evdist_1',  't_evprox_1',  't_evprox_2']
 
 
