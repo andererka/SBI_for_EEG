@@ -75,7 +75,7 @@ def main(argv):
 
     inf = SNPE_C(prior1, density_estimator='nsf')
 
-    posterior, theta, _, x_without = inference.run_sim_inference(prior1, num_simulations=100, num_workers =num_workers, density_estimator='nsf')
+    posterior, theta, _, x_without = inference.run_sim_inference(prior1, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
 
 
 
@@ -116,7 +116,7 @@ def main(argv):
 
     inf = SNPE_C(prior2, density_estimator='nsf')
 
-    posterior, theta, _, x_without = inference.run_sim_inference(prior2, num_simulations=100, num_workers =num_workers, density_estimator='nsf')
+    posterior, theta, _, x_without = inference.run_sim_inference(prior2, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
 
 
 
