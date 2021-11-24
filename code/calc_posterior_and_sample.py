@@ -139,6 +139,7 @@ def main(argv):
                                 label_samples=parameter_names);
 
         file_writer.save_fig(fig, figname='summary_stats_9')
+    print(axes)
 
     s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
 
