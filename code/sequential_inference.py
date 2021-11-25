@@ -97,7 +97,7 @@ def main(argv):
                             x=calculate_summary_stats_P50(obs_real))
 
 
-    print('samples', samples)
+    print('samples drawn from first sequence')
 
     P50_sample_mean = torch.mean(samples)
     P50_sample_std = torch.std(samples)
@@ -114,9 +114,9 @@ def main(argv):
 
 
 
-    ###### continuing with N199 parameters/summary stats:
-    prior2 = utils.torchutils.BoxUniform(low=prior_min[0:1], 
-                                        high=prior_max[0:1])
+    ###### continuing with N100 parameters/summary stats:
+    prior2 = utils.torchutils.BoxUniform(low=prior_min[0:2], 
+                                        high=prior_max[0:2])
 
     inf = SNPE_C(prior2, density_estimator='nsf')
 
