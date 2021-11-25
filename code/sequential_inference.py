@@ -203,22 +203,16 @@ def main(argv):
     file_writer.save_fig(fig, figname='sequential_approach')
 
 
-    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, num_workers=num_workers)
 
-
-    fig3, ax = plt.subplots(1,1)
-    ax.set_title('Simulating from posterior (with summary stats)')
-    for s in s_x_stats:
-        im = plt.plot(s)
 
     fig4, ax = plt.subplots(1,1)
-    ax.set_title('Simulating from posterior (with summary stats)')
+    ax.set_title('Simulating from posterior')
     for s in s_x:
         im = plt.plot(s)
 
-    #file_writer.save_fig(fig2, figname='With_9_stats')
-    file_writer.save_fig(fig3, figname="Without_9_stats")
-    file_writer.save_fig(fig4, figname="With_9_stats")
+    
+    file_writer.save_fig(fig4, figname="from_posterior")
 
     
 
