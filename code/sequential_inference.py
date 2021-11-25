@@ -196,7 +196,7 @@ def main(argv):
                             points_colors='r',
                             label_samples=parameter_names);
 
-    file_writer = write_to_file.WriteToFile(experiment='ERP_sequential_{}'.format(density_estimator), num_sim=num_sim,
+    file_writer = write_to_file.WriteToFile(experiment='ERP_sequential', num_sim=num_sim,
                     true_params=true_params, density_estimator=density_estimator, num_params=3, num_samples=num_samples)
 
 
