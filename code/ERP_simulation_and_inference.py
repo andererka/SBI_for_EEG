@@ -79,7 +79,7 @@ def main(argv):
 
         prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]  
         
-        true_params = torch.tensor([[61.89, 6.022, 19.01, 2.55, 121.23, 10.58]])   
+        true_params = torch.tensor([[63.53, 6.022, 18.97, 2.55, 137.12, 10.58]])   
 
         parameter_names =  ['t_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2']
     
