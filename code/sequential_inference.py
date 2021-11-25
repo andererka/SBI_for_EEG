@@ -57,6 +57,9 @@ def main(argv):
         num_workers = 4
 
 
+    prior_min_fix = [43.8, 7.9, 89.49]    # 't_evdist_1', 't_evprox_1', 't_evprox_2'
+
+    prior_max_fix = [79.9, 30, 152.96]
 
 
     prior_min = [43.8, 7.9, 89.49]    # 't_evdist_1', 't_evprox_1', 't_evprox_2'
@@ -185,7 +188,7 @@ def main(argv):
 
 
 
-    limits = [list(tup) for tup in zip(prior_min,prior_max)]
+    limits = [list(tup) for tup in zip(prior_min_fix, prior_max_fix)]
 
     fig, axes = analysis.pairplot(samples,
                             limits=limits,
