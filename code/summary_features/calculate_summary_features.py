@@ -23,9 +23,6 @@ def calculate_summary_stats(x):
     batch_list = []
 
     for batch in x:
-        print(batch)
-        print(batch.size())
-        print(type(batch))
 
         total_steps_ms = batch.size(dim=0)/time_window
 
@@ -183,11 +180,14 @@ def calculate_summary_stats_P50(x):
     time_window = 30
 
     batch_list = []
+    print('x', x)
 
     for batch in x:
    
-
+        print('batch', batch)
         total_steps_ms = batch.size(dim=0)/time_window
+
+        print('total steps in ms', total_steps_ms)
 
         #sets the first value as baseline
         batch = torch.sub(batch, torch.index_select(batch,0,torch.tensor([0])))

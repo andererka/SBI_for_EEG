@@ -75,9 +75,9 @@ def main(argv):
 
     inf = SNPE_C(prior1, density_estimator='nsf')
 
-    posterior, theta, _, x_without = inference.run_sim_inference(prior1, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
+    theta, x_without = inference.run_sim_theta_x(prior1, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
 
-
+    print('x without', x_without)
 
     x_P50 = calculate_summary_stats_P50(x_without)
    
@@ -89,12 +89,13 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
  
 
-    _, obs_real = inference.run_only_sim(torch.tensor([[true_params[0][1]]]), num_workers=num_workers)   # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(torch.tensor([[true_params[0][1]]]), num_workers=num_workers)   # first output gives summary statistics, second without
 
+    print('obs real', obs_real)
     obs_real = calculate_summary_stats_P50(obs_real)
 
     samples = posterior.sample((num_samples,), 
-                            x=calculate_summary_stats_P50(obs_real))
+                            x=obs_real)
 
 
     print('samples drawn from first sequence')
@@ -120,7 +121,7 @@ def main(argv):
 
     inf = SNPE_C(prior2, density_estimator='nsf')
 
-    posterior, theta, _, x_without = inference.run_sim_inference(prior2, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
+    theta, x_without = inference.run_sim_theta_x(prior2, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
 
 
 
@@ -133,12 +134,12 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    _, obs_real = inference.run_only_sim(torch.tensor(true_params[:][0:2]), num_workers=num_workers)   # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(torch.tensor([list(true_params[0][0:2])]), num_workers=num_workers)   # first output gives summary statistics, second without
 
     obs_real = calculate_summary_stats_N100(obs_real)
 
     samples = posterior.sample((num_samples,), 
-                            x=calculate_summary_stats_P50(obs_real))
+                            x=obs_real)
 
     N100_sample_mean = torch.mean(samples)
     N100_sample_std = torch.std(samples)
@@ -161,7 +162,7 @@ def main(argv):
     inf = SNPE_C(prior3, density_estimator='nsf')
 
 
-    posterior, theta, _, x_without = inference.run_sim_inference(prior3, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
+    theta, x_without = inference.run_sim_theta_x(prior3, num_simulations=num_sim, num_workers =num_workers, density_estimator='nsf')
 
 
 
@@ -174,12 +175,12 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    _, obs_real = inference.run_only_sim(true_params, num_workers=num_workers)   # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)   # first output gives summary statistics, second without
 
     obs_real = calculate_summary_stats_P200(obs_real)
 
     samples = posterior.sample((num_samples,), 
-                            x=calculate_summary_stats_P200(obs_real))
+                            x=obs_real)
 
 
 

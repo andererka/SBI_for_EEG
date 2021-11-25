@@ -40,9 +40,18 @@ def run_only_inference(theta, x, prior):
 def run_only_sim(samples, num_workers=1):
  
     obs_real = Parallel(n_jobs=num_workers, verbose=100, pre_dispatch='1.5*n_jobs', backend='multiprocessing')(delayed(simulation_wrapper_obs)(sample) for sample in samples)
-    print('done')
-    s_x = calculate_summary_stats(obs_real)
-    return s_x, obs_real
+   
+    return obs_real
+
+def run_sim_theta_x(prior, num_simulations=1000, density_estimator='nsf', num_workers=8):
+
+
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)
+
+    theta, x_without = simulate_for_sbi(simulator_stats, proposal=prior, num_simulations=num_simulations, num_workers=num_workers)
+
+
+    return theta, x_without
 
 
 
