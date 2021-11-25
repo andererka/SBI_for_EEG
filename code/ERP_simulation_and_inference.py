@@ -8,6 +8,7 @@ import datetime
 
 
 import numpy as np
+from code.summary_features.calculate_summary_features import calculate_summary_stats9
 import torch
 from data_load_writer import write_to_file
 import pickle
@@ -118,13 +119,15 @@ def main(argv):
     # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
 
-    obs_real, _ = inference.run_only_sim(true_params, num_workers=num_workers)   # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)   # first output gives summary statistics, second without
 
 
     samples = posterior.sample((num_samples,), 
                             x=obs_real[0], sample_with=sample_method)
 
-    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, num_workers=num_workers)
+
+    s_x_stats = calculate_summary_stats9(s_x)
 
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
@@ -136,11 +139,8 @@ def main(argv):
                             points_offdiag={'markersize': 6},
                             points_colors='r',
                             #tick_labels=parameter_names
-                            label_samples=parameter_names
+                            labels=parameter_names
                             );
-
-    print(axes)
-    #axes.set_xlabel(parameter_names)
 
 
     corr_matrix_marginal = np.corrcoef(samples.T)

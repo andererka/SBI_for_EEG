@@ -8,6 +8,7 @@ import datetime
 
 
 import numpy as np
+from code.summary_features.calculate_summary_features import calculate_summary_stats
 import torch
 from data_load_writer import write_to_file
 import pickle
@@ -83,17 +84,17 @@ def main(argv):
 
         prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]  
         
-        true_params = torch.tensor([[61.89, 6.022, 19.01, 2.55, 121.23, 10.58]])  
+        true_params = torch.tensor([[63.53, 6.022, 18.97, 2.55, 137.12, 10.58]])  
 
         parameter_names =  ['t_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2']
 
     
 
     if (num_params==3):
-        prior_min = [43.8, 89.49, 7.9] 
-        prior_max = [79.9, 152.96, 30]
+        prior_min = [43.8,  7.9, 89.49] 
+        prior_max = [79.9, 30, 152.96]
 
-        true_params = torch.tensor([[63.53, 137.12, 18.97]]) 
+        true_params = torch.tensor([[63.53, 18.97, 137.12]]) 
 
         parameter_names =  ['t_evdist_1',  't_evprox_1',  't_evprox_2']
 
@@ -113,12 +114,12 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
-    _, obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
+    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
     posteriors = []
     proposal = prior
 
     for _ in range(2):
-        posterior, theta, x = inference.run_sim_inference(proposal, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
+        posterior, theta, x, _ = inference.run_sim_inference(proposal, simulation_wrapper, number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
         posteriors.append(posterior)
         proposal = posterior.set_default_x(obs_real[0])
@@ -137,8 +138,10 @@ def main(argv):
                             x=obs_real[0], sample_with=sample_method)
 
 
-    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x_stats = calculate_summary_stats(s_x)
 
+    
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
     fig, axes = analysis.pairplot(samples,
                             limits=limits,

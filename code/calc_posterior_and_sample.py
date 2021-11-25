@@ -119,7 +119,7 @@ def main(argv):
 
 
     for i in range(num_rounds):
-        _, obs_real = inference.run_only_sim(true_params)
+        obs_real = inference.run_only_sim(true_params)
 
         obs_real = calculate_summary_stats9(obs_real)
 
@@ -141,8 +141,8 @@ def main(argv):
         file_writer.save_fig(fig, figname='summary_stats_9')
         axes[0,0].set_xlabel(parameter_names[0])
 
-    s_x, s_x_stats = inference.run_only_sim(samples, num_workers=num_workers)
-
+    s_x = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x_stats = calculate_summary_stats9(s_x)
 
     fig3, ax = plt.subplots(1,1)
     ax.set_title('Simulating from posterior (with summary stats)')

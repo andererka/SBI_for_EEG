@@ -7,6 +7,8 @@ from summary_features.calculate_summary_features import calculate_summary_stats_
 import numpy as np
 import torch
 
+from utils.helpers import get_time
+
 # visualization
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -56,7 +58,7 @@ def main(argv):
     except:
         num_workers = 4
 
-
+    start_time = get_time()
     prior_min_fix = [43.8, 7.9, 89.49]    # 't_evdist_1', 't_evprox_1', 't_evprox_2'
 
     prior_max_fix = [79.9, 30, 152.96]
@@ -197,10 +199,13 @@ def main(argv):
                             points=true_params,
                             points_offdiag={'markersize': 6},
                             points_colors='r',
-                            label_samples=parameter_names);
+                            labels=parameter_names);
 
     file_writer = write_to_file.WriteToFile(experiment='ERP_sequential', num_sim=num_sim,
                     true_params=true_params, density_estimator=density_estimator, num_params=3, num_samples=num_samples)
+
+    finish_time = get_time()    
+    file_writer.save_all(posterior, prior=prior3, theta=theta, x =x_P200, w_without=x_without,  start_time=start_time, finish_time=finish_time)
 
 
     file_writer.save_fig(fig, figname='sequential_approach')
@@ -209,12 +214,17 @@ def main(argv):
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
 
 
+    fig3, ax = plt.subplots(1,1)
+    ax.set_title('Simulating from proposal')
+    for x in x_without:
+        im = plt.plot(x)
+
     fig4, ax = plt.subplots(1,1)
     ax.set_title('Simulating from posterior')
     for s in s_x:
         im = plt.plot(s)
 
-    
+    file_writer.save_fig(fig3, figname="from_prior")
     file_writer.save_fig(fig4, figname="from_posterior")
 
     
