@@ -100,6 +100,18 @@ def main(argv):
         true_params = torch.tensor([[63.53, 137.12]]) 
         parameter_names =  ['t_evdist_1',  't_evprox_1']
 
+    if (num_params==7):  #for a start, this would look for all weights of the distal drive
+
+        prior_min = [0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 43.821]     #ampa: 'L2_basket''L2_pyramidal', 'L5_pyramidal', NMDA: 'L2_basket,'L2_pyramidal','L5_pyramidal'
+
+
+        prior_max = [0.387, 0.00005, 11.019, 0.133, 0.821, 0.211, 43.821]
+
+
+        true_params = torch.tensor([[63.53, 18.97, 137.12]]) 
+        parameter_names =  ['ampa_L2_basket','ampa_L2_pyramidal', 'nmda_L5_pyramidal', 'nmda_L2_basket','nmda_L2_pyramidal','nmda_L5_pyramidal']
+
+
     elif (num_params==None):
         print('number of parameters must be defined in the arguments')
         sys.exit()
