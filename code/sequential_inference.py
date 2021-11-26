@@ -103,6 +103,11 @@ def main(argv):
                             x=obs_real)
 
 
+    print('sample shape', samples.size())
+
+    exit()
+
+
     print('samples drawn from first sequence')
 
     P50_sample_mean = torch.mean(samples)

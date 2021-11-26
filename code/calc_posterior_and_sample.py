@@ -16,6 +16,8 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
 
+from utils.helpers import get_time
+
 from utils import inference
 
 
@@ -57,7 +59,7 @@ def main(argv):
     except:
         num_workers = 4
 
-
+    start_time = get_time()
 
     ### loading the class:
     with open(file, 'rb') as pickle_file:
@@ -114,9 +116,7 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    print(posterior)
 
-    exit()
 
 
     true_params = lf.load_true_params(file_writer.folder)
@@ -126,6 +126,8 @@ def main(argv):
     file_writer2 = write_to_file.WriteToFile(experiment='ERP_9stats_num_params:{}_'.format(num_params), num_sim=0,
                     true_params=true_params, density_estimator=density_estimator, num_params=num_params, num_samples=num_samples)
 
+    finish_time = get_time()
+    file_writer2.save_all(posterior, prior, theta=theta, x =x, x_without=x_without, fig=None, start_time=start_time, finish_time=finish_time)
 
 
 
