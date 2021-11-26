@@ -13,4 +13,4 @@
 scontrol show job $SLURM_JOB_ID 
 
 # insert your commands he
-python sequential_inference.py 1000 1000 1 64
+python3 sequential_inference.py 100 20 1 64
