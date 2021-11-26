@@ -119,7 +119,7 @@ def main(argv):
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
 
-    file_writer2 = write_to_file.WriteToFile(experiment='ERP_9stats_{}_num_params:{}_'.format(density_estimator, num_params), num_sim=0,
+    file_writer2 = write_to_file.WriteToFile(experiment='ERP_9stats_num_params:{}_'.format(num_params), num_sim=0,
                     true_params=true_params, density_estimator=density_estimator, num_params=num_params, num_samples=num_samples)
 
 
