@@ -119,6 +119,19 @@ def main(argv):
     print('prior max', prior_max)
 
 
+    cond_samples = posterior.sample_conditional(
+        (500,), condition=samples[0], dims_to_sample=[1]
+    )
+    fig, _ = analysis.pairplot(
+        cond_samples,
+        #limits=[[-2, 2], [-2, 2], [-2, 2]],
+        fig_size=(2, 2),
+        diag="kde",
+        upper="kde",
+    )
+
+
+
 
     ###### continuing with N100 parameters/summary stats:
     prior2 = utils.torchutils.BoxUniform(low=prior_min[0:2], 
@@ -203,6 +216,9 @@ def main(argv):
 
     file_writer = write_to_file.WriteToFile(experiment='ERP_sequential', num_sim=num_sim,
                     true_params=true_params, density_estimator=density_estimator, num_params=3, num_samples=num_samples)
+
+
+    file_writer.save_fig(fig, figname="conditional on 2.")
 
     finish_time = get_time()    
     file_writer.save_all(posterior, prior=prior3, theta=theta, x =x_P200, w_without=x_without,  start_time=start_time, finish_time=finish_time)

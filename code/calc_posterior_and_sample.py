@@ -46,7 +46,7 @@ def main(argv):
     try:
         num_samples = int(argv[1])
     except:
-        num_samples = 1000
+        num_samples = 100
 
     try: 
         num_rounds = int(argv[2])
@@ -113,6 +113,10 @@ def main(argv):
     
 
     posterior = inf.build_posterior(density_estimator)
+
+    print(posterior)
+
+    exit()
 
 
     true_params = lf.load_true_params(file_writer.folder)
