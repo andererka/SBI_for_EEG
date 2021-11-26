@@ -8,7 +8,7 @@ import datetime
 
 
 import numpy as np
-from code.summary_features.calculate_summary_features import calculate_summary_stats9
+from summary_features.calculate_summary_features import calculate_summary_stats9
 import torch
 from data_load_writer import write_to_file
 import pickle
