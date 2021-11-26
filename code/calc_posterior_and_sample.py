@@ -155,9 +155,8 @@ def main(argv):
         axes[0,0].set_xlabel(parameter_names[0])
 
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
+
     s_x_stats = calculate_summary_stats9(s_x)
-
-
     fig2, ax = plt.subplots(1,1)
     ax.set_title('Simulating from prior')
     for x_w in x_without:
