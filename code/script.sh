@@ -2,7 +2,7 @@
 #SBATCH --ntasks=1                # Number of tasks (see below)
 #SBATCH --cpus-per-task=64         # Number of CPU cores per task
 #SBATCH --nodes=1                 # Ensure that all cores are on one machine
-#SBATCH --time=0-08:00            # Runtime in D-HH:MM
+#SBATCH --time=0-01:00            # Runtime in D-HH:MM
 #SBATCH --mem=50G                # Memory pool for all cores (see also --mem-per-cpu)
 #SBATCH --output=hostname_%j.out  # File to which STDOUT will be written
 #SBATCH --error=hostname_%j.err   # File to which STDERR will be written
@@ -13,4 +13,5 @@
 scontrol show job $SLURM_JOB_ID 
 
 # insert your commands he
-python3 sequential_inference.py 100 20 1 64
+#python3 sequential_inference.py 100 20 1 64
+python3 calc_posterior_and_sample.py results/ERP_save_sim_nsf_num_params:3_11-25-2021_21:36:41/class 100 1 64 
