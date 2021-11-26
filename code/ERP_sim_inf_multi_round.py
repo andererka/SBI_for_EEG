@@ -8,7 +8,7 @@ import datetime
 
 
 import numpy as np
-from code.summary_features.calculate_summary_features import calculate_summary_stats
+from summary_features.calculate_summary_features import calculate_summary_stats
 import torch
 from data_load_writer import write_to_file
 import pickle
@@ -141,7 +141,7 @@ def main(argv):
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
     s_x_stats = calculate_summary_stats(s_x)
 
-    
+
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
     fig, axes = analysis.pairplot(samples,
                             limits=limits,
