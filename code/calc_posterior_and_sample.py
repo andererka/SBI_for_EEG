@@ -124,7 +124,7 @@ def main(argv):
 
 
     file_writer2 = write_to_file.WriteToFile(experiment='ERP_9stats_num_params:{}_'.format(num_params), num_sim=0,
-                    true_params=true_params, density_estimator=density_estimator, num_params=num_params, num_samples=num_samples)
+                    true_params=true_params, density_estimator='nsf', num_params=num_params, num_samples=num_samples)
 
     finish_time = get_time()
     file_writer2.save_all(posterior, prior, theta=theta, x =x, x_without=x_without, fig=None, start_time=start_time, finish_time=finish_time)
