@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
-
+from sbi.inference import SNPE_C
 
 
 from utils.helpers import get_time
@@ -120,9 +120,19 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, 
                                         high=prior_max)
 
-    posterior, theta, x, x_without = inference.run_sim_inference(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator)
+    theta, x_without = inference.run_sim_theta_x(prior, num_simulations=number_simulations, num_workers =num_workers, density_estimator=density_estimator)
 
 
+    inf = SNPE_C(prior, density_estimator='nsf')
+
+    x = calculate_summary_stats9(x_without)
+   
+
+    inf = inf.append_simulations(theta, x)
+    density_estimator = inf.train()
+    
+
+    posterior = inf.build_posterior(density_estimator)
 
     # next two lines are not necessary if we have a real observation from experiment
     # here we simulate this 'real observation' by simulation
