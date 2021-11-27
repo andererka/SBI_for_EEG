@@ -134,7 +134,7 @@ def main(argv):
     for i in range(num_rounds):
         obs_real = inference.run_only_sim(true_params)
 
-        obs_real = calculate_summary_stats9(obs_real)
+        obs_real = calculate_summary_stats12(obs_real)
 
         samples = posterior.sample((num_samples,), 
                                 x=obs_real)
