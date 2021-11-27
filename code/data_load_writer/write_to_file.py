@@ -3,6 +3,7 @@ import torch
 import json
 import datetime
 import pickle
+import shutil
 
 
 class WriteToFile:
@@ -112,7 +113,7 @@ class WriteToFile:
             json.dump(json_dict, f)
             f.close()
 
-    def save_all(self, posterior, prior, theta, x, x_without, start_time=None, finish_time=None, fig=None):
+    def save_all(self, posterior, prior, theta, x, x_without, start_time=None, finish_time=None, fig=None, source=None):
         self.save_posterior(posterior)
         self.save_prior(prior)
         self.save_thetas(theta)
@@ -122,6 +123,18 @@ class WriteToFile:
             self.save_fig(fig)
         else:
             print('no fig')
+    
+
+        source = '{}/{}.py'.format(self.folder, source)
+        # Destination path
+        destination = self.folder
+    
+
+        try:
+            shutil.copyfile(source, destination)
+            print("File copied successfully.")
+        except:
+            print('File could not be copied')
         self.save_meta(start_time, finish_time)
 
 
