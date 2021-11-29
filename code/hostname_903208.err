@@ -1,0 +1,10 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "calc_posterior_and_sample.py", line 184, in <module>
+    main(sys.argv[1:])
+  File "calc_posterior_and_sample.py", line 111, in main
+    x_12 = calculate_summary_stats12(x_without)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/summary_features/calculate_summary_features.py", line 229, in calculate_summary_stats12
+    P200_moment1, P200_moment2, #P200_moment3, #P200_moment4
+RuntimeError: stack expects each tensor to be equal size, but got [] at entry 0 and [6801] at entry 7
