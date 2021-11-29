@@ -1,3 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 100%|██████████| 100/100 [00:00<00:00, 3595.66it/s]

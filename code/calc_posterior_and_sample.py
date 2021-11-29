@@ -2,7 +2,7 @@ from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
 
-from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_stats9, calculate_summary_statistics_alternative, calculate_summary_stats12
+from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_stats9, calculate_summary_statistics_alternative, calculate_summary_stats12, calculate_summary_stats3
 
 import numpy as np
 import torch
@@ -123,7 +123,7 @@ def main(argv):
     limits = [list(tup) for tup in zip(prior_min,prior_max)]
 
 
-    file_writer2 = write_to_file.WriteToFile(experiment='ERP_12stats_num_params:{}_'.format(num_params), num_sim=0,
+    file_writer2 = write_to_file.WriteToFile(experiment='ERP_3stats_num_params:{}_'.format(num_params), num_sim=0,
                     true_params=true_params, density_estimator='nsf', num_params=num_params, num_samples=num_samples)
 
     finish_time = get_time()
@@ -134,7 +134,7 @@ def main(argv):
     for i in range(num_rounds):
         obs_real = inference.run_only_sim(true_params)
 
-        obs_real = calculate_summary_stats12(obs_real)
+        obs_real = calculate_summary_stats3(obs_real)
 
         samples = posterior.sample((num_samples,), 
                                 x=obs_real)
@@ -151,12 +151,12 @@ def main(argv):
                                 points_colors='r',
                                 labels=parameter_names);
 
-        file_writer2.save_fig(fig, figname='summary_stats_12')
+        file_writer2.save_fig(fig, figname='summary_stats_3')
         axes[0,0].set_xlabel(parameter_names[0])
 
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
 
-    s_x_stats = calculate_summary_stats12(s_x)
+    s_x_stats = calculate_summary_stats3(s_x)
     fig2, ax = plt.subplots(1,1)
     ax.set_title('Simulating from prior')
     for x_w in x_without:

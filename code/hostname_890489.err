@@ -1,4 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 10989it [00:00, 71433.10it/s]           Drawing 1000 posterior samples: 10989it [00:00, 71176.52it/s]
-slurmstepd: error: *** JOB 890489 ON slurm-cpu-hm-2 CANCELLED AT 2021-11-26T16:04:35 DUE TO TIME LIMIT ***

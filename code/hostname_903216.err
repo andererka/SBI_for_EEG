@@ -1,3 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 100%|█████████▉| 999/1000 [00:00<00:00, 4915.55it/s]Drawing 1000 posterior samples: 10988it [00:00, 38546.96it/s]                       
