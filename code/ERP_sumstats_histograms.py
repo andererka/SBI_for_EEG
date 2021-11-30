@@ -12,8 +12,10 @@ from hnn_core import simulate_dipole, jones_2009_model
 from hnn_core.viz import plot_dipole
 
 
-
-from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_statistics_alternative
+from summary_features.calculate_summary_features import (
+    calculate_summary_stats,
+    calculate_summary_statistics_alternative,
+)
 
 import numpy as np
 import torch
@@ -30,7 +32,6 @@ from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
 
-
 from utils.simulation_wrapper import event_seed, set_network_default
 
 
@@ -45,6 +46,7 @@ from summary_features.calculate_summary_features import calculate_summary_stats
 
 
 import sys
+
 
 def main(argv):
     """
@@ -65,7 +67,7 @@ def main(argv):
     try:
         density_estimator = argv[1]
     except:
-        density_estimator = 'nsf'
+        density_estimator = "nsf"
     try:
         num_workers = int(argv[2])
     except:
@@ -76,50 +78,61 @@ def main(argv):
     except:
         num_samples = 100
 
-
     start_time = get_time()
 
     true_params = torch.tensor([[63.53, 137.12]])
 
-    #writes to result folder
-    file_writer = write_to_file.WriteToFile(experiment='ERP_{}'.format(density_estimator), num_sim=number_simulations,
-                    true_params=true_params, density_estimator=density_estimator)
+    # writes to result folder
+    file_writer = write_to_file.WriteToFile(
+        experiment="ERP_{}".format(density_estimator),
+        num_sim=number_simulations,
+        true_params=true_params,
+        density_estimator=density_estimator,
+    )
 
+    prior_min = [
+        43.8,
+        89.49,
+    ]  # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
 
-    prior_min = [43.8, 89.49]   # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_2', 'sigma_t_evprox_2'
+    prior_max = [79.9, 152.96]
 
-    prior_max = [79.9, 152.96]  
-
-    prior = utils.torchutils.BoxUniform(low=prior_min, 
-                                        high=prior_max)
-
+    prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     s_real = inference.run_only_sim(true_params)[0]
-    
 
+    posterior, theta, x = inference.run_sim_inference(
+        prior,
+        simulation_wrapper,
+        number_simulations,
+        density_estimator=density_estimator,
+        num_workers=num_workers,
+    )
 
-    posterior, theta, x = inference.run_sim_inference(prior, simulation_wrapper, number_simulations, density_estimator=density_estimator, num_workers=num_workers)
-
-    sum_stats_names = ['value_p50', 'value_N100', 'value_P200', 'value_arg_p50', 'arg_N100', 'arg_P200',
-    'p50_moment1', 'p50_moment2', 'p50_moment3', #'p50_moment4',
-    'N100_moment1', 'N100_moment2', 'N100_moment3', #'N100_moment4',
-    'P200_moment1','P200_moment2', 'P200_moment3', #'P200_moment4'
-            ]
+    sum_stats_names = [
+        "value_p50",
+        "value_N100",
+        "value_P200",
+        "value_arg_p50",
+        "arg_N100",
+        "arg_P200",
+        "p50_moment1",
+        "p50_moment2",
+        "p50_moment3",  #'p50_moment4',
+        "N100_moment1",
+        "N100_moment2",
+        "N100_moment3",  #'N100_moment4',
+        "P200_moment1",
+        "P200_moment2",
+        "P200_moment3",  #'P200_moment4'
+    ]
 
     finish_time = get_time()
 
-
-
-    samples = posterior.sample((num_samples,), 
-                            x=s_real)
-    print('here', samples)
-
+    samples = posterior.sample((num_samples,), x=s_real)
+    print("here", samples)
 
     s_x = inference.run_only_sim(samples, num_workers=num_workers)[0]
-   
-
-
-
 
     # fig = plt.figure(figsize=(20,5))
 
@@ -128,12 +141,11 @@ def main(argv):
     # ax1 = fig.add_subplot(gs[0, 1])
 
     # for sample in s_x:
-        
+
     #     #assert torch.equal(sample, s_real[0])
     #     ax0.plot(sample.detach().numpy()[:5])
     #     ax0.set_title('Summary statistics 1-10 of samples')
     #     ax0.set(ylim=(-500, 7000))
-    
 
     # ax1.plot(s_real[:10])
     # ax1.set_title('Summary statistics 1-10 of real parameters')
@@ -141,7 +153,6 @@ def main(argv):
 
     # plt.savefig('summary_stats1')
 
-
     # fig = plt.figure(figsize=(20,5))
 
     # gs = gridspec.GridSpec(nrows=1, ncols=2)
@@ -149,65 +160,76 @@ def main(argv):
     # ax1 = fig.add_subplot(gs[0, 1])
 
     # for sample in s_x:
-        
+
     #     #assert torch.equal(sample, s_real[0])
     #     ax0.plot(sample.detach().numpy()[5:])
     #     ax0.set_title('Summary statistics 10-18 of samples')
     #     #ax0.set(ylim=(-500, 7000))
-    
 
     # ax1.plot(s_real[5:])
     # ax1.set_title('Summary statistics 10-18 of real parameters')
     # #ax1.set(ylim=(-500, 7000))
-    
+
     # file_writer.save_fig(fig)
 
-
     # # In[50]:
-
 
     import math
     import numpy as np
 
-    fig = plt.figure(figsize=(2,40))
+    fig = plt.figure(figsize=(2, 40))
 
-    gs = gridspec.GridSpec(nrows=len(s_x)-1, ncols=1)
+    gs = gridspec.GridSpec(nrows=len(s_x) - 1, ncols=1)
 
+    for i in range(len(s_x) - 1):
 
+        globals()["ax%s" % i] = fig.add_subplot(gs[i])
 
+        globals()["sum_stats%s" % i] = []
+        globals()["x%s" % i] = []
 
-    for i in range(len(s_x)-1):
+        for j in range(len(s_x) - 1):
+            globals()["sum_stats%s" % i].append(s_x[j][i])
+            globals()["x%s" % i].append(x[j][i])
 
-        globals()['ax%s' % i] = fig.add_subplot(gs[i])
+        globals()["ax%s" % i].hist(
+            globals()["sum_stats%s" % i],
+            bins=20,
+            density=True,
+            facecolor="g",
+            alpha=0.75,
+            histtype="stepfilled",
+            label="from posterior",
+        )
+        globals()["ax%s" % i].hist(
+            globals()["x%s" % i],
+            bins=20,
+            density=True,
+            alpha=0.75,
+            histtype="stepfilled",
+            label="from obs",
+        )
+        globals()["ax%s" % i].set_title(
+            "Histogram of summary stat {} ".format(sum_stats_names[i])
+        )
+        # ax0.set(ylim=(-500, 7000))
 
-        globals()['sum_stats%s' % i] = []
-        globals()['x%s' % i] = []
+        globals()["ax%s" % i].axvline(s_real[i], color="red", label="true obs")
+        globals()["ax%s" % i].legend(loc="upper right")
 
-        for j in range(len(s_x)-1):
-            globals()['sum_stats%s' % i].append(s_x[j][i])
-            globals()['x%s' % i].append(x[j][i])
-
-
-
-        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i], bins=20, density=True, facecolor='g', alpha=0.75, histtype='stepfilled', label='from posterior')
-        globals()['ax%s' % i].hist(globals()['x%s' % i], bins=20, density=True, alpha=0.75, histtype='stepfilled', label='from obs')
-        globals()['ax%s' % i].set_title('Histogram of summary stat {} '.format(sum_stats_names[i]))
-        #ax0.set(ylim=(-500, 7000))
-
-        globals()['ax%s' % i].axvline(s_real[i], color='red', label='true obs')
-        globals()['ax%s' % i].legend(loc='upper right')
-
-
-    fig.suptitle('Summary stats histogram from posterior predictions.', fontsize=16)
+    fig.suptitle("Summary stats histogram from posterior predictions.", fontsize=16)
 
     file_writer.save_fig(fig)
 
-
-    file_writer.save_all(posterior, prior, theta=theta, x =x, start_time=start_time, finish_time=finish_time)
-
-
-
+    file_writer.save_all(
+        posterior,
+        prior,
+        theta=theta,
+        x=x,
+        start_time=start_time,
+        finish_time=finish_time,
+    )
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])
