@@ -107,11 +107,11 @@ def main(argv):
     proposal1 = posterior.set_default_x(obs_real)
 
     ###### continuing with N100 parameters/summary stats:
-    prior2 = utils.torchutils.BoxUniform(low=prior_min[0:2], high=prior_max[0:2])
+    prior2 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
 
-    combined_prior = Combined(proposal1, prior2)
+    combined_prior = Combined(proposal1, prior2, number_params_1=1)
 
-    inf = SNPE_C(prior2, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     theta, x_without = inference.run_sim_theta_x(
         combined_prior,
@@ -136,6 +136,8 @@ def main(argv):
 
     obs_real = calculate_summary_stats_N100(obs_real)
 
+    print('obs real', obs_real.size())
+
     samples = posterior.sample((num_samples,), x=obs_real)
 
     proposal2 = posterior.set_default_x(obs_real)
@@ -143,7 +145,7 @@ def main(argv):
     ###### continuing with P200 parameters/summary stats:
     prior3 = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
-    combined_prior = Combined(proposal2, prior3)
+    combined_prior = Combined(proposal2, prior3, number_params_1=2)
 
     inf = SNPE_C(prior3, density_estimator="nsf")
 

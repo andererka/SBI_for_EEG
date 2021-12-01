@@ -20,6 +20,7 @@ def simulation_wrapper(params):  # input possibly array of 1 or more params
         param_size = params.size(dim=1)
     else:
         param_size = params.size(dim=0)
+    
     if param_size == 1:
         net = set_network_1_params(params)
         print("1 params are investigated")
@@ -34,8 +35,9 @@ def simulation_wrapper(params):  # input possibly array of 1 or more params
         net = set_network_3_params(params)
         print("3 params are investigated")
     else:
-        print("there is no simulation wrapper defined for this number of parameters!")
-        exit()
+        print("there is no simulation wrapper defined for this number of parameters! kkk")
+        print('param size', param_size)
+       
 
     window_len, scaling_factor = 30, 3000
 
@@ -97,30 +99,34 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
 
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
-
+    
     if params.dim() > 1:
         param_size = params.size(dim=1)
     else:
         param_size = params.size(dim=0)
 
-    try:
-        if param_size == 1:
-            net = set_network_1_params(params)
-            print("1 params are investigated")
+ 
+    print(param_size)
+    print('params size', params.size())
 
-        if param_size == 2:
-            net = set_network_2_params(params)
-            print("2 params are investigated")
-        elif param_size == 6:
-            net = set_network_6_params(params)
-            print("6 params are investigated")
-        elif param_size == 3:
-            net = set_network_3_params(params)
-            print("3 params are investigated")
-        elif param_size == 7:
-            net = set_network_distal_weights(params)
-            print("distal weights are investigated")
-    except:
+  
+    if param_size == 1:
+        net = set_network_1_params(params)
+        print("1 params are investigated")
+
+    elif param_size == 2:
+        net = set_network_2_params(params)
+        print("2 params are investigated")
+    elif param_size == 6:
+        net = set_network_6_params(params)
+        print("6 params are investigated")
+    elif param_size == 3:
+        net = set_network_3_params(params)
+        print("3 params are investigated")
+    elif param_size == 7:
+        net = set_network_distal_weights(params)
+        print("distal weights are investigated")
+    else:
         print("there is no simulation wrapper defined for this number of parameters!")
         exit()
 

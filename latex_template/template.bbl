@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+\newcommand{\enquote}[1]{``#1''}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\bibAnnoteFile}[1]{%
+  \IfFileExists{#1}{\begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ \input{#1}\end{quotation}}{}}
+\providecommand{\bibAnnote}[2]{%
+  \begin{quotation}\noindent\textsc{Key:} #1\\
+  \textsc{Annotation:}\ #2\end{quotation}}
+
+\bibitem[{Neymotin et~al.(2020)Neymotin, Daniels, Caldwell, McDougal,
+  Carnevale, Jas, Moore, Hines, H{\"a}m{\"a}l{\"a}inen, and
+  Jones}]{neymotin2020human}
+Neymotin, Samuel~A, Dylan~S Daniels, Blake Caldwell, Robert~A McDougal,
+  Nicholas~T Carnevale, Mainak Jas, Christopher~I Moore, Michael~L Hines, Matti
+  H{\"a}m{\"a}l{\"a}inen, and Stephanie~R Jones (2020), \enquote{Human
+  neocortical neurosolver (hnn), a new software tool for interpreting the
+  cellular and network origin of human meg/eeg data.} \emph{Elife}, 9, e51214.
+\bibAnnoteFile{neymotin2020human}
+
+\end{thebibliography}

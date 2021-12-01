@@ -5,7 +5,6 @@ from utils.simulation_wrapper import (
     simulation_wrapper_obs,
 )
 
-from utils.sbi_modulated_functions import simulate_for_sbi_sequential
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
 from summary_features.calculate_summary_features import calculate_summary_stats
 from hnn_core import simulate_dipole
@@ -79,25 +78,4 @@ def run_sim_theta_x(
     return theta, x_without
 
 
-def run_sim_theta_x_sequential(
-    prior, num_simulations=1000, density_estimator="nsf", num_workers=8
-):
 
-    """
-    This function is adapted in order to be able to take into account different combined prior distributions.
-    For the sequential approach, we want to combine the posterior of an already inferred parameter set with the prior of a new parameter set (later on in time) and take this 
-    combined prior as the new proposal space for the thetas that are sampled in the next step.
-
-    The function simulate_for_sbi_sequential is adapted from simulate_for_sbi and takes a list of prior distributions instead of a single prior.
-    """
-
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)
-
-    theta, x_without = simulate_for_sbi_sequential(
-        simulator_stats,
-        proposal=prior,
-        num_simulations=num_simulations,
-        num_workers=num_workers,
-    )
-
-    return theta, x_without

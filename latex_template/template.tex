@@ -1,17 +1,22 @@
-\documentclass[12pt]{report}
+%\documentclass[12pt]{report}
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{natbib}
 \graphicspath{ {images/} }
+%\usepackage{natbib}
+\usepackage[T1]{fontenc}
+
 
 \title{
-{Inferring microscale parameters from macroscale eeg-data with the help of simulation-based inference}\\
-\vspace{20px}
+Inferring microscale parameters from macroscale eeg-data with the help of simulation-based inference\\
+\vspace{50px}
 {\large by Katharina Anderer}
-\vspace{40px}
+\vspace{60px}
 
 \hspace{10px}\includegraphics[width=50mm,scale=0.5]{images/UniversitaetTuebingen.png}
-
-\vspace{30px}
+\usepackage{stix}
+\vspace{60px}
 {\large First supervisor: Prof. Jakob Macke}\\
 {\large Second supervisor: Prof. Martin Butz}
 }
@@ -19,12 +24,7 @@
 \date{Day Month 2022}
 
 
-
-
 \begin{document}
-
-
-
 \maketitle
 
 
@@ -33,7 +33,10 @@ Abstract goes here
 
 
 \chapter*{Declaration}
-I declare that..
+Hiermit erkläre ich, dass ich diese schriftliche Abschlussarbeit selbstständig verfasst habe, keine anderen als die angegebenen Hilfsmittel und Quellen benutzt habe und alle wörtlich oder sinngemäß aus anderen Werken übernommenen Aussagen als solche gekennzeichnet habe.
+
+
+Datum, Ort, Unterschrift
 
 \chapter*{Acknowledgements}
 I want to thank...
@@ -42,8 +45,12 @@ I want to thank...
 
 \chapter*{Introduction}
 
+Understanding how macroscale signals evolve from microscale parameters is an interesting question in many domains, e.g. in research about global climate, gene behavior or brain phenomena like the signal coming from an electroencephalography. 
+The last is an example for a macroscale signal of the brain that evolves through the activation of many neurons that fire in parallel. To specify, it measures the intracellular current flow in the long and spatially-aligned pyramidal neuron dendrites \cite{neymotin2020human}
+ 
 
-
+\bibliographystyle{te}
+\bibliography{template}
 
 \end{document}
 
