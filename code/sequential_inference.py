@@ -136,7 +136,7 @@ def main(argv):
 
     obs_real = calculate_summary_stats_N100(obs_real)
 
-    print('obs real', obs_real.size())
+    print("obs real", obs_real.size())
 
     samples = posterior.sample((num_samples,), x=obs_real)
 

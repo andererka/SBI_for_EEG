@@ -17,16 +17,24 @@ from numbers import Number
 
 
 class Combined(Distribution):
-    '''
+    """
     Inherits from Torch Distribution class
 
     implements own log_prob() and sample() for two different prior distributions such that parameter sets can be inferred sequentially - one posterior is based on another
-    '''
+    """
 
-    has_rsample=False
+    has_rsample = False
     support = constraints.real
 
-    def __init__(self, posterior_distribution, prior_distribution, validate_args=None, batch_shape=torch.Size(), event_shape=torch.Size(), number_params_1=0):
+    def __init__(
+        self,
+        posterior_distribution,
+        prior_distribution,
+        validate_args=None,
+        batch_shape=torch.Size(),
+        event_shape=torch.Size(),
+        number_params_1=0,
+    ):
         """
         takes as arguments:
         - posterior distribution of already inferred parameter set
@@ -47,15 +55,14 @@ class Combined(Distribution):
         calculates the log probability of the combined prior distribution based on some observation x
         """
         index = self.number_params_1
-   
+
         log_prob_posterior = self._posterior_distribution.log_prob(x[0][:index])
         log_prob_prior = self._prior_distribution.log_prob(x[0][index:])
 
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
-
         print(log_prob)
-        #print(torch.unsqueeze(log_prob, 0))
+        # print(torch.unsqueeze(log_prob, 0))
 
         return log_prob
 
@@ -68,16 +75,14 @@ class Combined(Distribution):
         with torch.no_grad():
             theta_posterior = self._posterior_distribution.sample(sample_shape)
             theta_prior = self._prior_distribution.sample(sample_shape)
-            print('theta pos size', theta_posterior.size())
-            print('theta prior size', theta_prior.size())
+            print("theta pos size", theta_posterior.size())
+            print("theta prior size", theta_prior.size())
             print(theta_posterior.dim())
-            if (theta_posterior.dim()==1):
-                print('true')
+            if theta_posterior.dim() == 1:
+                print("true")
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
-          
-
             theta = torch.cat((theta_posterior, theta_prior), 1)
-            print('theta', theta)
+            print("theta", theta)
             return theta

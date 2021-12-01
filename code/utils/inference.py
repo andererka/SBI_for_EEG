@@ -76,6 +76,3 @@ def run_sim_theta_x(
     )
 
     return theta, x_without
-
-
-
