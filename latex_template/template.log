@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=latex 2021.10.28)  1 DEC 2021 01:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.28)  3 DEC 2021 06:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,19 +6,20 @@ entering extended mode
 (./template.tex
 LaTeX2e <2020-02-02> patch level 2
 L3 programming layer <2020-02-14>
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
-File: size11.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
+(/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 )
 \c@part=\count167
-\c@section=\count168
-\c@subsection=\count169
-\c@subsubsection=\count170
-\c@paragraph=\count171
-\c@subparagraph=\count172
-\c@figure=\count173
-\c@table=\count174
+\c@chapter=\count168
+\c@section=\count169
+\c@subsection=\count170
+\c@subsubsection=\count171
+\c@paragraph=\count172
+\c@subparagraph=\count173
+\c@figure=\count174
+\c@table=\count175
 \abovecaptionskip=\skip47
 \belowcaptionskip=\skip48
 \bibindent=\dimen134
@@ -44,10 +45,10 @@ Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: dvips.def on input line 105.
+Package graphics Info: Driver file: pdftex.def on input line 105.
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/dvips.def
-File: dvips.def 2017/06/20 v3.1d Graphics/color driver for dvips
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen135
 \Gin@req@width=\dimen136
@@ -57,20 +58,15 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip49
 \bibsep=\skip50
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count175
+\c@NAT@ctr=\count176
 )
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 )
-(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-dvips.def
-File: l3backend-dvips.def 2020-02-03 L3 backend support: dvips
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count177
 \l__pdf_internal_box=\box45
-\g__pdf_backend_object_int=\count176
-\l__pdf_backend_content_box=\box46
-\l__pdf_backend_model_box=\box47
-\g__pdf_backend_annotation_int=\count177
-\g__pdf_backend_link_int=\count178
-\g__pdf_backend_link_sf_int=\count179
 )
 (./template.aux)
 \openout1 = `template.aux'.
@@ -90,21 +86,69 @@ LaTeX Font Info:    ... okay on input line 27.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
 LaTeX Font Info:    ... okay on input line 27.
 
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count178
+\scratchdimen=\dimen137
+\scratchbox=\box46
+\nofMPsegments=\count179
+\nofMParguments=\count180
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count181
+\MPscratchDim=\dimen138
+\MPnumerator=\count182
+\makeMPintoPDFobject=\count183
+\everyMPtoPDFconversion=\toks18
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 
-! LaTeX Error: Cannot determine size of graphic in images/UniversitaetTuebingen
-.png (no BoundingBox).
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.28 \maketitle
-               
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
 
-File: images/UniversitaetTuebingen.png Graphic file (type eps)
-<images/UniversitaetTuebingen.png>
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+<images/UniversitaetTuebingen.png, id=1, 1442.38875pt x 370.38374pt>
+File: images/UniversitaetTuebingen.png Graphic file (type png)
+<use images/UniversitaetTuebingen.png>
+Package pdftex.def Info: images/UniversitaetTuebingen.png  used on input line 2
+8.
+(pdftex.def)             Requested size: 721.19261pt x 185.1914pt.
+
 
 ! LaTeX Error: Can be used only in preamble.
 
@@ -119,66 +163,55 @@ Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 28.
+(Font)              <14.4> on input line 28.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 28.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 28.
+(Font)              <7> on input line 28.
 
 LaTeX Warning: No \author given.
 
-! Undefined control sequence.
-l.31 \chapter
-             *{Abstract}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.35 \chapter
-             *{Declaration}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 [1
 
-]
-! Undefined control sequence.
-l.41 \chapter
-             *{Acknowledgements}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./images/UniversitaetTuebi
+ngen.png>] [1
 
-(./template.toc)
+] [2
+
+] [3
+
+] (./template.toc)
 \tf@toc=\write3
 \openout3 = `template.toc'.
 
+ [4
 
-! Undefined control sequence.
-l.46 \chapter
-             *{Introduction}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+]
+Underfull \hbox (badness 10000) in paragraph at lines 61--66
 
-(./template.bbl) [2] (./template.aux) ) 
+ []
+
+[5
+
+] (./template.bbl [6]) [7
+
+] (./template.aux) ) 
 Here is how much of TeX's memory you used:
- 1340 strings out of 483017
- 17448 string characters out of 5961311
- 246310 words of memory out of 5000000
- 16416 multiletter control sequences out of 15000+600000
- 539907 words of font info for 40 fonts, out of 8000000 for 9000
+ 2228 strings out of 483016
+ 31300 string characters out of 5961285
+ 263412 words of memory out of 5000000
+ 17264 multiletter control sequences out of 15000+600000
+ 538083 words of font info for 34 fonts, out of 8000000 for 9000
  81 hyphenation exceptions out of 8191
- 30i,6n,25p,869b,283s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,6n,29p,462b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/kathi/.texlive2019/texmf-var/fonts/pk/ljfour/jknapp
+en/ec/ecti1200.600pk> </home/kathi/.texlive2019/texmf-var/fonts/pk/ljfour/jknap
+pen/ec/ecrm1200.600pk> </home/kathi/.texlive2019/texmf-var/fonts/pk/ljfour/jkna
+ppen/ec/ecbx2488.600pk> </home/kathi/.texlive2019/texmf-var/fonts/pk/ljfour/jkn
+appen/ec/ecrm1440.600pk> </home/kathi/.texlive2019/texmf-var/fonts/pk/ljfour/jk
+nappen/ec/ecrm2074.600pk>
+Output written on template.pdf (8 pages, 102453 bytes).
+PDF statistics:
+ 210 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on template.dvi (2 pages, 2948 bytes).

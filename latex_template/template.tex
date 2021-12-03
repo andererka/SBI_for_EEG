@@ -1,5 +1,5 @@
-%\documentclass[12pt]{report}
-\documentclass[11pt]{article}
+\documentclass[12pt]{report}
+%\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{natbib}
@@ -45,9 +45,35 @@ I want to thank...
 
 \chapter*{Introduction}
 
-Understanding how macroscale signals evolve from microscale parameters is an interesting question in many domains, e.g. in research about global climate, gene behavior or brain phenomena like the signal coming from an electroencephalography. 
-The last is an example for a macroscale signal of the brain that evolves through the activation of many neurons that fire in parallel. To specify, it measures the intracellular current flow in the long and spatially-aligned pyramidal neuron dendrites \cite{neymotin2020human}
- 
+Understanding how macroscale signals evolve from microscale parameters
+is an interesting question in many domains, e.g.
+in research about global
+climate, gene expression or brain phenomena like the signal coming from an
+electroencephalography (EEG).
+The later is an example for a macroscale signal of
+the brain that evolves through the activation of many neurons that fire in
+parallel. In more detail, it measures the intracellular current flow in the long and
+spatially-aligned pyramidal neuron dendrites \citet{neymotin2020human}.
+While macroscale signals are the product out of the combination of many signals, we are often interested in the origins of these signals - the underlying mechanisms. 
+These mechanisms can be described by a so called mechanistic model that meets assumptions about e.g. the information flow circuits, the morphology of the cells in the brain or the weights between different neurons. The more parameters this mechanistic model has, the more difficult it gets to infer the underlying processes that have caused the output of an EEG signal. \\
+One approach to find the underlying parameters of a macroscale signal is to simulate lots of different parameter settings with the help of a simulator that captures the met assumptions of a certain mechanistic model. 
+
+The Human Neocorical Neurosolver (HNN), developed by Neymotin et al. (2020), is an example of such a simulator and was used in this work to gain thousands of simulations to later work with and infer a posterior density of the parameters of interest. \\
+HNN is based on a model that tries to represent the neocortical circuits of pyramidal neurons and interneurons. The model has a 3-layered structure with pyramidal neurons and inhibitory interneuons in a 3-to-1 ratio of pyramidal to inhibitory cells \citet{neymotin2020human}. The 3 layers that are modeled are Layer 2/3 (also referred to as supragranual layer), Layer 4 and Layer 5 (also referred to as infragranular layer). \\
+The HNN model distinguishes between so called proximal drives, coming from the thalamus and signaling to the supragranular layers of the cortex, and so called distal drives, representing cortical-cortical inputs or non-lemniscal thalamic drive that signals directly into the supragranual layers and from there further downwards to the infragranular layers. The timing and duration of these drives can be adjusted \citet{neymotin2020human}. \\
+For each evoked drive, there are up to 7 parameters that can be tuned. These include the onset of the drive, the number of spikes and the weights of synaptic inputs to the specific layers (see \cite{neymotin2020human} for further details)\\
+Besides, tonic inputs can be modeled and describe somatic current clamps that can change the resting membrane potential in both ways, specifically get it closer or further from firing (Neymotin et al., 2020). \\
+
+
+HNN is based on the NEURON environment. Taken on from NEURON, membrane voltages are based on Hodgkin-Huxley equations and current flow between compartments is modeled by cable theory \citet{neymotin2020human}. \\
+Further, the model captures different ion channels like Na, K, Km, KCa and others and codes the thresholds for these \citet{neymotin2020human}. \\
+
+Given this HNN tool, one is able to simulate signals like an EEG or MEG that is based on all these assumptions and domain knowledge about the architecture and information flow processes in the brain. 
+One can then use these simulations in order to evaluate which microscale parameters are probably to have caused a certain EEG or MEG signal. \\
+
+As we have many different parameters involved and further signals like EEG or MEG have a stochastic nature, the likelihood function $p(x|\Theta$ is intractable as one would have to trace every possible parameter set and compute the integral of this (Cranmer et al., 2020). 
+
+
 
 \bibliographystyle{te}
 \bibliography{template}
