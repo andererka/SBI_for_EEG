@@ -7,8 +7,6 @@ from summary_features.calculate_summary_features import (
     calculate_summary_stats_P200,
     calculate_summary_stats_P50,
     calculate_summary_stats_P200,
-    calculate_summary_stats9,
-    calculate_summary_statistics_alternative,
 )
 
 import numpy as np
