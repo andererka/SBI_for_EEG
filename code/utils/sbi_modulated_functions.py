@@ -45,7 +45,7 @@ class Combined(Distribution):
         self._event_shape = event_shape
         self._posterior_distribution = posterior_distribution
         self._prior_distribution = prior_distribution
-        self.number_params_1 = number_params_1
+        self.number_params = number_params_1
 
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
 
@@ -54,7 +54,7 @@ class Combined(Distribution):
         """
         calculates the log probability of the combined prior distribution based on some observation x
         """
-        index = self.number_params_1
+        index = self.number_params
 
         log_prob_posterior = self._posterior_distribution.log_prob(x[0][:index])
         log_prob_prior = self._prior_distribution.log_prob(x[0][index:])
@@ -82,6 +82,9 @@ class Combined(Distribution):
                 print("true")
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
                 theta_prior = torch.unsqueeze(theta_prior, 0)
+
+            print('theta_posterior', theta_posterior)
+            print('theta prior', theta_prior)
 
             theta = torch.cat((theta_posterior, theta_prior), 1)
             print("theta", theta)
