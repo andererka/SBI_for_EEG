@@ -7,6 +7,7 @@ from summary_features.calculate_summary_features import (
     calculate_summary_stats_P200,
     calculate_summary_stats_P50,
     calculate_summary_stats_P200,
+
 )
 
 import numpy as np
@@ -141,7 +142,7 @@ def main(argv):
     proposal2 = posterior.set_default_x(obs_real)
 
     ###### continuing with P200 parameters/summary stats:
-    prior3 = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
+    prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
 
     combined_prior = Combined(proposal2, prior3, number_params_1=2)
 

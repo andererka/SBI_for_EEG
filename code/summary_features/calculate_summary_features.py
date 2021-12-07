@@ -268,8 +268,6 @@ def calculate_summary_stats_P200(x):
         )  # mean
 
 
-        sum_stats_vec = torch.stack([p50, arg_p50, p50_moment1,])
-
         ## search for N100
         arg200ms = int(np.round(batch.size(dim=0) / total_steps_ms * 200))
 
