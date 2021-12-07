@@ -64,19 +64,19 @@ def main(argv):
         num_workers = 4
 
     start_time = get_time()
-    prior_min_fix = [43.8, 7.9, 89.49]  # 't_evdist_1', 't_evprox_1', 't_evprox_2'
+    prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
 
-    prior_max_fix = [79.9, 30, 152.96]
+    prior_max_fix = [30, 79.9,  152.96]
 
-    prior_min = [43.8, 7.9, 89.49]  # 't_evdist_1', 't_evprox_1', 't_evprox_2'
+    prior_min = [7.9, 43.8,  89.49] 
 
-    prior_max = [79.9, 30, 152.96]
+    prior_max = [30, 79.9, 152.96]
 
-    true_params = torch.tensor([[63.53, 26.61, 137.12]])
+    true_params = torch.tensor([[26.61, 63.53,  137.12]])
     parameter_names = ["t_evdist_1", "t_evprox_1", "t_evprox_2"]
 
     ###### starting with P50 parameters/summary stats:
-    prior1 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
+    prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
 
     inf = SNPE_C(prior1, density_estimator="nsf")
 
@@ -106,7 +106,7 @@ def main(argv):
     proposal1 = posterior.set_default_x(obs_real)
 
     ###### continuing with N100 parameters/summary stats:
-    prior2 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
+    prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
 
     combined_prior = Combined(proposal1, prior2, number_params_1=1)
 
