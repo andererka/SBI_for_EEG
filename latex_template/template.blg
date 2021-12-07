@@ -1,51 +1,46 @@
 This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: template.aux
-The style file: te.bst
+The style file: plain.bst
 Database file #1: template.bib
-"" can't start a style-file command---line 1518 of file te.bst
- : 
- : 
-(Error may have been on previous line)
-You've used 1 entry,
-            2904 wiz_defined-function locations,
-            605 strings with 5303 characters,
-and the built_in function-call counts, 1050 in all, are:
-= -- 62
-> -- 94
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            512 strings with 4610 characters,
+and the built_in function-call counts, 976 in all, are:
+= -- 87
+> -- 71
 < -- 0
-+ -- 31
-- -- 30
-* -- 98
-:= -- 164
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 15
-chr.to.int$ -- 1
++ -- 29
+- -- 26
+* -- 91
+:= -- 175
+add.period$ -- 6
+call.type$ -- 2
+change.case$ -- 19
+chr.to.int$ -- 0
 cite$ -- 2
-duplicate$ -- 67
-empty$ -- 53
-format.name$ -- 33
-if$ -- 193
-int.to.chr$ -- 1
-int.to.str$ -- 1
-missing$ -- 17
-newline$ -- 17
+duplicate$ -- 22
+empty$ -- 57
+format.name$ -- 26
+if$ -- 185
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 2
+newline$ -- 13
 num.names$ -- 4
-pop$ -- 31
+pop$ -- 15
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 17
 quote$ -- 0
 skip$ -- 14
 stack$ -- 0
-substring$ -- 29
-swap$ -- 37
+substring$ -- 66
+swap$ -- 2
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 9
+type$ -- 8
 warning$ -- 0
-while$ -- 4
-width$ -- 0
+while$ -- 7
+width$ -- 3
 write$ -- 24
-(There was 1 error message)
