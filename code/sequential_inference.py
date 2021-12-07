@@ -95,7 +95,7 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
     obs_real = inference.run_only_sim(
-        torch.tensor([[true_params[0][1]]]), num_workers=num_workers
+        torch.tensor([[true_params[0][0]]]), num_workers=num_workers
     )  # first output gives summary statistics, second without
 
     print("obs real", obs_real)
