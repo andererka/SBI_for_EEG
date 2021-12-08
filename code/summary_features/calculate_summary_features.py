@@ -134,7 +134,7 @@ def calculate_summary_stats_P50(x):
 
     """
 
-    print('len of x in sum stat function:', x.size())
+    print('len of x in sum stat function:', len(x))
     time_window = 30
 
     batch_list = []
