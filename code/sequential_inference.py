@@ -110,7 +110,7 @@ def main(argv):
         print('done')
     except:
         print('dir exists?')
-        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+        #file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
 
     
     try:
@@ -244,21 +244,25 @@ def main(argv):
         labels=parameter_names,
     )
 
-
-    file_writer.save_fig(fig, figname="conditional on 2.")
+    
+    fig.savefig('results/{}/posterior_dens.png'.format(experiment_name))
 
     finish_time = get_time()
-    file_writer.save_all(
-        posterior,
-        prior=prior3,
-        theta=theta,
-        x=x_P200,
-        x_without=x_without,
-        start_time=start_time,
-        finish_time=finish_time,
-    )
 
-    file_writer.save_fig(fig, figname="sequential_approach")
+    try:
+        file_writer.save_all(
+            posterior,
+            prior=prior3,
+            theta=theta,
+            x=x_P200,
+            x_without=x_without,
+            start_time=start_time,
+            finish_time=finish_time,
+        )
+        torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
+
+    except:
+        print('no file_writer')
 
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
 
@@ -272,10 +276,10 @@ def main(argv):
     for s in s_x:
         im = plt.plot(s)
 
-    file_writer.save_fig(fig3, figname="from_prior")
-    file_writer.save_fig(fig4, figname="from_posterior")
 
-    torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
+    fig3.savefig('results/{}/from_prior.png'.format(experiment_name))
+    fig4.savefig('results/{}/from_posterior_dens.png'.format(experiment_name))
+
 
 
 if __name__ == "__main__":
