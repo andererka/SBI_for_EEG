@@ -300,6 +300,8 @@ def set_network_weights(params=None):
     }
 
     # all NMDA weights are zero; pass None explicitly
+
+    print('is here the problem?')
     net.add_evoked_drive(
         "evprox1",
         mu=params[3],

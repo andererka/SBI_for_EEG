@@ -64,8 +64,7 @@ def run_only_sim(samples, num_workers=1):
 
 
 def run_sim_theta_x(
-    prior, num_simulations=1000, num_workers=8
-):
+    prior, num_simulations=1000, num_workers=8):
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper_all, prior)
 

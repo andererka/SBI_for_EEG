@@ -127,7 +127,6 @@ def main(argv):
 
     
     try:
-        
         theta = torch.load('results/{}/step1/thetas.pt'.format(experiment_name))
         x_without = torch.load('results/{}/step1/obs_without.pt'.format(experiment_name))
 
