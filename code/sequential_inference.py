@@ -123,6 +123,7 @@ def main(argv):
         #file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
 
     try:
+        os.mkdir('results/{}'.format(experiment_name))
         os.mkdir('results/{}/step1'.format(experiment_name))
         os.mkdir('results/{}/step2'.format(experiment_name))
         os.mkdir('results/{}/step3'.format(experiment_name))
