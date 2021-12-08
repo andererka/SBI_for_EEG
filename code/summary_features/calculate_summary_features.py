@@ -165,7 +165,7 @@ def calculate_summary_stats_temporal(x):
         # p50_moment4 = torch.tensor(moment(x[0:arg70ms], moment=4) )  #kurtosis
 
 
-        if (total_steps_ms < 60):
+        if (total_steps_ms < 70):
             sum_stats_vec = torch.stack([p50, arg_p50, p50_moment1,])
 
             batch_list.append(sum_stats_vec)
