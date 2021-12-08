@@ -101,6 +101,8 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
 
+    early_stop = 170.0
+
     if params.dim() > 1:
         param_size = params.size(dim=1)
     else:
@@ -113,15 +115,21 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
         net = set_network_1_params(params)
         print("1 params are investigated")
 
+        early_stop = 60.0
+
     elif param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
+
+        early_stop = 120.0
+
     elif param_size == 6:
         net = set_network_6_params(params)
         print("6 params are investigated")
     elif param_size == 3:
         net = set_network_3_params(params)
         print("3 params are investigated")
+        
     elif param_size == 7:
         net = set_network_distal_weights(params)
         print("distal weights are investigated")
@@ -131,7 +139,7 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
 
     window_len, scaling_factor = 30, 3000
 
-    dpls = simulate_dipole(net, tstop=170.0, n_trials=1)
+    dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
     for dpl in dpls:
         obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
 

@@ -3,10 +3,7 @@ from data_load_writer import write_to_file
 
 
 from summary_features.calculate_summary_features import (
-    calculate_summary_stats_N100,
-    calculate_summary_stats_P200,
-    calculate_summary_stats_P50,
-    calculate_summary_stats_P200,
+    calculate_summary_stats_temporal
 
 )
 
@@ -83,11 +80,10 @@ def main(argv):
     theta, x_without = inference.run_sim_theta_x(
         prior1,
         num_simulations=num_sim,
-        num_workers=num_workers,
-        density_estimator="nsf",
+        num_workers=num_workers
     )
 
-    x_P50 = calculate_summary_stats_P50(x_without)
+    x_P50 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_P50)
     density_estimator = inf.train()
@@ -99,7 +95,7 @@ def main(argv):
     )  # first output gives summary statistics, second without
 
     print("obs real", obs_real)
-    obs_real = calculate_summary_stats_P50(obs_real)
+    obs_real = calculate_summary_stats_temporal(obs_real)
 
     samples = posterior.sample((num_samples,), x=obs_real)
 
@@ -122,7 +118,7 @@ def main(argv):
     print("theta size", theta.size())
     print("second round completed")
 
-    x_N100 = calculate_summary_stats_N100(x_without)
+    x_N100 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_N100)
     density_estimator = inf.train()
@@ -133,7 +129,7 @@ def main(argv):
         torch.tensor([list(true_params[0][0:2])]), num_workers=num_workers
     )  # first output gives summary statistics, second without
 
-    obs_real = calculate_summary_stats_N100(obs_real)
+    obs_real = calculate_summary_stats_temporal(obs_real)
 
     print("obs real", obs_real.size())
 
@@ -155,7 +151,7 @@ def main(argv):
         density_estimator="nsf",
     )
 
-    x_P200 = calculate_summary_stats_P200(x_without)
+    x_P200 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_P200)
     density_estimator = inf.train()
@@ -166,7 +162,7 @@ def main(argv):
         true_params, num_workers=num_workers
     )  # first output gives summary statistics, second without
 
-    obs_real = calculate_summary_stats_P200(obs_real)
+    obs_real = calculate_summary_stats_temporal(obs_real)
 
     samples = posterior.sample((num_samples,), x=obs_real)
 

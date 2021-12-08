@@ -14,7 +14,7 @@ from math import sqrt
 
 
 def run_sim_inference(
-    prior, num_simulations=1000, density_estimator="nsf", num_workers=8
+    prior, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
 ):
 
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
@@ -63,7 +63,7 @@ def run_only_sim(samples, num_workers=1):
 
 
 def run_sim_theta_x(
-    prior, num_simulations=1000, density_estimator="nsf", num_workers=8
+    prior, num_simulations=1000, num_workers=8
 ):
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)

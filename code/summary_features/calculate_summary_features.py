@@ -5,7 +5,7 @@ from scipy.signal import argrelextrema
 import torch
 
 
-def calculate_summary_stats(x, number_stats):
+def calculate_summary_stats_number(x, number_stats):
     """
     Input: observations or simulations
     Returns summary statistics 
@@ -124,7 +124,7 @@ def calculate_summary_stats(x, number_stats):
 ### these are the summary functions for the sequential approach:
 
 
-def calculate_summary_stats_P50(x):
+def calculate_summary_stats_temporal(x):
     """
     Input: observations or simulations
     Returns summary statistics 
@@ -143,6 +143,7 @@ def calculate_summary_stats_P50(x):
     for batch in x:
 
         print("batch", batch)
+        print('batch size', batch.size(dim=0))
         total_steps_ms = batch.size(dim=0) / time_window
 
         print("total steps in ms", total_steps_ms)
@@ -163,47 +164,13 @@ def calculate_summary_stats_P50(x):
         # p50_moment3 = torch.tensor(moment(x[0:arg70ms], moment=3) )  #skewness
         # p50_moment4 = torch.tensor(moment(x[0:arg70ms], moment=4) )  #kurtosis
 
-        sum_stats_vec = torch.stack([p50, arg_p50, p50_moment1,])
 
-        batch_list.append(sum_stats_vec)
+        if (total_steps_ms < 70):
+            sum_stats_vec = torch.stack([p50, arg_p50, p50_moment1,])
 
-    sum_stats = torch.stack(batch_list)
+            batch_list.append(sum_stats_vec)
 
-    return sum_stats
-
-
-def calculate_summary_stats_N100(x):
-    """
-    Input: observations or simulations
-    Returns summary statistics 
-    specific for event related potentials
-    extracts the following:
-     N100: time, value, mean, variance, skewness and kurtosis of the time interval around it
-
-    """
-
-    print('len of x in sum stat function:', x.shape())
-
-    time_window = 30
-
-    batch_list = []
-
-    for batch in x:
-
-        total_steps_ms = batch.size(dim=0) / time_window
-
-        # sets the first value as baseline
-        batch = torch.sub(batch, torch.index_select(batch, 0, torch.tensor([0])))
-
-        ##search for P50 between 0 and 70ms:
-
-        arg70ms = int(np.round(batch.size(dim=0) / total_steps_ms * 70))
-        p50 = torch.max(batch[0:arg70ms])
-
-        arg_p50 = torch.argmax(batch[0:arg70ms])
-        p50_moment1 = torch.tensor(
-            moment(batch[0:arg70ms], moment=1), dtype=torch.float32
-        )  # mean
+            break
 
 
         ## search for N100
@@ -218,69 +185,21 @@ def calculate_summary_stats_N100(x):
         )  # mean
 
 
-        sum_stats_vec = torch.stack(
-            [
-                p50, 
-                arg_p50, 
-                p50_moment1,
-                N100,
-                arg_N100,
-                N100_moment1,  
-            ]
-        )
+        if (total_steps_ms<121):
+            sum_stats_vec = torch.stack(
+                [
+                    p50, 
+                    arg_p50, 
+                    p50_moment1,
+                    N100,
+                    arg_N100,
+                    N100_moment1,  
+                ]
+            )
 
-        batch_list.append(sum_stats_vec)
+            batch_list.append(sum_stats_vec)
 
-    sum_stats = torch.stack(batch_list)
-
-    return sum_stats
-
-
-def calculate_summary_stats_P200(x):
-    """
-    Input: observations or simulations
-    Returns summary statistics 
-    specific for event related potentials
-    extracts the following:
-     P50: time, value, mean, variance, skewness and kurtosis of the time interval around it
-     N100: time, value, mean, variance, skewness and kurtosis of the time interval around it
-     P200: time, value, mean, variance, skewness and kurtosis of the time interval around it
-    """
-
-    print('len of x in sum stat function:', x.shape())
-    time_window = 30
-
-    batch_list = []
-
-    for batch in x:
-        total_steps_ms = batch.size(dim=0) / time_window
-
-        # sets the first value as baseline
-        batch = torch.sub(batch, torch.index_select(batch, 0, torch.tensor([0])))
-
-
-        ##search for P50 between 0 and 70ms:
-
-        arg70ms = int(np.round(batch.size(dim=0) / total_steps_ms * 70))
-        p50 = torch.max(batch[0:arg70ms])
-
-        arg_p50 = torch.argmax(batch[0:arg70ms])
-        p50_moment1 = torch.tensor(
-            moment(batch[0:arg70ms], moment=1), dtype=torch.float32
-        )  # mean
-
-
-        ## search for N100
-        arg200ms = int(np.round(batch.size(dim=0) / total_steps_ms * 200))
-
-        N100 = torch.min(batch[:arg200ms])
-
-        arg_N100 = torch.argmin(batch[:arg200ms])
-
-        N100_moment1 = torch.tensor(
-            moment(batch[0:arg200ms], moment=1), dtype=torch.float32
-        )  # mean
-
+            break
 
         P200 = torch.max(batch[arg70ms:])
 
@@ -288,7 +207,6 @@ def calculate_summary_stats_P200(x):
         P200_moment1 = torch.tensor(
             moment(batch[arg70ms:], moment=1), dtype=torch.float32
         )  # mean
-
 
         sum_stats_vec = torch.stack(
             [
@@ -305,15 +223,11 @@ def calculate_summary_stats_P200(x):
 
         batch_list.append(sum_stats_vec)
 
+
+
+
     sum_stats = torch.stack(batch_list)
 
     return sum_stats
 
 
-def calculate_summary_statistics_alternative(x):
-    x = x.unsqueeze(0).unsqueeze(0)
-    x = torch.nn.functional.interpolate(input=x, size=100)
-    x = x.squeeze(0).squeeze(0)
-    sum_stat = torch.sub(x, torch.index_select(x, 0, torch.tensor([0])))
-
-    return sum_stat
