@@ -70,7 +70,7 @@ def main(argv):
     prior_max = [30, 79.9, 152.96]
 
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    parameter_names = ["t_evdist_1", "t_evprox_1", "t_evprox_2"]
+    parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
 
     ###### starting with P50 parameters/summary stats:
     prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
