@@ -311,6 +311,8 @@ def set_network_weights(params=None):
         event_seed=event_seed(),
     )
 
+    print('check')
+
     if (params.size(dim=1)==4):
         print('stop here')
         return net
