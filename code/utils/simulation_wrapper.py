@@ -85,7 +85,7 @@ def simulation_wrapper_extended(params):  # input possibly array of 1 or more pa
         obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
 
     # left out summary statistics for a start
-    sum_stats = calculate_summary_stats(torch.from_numpy(obs))
+    sum_stats = calculate_summary_stats_number(torch.from_numpy(obs))
 
     return sum_stats, obs
 
@@ -114,7 +114,7 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
         net = set_network_1_params(params)
         print("1 params are investigated")
 
-        early_stop = 60.0
+        early_stop = 50.0
 
     elif param_size == 2:
         net = set_network_2_params(params)

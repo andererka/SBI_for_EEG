@@ -87,6 +87,8 @@ def main(argv):
 
     print('x50 shape 0', x_P50.shape[0], x_P50.shape)
 
+    print('theta shape 0', theta.shape[0], theta.shape)
+
     inf = inf.append_simulations(theta, x_P50)
     density_estimator = inf.train()
 
