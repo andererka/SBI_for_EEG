@@ -94,18 +94,18 @@ def main(argv):
             num_params=3,
             num_samples=num_samples,
         )
-        os.mkdir('/results/{}/step1'.format(experiment_name))
-        os.mkdir('/results/{}/step2'.format(experiment_name))
-        os.mkdir('/results/{}/step3'.format(experiment_name))
+        os.mkdir('results/{}/step1'.format(experiment_name))
+        os.mkdir('results/{}/step2'.format(experiment_name))
+        os.mkdir('results/{}/step3'.format(experiment_name))
         print('done')
     except:
-        file_writer = torch.load('/results/{}'.format(experiment_name))
+        file_writer = torch.load('results/{}'.format(experiment_name))
 
     
     try:
         
-        theta = torch.load('/results/{}/step1/thetas.pt'.format(experiment_name))
-        x_without = torch.load('/results/{}/step1/obs_without.pt'.format(experiment_name))
+        theta = torch.load('results/{}/step1/thetas.pt'.format(experiment_name))
+        x_without = torch.load('results/{}/step1/obs_without.pt'.format(experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -150,8 +150,8 @@ def main(argv):
 
 
     try:
-        theta = torch.load('/results/{}/step2/thetas.pt'.format(experiment_name))
-        x_without = torch.load('/results/{}/step2/obs_without.pt'.format(experiment_name))
+        theta = torch.load('results/{}/step2/thetas.pt'.format(experiment_name))
+        x_without = torch.load('results/{}/step2/obs_without.pt'.format(experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -192,8 +192,8 @@ def main(argv):
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     try:
-        theta = torch.load('/results/{}/step3/thetas.pt'.format(experiment_name))
-        x_without = torch.load('/results/{}/step3/obs_without.pt'.format(experiment_name))
+        theta = torch.load('results/{}/step3/thetas.pt'.format(experiment_name))
+        x_without = torch.load('results/{}/step3/obs_without.pt'.format(experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
