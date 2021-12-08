@@ -59,6 +59,11 @@ def main(argv):
         num_workers = int(argv[2])
     except:
         num_workers = 4
+    try:
+        experiment_name = argv[3]
+    except:
+        experiment_name = "ERP_sequential"
+
 
     start_time = get_time()
     prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
@@ -77,11 +82,34 @@ def main(argv):
 
     inf = SNPE_C(prior1, density_estimator="nsf")
 
-    theta, x_without = inference.run_sim_theta_x(
-        prior1,
-        num_simulations=num_sim,
-        num_workers=num_workers
-    )
+
+    try:
+        file_writer = write_to_file.WriteToFile(
+            experiment=experiment_name,
+            num_sim=num_sim,
+            true_params=true_params,
+            density_estimator='nsf',
+            num_params=3,
+            num_samples=num_samples,
+        )
+
+    except:
+        file_writer = torch.load('/results/ERP_sequential')
+
+
+    try:
+        theta = torch.load('/results/{}/step1/thetas.pt'.format(experiment_name))
+        x_without = torch.load('/results/{}/step1/obs_without.pt'.format(experiment_name))
+
+    except:
+        theta, x_without = inference.run_sim_theta_x(
+            prior1,
+            num_simulations=num_sim,
+            num_workers=num_workers
+        )
+
+        file_writer.save_obs_without(x_without, name='step1')
+        file_writer.save_thetas(theta, name='step1')
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
@@ -112,11 +140,19 @@ def main(argv):
 
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
-    theta, x_without = inference.run_sim_theta_x(
-        combined_prior,
-        num_simulations=num_sim,
-        num_workers=num_workers,
-    )
+
+    try:
+        theta = torch.load('/results/{}/step2/thetas.pt'.format(experiment_name))
+        x_without = torch.load('/results/{}/step2/obs_without.pt'.format(experiment_name))
+
+    except:
+        theta, x_without = inference.run_sim_theta_x(
+            combined_prior,
+            num_simulations=num_sim,
+            num_workers=num_workers
+        )
+        file_writer.save_obs_without(x_without, name='step2')
+        file_writer.save_thetas(theta, name='step2')
 
     print("theta size", theta.size())
     print("second round completed")
@@ -145,13 +181,20 @@ def main(argv):
 
     combined_prior = Combined(proposal2, prior3, number_params_1=2)
 
-    inf = SNPE_C(prior3, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator="nsf")
 
-    theta, x_without = inference.run_sim_theta_x(
-        combined_prior,
-        num_simulations=num_sim,
-        num_workers=num_workers,
-    )
+    try:
+        theta = torch.load('/results/{}/step3/thetas.pt'.format(experiment_name))
+        x_without = torch.load('/results/{}/step3/obs_without.pt'.format(experiment_name))
+
+    except:
+        theta, x_without = inference.run_sim_theta_x(
+            combined_prior,
+            num_simulations=num_sim,
+            num_workers=num_workers
+        )
+        file_writer.save_obs_without(x_without, name='step3')
+        file_writer.save_thetas(theta, name='step3')
 
     x_P200 = calculate_summary_stats_temporal(x_without)
 
@@ -181,14 +224,6 @@ def main(argv):
         labels=parameter_names,
     )
 
-    file_writer = write_to_file.WriteToFile(
-        experiment="ERP_sequential",
-        num_sim=num_sim,
-        true_params=true_params,
-        density_estimator=density_estimator,
-        num_params=3,
-        num_samples=num_samples,
-    )
 
     file_writer.save_fig(fig, figname="conditional on 2.")
 
@@ -219,6 +254,8 @@ def main(argv):
 
     file_writer.save_fig(fig3, figname="from_prior")
     file_writer.save_fig(fig4, figname="from_posterior")
+
+    torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
 
 
 if __name__ == "__main__":

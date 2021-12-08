@@ -39,7 +39,7 @@ class WriteToFile:
         self.num_params = num_params
         self.num_samples = num_samples
 
-        self.folder = path_parent + self.experiment + self.date
+        self.folder = path_parent + self.experiment 
 
         os.mkdir(self.folder)
         torch.save(true_params, "{}/true_params.pt".format(self.folder))
@@ -63,14 +63,20 @@ class WriteToFile:
         torch.save(prior, "{}/prior.pt".format(self.folder))
         self.prior = prior
 
+
+    def save_proposal(self, prop, name='default'):
+
+        torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
+        self.prop = prop
+
     def save_observations(self, x):
         torch.save(x, "{}/obs.pt".format(self.folder))
 
-    def save_obs_without(self, x_without):
-        torch.save(x_without, "{}/obs_without.pt".format(self.folder))
+    def save_obs_without(self, x_without, name='default'):
+        torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
 
-    def save_thetas(self, thetas):
-        torch.save(thetas, "{}/thetas.pt".format(self.folder))
+    def save_thetas(self, thetas, name='default'):
+        torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
 
     def save_fig(self, fig, figname=None):
         if figname == None:
