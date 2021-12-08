@@ -94,13 +94,17 @@ def main(argv):
             num_params=3,
             num_samples=num_samples,
         )
+        os.mkdir('/results/{}/step1'.format(experiment_name))
+        os.mkdir('/results/{}/step2'.format(experiment_name))
+        os.mkdir('/results/{}/step3'.format(experiment_name))
         
 
     except:
-        file_writer = torch.load('/results/ERP_sequential')
+        file_writer = torch.load('/results/{}'.format(experiment_name))
 
-
+    
     try:
+        
         theta = torch.load('/results/{}/step1/thetas.pt'.format(experiment_name))
         x_without = torch.load('/results/{}/step1/obs_without.pt'.format(experiment_name))
 
@@ -111,7 +115,7 @@ def main(argv):
             num_workers=num_workers
         )
 
-        os.mkdir('/results/{}/step1'.format(experiment_name))
+        
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
@@ -156,7 +160,6 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
-        os.mkdir('/results/{}/step2'.format(experiment_name))
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
@@ -200,7 +203,6 @@ def main(argv):
             num_workers=num_workers
         )
 
-        os.mkdir('/results/{}/step3'.format(experiment_name))
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
 
