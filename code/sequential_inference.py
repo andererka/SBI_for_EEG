@@ -116,7 +116,6 @@ def main(argv):
         combined_prior,
         num_simulations=num_sim,
         num_workers=num_workers,
-        density_estimator="nsf",
     )
 
     print("theta size", theta.size())
@@ -152,7 +151,6 @@ def main(argv):
         combined_prior,
         num_simulations=num_sim,
         num_workers=num_workers,
-        density_estimator="nsf",
     )
 
     x_P200 = calculate_summary_stats_temporal(x_without)
