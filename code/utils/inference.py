@@ -6,7 +6,7 @@ from utils.simulation_wrapper import (
 )
 
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
-from summary_features.calculate_summary_features import calculate_summary_stats
+from summary_features.calculate_summary_features import calculate_summary_stats_number
 from hnn_core import simulate_dipole
 import torch
 from joblib import Parallel, delayed
@@ -31,7 +31,7 @@ def run_sim_inference(
         num_workers=num_workers,
     )
 
-    x = calculate_summary_stats(x_without)
+    x = calculate_summary_stats_number(x_without)
 
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
