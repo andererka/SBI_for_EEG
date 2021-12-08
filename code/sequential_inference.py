@@ -29,6 +29,8 @@ from utils import inference
 import pickle
 import sys
 
+import os
+
 ## defining neuronal network model
 
 
@@ -92,6 +94,7 @@ def main(argv):
             num_params=3,
             num_samples=num_samples,
         )
+        
 
     except:
         file_writer = torch.load('/results/ERP_sequential')
@@ -107,6 +110,8 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+
+        os.mkdir('/results/{}/step1'.format(experiment_name))
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
@@ -151,6 +156,7 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+        os.mkdir('/results/{}/step2'.format(experiment_name))
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
@@ -193,6 +199,8 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+
+        os.mkdir('/results/{}/step3'.format(experiment_name))
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
 
