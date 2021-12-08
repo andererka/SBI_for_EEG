@@ -68,6 +68,7 @@ def main(argv):
 
 
     start_time = get_time()
+
     prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
 
     prior_max_fix = [30, 79.9,  152.96]
@@ -75,6 +76,15 @@ def main(argv):
     prior_min = [7.9, 43.8,  89.49] 
 
     prior_max = [30, 79.9, 152.96]
+
+    ### for also inferring connection weights etc.:
+
+    # prior_min_fix = [0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    # prior_max_fix = [0.927, 0.160, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+
+    # prior_min = [0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    # prior_max = [0.927, 0.160, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+
 
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
     parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
@@ -242,7 +252,7 @@ def main(argv):
         prior=prior3,
         theta=theta,
         x=x_P200,
-        w_without=x_without,
+        x_without=x_without,
         start_time=start_time,
         finish_time=finish_time,
     )
