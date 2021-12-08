@@ -107,28 +107,23 @@ def main(argv):
     inf = SNPE_C(prior1, density_estimator="nsf")
 
 
-    try:
-        file_writer = write_to_file.WriteToFile(
-            experiment=experiment_name,
-            num_sim=num_sim,
-            true_params=true_params,
-            density_estimator='nsf',
-            num_params=3,
-            num_samples=num_samples,
-        )
+  
+    file_writer = write_to_file.WriteToFile(
+        experiment=experiment_name,
+        num_sim=num_sim,
+        true_params=true_params,
+        density_estimator='nsf',
+        num_params=3,
+        num_samples=num_samples,
+    )
 
-        print('done')
-    except:
-        print('dir exists?')
         #file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
 
-    try:
-        os.mkdir('results/{}'.format(experiment_name))
-        os.mkdir('results/{}/step1'.format(experiment_name))
-        os.mkdir('results/{}/step2'.format(experiment_name))
-        os.mkdir('results/{}/step3'.format(experiment_name))
-    except:
-        print('directories already exist?')
+    
+    os.mkdir('results/{}/step1'.format(experiment_name))
+    os.mkdir('results/{}/step2'.format(experiment_name))
+    os.mkdir('results/{}/step3'.format(experiment_name))
+
 
     
     try:
