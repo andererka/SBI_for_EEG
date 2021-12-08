@@ -170,6 +170,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 
         early_stop = 120.0
     else:
+        print(param_size)
         print('all params are investigated now')
 
     net = set_network_weights(params)
