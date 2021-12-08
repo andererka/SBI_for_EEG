@@ -163,7 +163,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     if param_size == 4:
         
         early_stop = 50.0
-        print('3 params investigated')
+        print('4 params investigated')
 
     if param_size == 11:
         print('10 params investigated')
@@ -311,7 +311,8 @@ def set_network_weights(params=None):
         event_seed=event_seed(),
     )
 
-    if (params.size(dim=1)<5):
+    if (params.size(dim=1)==4):
+        print('stop here')
         return net
     weights_ampa_d1 = {
         "L2_basket": params[4],
@@ -336,7 +337,7 @@ def set_network_weights(params=None):
         event_seed=event_seed(),
     )
 
-    if (params.size(dim=1)<12):
+    if (params.size(dim=1)==11):
         return net
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
