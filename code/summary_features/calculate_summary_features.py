@@ -172,7 +172,7 @@ def calculate_summary_stats_temporal(x):
 
             print('here')
 
-            break
+            continue
 
         print('shouldnt be here')
         ## search for N100
@@ -201,7 +201,7 @@ def calculate_summary_stats_temporal(x):
 
             batch_list.append(sum_stats_vec)
 
-            break
+            continue
 
         P200 = torch.max(batch[arg70ms:])
 
