@@ -134,6 +134,7 @@ def calculate_summary_stats_P50(x):
 
     """
 
+    print('len of x in sum stat function:', x.shape())
     time_window = 30
 
     batch_list = []
@@ -181,6 +182,8 @@ def calculate_summary_stats_N100(x):
 
     """
 
+    print('len of x in sum stat function:', x.shape())
+
     time_window = 30
 
     batch_list = []
@@ -202,8 +205,6 @@ def calculate_summary_stats_N100(x):
             moment(batch[0:arg70ms], moment=1), dtype=torch.float32
         )  # mean
 
-
-        sum_stats_vec = torch.stack([p50, arg_p50, p50_moment1,])
 
         ## search for N100
         arg200ms = int(np.round(batch.size(dim=0) / total_steps_ms * 200))
@@ -246,6 +247,7 @@ def calculate_summary_stats_P200(x):
      P200: time, value, mean, variance, skewness and kurtosis of the time interval around it
     """
 
+    print('len of x in sum stat function:', x.shape())
     time_window = 30
 
     batch_list = []

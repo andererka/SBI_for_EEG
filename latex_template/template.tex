@@ -8,6 +8,11 @@
 \usepackage[T1]{fontenc}
 
 
+%Algorithms
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{algorithmicx}
+
+
 \title{
 Inferring microscale parameters from macroscale eeg-data with the help of simulation-based inference\\
 \vspace{50px}
@@ -153,8 +158,43 @@ $$ \mathcal{L}_{\Theta_1,\Theta_2} = \mathcal{L}_{\Theta_1} + \mathcal{L}_{\Thet
 
 
 
-Idea: we could 'evaluate' also by mathematically investigating how much narrower the prior space already gets and how much less simulations we would therefore need.
+Idea: we could 'evaluate' also by mathematically investigating how much narrower the prior space already gets and how much less simulations we would therefore need. If we show that we already narrowed the parameter space to an area +-\% around the true parameter, we only need as many simulations in every temporal inference step as the not already considered, new parameters need by themselves.\\
 
+Let's assume $\Theta_1$ consists of 4 parameters and $\Theta_2$ as well. 
+Instead of having a chance of $0.2^8= 2.56 \cdot 10^{-6}$ to be within the 20\% range around the true parameter, we have a $0.2^4  = 0.0016$ for each temporal inference round. \\
+Instead of requiring about $5\cdot10^5$ simulations in order to get one draw within the 20\% range, we then need less then 1000 simulations for each temporal inference round.\\
+
+
+This would need to be validated in the results part of the thesis.. training budget, testing posterior coverage with simulation-based calibration.. benchmark paper: different metrics..
+
+
+\begin{algorithm}[H]
+    First round:\;
+	Set $\widetilde{p_1}(\Theta_1)=p(\Theta_1)$\;
+	\For{j = 1: N do}
+	{Sample $\Theta_{1j} \sim p(\Theta_1)$\;
+	Simulate $x_j \sim p(x|\Theta_j)$}\;
+	Set $\hat{p}(\Theta_1|x_o) = q_{F(x_o,\phi)}(\Theta_1)$ \;
+	\;
+	Second round:\;
+	Set $\widetilde{p_2}(\Theta_1, \Theta_2)=\hat{p}(\Theta_1|x_o) \cdot p(\Theta_2)$\;
+	\For{j = 1: N do}
+	{Sample $\Theta_{1j} \sim \hat{p}(\Theta_1|x_o)$\;
+	Sample $\Theta_{2j} \sim p(\Theta_2)$\;
+	Simulate $x_j \sim p(x|\Theta_{1j}, \Theta_{2j})$}\;
+	Set $\hat{p}(\Theta_1, \Theta_2|x_o) = q_{F(x_o,\phi}(\Theta_1, \Theta_2)$ \;
+	
+	\;
+	... M rounds ...\;
+	\textbf{return} Samples from $\hat{p}(\Theta_1, \Theta_2, ..., \Theta_M|x_o)$
+	
+	
+	
+	
+	
+	\caption{Temporal Sequential Inference}
+	
+\end{algorithm}
 
 
 \bibliographystyle{plain}
