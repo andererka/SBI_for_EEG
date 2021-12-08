@@ -109,7 +109,8 @@ def main(argv):
         os.mkdir('results/{}/step3'.format(experiment_name))
         print('done')
     except:
-        file_writer = torch.load('results/{}'.format(experiment_name))
+        print('dir exists?')
+        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
 
     
     try:
