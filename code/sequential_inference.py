@@ -69,60 +69,62 @@ def main(argv):
 
     start_time = get_time()
 
-    # prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
+    prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
 
-    # prior_max_fix = [30, 79.9,  152.96]
+    prior_max_fix = [30, 79.9,  152.96]
 
-    # prior_min = [7.9, 43.8,  89.49] 
+    prior_min = [7.9, 43.8,  89.49] 
 
-    # prior_max = [30, 79.9, 152.96]
+    prior_max = [30, 79.9, 152.96]
 
     ### for also inferring connection weights etc.:
 
-    prior_min_fix = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max_fix = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+    # prior_min_fix = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    # prior_max_fix = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
 
-    prior_min = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+    # prior_min = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    # prior_max = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
 
 
-    #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    true_params = torch.tensor([[0.277, 0.0399, 0.3739, 0.034, 18.977, 0.0115, 0.000012, 0.466, 0.06337, 0.0134, 0.0766, 63.08, 0.000005, 4.6729, 0.0115, 0.3308, 120.86]])
+    true_params = torch.tensor([[26.61, 63.53,  137.12]])
+    # # true_params = torch.tensor([[0.277, 0.0399, 0.3739, 0.034, 18.977, 0.0115, 0.000012, 0.466, 0.06337, 0.0134, 0.0766, 63.08, 0.000005, 4.6729, 0.0115, 0.3308, 120.86]])
 
-    #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
+    parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
 
-    parameter_names = ["prox_1_ampa_l2_bas","prox_1_ampa_l2_pyr","prox_1_ampa_l5_bas","prox_1_ampa_l5_pyr",
-    "t_evprox_1", 
-    "dist_ampa_l2_bas","dist_ampa_l2_pyr","dist_ampa_l5_pyr",
-    "dist_nmda_l2_bas","dist_nmda_l2_pyr","dist_nmda_l5_pyr",
-    "t_evdist_1", 
-    "prox_2_ampa_l2_bas","prox_2_ampa_l2_pyr","prox_2_ampa_l5_bas","prox_2_ampa_l5_pyr",
-    "t_evprox_2"]
+    # parameter_names = ["prox_1_ampa_l2_bas","prox_1_ampa_l2_pyr","prox_1_ampa_l5_bas","prox_1_ampa_l5_pyr",
+    # "t_evprox_1", 
+    # "dist_ampa_l2_bas","dist_ampa_l2_pyr","dist_ampa_l5_pyr",
+    # "dist_nmda_l2_bas","dist_nmda_l2_pyr","dist_nmda_l5_pyr",
+    # "t_evdist_1", 
+    # "prox_2_ampa_l2_bas","prox_2_ampa_l2_pyr","prox_2_ampa_l5_bas","prox_2_ampa_l5_pyr",
+    # "t_evprox_2"]
 
     ###### starting with P50 parameters/summary stats:
-    #prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
+    prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
 
-    prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
+    #prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
 
     inf = SNPE_C(prior1, density_estimator="nsf")
 
 
-  
-    file_writer = write_to_file.WriteToFile(
-        experiment=experiment_name,
-        num_sim=num_sim,
-        true_params=true_params,
-        density_estimator='nsf',
-        num_params=3,
-        num_samples=num_samples,
-    )
+    try:
+        file_writer = write_to_file.WriteToFile(
+            experiment=experiment_name,
+            num_sim=num_sim,
+            true_params=true_params,
+            density_estimator='nsf',
+            num_params=3,
+            num_samples=num_samples,
+            )
 
-        #file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+        os.mkdir('results/{}/step1'.format(experiment_name))
+        os.mkdir('results/{}/step2'.format(experiment_name))
+        os.mkdir('results/{}/step3'.format(experiment_name))
+        
+    except:
 
- 
-    os.mkdir('results/{}/step1'.format(experiment_name))
-    os.mkdir('results/{}/step2'.format(experiment_name))
-    os.mkdir('results/{}/step3'.format(experiment_name))
+        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+
 
 
     
@@ -165,8 +167,8 @@ def main(argv):
     proposal1 = posterior.set_default_x(obs_real)
 
     ###### continuing with N100 parameters/summary stats:
-    #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
-    prior2 = utils.torchutils.BoxUniform(low=prior_min[5:12], high=prior_max[5:12])
+    prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
+    #prior2 = utils.torchutils.BoxUniform(low=prior_min[5:12], high=prior_max[5:12])
 
     combined_prior = Combined(proposal1, prior2, number_params_1=1)
 
@@ -209,8 +211,8 @@ def main(argv):
     proposal2 = posterior.set_default_x(obs_real)
 
     ###### continuing with P200 parameters/summary stats:
-    #prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
-    prior3 = utils.torchutils.BoxUniform(low=prior_min[11:], high=prior_max[11:])
+    prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
+    #prior3 = utils.torchutils.BoxUniform(low=prior_min[11:], high=prior_max[11:])
     combined_prior = Combined(proposal2, prior3, number_params_1=2)
 
     inf = SNPE_C(combined_prior, density_estimator="nsf")
