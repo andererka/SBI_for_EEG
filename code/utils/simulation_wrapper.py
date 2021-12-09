@@ -289,7 +289,8 @@ def set_network_weights(params=None):
     weights_ampa_p1 = {
         "L2_basket": params[0],
         "L2_pyramidal": params[1],
-        "L5_pyramidal": params[2],
+        "L5_basket": params[2],
+        "L5_pyramidal": params[3],
     }
 
     synaptic_delays_prox = {
@@ -304,7 +305,7 @@ def set_network_weights(params=None):
     print('is here the problem?')
     net.add_evoked_drive(
         "evprox1",
-        mu=params[3],
+        mu=params[4],
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
@@ -316,23 +317,23 @@ def set_network_weights(params=None):
 
     print('check')
 
-    if (params.size(dim=1)==4):
+    if (params.size(dim=1)==5):
         print('stop here')
         return net
     weights_ampa_d1 = {
-        "L2_basket": params[4],
-        "L2_pyramidal": params[5],
-        "L5_pyramidal": params[6],
+        "L2_basket": params[6],
+        "L2_pyramidal": params[7],
+        "L5_pyramidal": params[8],
     }
     weights_nmda_d1 = {
-        "L2_basket": params[7],
-        "L2_pyramidal": params[8],
-        "L5_pyramidal": params[9],
+        "L2_basket": params[9],
+        "L2_pyramidal": params[10],
+        "L5_pyramidal": params[11],
     }
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
-        mu=params[10],
+        mu=params[12],
         sigma=3.85,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -342,14 +343,14 @@ def set_network_weights(params=None):
         event_seed=event_seed(),
     )
 
-    if (params.size(dim=1)==11):
+    if (params.size(dim=1)==13):
         return net
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
-        "L2_basket": params[11],
-        "L2_pyramidal": params[12],
-        "L5_basket": params[13],
-        "L5_pyramidal": params[14],
+        "L2_basket": params[13],
+        "L2_pyramidal": params[14],
+        "L5_basket": params[15],
+        "L5_pyramidal": params[16],
     }
 
 
