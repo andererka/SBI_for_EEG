@@ -3,6 +3,7 @@ from utils.simulation_wrapper import (
     simulation_wrapper,
     simulation_wrapper_extended,
     simulation_wrapper_obs,
+    simulation_wrapper_all
 )
 
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
@@ -63,10 +64,9 @@ def run_only_sim(samples, num_workers=1):
 
 
 def run_sim_theta_x(
-    prior, num_simulations=1000, num_workers=8
-):
+    prior, num_simulations=1000, num_workers=8):
 
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_obs, prior)
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_all, prior)
 
     theta, x_without = simulate_for_sbi(
         simulator_stats,
