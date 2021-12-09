@@ -187,7 +187,7 @@ def calculate_summary_stats_temporal(x):
         )  # mean
 
 
-        if (total_steps_ms<121):
+        if (total_steps_ms<200):
             sum_stats_vec = torch.stack(
                 [
                     p50, 

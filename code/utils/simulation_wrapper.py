@@ -114,17 +114,14 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
         net = set_network_1_params(params)
         print("1 params are investigated")
 
-        early_stop = 50.0
+        early_stop = 90.0
 
     elif param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
 
-        early_stop = 120.0
+        early_stop = 140.0
 
-    elif param_size == 6:
-        net = set_network_6_params(params)
-        print("6 params are investigated")
     elif param_size == 3:
         net = set_network_3_params(params)
         print("3 params are investigated")
