@@ -428,7 +428,7 @@ def set_network_2_params(params=None):
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
-        mu=params[0],
+        mu=params[1],
         sigma=3.85,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -454,7 +454,7 @@ def set_network_2_params(params=None):
     # all NMDA weights are zero; pass None explicitly
     net.add_evoked_drive(
         "evprox1",
-        mu=params[1],
+        mu=params[0],
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
@@ -490,7 +490,7 @@ def set_network_3_params(params=None):
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
-        mu=params[0],
+        mu=params[1],
         sigma=3.85,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -516,7 +516,7 @@ def set_network_3_params(params=None):
     # all NMDA weights are zero; pass None explicitly
     net.add_evoked_drive(
         "evprox1",
-        mu=params[1],
+        mu=params[0],
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
