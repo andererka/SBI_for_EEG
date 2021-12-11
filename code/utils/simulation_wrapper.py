@@ -114,17 +114,14 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
         net = set_network_1_params(params)
         print("1 params are investigated")
 
-        early_stop = 50.0
+        early_stop = 90.0
 
     elif param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
 
-        early_stop = 120.0
+        early_stop = 140.0
 
-    elif param_size == 6:
-        net = set_network_6_params(params)
-        print("6 params are investigated")
     elif param_size == 3:
         net = set_network_3_params(params)
         print("3 params are investigated")
@@ -431,7 +428,7 @@ def set_network_2_params(params=None):
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
-        mu=params[0],
+        mu=params[1],
         sigma=3.85,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -457,7 +454,7 @@ def set_network_2_params(params=None):
     # all NMDA weights are zero; pass None explicitly
     net.add_evoked_drive(
         "evprox1",
-        mu=params[1],
+        mu=params[0],
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
@@ -493,7 +490,7 @@ def set_network_3_params(params=None):
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
-        mu=params[0],
+        mu=params[1],
         sigma=3.85,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -519,7 +516,7 @@ def set_network_3_params(params=None):
     # all NMDA weights are zero; pass None explicitly
     net.add_evoked_drive(
         "evprox1",
-        mu=params[1],
+        mu=params[0],
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
