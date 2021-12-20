@@ -149,6 +149,10 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
 
+    print(type(params))
+
+    
+
     early_stop = 170.0
 
     if params.dim() > 1:
@@ -157,20 +161,21 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
         param_size = params.size(dim=0)
 
 
-    if (param_size == 4):
+    if (param_size == 5):
         
-        early_stop = 50.0
-        print('4 params investigated')
+        early_stop = 90.0
+        print('5 params investigated')
 
     if (param_size == 11):
-        print('10 params investigated')
+        print('11 params investigated')
 
-        early_stop = 120.0
+        early_stop = 140.0
     
     print('early stop', early_stop)
     print('param size ', param_size)
 
-
+    params = params.tolist()
+    print(type(params))
     net = set_network_weights(params)
 
     window_len, scaling_factor = 30, 3000
@@ -314,23 +319,23 @@ def set_network_weights(params=None):
 
     print('check')
 
-    if (params.size(dim=1)==5):
+    if (len(params)==5):
         print('stop here')
         return net
     weights_ampa_d1 = {
-        "L2_basket": params[6],
-        "L2_pyramidal": params[7],
-        "L5_pyramidal": params[8],
+        "L2_basket": params[5],
+        "L2_pyramidal": params[6],
+        "L5_pyramidal": params[7],
     }
     weights_nmda_d1 = {
-        "L2_basket": params[9],
-        "L2_pyramidal": params[10],
-        "L5_pyramidal": params[11],
+        "L2_basket": params[8],
+        "L2_pyramidal": params[9],
+        "L5_pyramidal": params[10],
     }
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
-        mu=params[12],
+        mu=params[11],
         sigma=3.85,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -340,21 +345,21 @@ def set_network_weights(params=None):
         event_seed=event_seed(),
     )
 
-    if (params.size(dim=1)==13):
+    if (len(params)==12):
         return net
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
-        "L2_basket": params[13],
-        "L2_pyramidal": params[14],
-        "L5_basket": params[15],
-        "L5_pyramidal": params[16],
+        "L2_basket": params[12],
+        "L2_pyramidal": params[13],
+        "L5_basket": params[14],
+        "L5_pyramidal": params[15],
     }
 
 
     # all NMDA weights are zero; omit weights_nmda (defaults to None)
     net.add_evoked_drive(
         "evprox2",
-        mu=params[20],
+        mu=params[16],
         sigma=8.33,
         numspikes=1,
         weights_ampa=weights_ampa_p2,
@@ -538,85 +543,6 @@ def set_network_3_params(params=None):
         "evprox2",
         mu=params[2],
         sigma=8.33,
-        numspikes=1,
-        weights_ampa=weights_ampa_p2,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-
-    return net
-
-
-def set_network_6_params(params=None):
-
-    """
-    description: changes the network due to parameter settings drawn during sbi
-
-    """
-
-    net = jones_2009_model()
-    weights_ampa_d1 = {
-        "L2_basket": 0.006562,
-        "L2_pyramidal": 0.000007,
-        "L5_pyramidal": 0.142300,
-    }
-    weights_nmda_d1 = {
-        "L2_basket": 0.019482,
-        "L2_pyramidal": 0.004317,
-        "L5_pyramidal": 0.080074,
-    }
-    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
-    net.add_evoked_drive(
-        "evdist1",
-        mu=params[0],
-        sigma=params[1],
-        numspikes=1,
-        weights_ampa=weights_ampa_d1,
-        weights_nmda=weights_nmda_d1,
-        location="distal",
-        synaptic_delays=synaptic_delays_d1,
-        event_seed=event_seed(),
-    )
-
-    weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": 0.01525,
-        "L5_basket": 0.19934,
-        "L5_pyramidal": 0.00865,
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    # all NMDA weights are zero; pass None explicitly
-    net.add_evoked_drive(
-        "evprox1",
-        mu=params[2],
-        sigma=params[3],
-        numspikes=1,
-        weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-
-    # Second proximal evoked drive. NB: only AMPA weights differ from first
-    weights_ampa_p2 = {
-        "L2_basket": 0.000003,
-        "L2_pyramidal": 1.438840,
-        "L5_basket": 0.008958,
-        "L5_pyramidal": 0.684013,
-    }
-    # all NMDA weights are zero; omit weights_nmda (defaults to None)
-    net.add_evoked_drive(
-        "evprox2",
-        mu=params[4],
-        sigma=params[5],
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         location="proximal",
