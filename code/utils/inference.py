@@ -21,10 +21,10 @@ def run_sim_inference(
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
     # num_simulations=number_simulations, num_workers=4)
 
-    if (prior.event_shape==torch.Size([2])):
-        simulation_wrapper = simulation_wrapper_obs
-    else:
+    if (prior.event_shape==torch.Size([17])):
         simulation_wrapper = simulation_wrapper_all
+    else:
+        simulation_wrapper = simulation_wrapper_obs
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
@@ -58,12 +58,17 @@ def run_only_inference(theta, x, prior):
 
 def run_only_sim(samples, num_workers=1):
 
+    if (samples.size()[1]<16):
+        simulation_wrapper = simulation_wrapper_obs
+    else:
+        simulation_wrapper = simulation_wrapper_all
+
     obs_real = Parallel(
         n_jobs=num_workers,
         verbose=100,
         pre_dispatch="1.5*n_jobs",
         backend="multiprocessing",
-    )(delayed(simulation_wrapper_all)(sample) for sample in samples)
+    )(delayed(simulation_wrapper)(sample) for sample in samples)
 
     return obs_real
 
