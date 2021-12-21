@@ -14,3 +14,35 @@ How can we evaluate which summary stats are useful?
 1000 simulations, 12 summary stats:
 
 <img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/12stats_1000sims.png" alt="image-20211221183441026" style="zoom:40%;" /><img src="/home/kathi/snap/typora/46/.config/Typora/typora-user-images/image-20211221183615666.png" alt="image-20211221183615666" style="zoom:40%;" />
+
+
+
+
+
+
+
+
+
+Comparing step-wise and non-step-wise approach (both 900 simulations in total):
+
+Sequential approach: 
+
+<p float="left">
+    <img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/sequential_1.png" style="zoom: 67%;" />
+    <img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/sequential_combined_prior.png" style="zoom:67%;" />
+</p>
+
+
+
+-<img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/sequential_posterior_dens_plot.png" style="zoom: 100%;" />
+
+Comparison to 'usual' approach:
+
+
+
+<p float="left">
+    <img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/non_sequential.png" style="zoom: 67%;"/>
+    <img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/non_sequential_prior.png" style="zoom: 67%;" />
+</p>
+
+-![non_squential_toy](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/non_squential_toy.png)

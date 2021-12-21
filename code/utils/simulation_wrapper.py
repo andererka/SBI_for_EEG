@@ -106,24 +106,24 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
     if params.dim() > 1:
         param_size = params.size(dim=1)
     else:
-        param_size = params.size()
+        param_size = params.size(dim=0)
 
     print(param_size)
     print("params size", params.size())
 
-    if param_size == torch.Size([1]):
+    if param_size == 1:
         net = set_network_1_params(params)
         print("1 params are investigated")
 
         early_stop = 90.0
 
-    elif param_size == torch.Size([2]):
+    elif param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
 
         early_stop = 140.0
 
-    elif param_size == torch.Size([3]):
+    elif param_size == 3:
         net = set_network_3_params(params)
         print("3 params are investigated")
         
