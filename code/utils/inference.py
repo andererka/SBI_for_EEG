@@ -57,7 +57,7 @@ def run_only_inference(theta, x, prior):
 
 
 def run_only_sim(samples, num_workers=1):
-
+    print(samples)
     if (samples.size()==torch.Size([17])):
         simulation_wrapper = simulation_wrapper_all
     else:
