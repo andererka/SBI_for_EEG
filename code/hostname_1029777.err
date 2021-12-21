@@ -1,3 +1,0 @@
-terminate called after throwing an instance of 'std::runtime_error'
-  what():  generic_type: cannot initialize type "WorkerId": an object with that name is already defined
-/var/spool/slurmd/job1029777/slurm_script: line 16: 30872 Aborted                 python3 sequential_inference.py 1000 20 64
