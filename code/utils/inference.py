@@ -21,7 +21,12 @@ def run_sim_inference(
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
     # num_simulations=number_simulations, num_workers=4)
 
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_all, prior)
+    if (prior.event_shape==torch.Size([2])):
+        simulation_wrapper = simulation_wrapper_obs
+    else:
+        simulation_wrapper = simulation_wrapper_all
+
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
     inference = SNPE_C(prior, density_estimator=density_estimator)
 
