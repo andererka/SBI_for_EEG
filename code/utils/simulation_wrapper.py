@@ -105,7 +105,7 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
     if params.dim() > 1:
         param_size = params.size(dim=1)
     else:
-        param_size = params.size(dim=0)
+        param_size = params.size()
 
     print(param_size)
     print("params size", params.size())
