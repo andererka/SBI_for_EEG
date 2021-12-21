@@ -1,0 +1,22 @@
+/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/__init__.py:149: UserWarning: A NumPy version >=1.16.5 and <1.23.0 is required for this version of SciPy (detected version 1.11.3
+  UserWarning)
+RuntimeError: module compiled against API version 0xc but this version of numpy is 0xa
+Traceback (most recent call last):
+  File "ERP_simulation_and_inference.py", line 11, in <module>
+    from summary_features.calculate_summary_features import calculate_summary_stats9
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/summary_features/calculate_summary_features.py", line 1, in <module>
+    from scipy import stats as spstats
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/stats/__init__.py", line 441, in <module>
+    from .stats import *
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/stats/stats.py", line 37, in <module>
+    from scipy.spatial.distance import cdist
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/spatial/__init__.py", line 96, in <module>
+    from .kdtree import *
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/spatial/kdtree.py", line 5, in <module>
+    from .ckdtree import cKDTree, cKDTreeNode
+  File "ckdtree.pyx", line 10, in init scipy.spatial.ckdtree
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/sparse/__init__.py", line 228, in <module>
+    from .csr import *
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/scipy/sparse/csr.py", line 10, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+ImportError: numpy.core.multiarray failed to import
