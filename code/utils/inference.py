@@ -58,10 +58,10 @@ def run_only_inference(theta, x, prior):
 
 def run_only_sim(samples, num_workers=1):
 
-    if (samples.size()<torch.Size([2])):
-        simulation_wrapper = simulation_wrapper_obs
-    else:
+    if (samples.size()==torch.Size([17])):
         simulation_wrapper = simulation_wrapper_all
+    else:
+        simulation_wrapper = simulation_wrapper_obs
 
     obs_real = Parallel(
         n_jobs=num_workers,
