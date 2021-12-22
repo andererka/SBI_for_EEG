@@ -15,9 +15,9 @@ How can we evaluate which summary stats are useful?
 
 <img src="/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/12stats_1000sims.png" alt="image-20211221183441026" style="zoom:40%;" /><img src="/home/kathi/snap/typora/46/.config/Typora/typora-user-images/image-20211221183615666.png" alt="image-20211221183615666" style="zoom:40%;" />
 
+- Fazit: more summary stats need more simulations probably?
 
-
-
+- gerade dabei Histogramme zu untersuchen - habe aber noch keine Ergebnisse dazu.
 
 
 
@@ -46,3 +46,15 @@ Comparison to 'usual' approach:
 </p>
 
 -![non_squential_toy](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/non_squential_toy.png)
+
+
+
+
+
+Weitere Ziele:
+
+
+
+- Vergleich des HNN Modells mit anderem Modell?
+- Summary statistics genauer untersuchen!
+- more parameters for Incremental approach
