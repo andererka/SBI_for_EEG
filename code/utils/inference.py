@@ -15,16 +15,12 @@ from math import sqrt
 
 
 def run_sim_inference(
-    prior, simulation_wrapper=simulation_wrapper_obs, calc_sum_stats = calculate_summary_stats_number, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
+    prior, simulation_wrapper=simulation_wrapper_obs, calc_sum_stats = calculate_summary_stats_number, sum_stats_number = 12, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
 ):
 
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
     # num_simulations=number_simulations, num_workers=4)
 
-    if (prior.event_shape==torch.Size([17])):
-        simulation_wrapper = simulation_wrapper_all
-    else:
-        simulation_wrapper = simulation_wrapper_obs
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
@@ -37,7 +33,7 @@ def run_sim_inference(
         num_workers=num_workers,
     )
 
-    x = calc_sum_stats(x_without)
+    x = calc_sum_stats(x_without, sum_stats_number)
 
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
