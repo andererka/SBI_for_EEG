@@ -7,7 +7,7 @@ from utils.simulation_wrapper import (
 )
 
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
-from summary_features.calculate_summary_features import calculate_summary_stats_number
+from summary_features.calculate_summary_features import calculate_summary_stats_number, calculate_summary_stats_temporal
 from hnn_core import simulate_dipole
 import torch
 from joblib import Parallel, delayed
@@ -21,7 +21,12 @@ def run_sim_inference(
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
     # num_simulations=number_simulations, num_workers=4)
 
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_all, prior)
+    if (prior.event_shape==torch.Size([17])):
+        simulation_wrapper = simulation_wrapper_all
+    else:
+        simulation_wrapper = simulation_wrapper_obs
+
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
     inference = SNPE_C(prior, density_estimator=density_estimator)
 
@@ -32,7 +37,7 @@ def run_sim_inference(
         num_workers=num_workers,
     )
 
-    x = calculate_summary_stats_number(x_without)
+    x = calculate_summary_stats_temporal(x_without)
 
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
@@ -53,12 +58,17 @@ def run_only_inference(theta, x, prior):
 
 def run_only_sim(samples, num_workers=1):
 
+    if (samples[0].size()==torch.Size([17])):
+        simulation_wrapper = simulation_wrapper_all
+    else:
+        simulation_wrapper = simulation_wrapper_obs
+
     obs_real = Parallel(
         n_jobs=num_workers,
         verbose=100,
         pre_dispatch="1.5*n_jobs",
         backend="multiprocessing",
-    )(delayed(simulation_wrapper_all)(sample) for sample in samples)
+    )(delayed(simulation_wrapper)(sample) for sample in samples)
 
     return obs_real
 
