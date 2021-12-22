@@ -15,7 +15,7 @@ from math import sqrt
 
 
 def run_sim_inference(
-    prior, simulation_wrapper=simulation_wrapper_obs, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
+    prior, simulation_wrapper=simulation_wrapper_obs, calc_sum_stats = calculate_summary_stats_number, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
 ):
 
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
@@ -37,7 +37,7 @@ def run_sim_inference(
         num_workers=num_workers,
     )
 
-    x = calculate_summary_stats_temporal(x_without)
+    x = calc_sum_stats(x_without)
 
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
