@@ -407,6 +407,24 @@ def set_network_1_params(params=None):
         synaptic_delays=synaptic_delays_prox,
         event_seed=event_seed(),
     )
+        # Second proximal evoked drive. NB: only AMPA weights differ from first
+    weights_ampa_p2 = {
+        "L2_basket": 0.000003,
+        "L2_pyramidal": 1.438840,
+        "L5_basket": 0.008958,
+        "L5_pyramidal": 0.684013,
+    }
+    # all NMDA weights are zero; omit weights_nmda (defaults to None)
+    net.add_evoked_drive(
+        "evprox2",
+        mu=137.12,
+        sigma=8.33,
+        numspikes=1,
+        weights_ampa=weights_ampa_p2,
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox,
+        event_seed=event_seed(),
+    )
 
     return net
 
