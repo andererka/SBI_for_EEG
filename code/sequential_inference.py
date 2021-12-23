@@ -136,7 +136,8 @@ def main(argv):
 
     except:
         theta, x_without = inference.run_sim_theta_x(
-            prior1, simulation_wrapper_all,
+            prior1, 
+            simulation_wrapper_all,
             num_simulations=num_sim,
             num_workers=num_workers
         )
@@ -285,7 +286,7 @@ def main(argv):
     except:
         print('no file_writer')
 
-    s_x = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, simulation_wrapper=simulation_wrapper_all, num_workers=num_workers)
 
     fig3, ax = plt.subplots(1, 1)
     ax.set_title("Simulating from proposal")
