@@ -237,7 +237,7 @@ def calculate_summary_statistics_alternative(x, number=0):
     print('x shape in alternative function', x.shape)
     x = x.unsqueeze(0).unsqueeze(0)
     print('x shape in alternative function', x.shape)
-    x = torch.nn.functional.interpolate(input=x, size=(number_simulations, 100))
+    x = torch.nn.functional.interpolate(input=x, size=(x.shape[0], 100))
     print('x shape in alternative function', x.shape)
     x = x.squeeze(0).squeeze(0)
     sum_stat = torch.sub(x, torch.index_select(x, 0, torch.tensor([0])))
