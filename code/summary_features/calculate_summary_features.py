@@ -234,9 +234,11 @@ def calculate_summary_stats_temporal(x):
 
 
 def calculate_summary_statistics_alternative(x, number=0):
-    print(x.shape)
-    sum_stat = x[:,::10]
-    print(sum_stat.shape)
-    return sum_stat
-
+    if (x.dim==2):
+        print(x.shape)
+        sum_stat = x[:,::10]
+        print(sum_stat.shape)
+    else:
+        sum_stat = x[::10]
+        print(sum_stat.shape)
 
