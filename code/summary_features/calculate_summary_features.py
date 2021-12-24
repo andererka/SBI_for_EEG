@@ -233,7 +233,7 @@ def calculate_summary_stats_temporal(x):
     return sum_stats
 
 
-def calculate_summary_statistics_alternative(x):
+def calculate_summary_statistics_alternative(x, number=0):
     x = x.unsqueeze(0).unsqueeze(0)
     x = torch.nn.functional.interpolate(input=x, size=100)
     x = x.squeeze(0).squeeze(0)
