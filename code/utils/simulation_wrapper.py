@@ -100,7 +100,7 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
 
-    early_stop = 170.0
+    early_stop = 40.0
 
 
     if params.dim() > 1:
@@ -154,7 +154,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 
     
 
-    early_stop = 170.0
+    early_stop = 40.0
 
     if params.dim() > 1:
         param_size = params.size(dim=1)
