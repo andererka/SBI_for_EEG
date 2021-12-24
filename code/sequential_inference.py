@@ -110,22 +110,26 @@ def main(argv):
 
 
     try:
+
+        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+        
+    except:
+
+        print('new experiment')
         file_writer = write_to_file.WriteToFile(
-            experiment=experiment_name,
-            num_sim=num_sim,
-            true_params=true_params,
-            density_estimator='nsf',
-            num_params=3,
-            num_samples=num_samples,
-            )
+        experiment=experiment_name,
+        num_sim=num_sim,
+        true_params=true_params,
+        density_estimator='nsf',
+        num_params=3,
+        num_samples=num_samples,
+        )
 
         os.mkdir('results/{}/step1'.format(experiment_name))
         os.mkdir('results/{}/step2'.format(experiment_name))
         os.mkdir('results/{}/step3'.format(experiment_name))
-        
-    except:
 
-        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+        
 
 
 
@@ -304,9 +308,6 @@ def main(argv):
 
     file_writer.save_all(posterior,
         prior3,
-        theta,
-        x,
-        x_without,
         start_time=start_time,
         finish_time=finish_time,
         fig=None,
