@@ -239,7 +239,7 @@ def calculate_summary_statistics_alternative(x, number=0):
         sum_stat = x[:,::20]
         print(sum_stat.shape)
     else:
-        sum_stat = x[::10]
+        sum_stat = x[::20]
         print(sum_stat.shape)
     return sum_stat
 
