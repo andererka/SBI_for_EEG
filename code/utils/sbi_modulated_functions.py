@@ -89,3 +89,6 @@ class Combined(Distribution):
             theta = torch.cat((theta_posterior, theta_prior), 1)
             print("theta", theta)
             return theta
+
+    posterior = inference.run_only_inference(theta=thetas, x=x, prior=prior)
+
