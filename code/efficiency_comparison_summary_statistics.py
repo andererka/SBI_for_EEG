@@ -123,7 +123,7 @@ def main(argv):
 
     import os
     
-    true_params = torch.tensor([[63.53, 6.022, 18.97, 2.55, 137.12, 10.58]])
+    true_params = torch.tensor([[26.61, 63.53,  137.12]])
 
     #os.mkdir('results')
 
