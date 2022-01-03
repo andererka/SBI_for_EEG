@@ -74,10 +74,15 @@ def main(argv):
     except:
         num_workers = 8
 
+    try:
+        number_stats = argv[5]
+    except:
+        number_stats = 6
     if embed_net==True:
         embed_net = SummaryNet()
     else:
         embed_net = None
+
 
 
 
@@ -151,6 +156,9 @@ def main(argv):
     obs_real = inference.run_only_sim(true_params, sim_wrapper)
 
     #sample from posterior given the simulation done with 'true parameters'
+
+    if (embed_net==False):
+        obs_real = extract_sumstats(obs_real[0], number_stats)
     samples = posterior.sample((num_samples,), x=obs_real[0][0:6800])
 
 
