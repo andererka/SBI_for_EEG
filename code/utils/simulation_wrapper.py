@@ -102,6 +102,7 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
 
     early_stop = 170.0
 
+
     if params.dim() > 1:
         param_size = params.size(dim=1)
     else:
@@ -114,13 +115,13 @@ def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
         net = set_network_1_params(params)
         print("1 params are investigated")
 
-        early_stop = 90.0
+        #early_stop = 90.0
 
     elif param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
 
-        early_stop = 140.0
+        #early_stop = 140.0
 
     elif param_size == 3:
         net = set_network_3_params(params)
@@ -153,7 +154,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 
     
 
-    early_stop = 170.0
+    early_stop = 40.0
 
     if params.dim() > 1:
         param_size = params.size(dim=1)
@@ -402,6 +403,24 @@ def set_network_1_params(params=None):
         numspikes=1,
         weights_ampa=weights_ampa_p1,
         weights_nmda=None,
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox,
+        event_seed=event_seed(),
+    )
+        # Second proximal evoked drive. NB: only AMPA weights differ from first
+    weights_ampa_p2 = {
+        "L2_basket": 0.000003,
+        "L2_pyramidal": 1.438840,
+        "L5_basket": 0.008958,
+        "L5_pyramidal": 0.684013,
+    }
+    # all NMDA weights are zero; omit weights_nmda (defaults to None)
+    net.add_evoked_drive(
+        "evprox2",
+        mu=137.12,
+        sigma=8.33,
+        numspikes=1,
+        weights_ampa=weights_ampa_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
         event_seed=event_seed(),

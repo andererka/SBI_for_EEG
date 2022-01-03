@@ -57,9 +57,9 @@ def calculate_summary_stats_number(x, number_stats):
             p50 = torch.max(batch[0:arg70ms])
             P200 = torch.max(batch[arg70ms:])
 
-            p50_moment1 = torch.tensor(moment(x[0:arg70ms], moment=1))  # mean
-            N100_moment1 = torch.tensor(moment(x[0:arg200ms], moment=1))  # mean
-            P200_moment1 = torch.tensor(moment(x[arg70ms:], moment=1))  # mean
+            p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1))  # mean
+            N100_moment1 = torch.tensor(moment(batch[0:arg200ms], moment=1))  # mean
+            P200_moment1 = torch.tensor(moment(batch[arg70ms:], moment=1))  # mean
 
             sum_stats_vec = torch.stack(
                 [
@@ -81,13 +81,13 @@ def calculate_summary_stats_number(x, number_stats):
             p50 = torch.max(batch[0:arg70ms])
             P200 = torch.max(batch[arg70ms:])
 
-            p50_moment1 = torch.tensor(moment(x[0:arg70ms], moment=1))  # mean
-            N100_moment1 = torch.tensor(moment(x[0:arg200ms], moment=1))  # mean
-            P200_moment1 = torch.tensor(moment(x[arg70ms:], moment=1))  # mean
+            p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1))  # mean
+            N100_moment1 = torch.tensor(moment(batch[0:arg200ms], moment=1))  # mean
+            P200_moment1 = torch.tensor(moment(batch[arg70ms:], moment=1))  # mean
 
-            N100_moment2 = torch.tensor(moment(x[0:arg200ms], moment=2))  # variance
-            P200_moment2 = torch.tensor(moment(x[arg70ms:], moment=2))  # variance
-            p50_moment2 = torch.tensor(moment(x[0:arg70ms], moment=2))  # variance
+            N100_moment2 = torch.tensor(moment(batch[0:arg200ms], moment=2))  # variance
+            P200_moment2 = torch.tensor(moment(batch[arg70ms:], moment=2))  # variance
+            p50_moment2 = torch.tensor(moment(batch[0:arg70ms], moment=2))  # variance
 
             sum_stats_vec = torch.stack(
                 [
@@ -232,4 +232,18 @@ def calculate_summary_stats_temporal(x):
 
     return sum_stats
 
+
+def calculate_summary_statistics_alternative(x, number=0):
+    """
+    reduces time resolution, but does not calculate real summary statistics
+    with x[:,::20] every 20th step is taken into account. there is no kind of interpolation
+    """
+    if (x.dim()==2):
+        print(x.shape)
+        sum_stat = x[:,::20]
+        print(sum_stat.shape)
+    else:
+        sum_stat = x[::20]
+        print(sum_stat.shape)
+    return sum_stat
 

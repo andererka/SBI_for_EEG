@@ -7,7 +7,7 @@ from utils.simulation_wrapper import (
 )
 
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
-from summary_features.calculate_summary_features import calculate_summary_stats_number
+from summary_features.calculate_summary_features import calculate_summary_stats_number, calculate_summary_stats_temporal
 from hnn_core import simulate_dipole
 import torch
 from joblib import Parallel, delayed
@@ -15,13 +15,14 @@ from math import sqrt
 
 
 def run_sim_inference(
-    prior, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
+    prior, simulation_wrapper=simulation_wrapper_obs, calc_sum_stats = calculate_summary_stats_number, sum_stats_number = 12, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
 ):
 
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
     # num_simulations=number_simulations, num_workers=4)
 
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_all, prior)
+
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
     inference = SNPE_C(prior, density_estimator=density_estimator)
 
@@ -32,7 +33,7 @@ def run_sim_inference(
         num_workers=num_workers,
     )
 
-    x = calculate_summary_stats_number(x_without)
+    x = calc_sum_stats(x_without, sum_stats_number)
 
     inference = inference.append_simulations(theta, x)
     density_estimator = inference.train()
@@ -51,22 +52,22 @@ def run_only_inference(theta, x, prior):
     return posterior
 
 
-def run_only_sim(samples, num_workers=1):
+def run_only_sim(samples, simulation_wrapper=simulation_wrapper_obs, num_workers=1):
 
     obs_real = Parallel(
         n_jobs=num_workers,
         verbose=100,
         pre_dispatch="1.5*n_jobs",
         backend="multiprocessing",
-    )(delayed(simulation_wrapper_all)(sample) for sample in samples)
+    )(delayed(simulation_wrapper)(sample) for sample in samples)
 
     return obs_real
 
 
 def run_sim_theta_x(
-    prior, num_simulations=1000, num_workers=8):
+    prior, simulation_wrapper=simulation_wrapper_obs, num_simulations=1000, num_workers=8):
 
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper_all, prior)
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
     theta, x_without = simulate_for_sbi(
         simulator_stats,

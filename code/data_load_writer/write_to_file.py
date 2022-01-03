@@ -69,14 +69,16 @@ class WriteToFile:
         torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
         self.prop = prop
 
-    def save_observations(self, x):
-        torch.save(x, "{}/obs.pt".format(self.folder))
+    def save_observations(self, x, name='default'):
+        torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
+        self.x = x
 
     def save_obs_without(self, x_without, name='default'):
         torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
 
     def save_thetas(self, thetas, name='default'):
         torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
+        self.thetas = thetas
 
     def save_fig(self, fig, figname=None):
         if figname == None:
@@ -115,9 +117,6 @@ class WriteToFile:
         self,
         posterior,
         prior,
-        theta,
-        x,
-        x_without,
         start_time=None,
         finish_time=None,
         fig=None,
@@ -125,9 +124,7 @@ class WriteToFile:
     ):
         self.save_posterior(posterior)
         self.save_prior(prior)
-        self.save_thetas(theta)
-        self.save_observations(x)
-        self.save_obs_without(x_without)
+
         if fig != None:
             self.save_fig(fig)
         else:

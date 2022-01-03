@@ -1,3 +1,4 @@
+from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
@@ -109,22 +110,26 @@ def main(argv):
 
 
     try:
+
+        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+        
+    except:
+
+        print('new experiment')
         file_writer = write_to_file.WriteToFile(
-            experiment=experiment_name,
-            num_sim=num_sim,
-            true_params=true_params,
-            density_estimator='nsf',
-            num_params=3,
-            num_samples=num_samples,
-            )
+        experiment=experiment_name,
+        num_sim=num_sim,
+        true_params=true_params,
+        density_estimator='nsf',
+        num_params=3,
+        num_samples=num_samples,
+        )
 
         os.mkdir('results/{}/step1'.format(experiment_name))
         os.mkdir('results/{}/step2'.format(experiment_name))
         os.mkdir('results/{}/step3'.format(experiment_name))
-        
-    except:
 
-        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
+        
 
 
 
@@ -135,7 +140,8 @@ def main(argv):
 
     except:
         theta, x_without = inference.run_sim_theta_x(
-            prior1,
+            prior1, 
+            simulation_wrapper_all,
             num_simulations=num_sim,
             num_workers=num_workers
         )
@@ -157,7 +163,7 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:5])]), num_workers=num_workers
+        torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
     )  # first output gives summary statistics, second without
 
     print("obs real", obs_real)
@@ -183,6 +189,7 @@ def main(argv):
     except:
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
+            simulation_wrapper_all,
             num_simulations=num_sim,
             num_workers=num_workers
         )
@@ -200,7 +207,9 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:12])]), num_workers=num_workers
+        torch.tensor([list(true_params[0][0:12])]),
+        simulation_wrapper_all,
+        num_workers=num_workers
     )  # first output gives summary statistics, second without
 
     obs_real = calculate_summary_stats_temporal(obs_real)
@@ -225,6 +234,7 @@ def main(argv):
     except:
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
+            simulation_wrapper_all,
             num_simulations=num_sim,
             num_workers=num_workers
         )
@@ -240,7 +250,7 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
     obs_real = inference.run_only_sim(
-        true_params, num_workers=num_workers
+        true_params, simulation_wrapper_all, num_workers=num_workers
     )  # first output gives summary statistics, second without
 
     obs_real = calculate_summary_stats_temporal(obs_real)
@@ -280,7 +290,7 @@ def main(argv):
     except:
         print('no file_writer')
 
-    s_x = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, simulation_wrapper=simulation_wrapper_all, num_workers=num_workers)
 
     fig3, ax = plt.subplots(1, 1)
     ax.set_title("Simulating from proposal")
@@ -296,7 +306,12 @@ def main(argv):
     fig3.savefig('results/{}/from_prior.png'.format(experiment_name))
     fig4.savefig('results/{}/from_posterior_dens.png'.format(experiment_name))
 
-
+    file_writer.save_all(posterior,
+        prior3,
+        start_time=start_time,
+        finish_time=finish_time,
+        fig=None,
+        source='sequential_inference')
 
 if __name__ == "__main__":
     main(sys.argv[1:])
