@@ -234,6 +234,10 @@ def calculate_summary_stats_temporal(x):
 
 
 def calculate_summary_statistics_alternative(x, number=0):
+    """
+    reduces time resolution, but does not calculate real summary statistics
+    with x[:,::20] every 20th step is taken into account. there is no kind of interpolation
+    """
     if (x.dim()==2):
         print(x.shape)
         sum_stat = x[:,::20]
