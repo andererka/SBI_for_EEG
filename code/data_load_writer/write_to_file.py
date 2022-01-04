@@ -71,12 +71,14 @@ class WriteToFile:
 
     def save_observations(self, x, name='default'):
         torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
+        self.x = x
 
     def save_obs_without(self, x_without, name='default'):
         torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
 
     def save_thetas(self, thetas, name='default'):
         torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
+        self.thetas = thetas
 
     def save_fig(self, fig, figname=None):
         if figname == None:

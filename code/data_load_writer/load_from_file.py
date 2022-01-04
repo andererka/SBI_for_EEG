@@ -4,6 +4,7 @@ import json
 import datetime
 
 
+
 def load_posterior(path_to_file):
 
     posterior = torch.load(path_to_file + "/posterior.pt")
