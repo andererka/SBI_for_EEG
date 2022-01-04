@@ -3,6 +3,7 @@ from scipy.stats import moment
 import numpy as np
 from scipy.signal import argrelextrema
 import torch
+import tsfel
 
 
 def calculate_summary_stats_number(x, number_stats):
@@ -49,6 +50,24 @@ def calculate_summary_stats_number(x, number_stats):
             P200 = torch.max(batch[arg70ms:])
 
             sum_stats_vec = torch.stack([arg_p50, arg_N100, arg_P200, p50, N100, P200])
+            batch_list.append(sum_stats_vec)
+
+        elif number_stats == 10:
+
+            N100 = torch.min(batch[:arg200ms])
+            p50 = torch.max(batch[0:arg70ms])
+            P200 = torch.max(batch[arg70ms:])
+
+            ratio1 = N100/p50
+            ratio2 = p50/P200
+
+            # compute area under the curve:
+
+            from numpy import trapz
+            area = trapz(batch, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
+            autocorr = tsfel.feature_extraction.features.autocorr(batch)
+
+            sum_stats_vec = torch.stack([arg_p50, arg_N100, arg_P200, p50, N100, P200, ratio1, ratio2, area, autocorr])
             batch_list.append(sum_stats_vec)
 
         elif number_stats == 9:
