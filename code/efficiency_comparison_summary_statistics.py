@@ -106,6 +106,8 @@ def main(argv):
     ##loading the prior, thetas and observations for later inference
 
     prior = file_writer.prior
+
+    print(prior.sample())
     file_writer.folder = 'results/name_bad'
 
     #thetas = torch.load('thetas.pt')
@@ -142,7 +144,7 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
     
-    true_params = torch.tensor([[26.61, 63.53,  137.12]])
+    true_params = torch.tensor([[63.53, 26.61,  137.12]])
 
     #os.mkdir('results')
 
@@ -222,6 +224,9 @@ def main(argv):
 
 
     ###  histogram plots:
+    """
+    histogram plot compares for each summary feature the distribution of values from posterior versus prior and plots the 'true value' as well
+    """
 
     if (embed_net==False):
         s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
@@ -230,14 +235,13 @@ def main(argv):
         s_x_stat = extract_sumstats(s_x_torch, number_stats)
 
         s_x_prior_stat = extract_sumstats(s_x_prior_torch, number_stats)
-
+    
+    ### if we use an embedding network, we do not need the step to extract the summary statistics
     else:
         s_x_stat = s_x
-        s_prior_stat = s_x_prior
+        s_x_prior_stat = s_x_prior
 
     fig3 = plt.figure(figsize=(10,10*len(s_x_stat)), tight_layout=True)
-
-    gs = gridspec.GridSpec(nrows=x.size(dim=1), ncols=1)
 
 
     sum_stats_names = torch.arange(1, len(s_x_stat[0])+1, 1)
