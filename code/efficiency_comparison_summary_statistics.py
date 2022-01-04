@@ -243,7 +243,7 @@ def main(argv):
         s_x_stat = s_x
         s_x_prior_stat = s_x_prior
 
-    fig3 = plt.figure(figsize=(10,10*len(s_x_stat)), tight_layout=True)
+    fig3 = plt.figure(figsize=(10,10*len(s_x_stat[0])), tight_layout=True)
 
     gs = gridspec.GridSpec(nrows=len(s_x_stat[0]), ncols=1)
 
