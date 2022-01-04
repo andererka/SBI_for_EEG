@@ -1,13 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples:  95%|█████████▌| 95/100 [00:00<00:00, 812.43it/s]Drawing 100 posterior samples: 9567it [00:00, 52632.84it/s]                     
-Traceback (most recent call last):
-  File "efficiency_comparison_summary_statistics.py", line 290, in <module>
-    main(sys.argv[1:])
-  File "efficiency_comparison_summary_statistics.py", line 258, in main
-    globals()['ax%s' % i] = fig3.add_subplot(gs[i])
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/gridspec.py", line 260, in __getitem__
-    num1, num2 = _normalize(key, nrows * ncols, None)
-  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/gridspec.py", line 248, in _normalize
-    raise IndexError(f"index {orig_key} is out of bounds for "
-IndexError: index 100 is out of bounds for GridSpec with size 100
