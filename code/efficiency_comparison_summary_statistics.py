@@ -248,6 +248,10 @@ def main(argv):
 
     sum_stats_names = torch.arange(1, len(s_x_stat[0])+1, 1)
 
+    ##save class
+    with open("{}/class".format(file_writer.folder), "wb") as pickle_file:
+        pickle.dump(file_writer, pickle_file)
+
 
     for i in range(len(sum_stats_names)):
 
