@@ -69,7 +69,11 @@ def main(argv):
     try:
         experiment_name = argv[1]
     except:
+<<<<<<< HEAD
         experiment_name = 'try_sum_stats_500sim_2params'
+=======
+        experiment_name = '6_sum_stats_500sim_3params'
+>>>>>>> 44f627c64d30984403cf6636736bad3d79891b5c
 
     ### loading the class:
     with open('results/{}/class'.format(file), "rb") as pickle_file:
