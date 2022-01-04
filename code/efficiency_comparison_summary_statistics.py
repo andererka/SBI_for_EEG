@@ -118,8 +118,8 @@ def main(argv):
 
     x = extract_sumstats(x_without, number_stats)
 
-    true_params = lf.load_true_params(file_writer.folder)
-
+    #true_params = lf.load_true_params(file_writer.folder)
+    true_params = torch.tensor([[ 63.5300,  18.9700, 137.1200]])
     print(true_params)
 
 
@@ -231,12 +231,12 @@ def main(argv):
     """
 
     if (embed_net==False):
-        s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
+        #s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
 
-        s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
-        s_x_stat = extract_sumstats(s_x_torch, number_stats)
+        #s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
+        s_x_stat = extract_sumstats(s_x, number_stats)
 
-        s_x_prior_stat = extract_sumstats(s_x_prior_torch, number_stats)
+        s_x_prior_stat = extract_sumstats(s_x_prior, number_stats)
     
     ### if we use an embedding network, we do not need the step to extract the summary statistics
     else:
