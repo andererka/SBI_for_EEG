@@ -1,0 +1,23 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 9285it [00:00, 62661.99it/s]           Drawing 100 posterior samples: 9285it [00:00, 62479.12it/s]
+Traceback (most recent call last):
+  File "efficiency_comparison_summary_statistics.py", line 292, in <module>
+    main(sys.argv[1:])
+  File "efficiency_comparison_summary_statistics.py", line 285, in main
+    fig3.savefig('results/{}/histogram.png'.format(experiment_name))
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/figure.py", line 3015, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/backend_bases.py", line 2261, in print_figure
+    **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/backend_bases.py", line 1669, in wrapper
+    return func(*args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/backends/backend_agg.py", line 508, in print_png
+    FigureCanvasAgg.draw(self)
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/backends/backend_agg.py", line 401, in draw
+    self.renderer = self.get_renderer(cleared=True)
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/backends/backend_agg.py", line 417, in get_renderer
+    self.renderer = RendererAgg(w, h, self.figure.dpi)
+  File "/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/matplotlib/backends/backend_agg.py", line 91, in __init__
+    self._renderer = _RendererAgg(int(width), int(height), dpi)
+ValueError: Image size of 1000x100000 pixels is too large. It must be less than 2^16 in each direction.
