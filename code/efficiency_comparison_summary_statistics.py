@@ -30,6 +30,8 @@ from utils import inference
 from utils.helpers import SummaryNet
 import sys
 
+from data_load_writer import write_to_file
+
 
 import os
 import pickle
@@ -39,12 +41,19 @@ import sys
 from utils.helpers import get_time
 
 
-
 ## defining neuronal network model
 
 from utils.simulation_wrapper import event_seed, set_network_default, simulation_wrapper,simulation_wrapper_obs
 
 from joblib import Parallel, delayed
+
+import matplotlib.gridspec as gridspec
+
+
+
+"""
+This file aims to investigate different summary statistics, their time efficiency and how well they represent the data.
+"""
 
 
 
@@ -56,22 +65,26 @@ def main(argv):
         file = argv[0]
     except:
         file = "name_bad"
+
+    try:
+        experiment_name = argv[1]
+    except:
+        experiment_name = 'cnn_sum_stats_500sim_2params'
+
     ### loading the class:
     with open('results/{}/class'.format(file), "rb") as pickle_file:
         file_writer = pickle.load(pickle_file)
 
     try:
-        sim_wrapper = argv[1]
+        sim_wrapper = argv[2]
     except:
         sim_wrapper = simulation_wrapper_obs
+
     try:
-        embed_net = argv[2]
+        embed_net = argv[3]
     except:
         embed_net = False
-    try:
-        experiment_name = argv[3]
-    except:
-        experiment_name = 'cnn_sum_stats_500sim_2params'
+
 
     try:
         num_workers = argv[4]
@@ -84,10 +97,9 @@ def main(argv):
         number_stats = 6
 
     if embed_net==True:
-        embed_net = SummaryNet()
+        embedding_net = SummaryNet()
     else:
-        embed_net = None
-
+        embedding_net = None
 
 
 
@@ -112,7 +124,7 @@ def main(argv):
     # instantiate the neural density estimator
     if (embed_net==True):
         density_estimator = utils.posterior_nn(model='nsf', 
-                                        embedding_net=embed_net,
+                                        embedding_net=embedding_net,
                                         hidden_features=10,
                                         num_transforms=2)
     else:
@@ -131,9 +143,6 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    from data_load_writer import write_to_file
-
-    import os
     
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
 
@@ -162,8 +171,8 @@ def main(argv):
     #### how would simulation look like under 'true parameters'
     obs_real = inference.run_only_sim(true_params, sim_wrapper)
 
-    #sample from posterior given the simulation done with 'true parameters'
-
+    ### sample from posterior given the simulation done with 'true parameters'
+    print(embed_net)
     if (embed_net==False):
         print('embed net false')
         obs_real = extract_sumstats(obs_real[0], number_stats)
@@ -174,7 +183,7 @@ def main(argv):
 
 
 
-    ## sample from prior now
+    ### sample from prior now
     samples_prior = []
 
 
@@ -211,6 +220,63 @@ def main(argv):
     finish = get_time()
 
     file_writer.save_meta(start_time=start, finish_time=finish)
+
+
+
+    ###  histogram plots:
+
+    if (embed_net==False):
+        s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
+
+        s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
+        s_x_stat = extract_sumstats(s_x_torch, number_stats)
+
+        s_x_prior_stat = extract_sumstats(s_x_prior_torch, number_stats)
+
+    else:
+        s_x_stat = s_x
+        s_prior_stat = s_x_prior
+
+    fig3 = plt.figure(figsize=(10,10*len(s_x_stat)), tight_layout=True)
+
+    gs = gridspec.GridSpec(nrows=x.size(dim=1), ncols=1)
+
+
+    sum_stats_names = torch.arange(1, len(s_x_stat[0])+1, 1)
+
+
+    for i in range(len(sum_stats_names)):
+
+        globals()['ax%s' % i] = fig.add_subplot(gs[i])
+
+        globals()['sum_stats%s' % i] = []
+        globals()['x%s' % i] = []
+
+        for j in range(len(s_x)):
+            globals()['sum_stats%s' % i].append(s_x_stat[j][i])
+            globals()['x%s' % i].append(s_x_prior_stat[j][i])
+
+
+
+        globals()['ax%s' % i].hist(globals()['sum_stats%s' % i],  density=False, facecolor='g', alpha=0.75, histtype='barstacked', label='from posterior')
+        globals()['ax%s' % i].hist(globals()['x%s' % i],  density=False, facecolor='b', alpha=0.5, histtype='barstacked', label='simulated')
+        
+    
+        globals()['ax%s' % i].set_title('Histogram of summary stat "{}" '.format(sum_stats_names[i]), pad=20)
+        #ax0.set(ylim=(-500, 7000))
+
+        globals()['ax%s' % i].axvline(obs_real[i].detach().numpy(), color='red', label='ground truth')
+        globals()['ax%s' % i].legend(loc='upper right')
+
+
+
+
+
+    fig3.savefig('results/{}/histogram.png'.format(experiment_name))
+
+    
+
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
