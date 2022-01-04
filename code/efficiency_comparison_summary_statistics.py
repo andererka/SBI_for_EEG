@@ -243,6 +243,8 @@ def main(argv):
 
     fig3 = plt.figure(figsize=(10,10*len(s_x_stat)), tight_layout=True)
 
+    gs = gridspec.GridSpec(nrows=len(s_x_stat), ncols=1)
+
 
     sum_stats_names = torch.arange(1, len(s_x_stat[0])+1, 1)
 
