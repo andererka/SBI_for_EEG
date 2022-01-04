@@ -36,6 +36,8 @@ import pickle
 
 import sys
 
+from utils.helpers import get_time
+
 
 
 ## defining neuronal network model
@@ -47,6 +49,8 @@ from joblib import Parallel, delayed
 
 
 def main(argv):
+
+    start = get_time()
 
     try:
         file = argv[0]
@@ -78,6 +82,7 @@ def main(argv):
         number_stats = argv[5]
     except:
         number_stats = 6
+
     if embed_net==True:
         embed_net = SummaryNet()
     else:
@@ -97,7 +102,9 @@ def main(argv):
 
 
     thetas = lf.load_thetas(file_writer.folder)
-    x = lf.load_obs(file_writer.folder)
+    x_without = lf.load_obs(file_writer.folder)
+
+    x = extract_sumstats(x_without, number_stats)
 
     true_params = lf.load_true_params(file_writer.folder)
 
@@ -161,6 +168,8 @@ def main(argv):
         obs_real = extract_sumstats(obs_real[0], number_stats)
     samples = posterior.sample((num_samples,), x=obs_real[0][0:6800])
 
+    
+
 
     ## sample from prior now
     samples_prior = []
@@ -194,6 +203,11 @@ def main(argv):
 
     fig1.savefig('results/{}/from_posterior_samples.png'.format(experiment_name))
     fig2.savefig('results/{}/from_prior_samples.png'.format(experiment_name))
+
+
+    finish = get_time()
+
+    file_writer.save_meta(start_time=start, finish_time=finish)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
