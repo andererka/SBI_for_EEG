@@ -69,7 +69,7 @@ def main(argv):
     try:
         experiment_name = argv[1]
     except:
-        experiment_name = 'cnn_sum_stats_500sim_2params'
+        experiment_name = 'try_sum_stats_500sim_2params'
 
     ### loading the class:
     with open('results/{}/class'.format(file), "rb") as pickle_file:
@@ -120,6 +120,8 @@ def main(argv):
 
     true_params = lf.load_true_params(file_writer.folder)
 
+    print(true_params)
+
 
     # instantiate the neural density estimator
     if (embed_net==True):
@@ -143,8 +145,6 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    
-    true_params = torch.tensor([[63.53, 26.61,  137.12]])
 
     #os.mkdir('results')
 
@@ -175,7 +175,9 @@ def main(argv):
     print(embed_net)
     if (embed_net==False):
         print('embed net false')
+        print('ob real', obs_real)
         obs_real = extract_sumstats(obs_real[0], number_stats)
+        print('ob real', obs_real)
         samples = posterior.sample((num_samples,), x=obs_real[0])
 
     else:
@@ -243,7 +245,7 @@ def main(argv):
 
     fig3 = plt.figure(figsize=(10,10*len(s_x_stat)), tight_layout=True)
 
-    gs = gridspec.GridSpec(nrows=len(s_x_stat), ncols=1)
+    gs = gridspec.GridSpec(nrows=len(s_x_stat[0]), ncols=1)
 
 
     sum_stats_names = torch.arange(1, len(s_x_stat[0])+1, 1)
