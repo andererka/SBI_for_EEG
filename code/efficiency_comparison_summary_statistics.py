@@ -108,8 +108,6 @@ def main(argv):
     prior = file_writer.prior
     file_writer.folder = 'results/name_bad'
 
-    import os
-    print(os.getcwd())
     #thetas = torch.load('thetas.pt')
 
 
@@ -247,7 +245,7 @@ def main(argv):
 
     for i in range(len(sum_stats_names)):
 
-        globals()['ax%s' % i] = fig.add_subplot(gs[i])
+        globals()['ax%s' % i] = fig3.add_subplot(gs[i])
 
         globals()['sum_stats%s' % i] = []
         globals()['x%s' % i] = []
