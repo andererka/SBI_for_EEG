@@ -166,7 +166,9 @@ def main(argv):
 
     if (embed_net==False):
         obs_real = extract_sumstats(obs_real[0], number_stats)
-    samples = posterior.sample((num_samples,), x=obs_real[0][0:6800])
+        samples = posterior.sample((num_samples,), x=obs_real[0])
+    else:
+        samples = posterior.sample((num_samples,), x=obs_real[0][0:6800])
 
     
 
