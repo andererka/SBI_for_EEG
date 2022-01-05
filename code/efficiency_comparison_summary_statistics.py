@@ -117,10 +117,10 @@ def main(argv):
 
 
     #thetas = torch.load('thetas.pt')
-    with open('{}/thetas.pt'.format(file), "rb") as torch_file:
+    with open('{}/thetas'.format(file), "rb") as torch_file:
         thetas = torch.load(torch_file)
 
-    with open('{}/obs_without.pt'.format(file), "rb") as torch_file:
+    with open('{}/obs_without'.format(file), "rb") as torch_file:
         x_without = torch.load(torch_file)
 
     #thetas = torch.load('{}/thetas.pt'.format(file))
