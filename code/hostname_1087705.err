@@ -1,0 +1,8 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "efficiency_comparison_summary_statistics.py", line 298, in <module>
+    main(sys.argv[1:])
+  File "efficiency_comparison_summary_statistics.py", line 75, in main
+    with open('results/{}/class'.format(file), "rb") as pickle_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'results/ERP_sequential_3params/step3/class'
