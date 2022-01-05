@@ -113,7 +113,7 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
-    print(prior.sample())
+    print('prior sample', prior.sample())
 
 
     #thetas = torch.load('thetas.pt')
@@ -124,8 +124,8 @@ def main(argv):
 
     x = extract_sumstats(x_without, number_stats)
 
-    #true_params = lf.load_true_params(file_writer.folder)
-    true_params = torch.tensor([[  18.9700, 63.5300, 137.1200]])
+    true_params = torch.load('{}/true_params.pt'.format(file))
+    #true_params = torch.tensor([[  18.9700, 63.5300, 137.1200]])
     print(true_params)
 
 
@@ -184,7 +184,7 @@ def main(argv):
         print('ob real', obs_real)
         obs_real = extract_sumstats(obs_real[0], number_stats)
         print('ob real', obs_real)
-        samples = posterior.sample((num_samples,), x=obs_real[0])
+        samples = posterior.sample((num_samples,), x=obs_real)
 
     else:
         samples = posterior.sample((num_samples,), x=obs_real[0][0:6800])
