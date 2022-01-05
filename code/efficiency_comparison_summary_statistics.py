@@ -119,7 +119,7 @@ def main(argv):
     x = extract_sumstats(x_without, number_stats)
 
     #true_params = lf.load_true_params(file_writer.folder)
-    true_params = torch.tensor([[ 63.5300,  18.9700, 137.1200]])
+    true_params = torch.tensor([[  18.9700, 63.5300, 137.1200]])
     print(true_params)
 
 
