@@ -1,0 +1,3 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+/var/spool/slurmd/job1087714/slurm_script: line 20: 22216 Segmentation fault      python3 efficiency_comparison_summary_statistics.py

@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --ntasks=1                # Number of tasks (see below)
-#SBATCH --cpus-per-task=10         # Number of CPU cores per task
+#SBATCH --cpus-per-task=20         # Number of CPU cores per task
 #SBATCH --nodes=1                 # Ensure that all cores are on one machine
 #SBATCH --time=0-01:00            # Runtime in D-HH:MM
 #SBATCH --mem=50G                # Memory pool for all cores (see also --mem-per-cpu)
