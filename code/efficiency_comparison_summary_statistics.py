@@ -64,7 +64,7 @@ def main(argv):
     try:
         file = argv[0]
     except:
-        file = "ERP_sequential_3params/step3"
+        file = "results/ERP_sequential_3params/step3"
 
     try:
         experiment_name = argv[1]
@@ -119,8 +119,8 @@ def main(argv):
     #thetas = torch.load('thetas.pt')
 
 
-    thetas = lf.load_thetas(file)
-    x_without = lf.load_obs(file)
+    thetas = torch.load('{}/thetas.pt'.format(file))
+    x_without = torch.load('{}/obs_without.pt'.format(file))
 
     x = extract_sumstats(x_without, number_stats)
 
