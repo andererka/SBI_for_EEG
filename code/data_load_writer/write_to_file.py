@@ -6,7 +6,7 @@ import pickle
 import shutil
 
 
-class WriteToFile:
+class WriteToFile(object):
     """
     Class to store metadata and results in folder in order to work with them later or refer to e.g.
     parmeter settings
