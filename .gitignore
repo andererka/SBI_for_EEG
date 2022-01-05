@@ -2,8 +2,8 @@ test.py
 
 results/
 
-/results/
+**/results/
 
 
 .git/
-/.git/
+**/.git/
