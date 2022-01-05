@@ -64,16 +64,16 @@ def main(argv):
     try:
         file = argv[0]
     except:
-        file = "name_bad"
+        file = "results/ERP_sequential_3params/step3"
 
     try:
         experiment_name = argv[1]
     except:
-        experiment_name = 'cnn_sum_stats_500sim_2params'
+        experiment_name = '6_sum_stats_500sim_3params'
 
     ### loading the class:
-    with open('results/{}/class'.format(file), "rb") as pickle_file:
-        file_writer = pickle.load(pickle_file)
+    #with open('results/{}/class'.format(file), "rb") as pickle_file:
+        #file_writer = pickle.load(pickle_file)
 
     try:
         sim_wrapper = argv[2]
@@ -105,20 +105,32 @@ def main(argv):
 
     ##loading the prior, thetas and observations for later inference
 
-    prior = file_writer.prior
+    #prior = file_writer.prior
 
-    print(prior.sample())
-    file_writer.folder = 'results/name_bad'
+    prior_min = [7.9, 43.8,  89.49] 
+
+    prior_max = [30, 79.9, 152.96]
+
+    prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
+
+    print('prior sample', prior.sample())
+
 
     #thetas = torch.load('thetas.pt')
+    with open('{}/thetas.pt'.format(file), "rb") as torch_file:
+        thetas = torch.load(torch_file)
 
+    with open('{}/obs_without.pt'.format(file), "rb") as torch_file:
+        x_without = torch.load(torch_file)
 
-    thetas = lf.load_thetas(file_writer.folder)
-    x_without = lf.load_obs(file_writer.folder)
+    #thetas = torch.load('{}/thetas.pt'.format(file))
+    #x_without = torch.load('{}/obs_without.pt'.format(file))
 
     x = extract_sumstats(x_without, number_stats)
 
-    true_params = lf.load_true_params(file_writer.folder)
+    true_params = torch.load('{}/true_params.pt'.format(file))
+    #true_params = torch.tensor([[  18.9700, 63.5300, 137.1200]])
+    print(true_params)
 
 
     # instantiate the neural density estimator
@@ -143,8 +155,6 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    
-    true_params = torch.tensor([[63.53, 26.61,  137.12]])
 
     #os.mkdir('results')
 
@@ -175,8 +185,10 @@ def main(argv):
     print(embed_net)
     if (embed_net==False):
         print('embed net false')
+        print('ob real', obs_real)
         obs_real = extract_sumstats(obs_real[0], number_stats)
-        samples = posterior.sample((num_samples,), x=obs_real[0])
+        print('ob real', obs_real)
+        samples = posterior.sample((num_samples,), x=obs_real)
 
     else:
         samples = posterior.sample((num_samples,), x=obs_real[0][0:6800])
@@ -235,18 +247,23 @@ def main(argv):
         s_x_stat = extract_sumstats(s_x_torch, number_stats)
 
         s_x_prior_stat = extract_sumstats(s_x_prior_torch, number_stats)
+
     
     ### if we use an embedding network, we do not need the step to extract the summary statistics
     else:
         s_x_stat = s_x
         s_x_prior_stat = s_x_prior
 
-    fig3 = plt.figure(figsize=(10,10*len(s_x_stat)), tight_layout=True)
+    fig3 = plt.figure(figsize=(10,10*len(s_x_stat[0])), tight_layout=True)
 
-    gs = gridspec.GridSpec(nrows=len(s_x_stat), ncols=1)
+    gs = gridspec.GridSpec(nrows=len(s_x_stat[0]), ncols=1)
 
 
     sum_stats_names = torch.arange(1, len(s_x_stat[0])+1, 1)
+
+    ##save class
+    with open("{}/class".format(file_writer.folder), "wb") as pickle_file:
+        pickle.dump(file_writer, pickle_file)
 
 
     for i in range(len(sum_stats_names)):
