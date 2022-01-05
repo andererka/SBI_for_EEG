@@ -105,7 +105,13 @@ def main(argv):
 
     ##loading the prior, thetas and observations for later inference
 
-    prior = file_writer.prior
+    #prior = file_writer.prior
+
+    prior_min = [7.9, 43.8,  89.49] 
+
+    prior_max = [30, 79.9, 152.96]
+
+    prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     print(prior.sample())
     file_writer.folder = 'results/name_bad'
