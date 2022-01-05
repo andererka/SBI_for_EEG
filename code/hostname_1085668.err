@@ -1,0 +1,11 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 9443it [00:00, 143615.34it/s]          
+Traceback (most recent call last):
+  File "efficiency_comparison_summary_statistics.py", line 292, in <module>
+    main(sys.argv[1:])
+  File "efficiency_comparison_summary_statistics.py", line 237, in main
+    s_x_stat = extract_sumstats(s_x, number_stats)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/summary_features/calculate_summary_features.py", line 310, in calculate_summary_statistics_alternative
+    if (x.dim()==2):
+AttributeError: 'list' object has no attribute 'dim'
