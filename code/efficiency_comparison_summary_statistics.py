@@ -64,7 +64,7 @@ def main(argv):
     try:
         file = argv[0]
     except:
-        file = "name_bad"
+        file = "ERP_sequential_3params/step3"
 
     try:
         experiment_name = argv[1]
