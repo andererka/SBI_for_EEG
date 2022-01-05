@@ -72,8 +72,8 @@ def main(argv):
         experiment_name = '6_sum_stats_500sim_3params'
 
     ### loading the class:
-    with open('results/{}/class'.format(file), "rb") as pickle_file:
-        file_writer = pickle.load(pickle_file)
+    #with open('results/{}/class'.format(file), "rb") as pickle_file:
+        #file_writer = pickle.load(pickle_file)
 
     try:
         sim_wrapper = argv[2]
@@ -114,13 +114,13 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     print(prior.sample())
-    file_writer.folder = 'results/name_bad'
+
 
     #thetas = torch.load('thetas.pt')
 
 
-    thetas = lf.load_thetas(file_writer.folder)
-    x_without = lf.load_obs(file_writer.folder)
+    thetas = lf.load_thetas(file)
+    x_without = lf.load_obs(file)
 
     x = extract_sumstats(x_without, number_stats)
 
@@ -237,12 +237,13 @@ def main(argv):
     """
 
     if (embed_net==False):
-        #s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
+        s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
 
-        #s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
-        s_x_stat = extract_sumstats(s_x, number_stats)
+        s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
+        s_x_stat = extract_sumstats(s_x_torch, number_stats)
 
-        s_x_prior_stat = extract_sumstats(s_x_prior, number_stats)
+        s_x_prior_stat = extract_sumstats(s_x_prior_torch, number_stats)
+
     
     ### if we use an embedding network, we do not need the step to extract the summary statistics
     else:
