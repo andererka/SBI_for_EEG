@@ -7,3 +7,6 @@ results/
 
 .git/
 **/.git/
+
+
+.gitattributes
