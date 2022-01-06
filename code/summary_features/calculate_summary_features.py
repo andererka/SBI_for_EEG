@@ -71,7 +71,7 @@ def calculate_summary_stats_number(x, number_stats):
             area1 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
             area1 = torch.tensor(area1)
             ## autocorrelation:
-            autocorr1 = tsfel.feature_extraction.features.autocorr(window)
+            autocorr1 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
             ## number of times that signal crosses the zero axis:
@@ -90,7 +90,7 @@ def calculate_summary_stats_number(x, number_stats):
             area2 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
             area2 = torch.tensor(area2)
             ## autocorrelation:
-            autocorr2 = tsfel.feature_extraction.features.autocorr(window)
+            autocorr2 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
             ## number of times that signal crosses the zero axis:
@@ -108,7 +108,7 @@ def calculate_summary_stats_number(x, number_stats):
             area3 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
             area3 = torch.tensor(area3)
             ## autocorrelation:
-            autocorr3 = tsfel.feature_extraction.features.autocorr(window)
+            autocorr3 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
             ## number of times that signal crosses the zero axis:
