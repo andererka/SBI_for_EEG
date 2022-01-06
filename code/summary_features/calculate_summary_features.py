@@ -23,6 +23,8 @@ def calculate_summary_stats_number(x, number_stats):
 
     for batch in x:
 
+        print('batch size', batch.size())
+
         total_steps_ms = batch.size(dim=0) / time_window
 
         # sets the first value as baseline
