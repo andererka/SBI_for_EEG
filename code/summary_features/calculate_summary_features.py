@@ -88,7 +88,7 @@ def calculate_summary_stats_number(x, number_stats):
 
             from numpy import trapz
             area2 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area2 = torch.from_numpy(area2)
+            area2 = torch.tensor(area2)
             ## autocorrelation:
             autocorr2 = tsfel.feature_extraction.features.autocorr(window)
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
@@ -106,7 +106,7 @@ def calculate_summary_stats_number(x, number_stats):
 
             from numpy import trapz
             area3 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-
+            area3 = torch.tensor(area3)
             ## autocorrelation:
             autocorr3 = tsfel.feature_extraction.features.autocorr(window)
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
