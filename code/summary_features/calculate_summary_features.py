@@ -61,9 +61,9 @@ def calculate_summary_stats_number(x, number_stats):
 
             window = batch[:arg100ms]
             print('window', window)
-            max1 = np.max(window)
-            min1 = np.min(window)
-            peak_to_peak1 = np.abs(np.max(window) - np.min(window))
+            max1 = torch.max(window)
+            min1 = torch.min(window)
+            peak_to_peak1 = torch.abs(torch.max(window) - torch.min(window))
 
             # compute area under the curve:
 
