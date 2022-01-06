@@ -75,7 +75,7 @@ def calculate_summary_stats_number(x, number_stats):
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
             ## number of times that signal crosses the zero axis:
-            zero_cross1 = len(np.where(np.diff(np.sign(window)))[0])
+            zero_cross1 = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))
 
 
             window = batch[arg50ms:arg150ms]
@@ -94,7 +94,7 @@ def calculate_summary_stats_number(x, number_stats):
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
             ## number of times that signal crosses the zero axis:
-            zero_cross2 = len(np.where(np.diff(np.sign(window)))[0])
+            zero_cross2 = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))
 
             window = batch[arg100ms:]
 
@@ -112,7 +112,7 @@ def calculate_summary_stats_number(x, number_stats):
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
             ## number of times that signal crosses the zero axis:
-            zero_cross3 = len(np.where(np.diff(np.sign(window)))[0])
+            zero_cross3 = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))
 
 
             sum_stats_vec = torch.stack([max1, min1, peak_to_peak1, area1, autocorr1, zero_cross1, 
