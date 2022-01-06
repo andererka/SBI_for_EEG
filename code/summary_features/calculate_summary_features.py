@@ -80,9 +80,9 @@ def calculate_summary_stats_number(x, number_stats):
 
             window = batch[arg50ms:arg150ms]
 
-            max2 = np.max(window)
-            min2 = np.min(window)
-            peak_to_peak2 = np.abs(np.max(window) - np.min(window))
+            max2 = torch.max(window)
+            min2 = torch.min(window)
+            peak_to_peak2 = torch.abs(torch.max(window) - torch.min(window))
 
             # compute area under the curve:
 
@@ -98,9 +98,9 @@ def calculate_summary_stats_number(x, number_stats):
 
             window = batch[arg100ms:]
 
-            max3 = np.max(window)
-            min3 = np.min(window)
-            peak_to_peak3 = np.abs(np.max(window) - np.min(window))
+            max3 = torch.max(window)
+            min3 = torch.min(window)
+            peak_to_peak3 = torch.abs(torch.max(window) - torch.min(window))
 
             # compute area under the curve:
 
