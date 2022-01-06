@@ -60,7 +60,7 @@ def calculate_summary_stats_number(x, number_stats):
             arg150ms = int(np.round(batch.size(dim=0) / total_steps_ms * 150))
 
             window = batch[:arg100ms]
-
+            print('window', window)
             max1 = np.max(window)
             min1 = np.min(window)
             peak_to_peak1 = np.abs(np.max(window) - np.min(window))
