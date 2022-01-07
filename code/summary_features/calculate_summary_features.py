@@ -255,7 +255,7 @@ def calculate_summary_stats_number(x, number_stats):
 
             from numpy import trapz
             area = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area = torch.tensor(area1)
+            area = torch.tensor(area)
             ## autocorrelation:
             autocorr = torch.tensor(tsfel.feature_extraction.features.autocorr(window))    
 
