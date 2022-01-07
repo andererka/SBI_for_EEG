@@ -241,7 +241,9 @@ def calculate_summary_stats_number(x, number_stats):
 
             ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
             arg50ms = int(np.round(batch.size(dim=0) / total_steps_ms * 50))
+            arg70ms = int(np.round(batch.size(dim=0) / total_steps_ms * 70))
             arg100ms = int(np.round(batch.size(dim=0) / total_steps_ms * 100))
+            arg120ms = int(np.round(batch.size(dim=0) / total_steps_ms * 120))
             arg150ms = int(np.round(batch.size(dim=0) / total_steps_ms * 150))
 
 
@@ -264,7 +266,7 @@ def calculate_summary_stats_number(x, number_stats):
             
 
 
-            window = batch[:arg100ms]
+            window = batch[:arg70ms]
             print('window', window)
             max1 = torch.max(window)
             min1 = torch.min(window)
@@ -279,7 +281,7 @@ def calculate_summary_stats_number(x, number_stats):
             #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
 
 
-            window = batch[arg50ms:arg150ms]
+            window = batch[arg50ms:arg120ms]
 
             max2 = torch.max(window)
             min2 = torch.min(window)
