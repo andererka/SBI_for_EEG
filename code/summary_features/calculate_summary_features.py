@@ -216,6 +216,32 @@ def calculate_summary_stats_number(x, number_stats):
                                         ])
             batch_list.append(sum_stats_vec)
 
+
+        elif number_stats == 5:
+
+            ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
+            arg50ms = int(np.round(batch.size(dim=0) / total_steps_ms * 50))
+            arg100ms = int(np.round(batch.size(dim=0) / total_steps_ms * 100))
+            arg150ms = int(np.round(batch.size(dim=0) / total_steps_ms * 150))
+
+            window = batch
+        
+            max1 = torch.max(window)
+            min1 = torch.min(window)
+            peak_to_peak1 = torch.abs(torch.max(window) - torch.min(window))
+
+            # compute area under the curve:
+
+            from numpy import trapz
+            area1 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
+            area1 = torch.tensor(area1)
+            ## autocorrelation:
+            autocorr1 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
+
+            sum_stats_vec = torch.stack([max1, min1, peak_to_peak1, area1, autocorr1])
+            batch_list.append(sum_stats_vec)
+            
+
         elif number_stats == 18:
 
             ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
