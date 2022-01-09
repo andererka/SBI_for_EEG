@@ -144,8 +144,8 @@ def calculate_summary_stats_number(x, number_stats):
             - N100: value of negative peak
             - P200: value of second postive peak
             - p50_moment1: first moment (mean) around the first postive peak (10ms before, 10ms after),
-            - N100_moment1: first moment (mean) for ,
-            - P200_moment1
+            - N100_moment1: first moment (mean) around the negative peak (10ms before, 10ms after),,
+            - P200_moment1: first moment around the second postive peak (10ms before, 10ms after)
             '''
 
             N100 = torch.min(batch[:arg200ms])
@@ -169,95 +169,6 @@ def calculate_summary_stats_number(x, number_stats):
                     P200_moment1,
                 ]
             )
-            batch_list.append(sum_stats_vec)
-
-        elif number_stats == 12:
-
-            ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
-            arg50ms = int(np.round(batch.size(dim=0) / total_steps_ms * 50))
-            arg100ms = int(np.round(batch.size(dim=0) / total_steps_ms * 100))
-            arg150ms = int(np.round(batch.size(dim=0) / total_steps_ms * 150))
-
-            window = batch[:arg100ms]
-            print('window', window)
-            max1 = torch.max(window)
-            min1 = torch.min(window)
-            peak_to_peak1 = torch.abs(torch.max(window) - torch.min(window))
-
-            # compute area under the curve:
-
-            from numpy import trapz
-            area1 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area1 = torch.tensor(area1)
-            ## autocorrelation:
-            autocorr1 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
-            #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
-
-            ## number of times that signal crosses the zero axis:
-            zero_cross1 = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))
-
-
-            window = batch[arg50ms:arg150ms]
-
-            max2 = torch.max(window)
-            min2 = torch.min(window)
-            peak_to_peak2 = torch.abs(torch.max(window) - torch.min(window))
-
-            # compute area under the curve:
-
-            from numpy import trapz
-            area2 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area2 = torch.tensor(area2)
-            ## autocorrelation:
-            autocorr2 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
-            #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
-
-            ## number of times that signal crosses the zero axis:
-            zero_cross2 = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))
-
-            window = batch[arg100ms:]
-
-            max3 = torch.max(window)
-            min3 = torch.min(window)
-            peak_to_peak3 = torch.abs(torch.max(window) - torch.min(window))
-
-            # compute area under the curve:
-
-            from numpy import trapz
-            area3 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area3 = torch.tensor(area3)
-            ## autocorrelation:
-            autocorr3 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
-            #frequencies = tsfel.feature_extraction.features.fft_mean_coeff(batch, fs=30, nfreq=256)
-
-            ## number of times that signal crosses the zero axis:
-            zero_cross3 = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))
-
-
-            sum_stats_vec = torch.stack([max1, min1, peak_to_peak1, area1, autocorr1, zero_cross1, 
-                                        max2, min2, peak_to_peak2, area2, autocorr2, zero_cross2,
-                                        #max3, min3, peak_to_peak3, area3, autocorr3, zero_cross3
-                                        ])
-            batch_list.append(sum_stats_vec)
-
-
-        elif number_stats == 5:
-
-            window = batch
-        
-            max1 = torch.max(window)
-            min1 = torch.min(window)
-            peak_to_peak1 = torch.abs(torch.max(window) - torch.min(window))
-
-            # compute area under the curve:
-
-            from numpy import trapz
-            area1 = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area1 = torch.tensor(area1)
-            ## autocorrelation:
-            autocorr1 = torch.tensor(tsfel.feature_extraction.features.autocorr(window))
-
-            sum_stats_vec = torch.stack([max1, min1, peak_to_peak1, area1, autocorr1])
             batch_list.append(sum_stats_vec)
             
 
