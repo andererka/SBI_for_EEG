@@ -121,6 +121,7 @@ def main(argv):
         density_estimator='nsf',
         num_params=3,
         num_samples=num_samples,
+        slurm= True,
         )
 
     prior_min = [7.9, 43.8,  89.49] 
