@@ -22,6 +22,13 @@ import cycler
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 
 color_theme = plt.cm.Greens(torch.linspace(0, 1, 5))
+color_theme[0] = torch.tensor([225, 0, 0, 255]).numpy() / 255  # ground truth / direct
+color_theme[1] = torch.tensor([31, 119, 180, 255]).numpy() / 255  # post-hoc
+color_theme[2] = torch.tensor([255, 127, 14, 255]).numpy() / 255  # full Orange
+color_theme[0] = torch.tensor([44, 160, 44, 255]).numpy() / 255  # x_o
+color_theme[3] = torch.tensor([23, 190, 207, 255]).numpy() / 255  # direct
+mpl.rcParams["axes.prop_cycle"] = cycler.cycler("color", color_theme)
+mpl.rc("image", cmap="Blues")
 
 def cov(X: Tensor, rowvar: bool = False):
     """Estimate a covariance matrix given data.

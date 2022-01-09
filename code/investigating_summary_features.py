@@ -67,9 +67,9 @@ def main(argv):
     start = get_time()
 
     try:
-        file = argv[0]
+        slurm = argv[0]
     except:
-        file = "results/ERP_sequential_3params/step3"
+        slurm = False
 
     try:
         experiment_name = argv[1]
@@ -104,6 +104,8 @@ def main(argv):
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
 
     try:
+        if (slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29/')
 
         file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
         
@@ -304,6 +306,37 @@ def main(argv):
     axes.set_ylabel(ylabel, size=14)
 
     file_writer.save_fig(fig, 'KL_21_features')
+
+    s_x_prior = inference.run_only_sim(samples_prior, sim_wrapper, num_workers)
+
+    fig1, ax = plt.subplots(1, 1)
+    ax.set_title("Simulating from posterior")
+    for s in s_x_21:
+        plt.plot(s, alpha=0.2, color='blue')
+        #plt.ylim(-30,30)
+        plt.xlim(0, 7000)
+        
+    plt.plot(obs_real_number21[0], label='Ground truth', color='red')
+
+    file_writer.save_fig(fig1, 'from_posterior_21features')
+        
+    fig2, ax = plt.subplots(1, 1)
+        
+    for s in s_x_18:
+        plt.plot(s, alpha=0.2, color='blue')
+        #plt.ylim(-30,30)
+        plt.xlim(0, 7000)
+        
+    plt.plot(obs_real_number18[0], label='Ground truth', color='red')
+
+    file_writer.save_fig(fig2, 'from_posterior_18features')
+
+    fig3, ax = plt.subplots(1, 1)
+    ax.set_title("Simulating from prior")
+    for x_w in s_x_prior:
+        plt.plot(x_w, alpha=0.2, color='blue')
+
+    file_writer.save_fig(fig3, 'from_prior')
 
 if __name__ == "__main__":
     main(sys.argv[1:])
