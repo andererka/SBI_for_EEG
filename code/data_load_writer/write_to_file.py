@@ -40,7 +40,7 @@ class WriteToFile(object):
         self.num_samples = num_samples
 
         self.folder = path_parent + self.experiment 
-
+        print('current working path:' ,os.getcwd())
         os.mkdir(self.folder)
         torch.save(true_params, "{}/true_params.pt".format(self.folder))
 

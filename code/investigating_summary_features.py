@@ -105,6 +105,7 @@ def main(argv):
 
     if (slurm == True):
         os.chdir('/mnt/qb/work/macke/kanderer29/')
+        print(os.getcwd())
 
     try:
 
