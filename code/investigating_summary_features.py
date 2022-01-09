@@ -103,9 +103,10 @@ def main(argv):
 
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
 
+    if (slurm == True):
+        os.chdir('/mnt/qb/work/macke/kanderer29/')
+
     try:
-        if (slurm == True):
-            os.chdir('/mnt/qb/work/macke/kanderer29/')
 
         file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
         
