@@ -42,10 +42,23 @@ def calculate_summary_stats_number(x, number_stats):
         arg_N100 = torch.argmin(batch[:arg200ms])
 
         if number_stats == 3:
+            '''
+            - arg_p50: searches for the time of the first postive peak (searches argmax during the first 70ms)
+            - arg_N100: searches for the time of the negative peak of the ERP signal (seaches argmin)
+            - arg_P200: searches for the time of the second positive peak (searches argmax starting from 70ms to end of signal)
+            '''
             sum_stats_vec = torch.stack([arg_p50, arg_N100, arg_P200])
             batch_list.append(sum_stats_vec)
 
         elif number_stats == 6:
+            '''
+            - arg_p50: searches for the time of the first postive peak (searches argmax during the first 70ms)
+            - arg_N100: searches for the time of the negative peak of the ERP signal (seaches argmin)
+            - arg_P200: searches for the time of the second positive peak (searches argmax starting from 70ms to end of signal)
+            - p50: value of first postive peak
+            - N100: value of negative peak
+            - P200: value of second postive peak
+            '''
 
             N100 = torch.min(batch[:arg200ms])
             p50 = torch.max(batch[0:arg70ms])
@@ -123,14 +136,25 @@ def calculate_summary_stats_number(x, number_stats):
             batch_list.append(sum_stats_vec)
 
         elif number_stats == 9:
+            '''
+            - arg_p50: searches for the time of the first postive peak (searches argmax during the first 70ms)
+            - arg_N100: searches for the time of the negative peak of the ERP signal (seaches argmin)
+            - arg_P200: searches for the time of the second positive peak (searches argmax starting from 70ms to end of signal)
+            - p50: value of first postive peak
+            - N100: value of negative peak
+            - P200: value of second postive peak
+            - p50_moment1: first moment (mean) around the first postive peak (10ms before, 10ms after),
+            - N100_moment1: first moment (mean) for ,
+            - P200_moment1
+            '''
 
             N100 = torch.min(batch[:arg200ms])
             p50 = torch.max(batch[0:arg70ms])
             P200 = torch.max(batch[arg70ms:])
 
-            p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1))  # mean
-            N100_moment1 = torch.tensor(moment(batch[0:arg200ms], moment=1))  # mean
-            P200_moment1 = torch.tensor(moment(batch[arg70ms:], moment=1))  # mean
+            p50_moment1 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=1))  # mean
+            N100_moment1 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=1))  # mean
+            P200_moment1 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=1))  # mean
 
             sum_stats_vec = torch.stack(
                 [
@@ -238,6 +262,17 @@ def calculate_summary_stats_number(x, number_stats):
             
 
         elif number_stats == 21:
+            '''
+            - max: maximum over whole time series
+            - min: minimum over whole time series
+            - peak_to_peak: distance between two succeeding peaks (over whole time series)
+            - area: area under the curve (ove whole time series)
+            - autocorr: autocorrelation (over whole time series)
+            - zero_cross: number of times that signal is crossing zero (over whole time series)
+            - max1, min1, peak_to_peak1, area1, autocorr1 (same as before but considering time window 1 - from 0ms to 70ms)
+            - max2, min2, peak_to_peak2, area2, autocorr2 (same as before but considering time window 2 - from 50ms to 120ms)
+            - max3, min3, peak_to_peak3, area3, autocorr3 (same as before but considering time window 3 - from 100ms)
+            '''
 
             ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
             arg50ms = int(np.round(batch.size(dim=0) / total_steps_ms * 50))
@@ -316,43 +351,19 @@ def calculate_summary_stats_number(x, number_stats):
                                         max3, min3, peak_to_peak3, area3, autocorr3])
             batch_list.append(sum_stats_vec)
 
-        elif number_stats == 9:
 
-            N100 = torch.min(batch[:arg200ms])
-            p50 = torch.max(batch[0:arg70ms])
-            P200 = torch.max(batch[arg70ms:])
-
-            p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1))  # mean
-            N100_moment1 = torch.tensor(moment(batch[0:arg200ms], moment=1))  # mean
-            P200_moment1 = torch.tensor(moment(batch[arg70ms:], moment=1))  # mean
-
-            sum_stats_vec = torch.stack(
-                [
-                    arg_p50,
-                    arg_N100,
-                    arg_P200,
-                    p50,
-                    N100,
-                    P200,
-                    p50_moment1,
-                    N100_moment1,
-                    P200_moment1,
-                ]
-            )
-            batch_list.append(sum_stats_vec)
-            
         elif number_stats == 12:
             N100 = torch.min(batch[:arg200ms])
             p50 = torch.max(batch[0:arg70ms])
             P200 = torch.max(batch[arg70ms:])
 
-            p50_moment1 = torch.tensor(moment(batch[0:arg70ms], moment=1))  # mean
-            N100_moment1 = torch.tensor(moment(batch[0:arg200ms], moment=1))  # mean
-            P200_moment1 = torch.tensor(moment(batch[arg70ms:], moment=1))  # mean
+            p50_moment1 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=1))  # mean
+            N100_moment1 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=1))  # mean
+            P200_moment1 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=1))  # mean
 
-            N100_moment2 = torch.tensor(moment(batch[0:arg200ms], moment=2))  # variance
-            P200_moment2 = torch.tensor(moment(batch[arg70ms:], moment=2))  # variance
-            p50_moment2 = torch.tensor(moment(batch[0:arg70ms], moment=2))  # variance
+            p50_moment2 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=2))  # variance
+            N100_moment2 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=2))  # variance
+            P200_moment2 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=2))  # variance
 
             sum_stats_vec = torch.stack(
                 [
