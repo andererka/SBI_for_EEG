@@ -22,6 +22,8 @@ import matplotlib.pyplot as plt
 
 from utils.plot import cov, compare_vars, plot_varchanges
 
+from utils.plot import plot_KLs
+
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
@@ -232,7 +234,7 @@ def main(argv):
         
         sample_batch_18.append(sample21_list)
 
-    sum_stats_names = [
+    sum_stats_names18 = [
                     'arg_p50',
                     'arg_N100',
                     'arg_P200',
@@ -257,9 +259,51 @@ def main(argv):
 
         
     plt.figure(figsize = (20,40))
-    im = plot_varchanges(sample_batch_18, samples_number18, xticklabels=sum_stats_names, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
+    im = plot_varchanges(sample_batch_18, samples_number18, xticklabels=sum_stats_names18, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
 
     file_writer.save_fig(im, 'var_changes18')
+
+
+
+    fig, axes = plt.subplots(1, 1, figsize=(30, 10), sharex=True)
+
+
+    plot_KLs(sample_batch_18,
+            samples_number18,
+            idx=0,
+            batchsize=10,
+            kind='box',
+            agg_with='mean'
+        )
+
+
+    axes.set_xlabel("missing feature", size=14)
+    axes.set_xticklabels(sum_stats_names18)
+    axes.tick_params(axis="both", which="major", labelsize=12)
+    ylabel = axes.get_ylabel()
+    axes.set_ylabel(ylabel, size=14)
+
+    file_writer.save_fig(fig, 'KL_18_features')
+
+    fig, axes = plt.subplots(1, 1, figsize=(30, 10), sharex=True)
+
+
+    plot_KLs(sample_batch_21,
+            samples_number21,
+            idx=0,
+            batchsize=10,
+            kind='box',
+            agg_with='mean'
+        )
+
+
+    axes.set_xlabel("missing feature", size=14)
+    axes.set_xticklabels(sum_stats_names)
+    axes.tick_params(axis="both", which="major", labelsize=12)
+    ylabel = axes.get_ylabel()
+    axes.set_ylabel(ylabel, size=14)
+
+    file_writer.save_fig(fig, 'KL_21_features')
 
 if __name__ == "__main__":
     main(sys.argv[1:])
