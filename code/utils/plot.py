@@ -17,20 +17,12 @@ import matplotlib as mpl
 import cycler
 
 
-### following adapted from: 
-# permalink: https://github.com/mackelab/Identifying-informative-features-of-HH-models-using-SBI/blob/9a4f8b9910d573923fb0cffcadb17363521050a9/code/sbi_feature_importance/analysis.py#L234
-
-color_theme = plt.cm.Greens(torch.linspace(0, 1, 5))
-color_theme[0] = torch.tensor([225, 0, 0, 255]).numpy() / 255  # ground truth / direct
-color_theme[1] = torch.tensor([31, 119, 180, 255]).numpy() / 255  # post-hoc
-color_theme[2] = torch.tensor([255, 127, 14, 255]).numpy() / 255  # full Orange
-color_theme[0] = torch.tensor([44, 160, 44, 255]).numpy() / 255  # x_o
-color_theme[3] = torch.tensor([23, 190, 207, 255]).numpy() / 255  # direct
-mpl.rcParams["axes.prop_cycle"] = cycler.cycler("color", color_theme)
-mpl.rc("image", cmap="Blues")
 
 
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
+
+color_theme = plt.cm.Greens(torch.linspace(0, 1, 5))
+
 def cov(X: Tensor, rowvar: bool = False):
     """Estimate a covariance matrix given data.
     Covariance indicates the level to which two variables vary together.
@@ -55,10 +47,10 @@ def cov(X: Tensor, rowvar: bool = False):
         X = X.view(1, -1)
     if not rowvar and X.size(0) != 1:
         X = X.t()
-    # m = m.type(torch.double)  # uncomment this line if desired
+    
     fact = 1.0 / (X.size(1) - 1)
     X -= torch.mean(X, dim=1, keepdim=True)
-    Xt = X.t()  # if complex: mt = m.t().conj()
+    Xt = X.t()  
     return fact * X.matmul(Xt).squeeze()
 
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
@@ -188,7 +180,22 @@ def plot_varchanges(
         ax: plot axes.
     """
    
-    Vars_agg = compare_vars(samples, base_sample)
+    if batchsize > 0:
+        # TODO: IF BASESAMPLE ALSO HAS BATCHES -> split and align them!
+        batched_samples = samples
+        Vars = []
+        for i, samples in enumerate(batched_samples):
+            rel_Var = compare_vars(list(samples), base_sample)
+            Vars.append(rel_Var)
+
+        Vars = torch.stack(Vars)
+        if "mean" in agg_with.lower():
+            Vars_agg = Vars.mean(0)
+        if "median" in agg_with.lower():
+            Vars_agg = Vars.median(0)[0]
+        # Vars_std = Vars.std(0)
+    else:
+        Vars_agg = compare_vars(samples, base_sample)
 
     ax = plt.gca()
     cmap = cm.get_cmap("coolwarm", 10)
@@ -285,10 +292,7 @@ def plot_KLs(
                 positions=(torch.arange(N) + idx / (N) - 1 / (N + 1)).numpy(),
                 widths=1 / (N),
                 patch_artist=True,
-                # boxprops={"color":color_theme[idx], "lw":1.5},
-                # whiskerprops={"color":"black", "lw":1.5},
-                # capprops={"color":color[idx], "lw":1.5},
-                # flierprops={"markeredgecolor":color[idx]},
+
                 medianprops={"color": "black"},
             )
             for patch in ax["boxes"]:
