@@ -240,9 +240,8 @@ def plot_KLs(
 
     if batchsize > 0:
         # TODO: IF BASESAMPLE ALSO HAS BATCHES -> split and align them!
-        batched_samples = samples.split(batchsize)
         KLs = []
-        for i, samples in enumerate(batched_samples):
+        for i, samples in enumerate(samples):
             rel_KL = compare_KLs(list(samples), base_sample, samplesize)
             KLs.append(rel_KL)
         KLs = torch.vstack(KLs)
