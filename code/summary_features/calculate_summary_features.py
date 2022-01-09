@@ -23,7 +23,6 @@ def calculate_summary_stats_number(x, number_stats):
 
     for batch in x:
 
-        print('batch size', batch.size())
 
         total_steps_ms = batch.size(dim=0) / time_window
 
@@ -75,7 +74,7 @@ def calculate_summary_stats_number(x, number_stats):
             arg150ms = int(np.round(batch.size(dim=0) / total_steps_ms * 150))
 
             window = batch[:arg100ms]
-            print('window', window)
+       
             max1 = torch.max(window)
             min1 = torch.min(window)
             peak_to_peak1 = torch.abs(torch.max(window) - torch.min(window))
@@ -213,7 +212,7 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             window = batch[:arg70ms]
-            print('window', window)
+
             max1 = torch.max(window)
             min1 = torch.min(window)
             peak_to_peak1 = torch.abs(torch.max(window) - torch.min(window))
@@ -321,11 +320,11 @@ def calculate_summary_stats_temporal(x):
 
     """
 
-    print('len of x in sum stat function:', len(x))
+
     time_window = 30
 
     batch_list = []
-    print("x", x)
+
 
     for batch in x:
 
