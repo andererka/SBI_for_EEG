@@ -41,7 +41,7 @@ class WriteToFile(object):
         self.num_samples = num_samples
 
         self.folder = path_parent + self.experiment 
-        print('current working path:' ,os.getcwd())
+  
         if (slurm==True):
             os.chdir('/mnt/qb/work/macke/kanderer29/')
         print('current working path:' ,os.getcwd())

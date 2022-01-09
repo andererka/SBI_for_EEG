@@ -144,6 +144,11 @@ def main(argv):
             num_workers=num_workers
         )
 
+        
+    ## save thetas and x_without to file_writer:
+    file_writer.save_obs_without(x_without)
+    file_writer.save_thetas(theta)
+    
     ## 21 summary features:
 
     x_21 = number_sumstats(x_without, 21)
