@@ -22,8 +22,8 @@ import cycler
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 
 color_theme = plt.cm.Greens(torch.linspace(0, 1, 2))
-color_theme[0] = torch.tensor([225, 0, 0, 255]).numpy() / 255 
-color_theme[1] = torch.tensor([31, 119, 180, 255]).numpy() / 255  
+color_theme[1] = torch.tensor([225, 0, 0, 255]).numpy() / 255 
+color_theme[0] = torch.tensor([31, 119, 180, 255]).numpy() / 255  
 
 mpl.rcParams["axes.prop_cycle"] = cycler.cycler("color", color_theme)
 mpl.rc("image", cmap="Blues")
