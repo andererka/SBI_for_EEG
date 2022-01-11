@@ -45,8 +45,11 @@ class WriteToFile(object):
         if (slurm==True):
             os.chdir('/mnt/qb/work/macke/kanderer29/')
         print('current working path:' ,os.getcwd())
-        os.mkdir(self.folder)
-        torch.save(true_params, "{}/true_params.pt".format(self.folder))
+        try:
+            os.mkdir(self.folder)
+            torch.save(true_params, "{}/true_params.pt".format(self.folder))
+        except:
+            print('file exists')
 
     def save_posterior(self, posterior):
         file_name = "{}/posterior.pt".format(self.folder)

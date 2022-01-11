@@ -120,6 +120,8 @@ def main(argv):
         slurm= True,
         )
 
+        file_writer.save_all
+
     prior_min = [7.9, 43.8,  89.49] 
 
     prior_max = [30, 79.9, 152.96]
@@ -145,6 +147,8 @@ def main(argv):
     ## save thetas and x_without to file_writer:
     file_writer.save_obs_without(x_without)
     file_writer.save_thetas(theta)
+
+    torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
     
     ## 21 summary features:
 
@@ -214,7 +218,7 @@ def main(argv):
 
 
         
-    plt.figure(figsize = (20,40))
+
     im = plot_varchanges(sample_batch_21, samples_number21, xticklabels=sum_stats_names, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
 
     file_writer.save_fig(im, 'var_changes21')
@@ -265,7 +269,7 @@ def main(argv):
         sample_list.append(globals()['samples_%s' % i] )
 
         
-    plt.figure(figsize = (20,40))
+
     im = plot_varchanges(sample_batch_18, samples_number18, xticklabels=sum_stats_names18, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
 
     file_writer.save_fig(im, 'var_changes18')
