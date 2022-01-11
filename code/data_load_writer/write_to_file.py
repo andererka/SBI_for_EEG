@@ -48,10 +48,6 @@ class WriteToFile(object):
 
         print('current working path:' ,os.getcwd())
 
-        try:
-            os.mkdir(self.folder)
-        except:
-            print('file exists')
 
         torch.save(true_params, "{}/true_params.pt".format(self.folder))
 
