@@ -82,16 +82,16 @@ def main(argv):
 
 
     try:
-        num_workers = argv[3]
+        num_workers = int(argv[3])
     except:
         num_workers = 8
     try:
-        num_sim = argv[4]
+        num_sim = int(argv[4])
     except:
         num_sim = 10000
 
     try:
-        num_samples = argv[5]
+        num_samples = int(argv[5])
 
     except:
         num_samples = 100
@@ -134,7 +134,7 @@ def main(argv):
 
     except:
         theta, x_without = inference.run_sim_theta_x(
-            prior, 
+            prior,
             simulation_wrapper=sim_wrapper,
             num_simulations=num_sim,
             num_workers=num_workers
