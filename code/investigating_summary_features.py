@@ -129,8 +129,8 @@ def main(argv):
     inf = SNPE_C(prior, density_estimator="nsf")
 
     try:
-        theta = torch.load('results/{}/step1/thetas.pt'.format(experiment_name))
-        x_without = torch.load('results/{}/step1/obs_without.pt'.format(experiment_name))
+        theta = torch.load('results/{}/thetas.pt'.format(experiment_name))
+        x_without = torch.load('results/{}/obs_without.pt'.format(experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -139,6 +139,7 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+       
 
         
     ## save thetas and x_without to file_writer:
