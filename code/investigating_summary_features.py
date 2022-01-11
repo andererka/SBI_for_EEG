@@ -80,23 +80,18 @@ def main(argv):
     #with open('results/{}/class'.format(file), "rb") as pickle_file:
         #file_writer = pickle.load(pickle_file)
 
-    try:
-        sim_wrapper = argv[2]
-    except:
-        sim_wrapper = simulation_wrapper_obs
-
 
     try:
-        num_workers = argv[4]
+        num_workers = argv[3]
     except:
         num_workers = 8
     try:
-        num_sim = argv[5]
+        num_sim = argv[4]
     except:
         num_sim = 10000
 
     try:
-        num_samples = argv[6]
+        num_samples = argv[5]
 
     except:
         num_samples = 100
