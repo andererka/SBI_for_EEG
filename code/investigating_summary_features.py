@@ -82,16 +82,16 @@ def main(argv):
 
 
     try:
-        num_workers = int(argv[3])
+        num_workers = int(argv[2])
     except:
         num_workers = 8
     try:
-        num_sim = int(argv[4])
+        num_sim = int(argv[3])
     except:
         num_sim = 10000
 
     try:
-        num_samples = int(argv[5])
+        num_samples = int(argv[4])
 
     except:
         num_samples = 100
