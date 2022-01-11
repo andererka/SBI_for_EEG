@@ -97,6 +97,7 @@ def main(argv):
         num_samples = 100
 
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
+    sim_wrapper = simulation_wrapper_obs
 
     if (slurm == True):
         os.chdir('/mnt/qb/work/macke/kanderer29/')
