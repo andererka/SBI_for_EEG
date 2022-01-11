@@ -69,19 +69,46 @@ class WriteToFile(object):
 
 
     def save_proposal(self, prop, name='default'):
-
-        torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
+        if (name=='default'):
+            torch.save(prop, "{}/proposal.pt".format(self.folder))
+        else:
+            try:
+                os.mkdir('results/{}/{}'.format(name))
+            except:
+                print('can not make dir - maybe it exists already')
+            torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
         self.prop = prop
 
     def save_observations(self, x, name='default'):
-        torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
+        if (name=='default'):
+            torch.save(x, "{}/obs.pt".format(self.folder))
+        else:
+            try:
+                os.mkdir('results/{}/{}'.format(name))
+            except:
+                print('can not make dir - maybe it exists already')
+            torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
         self.x = x
 
     def save_obs_without(self, x_without, name='default'):
-        torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
+        if (name=='default'):
+            torch.save(x_without, "{}/obs_without.pt".format(self.folder))
+        else:
+            try:
+                os.mkdir('results/{}/{}'.format(name))
+            except:
+                print('can not make dir - maybe it exists already')
+            torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
 
     def save_thetas(self, thetas, name='default'):
-        torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
+        if (name=='default'):
+            torch.save(thetas, "{}/thetas.pt".format(self.folder))
+        else:
+            try:
+                os.mkdir('results/{}/{}'.format(name))
+            except:
+                print('can not make dir - maybe it exists already')
+            torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
         self.thetas = thetas
 
     def save_fig(self, fig, figname=None):
