@@ -42,20 +42,24 @@ class WriteToFile(object):
         self.slurm = slurm
 
 
-        if (self.slurm==True):
-            os.chdir('/mnt/qb/work/macke/kanderer29/')
-
-
         self.folder = path_parent + self.experiment 
 
         print('self folder', self.folder)
-
-
-
-        print('current working path:' ,os.getcwd())
-
+        if(self.slurm == True):
+            try:
+                os.chdir('/mnt/qb/work/macke/kanderer29')
+                os.mkdir(self.folder)
+            except:
+                print('file exists')
+        else:
+            try:
+                os.mkdir(self.folder)
+            except:
+                print('file exists')
 
     def save_posterior(self, posterior):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
         file_name = "{}/posterior.pt".format(self.folder)
         if os.path.isfile(file_name):
             expand = 1
@@ -70,12 +74,16 @@ class WriteToFile(object):
         torch.save(posterior, file_name)
 
     def save_prior(self, prior):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
 
         torch.save(prior, "{}/prior.pt".format(self.folder))
         self.prior = prior
 
 
     def save_proposal(self, prop, name='default'):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
         if (name=='default'):
             torch.save(prop, "{}/proposal.pt".format(self.folder))
         else:
@@ -87,6 +95,9 @@ class WriteToFile(object):
         self.prop = prop
 
     def save_observations(self, x, name='default'):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
+
         if (name=='default'):
             torch.save(x, "{}/obs.pt".format(self.folder))
         else:
@@ -98,6 +109,9 @@ class WriteToFile(object):
         self.x = x
 
     def save_obs_without(self, x_without, name='default'):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
+
         if (name=='default'):
             torch.save(x_without, "{}/obs_without.pt".format(self.folder))
         else:
@@ -108,6 +122,9 @@ class WriteToFile(object):
             torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
 
     def save_thetas(self, thetas, name='default'):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
+
         if (name=='default'):
             torch.save(thetas, "{}/thetas.pt".format(self.folder))
         else:
@@ -119,6 +136,8 @@ class WriteToFile(object):
         self.thetas = thetas
 
     def save_fig(self, fig, figname=None):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
         if figname == None:
             file_name = "{}/figure.png".format(self.folder)
             if os.path.isfile(file_name):
@@ -136,6 +155,9 @@ class WriteToFile(object):
         fig.savefig(file_name)
 
     def save_meta(self, start_time, finish_time):
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
+
         json_dict = {
             "date": self.date,
             "path": self.folder,
@@ -162,11 +184,9 @@ class WriteToFile(object):
     ):
         self.save_posterior(posterior)
         self.save_prior(prior)
-
-        if fig != None:
-            self.save_fig(fig)
-        else:
-            print("no fig")
+        
+        if(self.slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
 
         source = "{}/{}.py".format(self.folder, source)
         # Destination path

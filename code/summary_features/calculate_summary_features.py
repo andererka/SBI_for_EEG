@@ -4,6 +4,7 @@ import numpy as np
 from scipy.signal import argrelextrema
 import torch
 import tsfel
+from numpy import trapz
 
 
 def calculate_summary_stats_number(x, number_stats):
@@ -59,7 +60,7 @@ def calculate_summary_stats_number(x, number_stats):
             batch_list.append(sum_stats_vec)
 
 
-        elif number_stats == 9:
+        elif number_stats == 17:
             '''
             - arg_p50: searches for the time of the first postive peak (searches argmax during the first 70ms)
             - arg_N100: searches for the time of the negative peak of the ERP signal (seaches argmin)
@@ -80,6 +81,41 @@ def calculate_summary_stats_number(x, number_stats):
             N100_moment1 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=1))  # mean
             P200_moment1 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=1))  # mean
 
+            p50_moment2 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=2))  # variance
+            N100_moment2 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=2))  # variance
+            P200_moment2 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=2))  # variance
+
+
+            ## search zero crossing after p50:
+            zero_cross_p50 = np.where(np.diff(np.sign(batch[arg_p50:arg_N100])))[0]
+
+            # compute area under the curve:
+            area_p50 = trapz(batch[:zero_cross_p50], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
+            area_p50 = torch.tensor(area)
+
+
+            ## search zero crossing after N100:
+            zero_cross_N100 = np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0]
+
+            # compute area under the curve:
+            area_N100 = trapz(batch[zero_cross_p50:zero_cross_N100], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
+            area_N100 = torch.tensor(area)
+
+            ## search zero crossing after N100:
+            zero_cross_N100 = np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0]
+
+            # compute area under the curve:
+            area_P200 = trapz(batch[zero_cross_N100:], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
+            area_P200 = torch.tensor(area)
+
+            # mean values over different, relevant time periods:
+
+            mean4000 = np.mean(batch[4000:4500])
+
+            mean1000 = np.mean(batch[:1000])
+
+
+
             sum_stats_vec = torch.stack(
                 [
                     arg_p50,
@@ -91,6 +127,14 @@ def calculate_summary_stats_number(x, number_stats):
                     p50_moment1,
                     N100_moment1,
                     P200_moment1,
+                    p50_moment2,
+                    N100_moment1,
+                    P200_moment1,
+                    area_p50,
+                    area_N100,
+                    area_P200,
+                    mean4000,
+                    mean1000
                 ]
             )
             batch_list.append(sum_stats_vec)
@@ -125,13 +169,13 @@ def calculate_summary_stats_number(x, number_stats):
 
             # compute area under the curve:
 
-            from numpy import trapz
+            
             area = trapz(window, dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
             area = torch.tensor(area)
             ## autocorrelation:
             autocorr = torch.tensor(tsfel.feature_extraction.features.autocorr(window))    
 
-                        ## number of times that signal crosses the zero axis:
+            ## number of times that signal crosses the zero axis:
             zero_cross = torch.tensor(len(np.where(np.diff(np.sign(window)))[0]))       
             
 
