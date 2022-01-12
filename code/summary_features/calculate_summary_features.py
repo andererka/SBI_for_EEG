@@ -95,6 +95,7 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after N100:
+            print(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
             zero_cross_N100 = int(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
 
             # compute area under the curve:
