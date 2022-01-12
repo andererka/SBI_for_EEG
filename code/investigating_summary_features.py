@@ -130,9 +130,9 @@ def main(argv):
     try:
                 
         print('line 141', os.getcwd())
-        print('{}/results/{}/thetas.pt'.format(file_writer.folder, experiment_name))
-        theta = torch.load('{}/results/{}/thetas.pt'.format(file_writer.folder, experiment_name))
-        x_without = torch.load('{}/results/{}/obs_without.pt'.format(file_writer.folder, experiment_name))
+        print('{}/thetas.pt'.format(file_writer.folder, experiment_name))
+        theta = torch.load('{}/thetas.pt'.format(file_writer.folder, experiment_name))
+        x_without = torch.load('{}/obs_without.pt'.format(file_writer.folder, experiment_name))
         print('done')
 
     except:
