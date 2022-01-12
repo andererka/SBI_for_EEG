@@ -99,10 +99,10 @@ def main(argv):
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
     sim_wrapper = simulation_wrapper_obs
 
-    if(slurm == True):
+    if (slurm == True):
         print('slurm', slurm)
         os.chdir('/mnt/qb/work/macke/kanderer29')
-    print('slurm', slurm)
+    print('slurm1', slurm)
 
     print(os.getcwd())
 
