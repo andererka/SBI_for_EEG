@@ -101,6 +101,8 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after N100:
+            print('arg_N100', arg_N100)
+            print('arg_P200', arg_P200)
      
             zero_cross_N100 = int(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
 
