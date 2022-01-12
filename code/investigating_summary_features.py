@@ -122,7 +122,6 @@ def main(argv):
         density_estimator='nsf',
         num_params=3,
         num_samples=num_samples,
-        slurm= slurm,
         )
 
         try:

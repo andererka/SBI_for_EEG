@@ -29,7 +29,7 @@ class WriteToFile(object):
         density_estimator="maf",
         num_params=None,
         num_samples=None,
-        slurm=False,
+       
     ):
         self.date = datetime.datetime.now().strftime("%m-%d-%Y_%H:%M:%S")
         self.path_parent = path_parent
@@ -46,8 +46,6 @@ class WriteToFile(object):
         print('self folder', self.folder)
 
         try:
-            if (slurm==True):
-                os.chdir('/mnt/qb/work/macke/kanderer29')
             os.mkdir(self.folder)
         except:
             print('file exists')
