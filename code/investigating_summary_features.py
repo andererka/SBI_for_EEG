@@ -43,7 +43,7 @@ import pickle
 
 import sys
 
-sys.path.append('/mnt/qb/work/macke/kanderer29')
+sys.path.append('/mnt/qb/work/macke/kanderer29/')
 
 from utils.helpers import get_time
 
