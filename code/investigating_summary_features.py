@@ -100,7 +100,6 @@ def main(argv):
 
     print('okay')
 
-    os.chdir('')
 
     os.chdir('/mnt/qb/work/macke/kanderer29')
 
