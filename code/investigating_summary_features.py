@@ -66,10 +66,6 @@ This file aims to investigate different summary statistics, their time efficienc
 
 def main(argv):
 
-    start = get_time()
-
-    slurm = True
-
     try:
         experiment_name = argv[0]
     except:
@@ -95,6 +91,10 @@ def main(argv):
     except:
         num_samples = 100
 
+    start = get_time()
+
+    slurm = True
+
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
     sim_wrapper = simulation_wrapper_obs
 
@@ -103,9 +103,9 @@ def main(argv):
 
     print('slurm1', slurm)
 
-    os.chdir('/mnt/qb/work/macke/kanderer29/')
+    #os.chdir('/mnt/qb/work/macke/kanderer29/')
 
-    print(os.getcwd())
+
 
 
 
