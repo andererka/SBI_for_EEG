@@ -134,6 +134,9 @@ def main(argv):
     inf = SNPE_C(prior, density_estimator="nsf")
 
     try:
+                
+        if(slurm == True):
+            os.chdir('/mnt/qb/work/macke/kanderer29')
         theta = torch.load('results/{}/thetas.pt'.format(experiment_name))
         x_without = torch.load('results/{}/obs_without.pt'.format(experiment_name))
 
