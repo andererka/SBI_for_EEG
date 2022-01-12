@@ -118,9 +118,9 @@ def calculate_summary_stats_number(x, number_stats):
 
             # mean values over different, relevant time periods:
 
-            mean4000 = np.mean(batch[4000:4500])
+            mean4000 = torch.mean(batch[4000:4500])
 
-            mean1000 = np.mean(batch[:1000])
+            mean1000 = torch.mean(batch[:1000])
 
 
 
