@@ -98,31 +98,27 @@ def main(argv):
 
     if (slurm == True):
         print('slurm', slurm)
-        os.chdir('/mnt/qb/work/macke/kanderer29')
+        #os.chdir('/mnt/qb/work/macke/kanderer29')
     print('slurm1', slurm)
 
     print(os.getcwd())
 
+
+
+    print('new experiment')
+    file_writer = write_to_file.WriteToFile(
+    experiment=experiment_name,
+    num_sim=num_sim,
+    true_params=true_params,
+    density_estimator='nsf',
+    num_params=3,
+    num_samples=num_samples,
+    )
+
     try:
-
-        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
-        
+        os.mkdir(file_writer.folder)
     except:
-
-        print('new experiment')
-        file_writer = write_to_file.WriteToFile(
-        experiment=experiment_name,
-        num_sim=num_sim,
-        true_params=true_params,
-        density_estimator='nsf',
-        num_params=3,
-        num_samples=num_samples,
-        )
-
-        try:
-            os.mkdir(file_writer.folder)
-        except:
-            print('file exists')
+        print('file exists')
 
     
 
