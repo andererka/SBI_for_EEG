@@ -51,10 +51,6 @@ class WriteToFile(object):
 
         print('self folder', self.folder)
 
-        try:
-            os.mkdir(self.folder)
-        except:
-            print('file exists')
         print(os.getcwd())
 
     def save_posterior(self, posterior):
