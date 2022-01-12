@@ -46,12 +46,10 @@ class WriteToFile(object):
         if (slurm== False):
             self.folder = path_parent + self.experiment 
         else:
-            os.chdir('/mnt/qb/work/macke/kanderer29/')
             self.folder = save_to + path_parent + self.experiment 
 
         print('self folder', self.folder)
 
-        print(os.getcwd())
 
     def save_posterior(self, posterior):
 
