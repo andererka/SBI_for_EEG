@@ -145,6 +145,7 @@ def main(argv):
         x_without = torch.load('results/{}/obs_without.pt'.format(experiment_name))
 
     except:
+        print('running')
         theta, x_without = inference.run_sim_theta_x(
             prior,
             simulation_wrapper=sim_wrapper,
