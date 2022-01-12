@@ -67,7 +67,7 @@ def main(argv):
     start = get_time()
 
     try:
-        slurm = argv[0]
+        slurm = bool(argv[0])
     except:
         slurm = False
 
