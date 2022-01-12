@@ -66,15 +66,10 @@ def main(argv):
 
     start = get_time()
 
-    try:
-        if (argv[0] == 'True'):
-            slurm = True
-            print('here')
-    except:
-        slurm = False
+    slurm = True
 
     try:
-        experiment_name = argv[1]
+        experiment_name = argv[0]
     except:
         experiment_name = '6_sum_stats_500sim_3params'
 
@@ -84,16 +79,16 @@ def main(argv):
 
 
     try:
-        num_workers = int(argv[2])
+        num_workers = int(argv[1])
     except:
         num_workers = 8
     try:
-        num_sim = int(argv[3])
+        num_sim = int(argv[2])
     except:
         num_sim = 100
 
     try:
-        num_samples = int(argv[4])
+        num_samples = int(argv[3])
 
     except:
         num_samples = 100
