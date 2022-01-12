@@ -92,11 +92,15 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after p50:
-            print('zero crossings', np.where(np.diff(np.sign(batch[:arg_N100])))[0])
-            if (len(np.where(np.diff(np.sign(batch[:arg_N100])))[0])>1):
-                zero_cross_p50 = int(np.where(np.diff(np.sign(batch[:arg_N100])))[0][0])
-            else:
-                zero_cross_p50 = int(np.where(np.diff(np.sign(batch[:arg_N100])))[0])
+            print('zero crossings', np.where(np.diff(np.sign(batch)))[0])
+
+            zero_crossings = np.where(np.diff(np.sign(batch)))[0]
+
+            number_crossings = len(np.where(np.diff(np.sign(batch)))[0])
+            
+            
+            zero_cross_p50 = int(zero_crossings[number_crossings-2])
+         
 
             print('zero crossing p50', zero_cross_p50)
 
@@ -109,9 +113,8 @@ def calculate_summary_stats_number(x, number_stats):
             print('arg_N100', arg_N100)
             print('arg_P200', arg_P200)
 
-            print(np.where(np.diff(np.sign(batch[arg_N100:arg_P200]))))
      
-            zero_cross_N100 = int(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
+            zero_cross_N100 = int(zero_crossings[number_crossings-1])
 
             print('zero crossing N100', zero_cross_N100)
 
