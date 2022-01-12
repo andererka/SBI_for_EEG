@@ -69,6 +69,7 @@ def main(argv):
     try:
         if (argv[0] == 'True'):
             slurm = True
+            print('here')
     except:
         slurm = False
 
