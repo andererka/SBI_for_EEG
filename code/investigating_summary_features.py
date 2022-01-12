@@ -100,7 +100,9 @@ def main(argv):
     sim_wrapper = simulation_wrapper_obs
 
     if(slurm == True):
+        print('slurm', slurm)
         os.chdir('/mnt/qb/work/macke/kanderer29')
+    print('slurm', slurm)
 
     print(os.getcwd())
 
@@ -161,7 +163,6 @@ def main(argv):
     torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
     
     ## 21 summary features:
-
     x_21 = number_sumstats(x_without, 21)
     inf = SNPE_C(prior=prior, density_estimator = 'nsf')
     inf = inf.append_simulations(theta, x_21)

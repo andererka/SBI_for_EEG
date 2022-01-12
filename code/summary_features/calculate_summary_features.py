@@ -174,12 +174,10 @@ def calculate_summary_stats_number(x, number_stats):
             '''
 
             ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
-            arg50ms = int(np.round(batch.size(dim=0) / total_steps_ms * 50))
-            arg70ms = int(np.round(batch.size(dim=0) / total_steps_ms * 70))
-            arg100ms = int(np.round(batch.size(dim=0) / total_steps_ms * 100))
-            arg120ms = int(np.round(batch.size(dim=0) / total_steps_ms * 120))
-            arg150ms = int(np.round(batch.size(dim=0) / total_steps_ms * 150))
-
+            arg50ms = int(30* 50)
+            arg70ms = int(30 * 70)
+            arg100ms = int(30 * 100)
+            arg120ms = int(30 * 120)
 
             window = batch
         
