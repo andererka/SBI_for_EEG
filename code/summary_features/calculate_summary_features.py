@@ -30,19 +30,19 @@ def calculate_summary_stats_number(x, number_stats):
 
         ##search for P50 between 0 and 80ms:
 
-        print('batch shape ', batch.shape)
+        #print('batch shape ', batch.shape)
 
         arg80ms = int(80 * 30)
 
         arg_p50 = torch.argmax(batch[0:arg80ms])
         arg_P200 = torch.argmax(batch)
 
-        print('arg_p50', arg_p50)
-        print('arg_p200', arg_P200)
+        #print('arg_p50', arg_p50)
+        #print('arg_p200', arg_P200)
 
         ## search for N100
         arg_N100 = torch.argmin(batch)
-        
+
         arg200ms = int(200 * 30)
         arg50ms = int(30* 50)
         arg70ms = int(30 * 70)
@@ -95,7 +95,7 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after p50:
-            print('zero crossings', np.where(np.diff(np.sign(batch)))[0])
+            #print('zero crossings', np.where(np.diff(np.sign(batch)))[0])
 
             zero_crossings = np.where(np.diff(np.sign(batch)))[0]
 
@@ -105,7 +105,7 @@ def calculate_summary_stats_number(x, number_stats):
             zero_cross_p50 = int(zero_crossings[number_crossings-2])
          
 
-            print('zero crossing p50', zero_cross_p50)
+            #print('zero crossing p50', zero_cross_p50)
 
             # compute area under the curve:
             area_p50 = trapz(batch[:zero_cross_p50], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
@@ -113,13 +113,13 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after N100:
-            print('arg_N100', arg_N100)
-            print('arg_P200', arg_P200)
+            #print('arg_N100', arg_N100)
+            #print('arg_P200', arg_P200)
 
      
             zero_cross_N100 = int(zero_crossings[number_crossings-1])
 
-            print('zero crossing N100', zero_cross_N100)
+            #print('zero crossing N100', zero_cross_N100)
 
             # compute area under the curve:
             area_N100 = trapz(batch[zero_cross_p50:zero_cross_N100], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points

@@ -178,6 +178,8 @@ def main(argv):
     density_estimator = inf.train()
     posterior_17 = inf.build_posterior(density_estimator)
 
+    print('line 181')
+
     obs_real = inference.run_only_sim(true_params, sim_wrapper)
 
     obs_real_number21 = number_sumstats(obs_real, 21)
@@ -185,6 +187,8 @@ def main(argv):
 
 
     samples_number17 = posterior_17.sample((num_samples,), x=obs_real_number17)
+
+    print('line 191')
 
     samples_number21 = posterior_21.sample((num_samples,), x=obs_real_number21)
 
@@ -205,6 +209,8 @@ def main(argv):
 
     sample_batch_21 = []
     batch_size = 10
+
+    print('line 213')
 
     for i in range(batch_size):
 
@@ -229,7 +235,7 @@ def main(argv):
                                             'max3', 'min3', 'peak_to_peak3', 'area3', 'autocorr3']
 
 
-        
+    print('line 238')
 
     im = plot_varchanges(sample_batch_21, samples_number21, xticklabels=sum_stats_names, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
 
@@ -286,6 +292,7 @@ def main(argv):
 
     fig, axes = plt.subplots(1, 1, figsize=(30, 10), sharex=True)
 
+    print('line 295')
 
     plot_KLs(sample_batch_17,
             samples_number17,
