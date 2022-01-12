@@ -48,11 +48,12 @@ class WriteToFile(object):
 
         self.folder = path_parent + self.experiment 
 
+        print('self folder', self.folder)
+
 
 
         print('current working path:' ,os.getcwd())
 
-        torch.save(true_params, "{}/true_params.pt".format(self.folder))
 
     def save_posterior(self, posterior):
         file_name = "{}/posterior.pt".format(self.folder)
