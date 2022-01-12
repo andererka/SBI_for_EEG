@@ -32,7 +32,7 @@ def calculate_summary_stats_number(x, number_stats):
 
         ##search for P50 between 0 and 80ms:
 
-        print('batch shape ', batch.shape())
+        print('batch shape ', batch.shape)
 
         arg80ms = int(80 * 30)
 
