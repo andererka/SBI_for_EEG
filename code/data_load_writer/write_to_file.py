@@ -39,15 +39,18 @@ class WriteToFile(object):
         self.density_estimator = density_estimator
         self.num_params = num_params
         self.num_samples = num_samples
+        self.slurm = slurm
+
+
+        if (self.slurm==True):
+            os.chdir('/mnt/qb/work/macke/kanderer29/')
+
 
         self.folder = path_parent + self.experiment 
 
-  
-        if (slurm==True):
-            os.chdir('/mnt/qb/work/macke/kanderer29/')
+
 
         print('current working path:' ,os.getcwd())
-
 
         torch.save(true_params, "{}/true_params.pt".format(self.folder))
 
