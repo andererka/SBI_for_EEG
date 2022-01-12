@@ -101,8 +101,6 @@ def main(argv):
     print('okay')
 
 
-    os.chdir('/mnt/qb/work/macke/kanderer29')
-
     print('slurm1', slurm)
 
     print(os.getcwd())
@@ -118,11 +116,6 @@ def main(argv):
     num_params=3,
     num_samples=num_samples,
     )
-
-    try:
-        os.mkdir(file_writer.folder)
-    except:
-        print('file exists')
 
     
 

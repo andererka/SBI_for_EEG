@@ -29,6 +29,7 @@ class WriteToFile(object):
         density_estimator="maf",
         num_params=None,
         num_samples=None,
+        slurm = True,
        
     ):
         self.date = datetime.datetime.now().strftime("%m-%d-%Y_%H:%M:%S")
@@ -40,8 +41,12 @@ class WriteToFile(object):
         self.num_params = num_params
         self.num_samples = num_samples
 
+        save_to = '/mnt/qb/work/macke/kanderer29'
 
-        self.folder = path_parent + self.experiment 
+        if (slurm== True):
+            self.folder = path_parent + self.experiment 
+        else:
+            self.folder = save_to + path_parent + self.experiment 
 
         print('self folder', self.folder)
 
