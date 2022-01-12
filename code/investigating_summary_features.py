@@ -170,21 +170,21 @@ def main(argv):
     density_estimator = inf.train()
     posterior_21 = inf.build_posterior(density_estimator)
 
-    ## 18 summary features:
+    ## 17 summary features:
 
-    x_18 = number_sumstats(x_without, 18)
+    x_17 = number_sumstats(x_without, 17)
     inf = SNPE_C(prior=prior, density_estimator = 'nsf')
-    inf = inf.append_simulations(theta, x_18.to(torch.float32))
+    inf = inf.append_simulations(theta, x_17.to(torch.float32))
     density_estimator = inf.train()
-    posterior_18 = inf.build_posterior(density_estimator)
+    posterior_17 = inf.build_posterior(density_estimator)
 
     obs_real = inference.run_only_sim(true_params, sim_wrapper)
 
     obs_real_number21 = number_sumstats(obs_real, 21)
-    obs_real_number18 = number_sumstats(obs_real, 18)
+    obs_real_number17 = number_sumstats(obs_real, 17)
 
 
-    samples_number18 = posterior_18.sample((num_samples,), x=obs_real_number18)
+    samples_number17 = posterior_17.sample((num_samples,), x=obs_real_number17)
 
     samples_number21 = posterior_21.sample((num_samples,), x=obs_real_number21)
 
@@ -197,7 +197,7 @@ def main(argv):
         samples_prior.append(sample)
 
     ## simulate from posterior samples:
-    s_x_18 = inference.run_only_sim(samples_number18, sim_wrapper, num_workers)
+    s_x_17 = inference.run_only_sim(samples_number17, sim_wrapper, num_workers)
     s_x_21 = inference.run_only_sim(samples_number21, sim_wrapper, num_workers)
 
     t = obs_real_number21[0]
@@ -236,16 +236,16 @@ def main(argv):
     file_writer.save_fig(im, 'var_changes21')
 
 
-    t = obs_real_number18[0]
-    sample_batch_18 = []
+    t = obs_real_number17[0]
+    sample_batch_17 = []
 
 
     for i in range(batch_size):
 
-        sample18_list = []
+        sample17_list = []
 
         for i in range(21):
-            x = number_sumstats(x_without, 18)
+            x = number_sumstats(x_without, 17)
             x_c = torch.cat((x[:,:i], x[:,i+1:]), axis = 1)
             inf = SNPE_C(prior=prior, density_estimator = 'nsf')
             inf = inf.append_simulations(theta, x_c)
@@ -253,11 +253,11 @@ def main(argv):
             posterior = inf.build_posterior(density_estimator)
             globals()['samples21_%s' % i] = posterior.sample((num_samples,), x=torch.cat((t[:i], t[i+1:]), axis = 0))
             
-            sample18_list.append(globals()['samples21_%s' % i] )
+            sample17_list.append(globals()['samples21_%s' % i] )
         
-        sample_batch_18.append(sample21_list)
+        sample_batch_17.append(sample21_list)
 
-    sum_stats_names18 = [
+    sum_stats_names17 =  [
                     'arg_p50',
                     'arg_N100',
                     'arg_P200',
@@ -268,31 +268,27 @@ def main(argv):
                     'N100_moment1',
                     'P200_moment1',
                     'p50_moment2',
-                    'N100_moment2',
-                    'P200_moment2',
-                    'p50_moment3',
-                    'N100_moment3',
-                    'P200_moment3'
-                    'p50_moment4',
-                    'N100_moment4',
-                    'P200_moment4']
-    sample_list = []
-    for i in range(18):
-        sample_list.append(globals()['samples_%s' % i] )
+                    'N100_moment1',
+                    'P200_moment1',
+                    'area_p50',
+                    'area_N100',
+                    'area_P200',
+                    'mean4000',
+                    'mean1000'
+                ]
 
-        
 
-    im = plot_varchanges(sample_batch_18, samples_number18, xticklabels=sum_stats_names18, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
+    im = plot_varchanges(sample_batch_17, samples_number17, xticklabels=sum_stats_names17, yticklabels=["t_evprox_1", "t_evdist_1", "t_evprox_2"], plot_label='', batchsize=0)
 
-    file_writer.save_fig(im, 'var_changes18')
+    file_writer.save_fig(im, 'var_changes17')
 
 
 
     fig, axes = plt.subplots(1, 1, figsize=(30, 10), sharex=True)
 
 
-    plot_KLs(sample_batch_18,
-            samples_number18,
+    plot_KLs(sample_batch_17,
+            samples_number17,
             idx=0,
             batchsize=10,
             kind='box',
@@ -301,12 +297,12 @@ def main(argv):
 
 
     axes.set_xlabel("missing feature", size=14)
-    axes.set_xticklabels(sum_stats_names18)
+    axes.set_xticklabels(sum_stats_names17)
     axes.tick_params(axis="both", which="major", labelsize=12)
     ylabel = axes.get_ylabel()
     axes.set_ylabel(ylabel, size=14)
 
-    file_writer.save_fig(fig, 'KL_18_features')
+    file_writer.save_fig(fig, 'KL_17_features')
 
     fig, axes = plt.subplots(1, 1, figsize=(30, 10), sharex=True)
 
@@ -343,14 +339,14 @@ def main(argv):
         
     fig2, ax = plt.subplots(1, 1)
         
-    for s in s_x_18:
+    for s in s_x_17:
         plt.plot(s, alpha=0.2, color='blue')
         #plt.ylim(-30,30)
         plt.xlim(0, 7000)
         
-    plt.plot(obs_real_number18[0], label='Ground truth', color='red')
+    plt.plot(obs_real_number17[0], label='Ground truth', color='red')
 
-    file_writer.save_fig(fig2, 'from_posterior_18features')
+    file_writer.save_fig(fig2, 'from_posterior_17features')
 
     fig3, ax = plt.subplots(1, 1)
     ax.set_title("Simulating from prior")

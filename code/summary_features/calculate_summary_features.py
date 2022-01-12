@@ -25,8 +25,6 @@ def calculate_summary_stats_number(x, number_stats):
     for batch in x:
 
 
-        total_steps_ms = batch.size(dim=0) / time_window
-
         # sets the first value as baseline
         #batch = torch.sub(batch, torch.index_select(batch, 0, torch.tensor([0])))
 
@@ -43,8 +41,13 @@ def calculate_summary_stats_number(x, number_stats):
         print('arg_p200', arg_P200)
 
         ## search for N100
-        arg200ms = int(200 * 30)
         arg_N100 = torch.argmin(batch)
+        
+        arg200ms = int(200 * 30)
+        arg50ms = int(30* 50)
+        arg70ms = int(30 * 70)
+        arg100ms = int(30 * 100)
+        arg120ms = int(30 * 120)
 
 
         if number_stats == 6:
@@ -174,10 +177,7 @@ def calculate_summary_stats_number(x, number_stats):
             '''
 
             ## idea: overlapping sliding window. we calculate summary statistics for each 'window' seperately.
-            arg50ms = int(30* 50)
-            arg70ms = int(30 * 70)
-            arg100ms = int(30 * 100)
-            arg120ms = int(30 * 120)
+
 
             window = batch
         
