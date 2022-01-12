@@ -37,7 +37,7 @@ def calculate_summary_stats_number(x, number_stats):
         arg80ms = int(80 * 30)
 
         arg_p50 = torch.argmax(batch[0:arg80ms])
-        arg_P200 = torch.argmax(batch[arg80ms:])
+        arg_P200 = torch.argmax(batch)
 
         print('arg_p50', arg_p50)
         print('arg_p200', arg_P200)
