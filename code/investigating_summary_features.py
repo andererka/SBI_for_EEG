@@ -43,6 +43,8 @@ import pickle
 
 import sys
 
+sys.path.append('/mnt/qb/work/macke/kanderer29')
+
 from utils.helpers import get_time
 
 
@@ -97,7 +99,7 @@ def main(argv):
     sim_wrapper = simulation_wrapper_obs
 
     os.chdir('/mnt/qb/work/macke/kanderer29')
-    
+
     print('slurm1', slurm)
 
     print(os.getcwd())
