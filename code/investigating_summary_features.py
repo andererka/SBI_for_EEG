@@ -99,6 +99,9 @@ def main(argv):
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
     sim_wrapper = simulation_wrapper_obs
 
+    if(slurm == True):
+        os.chdir('/mnt/qb/work/macke/kanderer29')
+
     print(os.getcwd())
 
     try:
@@ -135,8 +138,7 @@ def main(argv):
 
     try:
                 
-        if(slurm == True):
-            os.chdir('/mnt/qb/work/macke/kanderer29')
+        print('line 141', os.getcwd())
         theta = torch.load('results/{}/thetas.pt'.format(experiment_name))
         x_without = torch.load('results/{}/obs_without.pt'.format(experiment_name))
 
@@ -153,6 +155,8 @@ def main(argv):
     ## save thetas and x_without to file_writer:
     file_writer.save_obs_without(x_without)
     file_writer.save_thetas(theta)
+
+    print('line159')
 
     torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
     
