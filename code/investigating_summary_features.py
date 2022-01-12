@@ -123,7 +123,7 @@ def main(argv):
         except:
             print('file exists')
 
-        file_writer.save_all
+    
 
     prior_min = [7.9, 43.8,  89.49] 
 
