@@ -41,7 +41,7 @@ class WriteToFile(object):
         self.num_params = num_params
         self.num_samples = num_samples
 
-        save_to = '/mnt/qb/work/macke/kanderer29'
+        save_to = '/mnt/qb/work/macke/kanderer29/'
 
         if (slurm== False):
             self.folder = path_parent + self.experiment 
