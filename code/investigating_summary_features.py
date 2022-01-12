@@ -88,7 +88,7 @@ def main(argv):
     try:
         num_sim = int(argv[3])
     except:
-        num_sim = 10000
+        num_sim = 100
 
     try:
         num_samples = int(argv[4])
@@ -99,9 +99,7 @@ def main(argv):
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
     sim_wrapper = simulation_wrapper_obs
 
-    if (slurm == True):
-        os.chdir('/mnt/qb/work/macke/kanderer29/')
-        print(os.getcwd())
+    print(os.getcwd())
 
     try:
 
@@ -117,7 +115,7 @@ def main(argv):
         density_estimator='nsf',
         num_params=3,
         num_samples=num_samples,
-        slurm= True,
+        slurm= slurm,
         )
 
         try:
