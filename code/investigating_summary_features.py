@@ -103,6 +103,8 @@ def main(argv):
 
     print('slurm1', slurm)
 
+    os.chdir('/mnt/qb/work/macke/kanderer29/')
+
     print(os.getcwd())
 
 
