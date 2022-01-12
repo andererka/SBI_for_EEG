@@ -34,8 +34,11 @@ def calculate_summary_stats_number(x, number_stats):
 
         arg60ms = int(60 * 30)
 
-        arg_p50 = torch.argmax(batch[0:arg70ms])
-        arg_P200 = torch.argmax(batch[arg70ms:])
+        arg_p50 = torch.argmax(batch[0:arg60ms])
+        arg_P200 = torch.argmax(batch[arg60ms:])
+
+        print('arg_p50', arg_p50)
+        print('arg_p200', arg_P200)
 
         ## search for N100
         arg200ms = int(200 * 30)
