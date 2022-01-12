@@ -115,6 +115,7 @@ def main(argv):
     density_estimator='nsf',
     num_params=3,
     num_samples=num_samples,
+    slurm=slurm
     )
 
     
@@ -131,6 +132,7 @@ def main(argv):
                 
         print('line 141', os.getcwd())
         print('{}/thetas.pt'.format(file_writer.folder, experiment_name))
+        print(os.access(file_writer.folder, os.R_OK))
         theta = torch.load('{}/thetas.pt'.format(file_writer.folder, experiment_name))
         x_without = torch.load('{}/obs_without.pt'.format(file_writer.folder, experiment_name))
         print('done')
