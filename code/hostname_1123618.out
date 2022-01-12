@@ -1,0 +1,41 @@
+JobId=1123618 JobName=script.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=59202 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:00 TimeLimit=10:00:00 TimeMin=N/A
+   SubmitTime=2022-01-12T23:37:57 EligibleTime=2022-01-12T23:37:57
+   AccrueTime=2022-01-12T23:37:58
+   StartTime=2022-01-12T23:37:58 EndTime=2022-01-13T09:37:58 Deadline=N/A
+   PreemptEligibleTime=2022-01-12T23:38:58 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-01-12T23:37:58
+   Partition=cpu-short AllocNode:Sid=bg-slurmb-login1:20484
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-cpu-hm-1
+   BatchHost=slurm-cpu-hm-1
+   NumNodes=1 NumCPUs=30 NumTasks=1 CPUs/Task=30 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=30,mem=64G,node=1,billing=6
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=30 MinMemoryNode=64G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1123618.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1123618.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
+GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-120.el7
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /mnt/qb/home/macke/kanderer29/.conda/envs/sbi_env/bin/python3.7...done.
+(gdb) quit

@@ -1,0 +1,10 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "investigating_summary_features.py", line 363, in <module>
+    main(sys.argv[1:])
+  File "investigating_summary_features.py", line 159, in main
+    file_writer.save_obs_without(x_without)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/data_load_writer/write_to_file.py", line 110, in save_obs_without
+    if(self.slurm == True):
+AttributeError: 'WriteToFile' object has no attribute 'slurm'

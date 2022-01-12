@@ -68,7 +68,7 @@ def main(argv):
 
     start = get_time()
 
-    slurm = True
+    slurm = False
 
     try:
         experiment_name = argv[0]
@@ -114,7 +114,7 @@ def main(argv):
     true_params=true_params,
     density_estimator='nsf',
     num_params=3,
-    num_samples=num_samples,
+    num_samples=num_samples, slurm=slurm,
     )
 
     

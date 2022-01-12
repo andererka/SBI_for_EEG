@@ -1,0 +1,10 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "investigating_summary_features.py", line 363, in <module>
+    main(sys.argv[1:])
+  File "investigating_summary_features.py", line 175, in main
+    x_18 = number_sumstats(x_without, 18)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/summary_features/calculate_summary_features.py", line 254, in calculate_summary_stats_number
+    p50 = torch.max(batch[0:arg70ms])
+UnboundLocalError: local variable 'arg70ms' referenced before assignment

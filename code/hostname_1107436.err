@@ -1,0 +1,19 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Running 10000 simulations in 10000 batches.:   0%|          | 0/10000 [00:00<?, ?it/s]Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Running 10000 simulations in 10000 batches.:   0%|          | 1/10000 [02:01<338:01:06, 121.70s/it]Running 10000 simulations in 10000 batches.:   0%|          | 2/10000 [02:02<140:10:53, 50.48s/it] Running 10000 simulations in 10000 batches.:   0%|          | 3/10000 [02:02<76:51:18, 27.68s/it] Running 10000 simulations in 10000 batches.:   0%|          | 4/10000 [02:03<46:45:08, 16.84s/it]Running 10000 simulations in 10000 batches.:   0%|          | 5/10000 [02:03<30:04:35, 10.83s/it]Running 10000 simulations in 10000 batches.:   0%|          | 6/10000 [02:03<20:10:05,  7.26s/it]Running 10000 simulations in 10000 batches.:   0%|          | 7/10000 [02:04<14:09:27,  5.10s/it]Running 10000 simulations in 10000 batches.:   0%|          | 8/10000 [02:05<10:33:03,  3.80s/it]Running 10000 simulations in 10000 batches.:   0%|          | 9/10000 [03:37<87:30:09, 31.53s/it]Running 10000 simulations in 10000 batches.:   0%|          | 10/10000 [03:39<61:49:15, 22.28s/it]Running 10000 simulations in 10000 batches.:   0%|          | 11/10000 [03:39<43:15:28, 15.59s/it]Running 10000 simulations in 10000 batches.:   0%|          | 12/10000 [03:40<30:19:19, 10.93s/it]Running 10000 simulations in 10000 batches.:   0%|          | 13/10000 [03:40<21:16:03,  7.67s/it]Running 10000 simulations in 10000 batches.:   0%|          | 14/10000 [03:40<15:11:06,  5.47s/it]Running 10000 simulations in 10000 batches.:   0%|          | 15/10000 [03:42<11:55:30,  4.30s/it]Running 10000 simulations in 10000 batches.:   0%|          | 16/10000 [03:44<10:27:49,  3.77s/it]slurmstepd: error: *** JOB 1107436 ON slurm-cpu-hm-1 CANCELLED AT 2022-01-10T00:08:39 ***
