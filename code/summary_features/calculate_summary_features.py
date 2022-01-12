@@ -91,7 +91,7 @@ def calculate_summary_stats_number(x, number_stats):
 
             # compute area under the curve:
             area_p50 = trapz(batch[:zero_cross_p50], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area_p50 = torch.tensor(area)
+            area_p50 = torch.tensor(area_p50)
 
 
             ## search zero crossing after N100:
@@ -99,14 +99,14 @@ def calculate_summary_stats_number(x, number_stats):
 
             # compute area under the curve:
             area_N100 = trapz(batch[zero_cross_p50:zero_cross_N100], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area_N100 = torch.tensor(area)
+            area_N100 = torch.tensor(area_N100)
 
             ## search zero crossing after N100:
             zero_cross_N100 = int(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
 
             # compute area under the curve:
             area_P200 = trapz(batch[zero_cross_N100:], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-            area_P200 = torch.tensor(area)
+            area_P200 = torch.tensor(area_P200)
 
             # mean values over different, relevant time periods:
 
