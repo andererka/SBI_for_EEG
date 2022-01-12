@@ -1,133 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 100 simulations in 100 batches.:   0%|          | 0/100 [00:00<?, ?it/s]Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-/home/macke/kanderer29/.conda/envs/sbi_env/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py:705: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
-  "timeout or by a memory leak.", UserWarning
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 100 simulations in 100 batches.:   1%|          | 1/100 [07:32<12:27:13, 452.87s/it]Running 100 simulations in 100 batches.:   2%|▏         | 2/100 [08:07<5:38:06, 207.00s/it] Running 100 simulations in 100 batches.:   3%|▎         | 3/100 [08:17<3:08:56, 116.87s/it]Running 100 simulations in 100 batches.:   4%|▍         | 4/100 [08:18<1:53:36, 71.01s/it] Running 100 simulations in 100 batches.:   5%|▌         | 5/100 [08:32<1:19:56, 50.49s/it]Running 100 simulations in 100 batches.:   6%|▌         | 6/100 [08:47<1:00:10, 38.41s/it]Running 100 simulations in 100 batches.:   7%|▋         | 7/100 [08:50<41:39, 26.88s/it]  Running 100 simulations in 100 batches.:   8%|▊         | 8/100 [08:50<28:23, 18.52s/it]Running 100 simulations in 100 batches.:   9%|▉         | 9/100 [08:54<21:10, 13.96s/it]Running 100 simulations in 100 batches.:  10%|█         | 10/100 [08:54<14:31,  9.69s/it]Running 100 simulations in 100 batches.:  11%|█         | 11/100 [08:57<10:54,  7.35s/it]Running 100 simulations in 100 batches.:  12%|█▏        | 12/100 [08:58<08:05,  5.52s/it]Running 100 simulations in 100 batches.:  13%|█▎        | 13/100 [08:59<06:16,  4.33s/it]Running 100 simulations in 100 batches.:  15%|█▌        | 15/100 [09:00<03:23,  2.39s/it]Running 100 simulations in 100 batches.:  16%|█▌        | 16/100 [09:10<05:57,  4.26s/it]Running 100 simulations in 100 batches.:  17%|█▋        | 17/100 [09:12<05:18,  3.84s/it]Running 100 simulations in 100 batches.:  18%|█▊        | 18/100 [09:13<04:01,  2.94s/it]Running 100 simulations in 100 batches.:  19%|█▉        | 19/100 [09:19<05:08,  3.81s/it]Running 100 simulations in 100 batches.:  20%|██        | 20/100 [09:19<03:45,  2.82s/it]Running 100 simulations in 100 batches.:  21%|██        | 21/100 [09:21<03:14,  2.46s/it]Running 100 simulations in 100 batches.:  22%|██▏       | 22/100 [09:21<02:27,  1.89s/it]Running 100 simulations in 100 batches.:  23%|██▎       | 23/100 [09:22<01:46,  1.38s/it]Running 100 simulations in 100 batches.:  24%|██▍       | 24/100 [09:23<01:48,  1.43s/it]Running 100 simulations in 100 batches.:  25%|██▌       | 25/100 [09:24<01:36,  1.28s/it]Running 100 simulations in 100 batches.:  26%|██▌       | 26/100 [09:26<01:51,  1.51s/it]Running 100 simulations in 100 batches.:  27%|██▋       | 27/100 [09:27<01:45,  1.45s/it]Running 100 simulations in 100 batches.:  28%|██▊       | 28/100 [09:29<01:41,  1.41s/it]Running 100 simulations in 100 batches.:  30%|███       | 30/100 [09:30<01:08,  1.02it/s]Running 100 simulations in 100 batches.:  31%|███       | 31/100 [09:30<00:56,  1.21it/s]Running 100 simulations in 100 batches.:  32%|███▏      | 32/100 [09:30<00:47,  1.42it/s]Running 100 simulations in 100 batches.:  34%|███▍      | 34/100 [09:31<00:32,  2.05it/s]Running 100 simulations in 100 batches.:  35%|███▌      | 35/100 [09:31<00:31,  2.08it/s]Running 100 simulations in 100 batches.:  36%|███▌      | 36/100 [09:35<01:22,  1.30s/it]Running 100 simulations in 100 batches.:  37%|███▋      | 37/100 [09:40<02:18,  2.21s/it]Running 100 simulations in 100 batches.:  38%|███▊      | 38/100 [09:42<02:12,  2.14s/it]Running 100 simulations in 100 batches.:  40%|████      | 40/100 [09:43<01:33,  1.55s/it]Running 100 simulations in 100 batches.:  41%|████      | 41/100 [09:44<01:25,  1.45s/it]Running 100 simulations in 100 batches.:  42%|████▏     | 42/100 [09:45<01:08,  1.18s/it]Running 100 simulations in 100 batches.:  43%|████▎     | 43/100 [09:47<01:20,  1.42s/it]Running 100 simulations in 100 batches.:  44%|████▍     | 44/100 [09:47<01:02,  1.11s/it]Running 100 simulations in 100 batches.:  45%|████▌     | 45/100 [09:50<01:24,  1.54s/it]Running 100 simulations in 100 batches.:  46%|████▌     | 46/100 [09:51<01:13,  1.36s/it]Running 100 simulations in 100 batches.:  47%|████▋     | 47/100 [09:51<01:00,  1.15s/it]Running 100 simulations in 100 batches.:  48%|████▊     | 48/100 [09:52<00:57,  1.10s/it]Running 100 simulations in 100 batches.:  49%|████▉     | 49/100 [09:56<01:38,  1.93s/it]Running 100 simulations in 100 batches.:  50%|█████     | 50/100 [09:57<01:14,  1.48s/it]Running 100 simulations in 100 batches.:  51%|█████     | 51/100 [09:58<01:07,  1.37s/it]Running 100 simulations in 100 batches.:  52%|█████▏    | 52/100 [10:02<01:54,  2.39s/it]Running 100 simulations in 100 batches.:  53%|█████▎    | 53/100 [10:11<03:15,  4.16s/it]Running 100 simulations in 100 batches.:  54%|█████▍    | 54/100 [10:15<03:08,  4.11s/it]Running 100 simulations in 100 batches.:  55%|█████▌    | 55/100 [10:21<03:26,  4.59s/it]Running 100 simulations in 100 batches.:  57%|█████▋    | 57/100 [10:26<02:41,  3.75s/it]Running 100 simulations in 100 batches.:  58%|█████▊    | 58/100 [10:30<02:38,  3.78s/it]Running 100 simulations in 100 batches.:  59%|█████▉    | 59/100 [10:35<02:50,  4.16s/it]Running 100 simulations in 100 batches.:  60%|██████    | 60/100 [10:38<02:37,  3.93s/it]Running 100 simulations in 100 batches.:  61%|██████    | 61/100 [10:40<02:10,  3.34s/it]Running 100 simulations in 100 batches.:  62%|██████▏   | 62/100 [13:11<28:49, 45.51s/it]Running 100 simulations in 100 batches.:  63%|██████▎   | 63/100 [13:34<24:03, 39.01s/it]Running 100 simulations in 100 batches.:  64%|██████▍   | 64/100 [13:43<18:07, 30.21s/it]Running 100 simulations in 100 batches.:  65%|██████▌   | 65/100 [13:45<12:44, 21.85s/it]Running 100 simulations in 100 batches.:  66%|██████▌   | 66/100 [13:56<10:33, 18.62s/it]Running 100 simulations in 100 batches.:  67%|██████▋   | 67/100 [13:58<07:28, 13.59s/it]Running 100 simulations in 100 batches.:  68%|██████▊   | 68/100 [13:59<05:12,  9.77s/it]Running 100 simulations in 100 batches.:  69%|██████▉   | 69/100 [14:02<04:03,  7.85s/it]Running 100 simulations in 100 batches.:  70%|███████   | 70/100 [14:03<02:53,  5.80s/it]Running 100 simulations in 100 batches.:  71%|███████   | 71/100 [14:04<02:07,  4.39s/it]Running 100 simulations in 100 batches.:  72%|███████▏  | 72/100 [14:05<01:34,  3.38s/it]Running 100 simulations in 100 batches.:  73%|███████▎  | 73/100 [14:11<01:52,  4.18s/it]Running 100 simulations in 100 batches.:  74%|███████▍  | 74/100 [14:12<01:24,  3.24s/it]Running 100 simulations in 100 batches.:  75%|███████▌  | 75/100 [14:13<01:02,  2.49s/it]Running 100 simulations in 100 batches.:  76%|███████▌  | 76/100 [14:13<00:42,  1.78s/it]Running 100 simulations in 100 batches.:  77%|███████▋  | 77/100 [14:13<00:30,  1.31s/it]Running 100 simulations in 100 batches.:  78%|███████▊  | 78/100 [14:14<00:22,  1.03s/it]Running 100 simulations in 100 batches.:  79%|███████▉  | 79/100 [14:14<00:16,  1.27it/s]Running 100 simulations in 100 batches.:  80%|████████  | 80/100 [14:15<00:18,  1.10it/s]Running 100 simulations in 100 batches.:  81%|████████  | 81/100 [14:16<00:14,  1.28it/s]Running 100 simulations in 100 batches.:  82%|████████▏ | 82/100 [14:16<00:12,  1.49it/s]Running 100 simulations in 100 batches.:  83%|████████▎ | 83/100 [14:16<00:08,  1.89it/s]Running 100 simulations in 100 batches.:  84%|████████▍ | 84/100 [14:17<00:09,  1.73it/s]Running 100 simulations in 100 batches.:  85%|████████▌ | 85/100 [14:18<00:09,  1.57it/s]Running 100 simulations in 100 batches.:  86%|████████▌ | 86/100 [14:18<00:07,  1.83it/s]Running 100 simulations in 100 batches.:  89%|████████▉ | 89/100 [14:18<00:02,  3.86it/s]Running 100 simulations in 100 batches.:  91%|█████████ | 91/100 [14:19<00:02,  3.12it/s]Running 100 simulations in 100 batches.:  92%|█████████▏| 92/100 [14:20<00:04,  1.85it/s]Running 100 simulations in 100 batches.:  93%|█████████▎| 93/100 [14:21<00:03,  2.03it/s]Running 100 simulations in 100 batches.:  94%|█████████▍| 94/100 [14:21<00:02,  2.26it/s]Running 100 simulations in 100 batches.:  95%|█████████▌| 95/100 [14:21<00:01,  2.59it/s]Running 100 simulations in 100 batches.:  96%|█████████▌| 96/100 [14:22<00:01,  2.11it/s]Running 100 simulations in 100 batches.:  97%|█████████▋| 97/100 [14:23<00:01,  1.61it/s]Running 100 simulations in 100 batches.:  98%|█████████▊| 98/100 [14:24<00:01,  1.49it/s]Running 100 simulations in 100 batches.:  99%|█████████▉| 99/100 [14:24<00:00,  1.81it/s]Running 100 simulations in 100 batches.: 100%|██████████| 100/100 [14:24<00:00,  2.18it/s]Running 100 simulations in 100 batches.: 100%|██████████| 100/100 [14:24<00:00,  8.65s/it]/var/spool/slurmd/job1123594/slurm_script: line 21: 24575 Segmentation fault      python3 investigating_summary_features.py eval_features 64 100 100

@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "investigating_summary_features.py", line 363, in <module>
-    main(sys.argv[1:])
-  File "investigating_summary_features.py", line 103, in main
-    os.chdir('')
-FileNotFoundError: [Errno 2] No such file or directory: ''

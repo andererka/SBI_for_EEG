@@ -1,339 +1,0 @@
-JobId=1122445 JobName=script.sh
-   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
-   Priority=62856 Nice=0 Account=macke QOS=normal
-   JobState=RUNNING Reason=None Dependency=(null)
-   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
-   RunTime=00:00:21 TimeLimit=10:00:00 TimeMin=N/A
-   SubmitTime=2022-01-12T17:15:27 EligibleTime=2022-01-12T17:15:27
-   AccrueTime=2022-01-12T17:15:27
-   StartTime=2022-01-12T17:15:27 EndTime=2022-01-13T03:15:27 Deadline=N/A
-   PreemptEligibleTime=2022-01-12T17:16:27 PreemptTime=None
-   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-01-12T17:15:27
-   Partition=cpu-short AllocNode:Sid=bg-slurmb-login1:20484
-   ReqNodeList=(null) ExcNodeList=(null)
-   NodeList=slurm-cpu-hm-1
-   BatchHost=slurm-cpu-hm-1
-   NumNodes=1 NumCPUs=30 NumTasks=1 CPUs/Task=30 ReqB:S:C:T=0:0:*:*
-   TRES=cpu=30,mem=50G,node=1,billing=6
-   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
-   MinCPUsNode=30 MinMemoryNode=50G MinTmpDiskNode=0
-   Features=(null) DelayBoot=00:00:00
-   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
-   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
-   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
-   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1122445.err
-   StdIn=/dev/null
-   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1122445.out
-   Power=
-   MailUser=k.anderer@t-online.de MailType=END
-   NtasksPerTRES:0
-
-slurm True
-slurm1 True
-/mnt/qb/work/macke/kanderer29
-line 141 /mnt/qb/work/macke/kanderer29
-line159
-batch shape  torch.Size([6801])
-arg_p50 tensor(929)
-arg_p200 tensor(5899)
-batch shape  torch.Size([6801])
-arg_p50 tensor(1105)
-arg_p200 tensor(6260)
-batch shape  torch.Size([6801])
-arg_p50 tensor(263)
-arg_p200 tensor(6261)
-batch shape  torch.Size([6801])
-arg_p50 tensor(582)
-arg_p200 tensor(4440)
-batch shape  torch.Size([6801])
-arg_p50 tensor(0)
-arg_p200 tensor(6201)
-batch shape  torch.Size([6801])
-arg_p50 tensor(194)
-arg_p200 tensor(4707)
-batch shape  torch.Size([6801])
-arg_p50 tensor(1004)
-arg_p200 tensor(5529)
-batch shape  torch.Size([6801])
-arg_p50 tensor(669)
-arg_p200 tensor(5793)
-batch shape  torch.Size([6801])
-arg_p50 tensor(749)
-arg_p200 tensor(4560)
-batch shape  torch.Size([6801])
-arg_p50 tensor(945)
-arg_p200 tensor(4338)
-batch shape  torch.Size([6801])
-arg_p50 tensor(327)
-arg_p200 tensor(4765)
-batch shape  torch.Size([6801])
-arg_p50 tensor(600)
-arg_p200 tensor(4785)
-batch shape  torch.Size([6801])
-arg_p50 tensor(576)
-arg_p200 tensor(6261)
-batch shape  torch.Size([6801])
-arg_p50 tensor(966)
-arg_p200 tensor(4030)
-batch shape  torch.Size([6801])
-arg_p50 tensor(352)
-arg_p200 tensor(5486)
-batch shape  torch.Size([6801])
-arg_p50 tensor(273)
-arg_p200 tensor(5636)
-batch shape  torch.Size([6801])
-arg_p50 tensor(1813)
-arg_p200 tensor(5787)
-batch shape  torch.Size([6801])
-arg_p50 tensor(938)
-arg_p200 tensor(5682)
-batch shape  torch.Size([6801])
-arg_p50 tensor(699)
-arg_p200 tensor(6121)
-batch shape  torch.Size([6801])
-arg_p50 tensor(529)
-arg_p200 tensor(4908)
-batch shape  torch.Size([6801])
-arg_p50 tensor(368)
-arg_p200 tensor(6240)
-batch shape  torch.Size([6801])
-arg_p50 tensor(705)
-arg_p200 tensor(4965)
-batch shape  torch.Size([6801])
-arg_p50 tensor(212)
-arg_p200 tensor(5713)
-batch shape  torch.Size([6801])
-arg_p50 tensor(671)
-arg_p200 tensor(6196)
-batch shape  torch.Size([6801])
-arg_p50 tensor(561)
-arg_p200 tensor(5702)
-batch shape  torch.Size([6801])
-arg_p50 tensor(812)
-arg_p200 tensor(5402)
-batch shape  torch.Size([6801])
-arg_p50 tensor(288)
-arg_p200 tensor(4808)
-batch shape  torch.Size([6801])
-arg_p50 tensor(746)
-arg_p200 tensor(5948)
-batch shape  torch.Size([6801])
-arg_p50 tensor(810)
-arg_p200 tensor(4169)
-batch shape  torch.Size([6801])
-arg_p50 tensor(308)
-arg_p200 tensor(4568)
-batch shape  torch.Size([6801])
-arg_p50 tensor(656)
-arg_p200 tensor(4530)
-batch shape  torch.Size([6801])
-arg_p50 tensor(859)
-arg_p200 tensor(4497)
-batch shape  torch.Size([6801])
-arg_p50 tensor(618)
-arg_p200 tensor(4210)
-batch shape  torch.Size([6801])
-arg_p50 tensor(941)
-arg_p200 tensor(5431)
-batch shape  torch.Size([6801])
-arg_p50 tensor(722)
-arg_p200 tensor(4647)
-batch shape  torch.Size([6801])
-arg_p50 tensor(955)
-arg_p200 tensor(5707)
-batch shape  torch.Size([6801])
-arg_p50 tensor(938)
-arg_p200 tensor(4396)
-batch shape  torch.Size([6801])
-arg_p50 tensor(918)
-arg_p200 tensor(4486)
-batch shape  torch.Size([6801])
-arg_p50 tensor(661)
-arg_p200 tensor(6214)
-batch shape  torch.Size([6801])
-arg_p50 tensor(348)
-arg_p200 tensor(5248)
-batch shape  torch.Size([6801])
-arg_p50 tensor(553)
-arg_p200 tensor(4407)
-batch shape  torch.Size([6801])
-arg_p50 tensor(967)
-arg_p200 tensor(3893)
-batch shape  torch.Size([6801])
-arg_p50 tensor(861)
-arg_p200 tensor(4750)
-batch shape  torch.Size([6801])
-arg_p50 tensor(900)
-arg_p200 tensor(5086)
-batch shape  torch.Size([6801])
-arg_p50 tensor(545)
-arg_p200 tensor(4340)
-batch shape  torch.Size([6801])
-arg_p50 tensor(947)
-arg_p200 tensor(5683)
-batch shape  torch.Size([6801])
-arg_p50 tensor(835)
-arg_p200 tensor(4900)
-batch shape  torch.Size([6801])
-arg_p50 tensor(654)
-arg_p200 tensor(5755)
-batch shape  torch.Size([6801])
-arg_p50 tensor(393)
-arg_p200 tensor(6023)
-batch shape  torch.Size([6801])
-arg_p50 tensor(883)
-arg_p200 tensor(4476)
-batch shape  torch.Size([6801])
-arg_p50 tensor(633)
-arg_p200 tensor(6027)
-batch shape  torch.Size([6801])
-arg_p50 tensor(349)
-arg_p200 tensor(4389)
-batch shape  torch.Size([6801])
-arg_p50 tensor(242)
-arg_p200 tensor(5615)
-batch shape  torch.Size([6801])
-arg_p50 tensor(660)
-arg_p200 tensor(4700)
-batch shape  torch.Size([6801])
-arg_p50 tensor(950)
-arg_p200 tensor(5597)
-batch shape  torch.Size([6801])
-arg_p50 tensor(559)
-arg_p200 tensor(4822)
-batch shape  torch.Size([6801])
-arg_p50 tensor(916)
-arg_p200 tensor(4895)
-batch shape  torch.Size([6801])
-arg_p50 tensor(934)
-arg_p200 tensor(5886)
-batch shape  torch.Size([6801])
-arg_p50 tensor(998)
-arg_p200 tensor(4167)
-batch shape  torch.Size([6801])
-arg_p50 tensor(416)
-arg_p200 tensor(6345)
-batch shape  torch.Size([6801])
-arg_p50 tensor(269)
-arg_p200 tensor(4690)
-batch shape  torch.Size([6801])
-arg_p50 tensor(474)
-arg_p200 tensor(6110)
-batch shape  torch.Size([6801])
-arg_p50 tensor(335)
-arg_p200 tensor(4860)
-batch shape  torch.Size([6801])
-arg_p50 tensor(394)
-arg_p200 tensor(6190)
-batch shape  torch.Size([6801])
-arg_p50 tensor(903)
-arg_p200 tensor(5867)
-batch shape  torch.Size([6801])
-arg_p50 tensor(713)
-arg_p200 tensor(6349)
-batch shape  torch.Size([6801])
-arg_p50 tensor(2157)
-arg_p200 tensor(5838)
-batch shape  torch.Size([6801])
-arg_p50 tensor(528)
-arg_p200 tensor(4904)
-batch shape  torch.Size([6801])
-arg_p50 tensor(865)
-arg_p200 tensor(4636)
-batch shape  torch.Size([6801])
-arg_p50 tensor(404)
-arg_p200 tensor(5391)
-batch shape  torch.Size([6801])
-arg_p50 tensor(837)
-arg_p200 tensor(6299)
-batch shape  torch.Size([6801])
-arg_p50 tensor(541)
-arg_p200 tensor(4336)
-batch shape  torch.Size([6801])
-arg_p50 tensor(204)
-arg_p200 tensor(4293)
-batch shape  torch.Size([6801])
-arg_p50 tensor(492)
-arg_p200 tensor(6201)
-batch shape  torch.Size([6801])
-arg_p50 tensor(594)
-arg_p200 tensor(5396)
-batch shape  torch.Size([6801])
-arg_p50 tensor(296)
-arg_p200 tensor(4550)
-batch shape  torch.Size([6801])
-arg_p50 tensor(677)
-arg_p200 tensor(4354)
-batch shape  torch.Size([6801])
-arg_p50 tensor(802)
-arg_p200 tensor(6012)
-batch shape  torch.Size([6801])
-arg_p50 tensor(958)
-arg_p200 tensor(5067)
-batch shape  torch.Size([6801])
-arg_p50 tensor(862)
-arg_p200 tensor(5341)
-batch shape  torch.Size([6801])
-arg_p50 tensor(615)
-arg_p200 tensor(6033)
-batch shape  torch.Size([6801])
-arg_p50 tensor(383)
-arg_p200 tensor(4441)
-batch shape  torch.Size([6801])
-arg_p50 tensor(754)
-arg_p200 tensor(6064)
-batch shape  torch.Size([6801])
-arg_p50 tensor(1040)
-arg_p200 tensor(4977)
-batch shape  torch.Size([6801])
-arg_p50 tensor(1008)
-arg_p200 tensor(6216)
-batch shape  torch.Size([6801])
-arg_p50 tensor(853)
-arg_p200 tensor(6070)
-batch shape  torch.Size([6801])
-arg_p50 tensor(890)
-arg_p200 tensor(5945)
-batch shape  torch.Size([6801])
-arg_p50 tensor(895)
-arg_p200 tensor(6111)
-batch shape  torch.Size([6801])
-arg_p50 tensor(353)
-arg_p200 tensor(5303)
-batch shape  torch.Size([6801])
-arg_p50 tensor(614)
-arg_p200 tensor(4354)
-batch shape  torch.Size([6801])
-arg_p50 tensor(777)
-arg_p200 tensor(4904)
-batch shape  torch.Size([6801])
-arg_p50 tensor(720)
-arg_p200 tensor(5234)
-batch shape  torch.Size([6801])
-arg_p50 tensor(612)
-arg_p200 tensor(5396)
-batch shape  torch.Size([6801])
-arg_p50 tensor(757)
-arg_p200 tensor(6400)
-batch shape  torch.Size([6801])
-arg_p50 tensor(1086)
-arg_p200 tensor(5888)
-batch shape  torch.Size([6801])
-arg_p50 tensor(584)
-arg_p200 tensor(5488)
-batch shape  torch.Size([6801])
-arg_p50 tensor(46)
-arg_p200 tensor(5966)
-batch shape  torch.Size([6801])
-arg_p50 tensor(677)
-arg_p200 tensor(4662)
-batch shape  torch.Size([6801])
-arg_p50 tensor(901)
-arg_p200 tensor(5834)
-batch shape  torch.Size([6801])
-arg_p50 tensor(828)
-arg_p200 tensor(5231)
-Training neural network. Epochs trained:  1Training neural network. Epochs trained:  2Training neural network. Epochs trained:  3Training neural network. Epochs trained:  4Training neural network. Epochs trained:  5Training neural network. Epochs trained:  6Training neural network. Epochs trained:  7Training neural network. Epochs trained:  8Training neural network. Epochs trained:  9Training neural network. Epochs trained:  10Training neural network. Epochs trained:  11Training neural network. Epochs trained:  12Training neural network. Epochs trained:  13Training neural network. Epochs trained:  14Training neural network. Epochs trained:  15Training neural network. Epochs trained:  16Training neural network. Epochs trained:  17Training neural network. Epochs trained:  18Training neural network. Epochs trained:  19Training neural network. Epochs trained:  20Training neural network. Epochs trained:  21Training neural network. Epochs trained:  22Training neural network. Epochs trained:  23Training neural network. Epochs trained:  24Training neural network. Epochs trained:  25Training neural network. Epochs trained:  26Training neural network. Epochs trained:  27Training neural network. Epochs trained:  28Training neural network. Epochs trained:  29Training neural network. Epochs trained:  30Training neural network. Epochs trained:  31Training neural network. Epochs trained:  32Training neural network. Epochs trained:  33Training neural network. Epochs trained:  34Training neural network. Epochs trained:  35Training neural network. Epochs trained:  36Training neural network. Epochs trained:  37Training neural network. Epochs trained:  38Training neural network. Epochs trained:  39Training neural network. Epochs trained:  40Training neural network. Epochs trained:  41Training neural network. Epochs trained:  42Training neural network. Epochs trained:  43Training neural network. Epochs trained:  44Training neural network. Epochs trained:  45Training neural network. Epochs trained:  46Training neural network. Epochs trained:  47Training neural network. Epochs trained:  48Training neural network. Epochs trained:  49Training neural network. Epochs trained:  50Training neural network. Epochs trained:  51Training neural network. Epochs trained:  52Training neural network. Epochs trained:  53Training neural network. Epochs trained:  54Training neural network. Epochs trained:  55Training neural network. Epochs trained:  56Training neural network. Epochs trained:  57Training neural network. Epochs trained:  58Training neural network. Epochs trained:  59Training neural network. Epochs trained:  60Training neural network. Epochs trained:  61Training neural network. Epochs trained:  62Training neural network. Epochs trained:  63Training neural network. Epochs trained:  64Training neural network. Epochs trained:  65Training neural network. Epochs trained:  66Training neural network. Epochs trained:  67Training neural network. Epochs trained:  68Training neural network. Epochs trained:  69Training neural network. Epochs trained:  70Training neural network. Epochs trained:  71Training neural network. Epochs trained:  72Training neural network. Epochs trained:  73Training neural network. Epochs trained:  74Training neural network. Epochs trained:  75Training neural network. Epochs trained:  76Training neural network. Epochs trained:  77Training neural network. Epochs trained:  78Training neural network. Epochs trained:  79Training neural network. Epochs trained:  80Training neural network. Epochs trained:  81Training neural network. Epochs trained:  82Training neural network. Epochs trained:  83Training neural network. Epochs trained:  84Training neural network. Epochs trained:  85Training neural network. Epochs trained:  86Training neural network. Epochs trained:  87Training neural network. Epochs trained:  88Training neural network. Epochs trained:  89Training neural network. Epochs trained:  90Training neural network. Epochs trained:  91Training neural network. Epochs trained:  92Training neural network. Epochs trained:  93Training neural network. Epochs trained:  94Training neural network. Epochs trained:  95Training neural network. Epochs trained:  96Training neural network. Epochs trained:  97Training neural network. Epochs trained:  98Training neural network. Epochs trained:  99Training neural network. Epochs trained:  100Training neural network. Epochs trained:  101Training neural network. Epochs trained:  102Training neural network. Epochs trained:  103Training neural network. Epochs trained:  104Training neural network. Epochs trained:  105Training neural network. Epochs trained:  106Training neural network. Epochs trained:  107Training neural network. Epochs trained:  108Training neural network. Epochs trained:  109Training neural network. Epochs trained:  110Training neural network. Epochs trained:  111Training neural network. Epochs trained:  112Training neural network. Epochs trained:  113Training neural network. Epochs trained:  114Training neural network. Epochs trained:  115Training neural network. Epochs trained:  116Training neural network. Epochs trained:  117Training neural network. Epochs trained:  118Training neural network. Epochs trained:  119Training neural network. Epochs trained:  120Training neural network. Epochs trained:  121Training neural network. Epochs trained:  122Training neural network. Epochs trained:  123Training neural network. Epochs trained:  124Training neural network. Epochs trained:  125Training neural network. Epochs trained:  126Training neural network. Epochs trained:  127Neural network successfully converged after 127 epochs.
-batch shape  torch.Size([6801])
-arg_p50 tensor(929)
-arg_p200 tensor(5899)
