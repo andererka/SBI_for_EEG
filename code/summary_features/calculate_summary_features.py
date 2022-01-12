@@ -30,12 +30,12 @@ def calculate_summary_stats_number(x, number_stats):
         # sets the first value as baseline
         #batch = torch.sub(batch, torch.index_select(batch, 0, torch.tensor([0])))
 
-        ##search for P50 between 0 and 60ms:
+        ##search for P50 between 0 and 80ms:
 
-        arg60ms = int(60 * 30)
+        arg80ms = int(80 * 30)
 
-        arg_p50 = torch.argmax(batch[0:arg60ms])
-        arg_P200 = torch.argmax(batch[arg60ms:])
+        arg_p50 = torch.argmax(batch[0:arg80ms])
+        arg_P200 = torch.argmax(batch[arg80ms:])
 
         print('arg_p50', arg_p50)
         print('arg_p200', arg_P200)
@@ -55,9 +55,9 @@ def calculate_summary_stats_number(x, number_stats):
             - P200: value of second postive peak
             '''
 
-            N100 = torch.min(batch[:arg200ms])
-            p50 = torch.max(batch[0:arg60ms])
-            P200 = torch.max(batch[arg60ms:])
+            N100 = torch.min(batch)
+            p50 = torch.max(batch[0:arg80ms])
+            P200 = torch.max(batch[arg80ms:])
 
             sum_stats_vec = torch.stack([arg_p50, arg_N100, arg_P200, p50, N100, P200])
             batch_list.append(sum_stats_vec)
@@ -76,9 +76,9 @@ def calculate_summary_stats_number(x, number_stats):
             - P200_moment1: first moment around the second postive peak (10ms before, 10ms after)
             '''
 
-            N100 = torch.min(batch[:arg200ms])
-            p50 = torch.max(batch[0:arg60ms])
-            P200 = torch.max(batch[arg60ms:])
+            N100 = torch.min(batch)
+            p50 = torch.max(batch[0:arg80ms])
+            P200 = torch.max(batch[arg80ms:])
 
             p50_moment1 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=1))  # mean
             N100_moment1 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=1))  # mean
