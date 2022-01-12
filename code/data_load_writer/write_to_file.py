@@ -39,13 +39,12 @@ class WriteToFile(object):
         self.density_estimator = density_estimator
         self.num_params = num_params
         self.num_samples = num_samples
-        self.slurm = slurm
 
 
         self.folder = path_parent + self.experiment 
 
         print('self folder', self.folder)
-        if(self.slurm == True):
+        if (slurm == True):
             try:
                 os.chdir('/mnt/qb/work/macke/kanderer29')
                 os.mkdir(self.folder)
@@ -58,8 +57,7 @@ class WriteToFile(object):
                 print('file exists')
 
     def save_posterior(self, posterior):
-        if(self.slurm == True):
-            os.chdir('/mnt/qb/work/macke/kanderer29')
+
         file_name = "{}/posterior.pt".format(self.folder)
         if os.path.isfile(file_name):
             expand = 1
@@ -184,7 +182,7 @@ class WriteToFile(object):
     ):
         self.save_posterior(posterior)
         self.save_prior(prior)
-        
+
         if(self.slurm == True):
             os.chdir('/mnt/qb/work/macke/kanderer29')
 
