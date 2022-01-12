@@ -30,16 +30,16 @@ def calculate_summary_stats_number(x, number_stats):
         # sets the first value as baseline
         batch = torch.sub(batch, torch.index_select(batch, 0, torch.tensor([0])))
 
-        ##search for P50 between 0 and 70ms:
+        ##search for P50 between 0 and 60ms:
 
-        arg70ms = int(np.round(batch.size(dim=0) / total_steps_ms * 70))
+        arg60ms = int(60 * 30)
 
         arg_p50 = torch.argmax(batch[0:arg70ms])
         arg_P200 = torch.argmax(batch[arg70ms:])
 
         ## search for N100
-        arg200ms = int(np.round(batch.size(dim=0) / total_steps_ms * 200))
-        arg_N100 = torch.argmin(batch[:arg200ms])
+        arg200ms = int(200 * 30)
+        arg_N100 = torch.argmin(batch)
 
 
         if number_stats == 6:
@@ -53,8 +53,8 @@ def calculate_summary_stats_number(x, number_stats):
             '''
 
             N100 = torch.min(batch[:arg200ms])
-            p50 = torch.max(batch[0:arg70ms])
-            P200 = torch.max(batch[arg70ms:])
+            p50 = torch.max(batch[0:arg60ms])
+            P200 = torch.max(batch[arg60ms:])
 
             sum_stats_vec = torch.stack([arg_p50, arg_N100, arg_P200, p50, N100, P200])
             batch_list.append(sum_stats_vec)
@@ -74,8 +74,8 @@ def calculate_summary_stats_number(x, number_stats):
             '''
 
             N100 = torch.min(batch[:arg200ms])
-            p50 = torch.max(batch[0:arg70ms])
-            P200 = torch.max(batch[arg70ms:])
+            p50 = torch.max(batch[0:arg60ms])
+            P200 = torch.max(batch[arg60ms:])
 
             p50_moment1 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=1))  # mean
             N100_moment1 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=1))  # mean
@@ -87,7 +87,10 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after p50:
+            print('zero crossings', np.where(np.diff(np.sign(batch[arg_p50:arg_N100]))))
             zero_cross_p50 = int(np.where(np.diff(np.sign(batch[arg_p50:arg_N100])))[0])
+
+            print('zero crossing p50', zero_cross_p50)
 
             # compute area under the curve:
             area_p50 = trapz(batch[:zero_cross_p50], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
@@ -95,15 +98,16 @@ def calculate_summary_stats_number(x, number_stats):
 
 
             ## search zero crossing after N100:
-            print(np.where(np.diff(np.sign(batch[arg_N100:arg_P200]))))
+     
             zero_cross_N100 = int(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
+
+            print('zero crossing N100', zero_cross_N100)
 
             # compute area under the curve:
             area_N100 = trapz(batch[zero_cross_p50:zero_cross_N100], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
             area_N100 = torch.tensor(area_N100)
 
-            ## search zero crossing after N100:
-            zero_cross_N100 = int(np.where(np.diff(np.sign(batch[arg_N100:arg_P200])))[0])
+
 
             # compute area under the curve:
             area_P200 = trapz(batch[zero_cross_N100:], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
