@@ -46,6 +46,8 @@ class WriteToFile(object):
         print('self folder', self.folder)
 
         try:
+            if (slurm==True):
+                os.chdir('/mnt/qb/work/macke/kanderer29')
             os.mkdir(self.folder)
         except:
             print('file exists')
