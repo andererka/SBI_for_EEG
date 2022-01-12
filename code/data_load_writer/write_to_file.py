@@ -43,7 +43,7 @@ class WriteToFile(object):
 
         save_to = '/mnt/qb/work/macke/kanderer29'
 
-        if (slurm== True):
+        if (slurm== False):
             self.folder = path_parent + self.experiment 
         else:
             self.folder = save_to + path_parent + self.experiment 
