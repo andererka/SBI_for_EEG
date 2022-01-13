@@ -85,13 +85,13 @@ def calculate_summary_stats_number(x, number_stats):
             p50 = torch.max(batch[0:arg80ms])
             P200 = torch.max(batch[arg80ms:])
 
-            p50_moment1 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=1))  # mean
-            N100_moment1 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=1))  # mean
-            P200_moment1 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=1))  # mean
+            p50_moment1 = torch.mean(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # mean
+            N100_moment1 = torch.mean(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # mean
+            P200_moment1 = torch.mean(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # mean
 
-            p50_moment2 = torch.tensor(moment(batch[arg_p50-10*time_window:arg_p50+10*time_window], moment=2))  # variance
-            N100_moment2 = torch.tensor(moment(batch[arg_N100-10*time_window:arg200ms+10*time_window], moment=2))  # variance
-            P200_moment2 = torch.tensor(moment(batch[arg_P200-10*time_window:arg_P200+10*time_window], moment=2))  # variance
+            p50_moment2 = torch.var(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # variance
+            N100_moment2 = torch.var(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # variance
+            P200_moment2 = torch.var(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # variance
 
 
             ## search zero crossing after p50:
@@ -151,8 +151,8 @@ def calculate_summary_stats_number(x, number_stats):
                     N100_moment1,
                     P200_moment1,
                     p50_moment2,
-                    N100_moment1,
-                    P200_moment1,
+                    N100_moment2,
+                    P200_moment2,
                     area_p50,
                     area_N100,
                     area_P200,
