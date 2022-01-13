@@ -43,7 +43,7 @@ import pickle
 
 import sys
 
-sys.path.append('/mnt/qb/work/macke/kanderer29/')
+#sys.path.append('/mnt/qb/work/macke/kanderer29/')
 
 from utils.helpers import get_time
 
@@ -93,7 +93,7 @@ def main(argv):
 
     start = get_time()
 
-    slurm = True
+    slurm = False
 
     true_params = torch.tensor([[26.61, 63.53,  137.12]])
     sim_wrapper = simulation_wrapper_obs
@@ -139,7 +139,7 @@ def main(argv):
                 
         print('line 141', os.getcwd())
         print('{}/thetas.pt'.format(file_writer.folder, experiment_name))
-        print(os.access(file_writer.folder, os.R_OK))
+ 
         theta = torch.load('{}/thetas.pt'.format(file_writer.folder, experiment_name))
         x_without = torch.load('{}/obs_without.pt'.format(file_writer.folder, experiment_name))
         print('done')
