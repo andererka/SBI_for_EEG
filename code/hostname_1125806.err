@@ -1,0 +1,3 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+/var/spool/slurmd/job1125806/slurm_script: line 21: 11964 Segmentation fault      python3 investigating_summary_features.py eval_features eval_features2
