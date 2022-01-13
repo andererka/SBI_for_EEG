@@ -49,8 +49,6 @@ class WriteToFile(object):
         else:
             self.folder = save_to + path_parent + self.experiment 
 
-        print('self folder', self.folder)
-        #os.chdir(self.folder)
 
 
     def save_posterior(self, posterior):
@@ -81,7 +79,7 @@ class WriteToFile(object):
             torch.save(prop, "{}/proposal.pt".format(self.folder))
         else:
             try:
-                os.mkdir('results/{}/{}'.format(name))
+                os.mkdir('{}/{}'.format(self.folder, name))
             except:
                 print('can not make dir - maybe it exists already')
             torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
@@ -93,7 +91,7 @@ class WriteToFile(object):
             torch.save(x, "{}/obs.pt".format(self.folder))
         else:
             try:
-                os.mkdir('results/{}/{}'.format(name))
+                os.mkdir('{}/{}'.format(self.folder, name))
             except:
                 print('can not make dir - maybe it exists already')
             torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
@@ -105,7 +103,7 @@ class WriteToFile(object):
             torch.save(x_without, "{}/obs_without.pt".format(self.folder))
         else:
             try:
-                os.mkdir('results/{}/{}'.format(name))
+                os.mkdir('{}/{}'.format(self.folder, name))
             except:
                 print('can not make dir - maybe it exists already')
             torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
@@ -116,7 +114,7 @@ class WriteToFile(object):
             torch.save(thetas, "{}/thetas.pt".format(self.folder))
         else:
             try:
-                os.mkdir('results/{}/{}'.format(name))
+                os.mkdir('{}/{}'.format(self.folder, name))
             except:
                 print('can not make dir - maybe it exists already')
             torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
@@ -166,8 +164,6 @@ class WriteToFile(object):
         fig=None,
         source=None,
     ):
-        self.save_posterior(posterior)
-        self.save_prior(prior)
 
         if(self.slurm == True):
             os.chdir('/mnt/qb/work/macke/kanderer29')
