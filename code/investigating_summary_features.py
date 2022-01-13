@@ -150,14 +150,13 @@ def main(argv):
             prior,
             simulation_wrapper=sim_wrapper,
             num_simulations=num_sim,
-            num_workers=num_workers
-        )
+            num_workers=num_workers)
+        ## save thetas and x_without to file_writer:
+        file_writer.save_obs_without(x_without)
+        file_writer.save_thetas(theta)
+        
        
 
-        
-    ## save thetas and x_without to file_writer:
-    file_writer.save_obs_without(x_without)
-    file_writer.save_thetas(theta)
 
     print('line159')
 
