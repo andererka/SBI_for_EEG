@@ -17,5 +17,5 @@ scontrol show job $SLURM_JOB_ID
 #python3 calc_posterior_and_sample.py results/ERP_save_sim_nsf_num_params:3_11-25-2021_21:36:41/class 1000 1 64 
 #python3 ERP_simulation_and_inference.py 500 nsf 64 7 rejection
 #python3 sequential_inference.py 5000 1000 64 all_weights_early_stop
-python3 text.py
+python3 test2.py
 

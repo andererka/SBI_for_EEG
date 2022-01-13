@@ -1,0 +1,30 @@
+JobId=1123635 JobName=script2.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=57199 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:21 TimeLimit=01:00:00 TimeMin=N/A
+   SubmitTime=2022-01-13T00:33:10 EligibleTime=2022-01-13T00:33:10
+   AccrueTime=2022-01-13T00:33:10
+   StartTime=2022-01-13T00:33:10 EndTime=2022-01-13T01:33:10 Deadline=N/A
+   PreemptEligibleTime=2022-01-13T00:34:10 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-01-13T00:33:10
+   Partition=cpu-short AllocNode:Sid=bg-slurmb-login1:20484
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-cpu-hm-1
+   BatchHost=slurm-cpu-hm-1
+   NumNodes=1 NumCPUs=20 NumTasks=1 CPUs/Task=20 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=20,mem=50G,node=1,billing=4
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=20 MinMemoryNode=50G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script2.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1123635.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1123635.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
