@@ -329,11 +329,12 @@ def main(argv):
     fig3.savefig('{}/from_prior.png'.format(file_writer.folder))
     fig4.savefig('{}/from_posterior_dens.png'.format(file_writer.folder))
 
-    file_writer.save_all(posterior,
-        prior3,
+    #file_writer.save_posterior(posterior)
+    file_writer.save_prior(combined_prior)
+
+    file_writer.save_all(
         start_time=start_time,
         finish_time=finish_time,
-        fig=None,
         source='sequential_inference')
 
 if __name__ == "__main__":

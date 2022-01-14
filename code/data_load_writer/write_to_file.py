@@ -157,19 +157,11 @@ class WriteToFile(object):
 
     def save_all(
         self,
-        posterior=None,
-        prior=None,
         start_time=None,
         finish_time=None,
-        fig=None,
         source=None,
     ):
-        if (prior!=None):
-            self.save_prior(prior)
-        if (posterior!=None):
-            self.save_posterior(posterior)
-        if (fig!=None):
-            self.save_fig(fig, figname='save_all_fig')
+
 
         self.save_meta(start_time, finish_time)
 

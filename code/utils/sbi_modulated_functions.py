@@ -75,19 +75,16 @@ class Combined(Distribution):
         with torch.no_grad():
             theta_posterior = self._posterior_distribution.sample(sample_shape)
             theta_prior = self._prior_distribution.sample(sample_shape)
-            print("theta pos size", theta_posterior.size())
-            print("theta prior size", theta_prior.size())
-            print(theta_posterior.dim())
+     
+    
             if theta_posterior.dim() == 1:
-                print("true")
+                
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
-            print('theta_posterior', theta_posterior)
-            print('theta prior', theta_prior)
 
             theta = torch.cat((theta_posterior, theta_prior), 1)
-            print("theta", theta)
+        
             return theta
 
 
