@@ -131,7 +131,6 @@ def main(argv):
         file_writer = write_to_file.WriteToFile(
         experiment=experiment_name,
         num_sim=num_sim,
-        true_params=true_params,
         density_estimator='nsf',
         num_params=3,
         num_samples=num_samples,
@@ -143,9 +142,9 @@ def main(argv):
         except:
             print('file exists')
 
-        os.mkdir('results/{}/step1'.format(experiment_name))
-        os.mkdir('results/{}/step2'.format(experiment_name))
-        os.mkdir('results/{}/step3'.format(experiment_name))
+        os.mkdir('{}/{}/step1'.format(file_writer.folder, experiment_name))
+        os.mkdir('{}/{}/step2'.format(file_writer.folder, experiment_name))
+        os.mkdir('{}/{}/step3'.format(file_writer.folder, experiment_name))
 
         
 
@@ -153,8 +152,8 @@ def main(argv):
 
     
     try:
-        theta = torch.load('results/{}/step1/thetas.pt'.format(experiment_name))
-        x_without = torch.load('results/{}/step1/obs_without.pt'.format(experiment_name))
+        theta = torch.load('{}/{}/step1/thetas.pt'.format(file_writer.folder, experiment_name))
+        x_without = torch.load('{}/{}/step1/obs_without.pt'.format(file_writer.folder, experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -205,8 +204,8 @@ def main(argv):
 
 
     try:
-        theta = torch.load('results/{}/step2/thetas.pt'.format(experiment_name))
-        x_without = torch.load('results/{}/step2/obs_without.pt'.format(experiment_name))
+        theta = torch.load('{}/{}/step2/thetas.pt'.format(file_writer.folder, experiment_name))
+        x_without = torch.load('{}/{}/step2/obs_without.pt'.format(file_writer.folder, experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -255,8 +254,8 @@ def main(argv):
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     try:
-        theta = torch.load('results/{}/step3/thetas.pt'.format(experiment_name))
-        x_without = torch.load('results/{}/step3/obs_without.pt'.format(experiment_name))
+        theta = torch.load('{}/{}/step3/thetas.pt'.format(file_writer.folder, experiment_name))
+        x_without = torch.load('{}/{}/step3/obs_without.pt'.format(file_writer.folder, experiment_name))
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -298,7 +297,7 @@ def main(argv):
     )
 
     
-    fig.savefig('results/{}/posterior_dens.png'.format(experiment_name))
+    fig.savefig('{}/{}/posterior_dens.png'.format(file_writer.folder, experiment_name))
 
     finish_time = get_time()
 
@@ -319,8 +318,8 @@ def main(argv):
 
     file_writer.save_fig(fig4, 'sim_from_posterior')
 
-    fig3.savefig('results/{}/from_prior.png'.format(experiment_name))
-    fig4.savefig('results/{}/from_posterior_dens.png'.format(experiment_name))
+    fig3.savefig('{}/{}/from_prior.png'.format(file_writer.folder, experiment_name))
+    fig4.savefig('{}}/{}/from_posterior_dens.png'.format(file_writer.folder, experiment_name))
 
     file_writer.save_all(posterior,
         prior3,
