@@ -66,6 +66,15 @@ def main(argv):
         experiment_name = argv[3]
     except:
         experiment_name = "ERP_sequential"
+    try:
+        slurm = int(argv[4])
+    except:
+        slurm = 1
+
+    if (slurm==0):
+        slurm = True
+    else:
+        slurm = False
 
 
     start_time = get_time()
@@ -126,7 +135,7 @@ def main(argv):
         density_estimator='nsf',
         num_params=3,
         num_samples=num_samples,
-        slurm=False
+        slurm=slurm,
         )
 
         try:
