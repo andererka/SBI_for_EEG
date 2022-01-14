@@ -90,5 +90,5 @@ class Combined(Distribution):
             print("theta", theta)
             return theta
 
-    posterior = inference.run_only_inference(theta=thetas, x=x, prior=prior)
+
 
