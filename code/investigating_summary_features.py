@@ -103,7 +103,7 @@ def main(argv):
 
     print('slurm1', slurm)
 
-    #os.chdir('/mnt/qb/work/macke/kanderer29/')
+    os.chdir('/mnt/qb/work/macke/kanderer29/')
 
 
 

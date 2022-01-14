@@ -157,16 +157,21 @@ class WriteToFile(object):
 
     def save_all(
         self,
-        posterior,
-        prior,
+        posterior=None,
+        prior=None,
         start_time=None,
         finish_time=None,
         fig=None,
         source=None,
     ):
+        if (prior!=None):
+            self.save_prior(prior)
+        if (posterior!=None):
+            self.save_posterior(posterior)
+        if (fig!=None):
+            self.save_fig(fig, figname='save_all_fig')
 
-        if(self.slurm == True):
-            os.chdir('/mnt/qb/work/macke/kanderer29')
+        self.save_meta(start_time, finish_time)
 
         source = "{}/{}.py".format(self.folder, source)
         # Destination path
@@ -177,4 +182,3 @@ class WriteToFile(object):
             print("File copied successfully.")
         except:
             print("File could not be copied")
-        self.save_meta(start_time, finish_time)
