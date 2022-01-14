@@ -128,9 +128,6 @@ def main(argv):
     file_writer.save_all(
     posterior=None,
     prior=prior,
-    theta=theta,
-    x=None,
-    x_without=x_without,
     start_time=start_time,
     finish_time=finish_time,
 )
