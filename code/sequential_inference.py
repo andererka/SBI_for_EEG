@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
+from sbi.utils.get_nn_models import posterior_nn
 
 from utils import inference
 
@@ -76,6 +77,9 @@ def main(argv):
     else:
         slurm = False
 
+    ## using a density estimator with only 1 transform (which should be enough for the 1D case)
+    dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
+
 
     start_time = get_time()
 
@@ -106,7 +110,8 @@ def main(argv):
     parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
 
     #parameter_names = ["prox_1_ampa_l2_bas","prox_1_ampa_l2_pyr","prox_1_ampa_l5_bas","prox_1_ampa_l5_pyr",
-    # "t_evprox_1", 
+    # "t_evprox_1", posterior_nn(model='nsf', hidden_features=60, num_transforms=3)
+
     # "dist_ampa_l2_bas","dist_ampa_l2_pyr","dist_ampa_l5_pyr",
     # "dist_nmda_l2_bas","dist_nmda_l2_pyr","dist_nmda_l5_pyr",
     # "t_evdist_1", 
@@ -118,7 +123,7 @@ def main(argv):
 
     #prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
 
-    inf = SNPE_C(prior1, density_estimator="nsf")
+    inf = SNPE_C(prior1, density_estimator=dens_estimator)
 
 
     try:
@@ -142,10 +147,12 @@ def main(argv):
         except:
             print('file exists')
         
-
-        os.mkdir('{}/step1'.format(file_writer.folder))
-        os.mkdir('{}/step2'.format(file_writer.folder))
-        os.mkdir('{}/step3'.format(file_writer.folder))
+        try:
+            os.mkdir('{}/step1'.format(file_writer.folder))
+            os.mkdir('{}/step2'.format(file_writer.folder))
+            os.mkdir('{}/step3'.format(file_writer.folder))
+        except:
+            print('step files exist')
 
         
 
@@ -320,7 +327,7 @@ def main(argv):
     file_writer.save_fig(fig4, 'sim_from_posterior')
 
     fig3.savefig('{}/from_prior.png'.format(file_writer.folder))
-    fig4.savefig('{}}/from_posterior_dens.png'.format(file_writer.folder))
+    fig4.savefig('{}/from_posterior_dens.png'.format(file_writer.folder))
 
     file_writer.save_all(posterior,
         prior3,
