@@ -137,7 +137,7 @@ def main(argv):
         num_samples=num_samples,
         slurm=slurm,
         )
-
+        print(file_writer.folder)
         try:
             os.mkdir(file_writer.folder)
         except:
