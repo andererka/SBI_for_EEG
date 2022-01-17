@@ -27,9 +27,7 @@ def simulation_wrapper(params):  # input possibly array of 1 or more params
     if param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
-    elif param_size == 6:
-        net = set_network_6_params(params)
-        print("6 params are investigated")
+
     elif param_size == 3:
         net = set_network_3_params(params)
         print("3 params are investigated")
@@ -68,9 +66,7 @@ def simulation_wrapper_extended(params):  # input possibly array of 1 or more pa
     if param_size == 2:
         net = set_network_2_params(params)
         print("2 params are investigated")
-    elif param_size == 6:
-        net = set_network_6_params(params)
-        print("6 params are investigated")
+
     elif param_size == 3:
         net = set_network_3_params(params)
         print("3 params are investigated")
@@ -176,7 +172,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     print('param size ', param_size)
 
     params = params.tolist()
-    print(type(params))
+
     net = set_network_weights(params)
 
     window_len, scaling_factor = 30, 3000
