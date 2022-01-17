@@ -141,19 +141,20 @@ def main(argv):
         num_samples=num_samples,
         slurm=slurm,
         )
+
         print(file_writer.folder)
-        try:
-            os.mkdir(file_writer.folder)
-        except:
-            print('file exists')
-        
-        try:
-            os.mkdir('{}/step1'.format(file_writer.folder))
-            os.mkdir('{}/step2'.format(file_writer.folder))
-            os.mkdir('{}/step3'.format(file_writer.folder))
-        except:
-            print('step files exist')
-            exit
+    try:
+        os.mkdir(file_writer.folder)
+    except:
+        print('file exists')
+    
+    try:
+        os.mkdir('{}/step1'.format(file_writer.folder))
+        os.mkdir('{}/step2'.format(file_writer.folder))
+        os.mkdir('{}/step3'.format(file_writer.folder))
+    except:
+        print('step files exist')
+        exit
 
         
 
