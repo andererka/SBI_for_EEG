@@ -207,7 +207,8 @@ def main(argv):
     #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
     prior2 = utils.torchutils.BoxUniform(low=prior_min[5:12], high=prior_max[5:12])
 
-    combined_prior = Combined(proposal1, prior2, number_params_1=1)
+    #combined_prior = Combined(proposal1, prior2, number_params_1=1)
+    combined_prior = Combined(proposal1, prior2, number_params_1=5)
 
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
@@ -257,8 +258,12 @@ def main(argv):
 
     ###### continuing with P200 parameters/summary stats:
     #prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
+
     prior3 = utils.torchutils.BoxUniform(low=prior_min[12:], high=prior_max[12:])
-    combined_prior = Combined(proposal2, prior3, number_params_1=2)
+
+    #combined_prior = Combined(proposal2, prior3, number_params_1=2)
+
+    combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
