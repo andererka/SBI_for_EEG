@@ -153,6 +153,7 @@ def main(argv):
             os.mkdir('{}/step3'.format(file_writer.folder))
         except:
             print('step files exist')
+            exit
 
         
 
@@ -330,7 +331,7 @@ def main(argv):
     fig4.savefig('{}/from_posterior_dens.png'.format(file_writer.folder))
 
     #file_writer.save_posterior(posterior)
-    file_writer.save_prior(combined_prior)
+    #file_writer.save_prior(combined_prior)
 
     file_writer.save_all(
         start_time=start_time,
