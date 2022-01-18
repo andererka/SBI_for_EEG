@@ -1,2 +1,0 @@
-slurmstepd: error: *** JOB 1129490 ON slurm-cpu-hm-4 CANCELLED AT 2022-01-17T16:52:39 ***
-slurmstepd: error: *** JOB 1129490 STEPD TERMINATED ON slurm-cpu-hm-4 AT 2022-01-17T16:55:39 DUE TO JOB NOT ENDING WITH SIGNALS ***
