@@ -99,6 +99,7 @@ def main(argv):
         os.mkdir(file_writer.folder)
     except:
         print('file exists')
+        exit
 
     prior_min = [7.9, 43.8,  89.49] 
 

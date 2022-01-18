@@ -141,18 +141,20 @@ def main(argv):
         num_samples=num_samples,
         slurm=slurm,
         )
+
         print(file_writer.folder)
-        try:
-            os.mkdir(file_writer.folder)
-        except:
-            print('file exists')
-        
-        try:
-            os.mkdir('{}/step1'.format(file_writer.folder))
-            os.mkdir('{}/step2'.format(file_writer.folder))
-            os.mkdir('{}/step3'.format(file_writer.folder))
-        except:
-            print('step files exist')
+    try:
+        os.mkdir(file_writer.folder)
+    except:
+        print('file exists')
+    
+    try:
+        os.mkdir('{}/step1'.format(file_writer.folder))
+        os.mkdir('{}/step2'.format(file_writer.folder))
+        os.mkdir('{}/step3'.format(file_writer.folder))
+    except:
+        print('step files exist')
+        exit
 
         
 
@@ -330,7 +332,7 @@ def main(argv):
     fig4.savefig('{}/from_posterior_dens.png'.format(file_writer.folder))
 
     #file_writer.save_posterior(posterior)
-    file_writer.save_prior(combined_prior)
+    #file_writer.save_prior(combined_prior)
 
     file_writer.save_all(
         start_time=start_time,
