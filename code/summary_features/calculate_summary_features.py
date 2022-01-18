@@ -340,18 +340,16 @@ def calculate_summary_stats_temporal(x):
 
         p50_moment2 = torch.var(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # variance
 
+        ## define area under the curve with respect to the x-axis, and only up to the early stopping of step1
+        x_t = batch[:90*30]
+        sign_x = np.sign(x_t)
 
-        #zero_crossings = np.where(np.diff(np.sign(batch)))[0]
+        index_pos = np.where(sign_x == 1)
+        index_neg = np.where(sign_x == -1)
 
-        #number_crossings = len(np.where(np.diff(np.sign(batch)))[0])
-        
-        
-        #zero_cross_p50 = int(zero_crossings[number_crossings-2])
-        
+        area_pos1 = torch.trapz(x_t[index_pos])
+        area_neg1 = torch.trapz(x_t[index_neg])
 
-        # compute area under the curve:
-        #area_p50 = trapz(batch[:zero_cross_p50], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-        #area_p50 = torch.tensor(area_p50)
 
 
         # mean values over different, relevant time periods:
@@ -368,7 +366,8 @@ def calculate_summary_stats_temporal(x):
                     p50,
                     p50_moment1,
                     p50_moment2,
-                    #area_p50,
+                    area_pos1,
+                    area_neg1,
                     mean1000
                 ]
             )
@@ -384,13 +383,15 @@ def calculate_summary_stats_temporal(x):
         N100_moment1 = torch.mean(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # mean
         N100_moment2 = torch.var(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # variance
 
-        #zero_cross_N100 = int(zero_crossings[number_crossings-1])
 
-         # compute area under the curve:
-        #area_N100 = trapz(batch[zero_cross_p50:zero_cross_N100], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-        #area_N100 = torch.tensor(area_N100)
-        
+        x_t = batch[90*30:140*30]
+        sign_x = np.sign(x_t)
 
+        index_pos = np.where(sign_x == 1)
+        index_neg = np.where(sign_x == -1)
+
+        area_pos2 = torch.trapz(x_t[index_pos])
+        area_neg2 = torch.trapz(x_t[index_neg])
 
         if (total_steps_ms<150):
             sum_stats_vec = torch.stack(
@@ -402,8 +403,10 @@ def calculate_summary_stats_temporal(x):
                     p50_moment1,
                     N100_moment1,
                     N100_moment2,
-                    #area_p50,
-                    #area_N100,
+                    area_pos1,
+                    area_neg1,
+                    area_pos2,
+                    area_neg2,
                     mean1000
                 ]
             )
@@ -421,9 +424,14 @@ def calculate_summary_stats_temporal(x):
         P200_moment1 = torch.mean(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # mean
         P200_moment2 = torch.var(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # variance
 
-        # compute area under the curve:
-        #area_P200 = trapz(batch[zero_cross_N100:], dx=1)   # Integrate along the given axis using the composite trapezoidal rule. dx is the spacing between sample points
-        #area_P200 = torch.tensor(area_P200)
+        x_t = batch[140*30:]
+        sign_x = np.sign(x_t)
+
+        index_pos = np.where(sign_x == 1)
+        index_neg = np.where(sign_x == -1)
+
+        area_pos3 = torch.trapz(x_t[index_pos])
+        area_neg3 = torch.trapz(x_t[index_neg])
         
         sum_stats_vec = torch.stack(
                 [
@@ -439,9 +447,12 @@ def calculate_summary_stats_temporal(x):
                     p50_moment2,
                     N100_moment2,
                     P200_moment2,
-                    #area_p50,
-                    #area_N100,
-                    #area_P200,
+                    area_pos1,
+                    area_neg1,
+                    area_pos2,
+                    area_neg2,
+                    area_pos3,
+                    area_neg3,
                     mean4000,
                     mean1000
                 ])
