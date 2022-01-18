@@ -391,18 +391,18 @@ def set_network_weights_2_per_step(params=None):
 
 
     weights_ampa_p1 = {
-        #"L2_basket": params[0],
+        "L2_basket": 0.08831,
         "L2_pyramidal": params[0],
-        #"L5_basket": params[2],
-        #"L5_pyramidal": params[3],
+        "L5_basket": 0.19934,
+        "L5_pyramidal": 0.00865,
     }
-
     synaptic_delays_prox = {
         "L2_basket": 0.1,
         "L2_pyramidal": 0.1,
         "L5_basket": 1.0,
         "L5_pyramidal": 1.0,
     }
+
 
     # all NMDA weights are zero; pass None explicitly
 
@@ -424,16 +424,20 @@ def set_network_weights_2_per_step(params=None):
     if (len(params)==2):
         print('stop here')
         return net
+
+
     weights_ampa_d1 = {
-        #"L2_basket": params[5],
-        #"L2_pyramidal": params[6],
-        #"L5_pyramidal": params[7],
+        "L2_basket": 0.006562,
+        "L2_pyramidal": 0.000007,
+        "L5_pyramidal": 0.142300,
     }
     weights_nmda_d1 = {
-        #"L2_basket": params[8],
+        "L2_basket": 0.019482,
         "L2_pyramidal": params[2],
-        #"L5_pyramidal": params[10],
+        "L5_pyramidal": 0.080074,
     }
+
+
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
         "evdist1",
@@ -450,13 +454,13 @@ def set_network_weights_2_per_step(params=None):
     if (len(params)==4):
         return net
     # Second proximal evoked drive. NB: only AMPA weights differ from first
+
     weights_ampa_p2 = {
-        #"L2_basket": params[12],
-        #"L2_pyramidal": params[13],
-        #"L5_basket": params[14],
+        "L2_basket": 0.000003,
+        "L2_pyramidal": 1.438840,
+        "L5_basket": 0.008958,
         "L5_pyramidal": params[4],
     }
-
 
     # all NMDA weights are zero; omit weights_nmda (defaults to None)
     net.add_evoked_drive(
