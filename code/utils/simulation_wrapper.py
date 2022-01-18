@@ -183,7 +183,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 
     params = params.tolist()
 
-    if (param_size == 2 | param_size == 4 | param_size == 6):
+    if (param_size == 2 or param_size == 4 or param_size == 6):
         net = set_network_weights_2_per_step(params)
     else:
         net = set_network_weights(params)
