@@ -78,7 +78,7 @@ def main(argv):
         slurm = False
 
     ## using a density estimator with only 1 transform (which should be enough for the 1D case)
-    dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
+    #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
     start_time = get_time()
@@ -123,7 +123,7 @@ def main(argv):
 
     #prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
 
-    inf = SNPE_C(prior1, density_estimator=dens_estimator)
+    inf = SNPE_C(prior1, density_estimator='nsf')
 
 
     try:
@@ -225,7 +225,7 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
-    print("theta size", theta.size())
+
     print("second round completed")
 
     x_N100 = calculate_summary_stats_temporal(x_without)
