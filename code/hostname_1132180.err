@@ -1,0 +1,4 @@
+python3: can't open file 'sequential_inference_17_params.py': [Errno 2] No such file or directory
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+/var/spool/slurmd/job1132180/slurm_script: line 21: 14340 Segmentation fault      python3 investigating_summary_features.py eval_features

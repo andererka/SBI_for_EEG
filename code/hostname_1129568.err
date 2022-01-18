@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "sequential_inference.py", line 1, in <module>
+    from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/__init__.py", line 1, in <module>
+    from .helpers import get_time
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/helpers.py", line 10, in <module>
+    from torch import nn
+ModuleNotFoundError: No module named 'torch'
