@@ -78,10 +78,6 @@ class WriteToFile(object):
         if (name=='default'):
             torch.save(prop, "{}/proposal.pt".format(self.folder))
         else:
-            try:
-                os.mkdir('{}/{}'.format(self.folder, name))
-            except:
-                print('can not make dir - maybe it exists already')
             torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
         self.prop = prop
 
@@ -90,10 +86,6 @@ class WriteToFile(object):
         if (name=='default'):
             torch.save(x, "{}/obs.pt".format(self.folder))
         else:
-            try:
-                os.mkdir('{}/{}'.format(self.folder, name))
-            except:
-                print('can not make dir - maybe it exists already')
             torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
         self.x = x
 
@@ -102,10 +94,6 @@ class WriteToFile(object):
         if (name=='default'):
             torch.save(x_without, "{}/obs_without.pt".format(self.folder))
         else:
-            try:
-                os.mkdir('{}/{}'.format(self.folder, name))
-            except:
-                print('can not make dir - maybe it exists already')
             torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
 
     def save_thetas(self, thetas, name='default'):
@@ -113,10 +101,6 @@ class WriteToFile(object):
         if (name=='default'):
             torch.save(thetas, "{}/thetas.pt".format(self.folder))
         else:
-            try:
-                os.mkdir('{}/{}'.format(self.folder, name))
-            except:
-                print('can not make dir - maybe it exists already')
             torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
         self.thetas = thetas
 
