@@ -163,8 +163,18 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
         early_stop = 90.0
         print('5 params investigated')
 
+    if (param_size == 2):
+        
+        early_stop = 90.0
+        print('2 params investigated')
+
     if (param_size == 12):
         print('12 params investigated')
+
+        early_stop = 140.0
+
+    if (param_size == 4):
+        print('4 params investigated')
 
         early_stop = 140.0
     
@@ -173,7 +183,10 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 
     params = params.tolist()
 
-    net = set_network_weights(params)
+    if (param_size == 2 | param_size == 4 | param_size == 6):
+        net = set_network_weights_2_per_step(params)
+    else:
+        net = set_network_weights(params)
 
     window_len, scaling_factor = 30, 3000
 
@@ -366,6 +379,99 @@ def set_network_weights(params=None):
     )
 
     return net
+
+
+def set_network_weights_2_per_step(params=None):
+
+    """
+    description: sets network to default values for an ERP as described in hnn tutorial
+    """
+
+    net = jones_2009_model()
+
+
+    weights_ampa_p1 = {
+        #"L2_basket": params[0],
+        "L2_pyramidal": params[0],
+        #"L5_basket": params[2],
+        #"L5_pyramidal": params[3],
+    }
+
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    # all NMDA weights are zero; pass None explicitly
+
+    print('is here the problem?')
+    net.add_evoked_drive(
+        "evprox1",
+        mu=params[1],
+        sigma=2.47,
+        numspikes=1,
+        weights_ampa=weights_ampa_p1,
+        weights_nmda=None,
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox,
+        event_seed=event_seed(),
+    )
+
+    print('check')
+
+    if (len(params)==2):
+        print('stop here')
+        return net
+    weights_ampa_d1 = {
+        #"L2_basket": params[5],
+        #"L2_pyramidal": params[6],
+        #"L5_pyramidal": params[7],
+    }
+    weights_nmda_d1 = {
+        #"L2_basket": params[8],
+        "L2_pyramidal": params[2],
+        #"L5_pyramidal": params[10],
+    }
+    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
+    net.add_evoked_drive(
+        "evdist1",
+        mu=params[3],
+        sigma=3.85,
+        numspikes=1,
+        weights_ampa=weights_ampa_d1,
+        weights_nmda=weights_nmda_d1,
+        location="distal",
+        synaptic_delays=synaptic_delays_d1,
+        event_seed=event_seed(),
+    )
+
+    if (len(params)==4):
+        return net
+    # Second proximal evoked drive. NB: only AMPA weights differ from first
+    weights_ampa_p2 = {
+        #"L2_basket": params[12],
+        #"L2_pyramidal": params[13],
+        #"L5_basket": params[14],
+        "L5_pyramidal": params[4],
+    }
+
+
+    # all NMDA weights are zero; omit weights_nmda (defaults to None)
+    net.add_evoked_drive(
+        "evprox2",
+        mu=params[5],
+        sigma=8.33,
+        numspikes=1,
+        weights_ampa=weights_ampa_p2,
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox,
+        event_seed=event_seed(),
+    )
+
+    return net
+
 
 
 def set_network_1_params(params=None):
