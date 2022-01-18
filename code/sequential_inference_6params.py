@@ -122,23 +122,19 @@ def main(argv):
     inf = SNPE_C(prior1, density_estimator='nsf')
 
 
-    try:
 
-        file_writer = torch.load('results/{}/class.pt'.format(experiment_name))
-        
-    except:
+    file_writer = write_to_file.WriteToFile(
+    experiment=experiment_name,
+    num_sim=num_sim,
+    density_estimator='nsf',
+    num_params=3,
+    num_samples=num_samples,
+    slurm=slurm,
+    )
 
-        print('new experiment')
-        file_writer = write_to_file.WriteToFile(
-        experiment=experiment_name,
-        num_sim=num_sim,
-        density_estimator='nsf',
-        num_params=3,
-        num_samples=num_samples,
-        slurm=slurm,
-        )
+    print(file_writer.folder)
 
-        print(file_writer.folder)
+
     try:
         os.mkdir(file_writer.folder)
     except:
@@ -150,7 +146,6 @@ def main(argv):
         os.mkdir('{}/step3'.format(file_writer.folder))
     except:
         print('step files exist')
-        exit
 
         
 
