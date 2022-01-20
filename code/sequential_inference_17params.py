@@ -136,7 +136,6 @@ def main(argv):
     )
 
     print(file_writer.folder)
-    os.chdir(file_writer.folder)
 
 
     try:
@@ -150,6 +149,8 @@ def main(argv):
         os.mkdir('{}/step3'.format(file_writer.folder))
     except:
         print('step files exist')
+
+    os.chdir(file_writer.folder)
         
 
 
