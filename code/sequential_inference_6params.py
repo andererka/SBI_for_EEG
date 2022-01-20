@@ -144,7 +144,6 @@ def main(argv):
     try:
         os.mkdir('{}/step1'.format(file_writer.folder))
         os.mkdir('{}/step2'.format(file_writer.folder))
-        os.mkdir('{}/step3'.format(file_writer.folder))
     except:
         print('step files exist')
 
@@ -166,6 +165,8 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+
+        print('done with simulations')
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
