@@ -136,6 +136,7 @@ def main(argv):
     )
 
     print(file_writer.folder)
+    os.chdir(file_writer.folder)
 
 
     try:
