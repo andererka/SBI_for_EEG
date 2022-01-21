@@ -144,6 +144,7 @@ def main(argv):
     try:
         os.mkdir('{}/step1'.format(file_writer.folder))
         os.mkdir('{}/step2'.format(file_writer.folder))
+        os.mkdir('{}/step3'.format(file_writer.folder))
     except:
         print('step files exist')
 
