@@ -53,7 +53,7 @@ class WriteToFile(object):
 
     def save_posterior(self, posterior):
 
-        file_name = "{}/posterior.pt".format(self.folder)
+        file_name = "posterior.pt"
         if os.path.isfile(file_name):
             expand = 1
             while True:
@@ -69,36 +69,36 @@ class WriteToFile(object):
     def save_prior(self, prior):
 
 
-        torch.save(prior, "{}/prior.pt".format(self.folder))
+        torch.save(prior, "prior.pt")
 
 
     def save_proposal(self, prop, name='default'):
 
         if (name=='default'):
-            torch.save(prop, "{}/proposal.pt".format(self.folder))
+            torch.save(prop, "proposal.pt")
         else:
-            torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
+            torch.save(prop, "{}/proposal.pt".format(name))
 
     def save_observations(self, x, name='default'):
 
         if (name=='default'):
-            torch.save(x, "{}/obs.pt".format(self.folder))
+            torch.save(x, "obs.pt")
         else:
-            torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
+            torch.save(x, "{}/obs.pt".format(name))
 
     def save_obs_without(self, x_without, name='default'):
 
         if (name=='default'):
-            torch.save(x_without, "{}/obs_without.pt".format(self.folder))
+            torch.save(x_without, "obs_without.pt")
         else:
-            torch.save(x_without, "{}/{}/obs_without.pt".format(self.folder, name))
+            torch.save(x_without, "{}/obs_without.pt".format(name))
 
     def save_thetas(self, thetas, name='default'):
 
         if (name=='default'):
-            torch.save(thetas, "{}/thetas.pt".format(self.folder))
+            torch.save(thetas, "thetas.pt")
         else:
-            torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
+            torch.save(thetas, "{}/thetas.pt".format(name))
 
     def save_fig(self, fig, figname=None):
 
@@ -145,7 +145,7 @@ class WriteToFile(object):
 
         self.save_meta(start_time, finish_time)
 
-        source = "{}/{}.py".format(self.folder, source)
+        source = "{}.py".format(source)
         # Destination path
         destination = self.folder
 
