@@ -149,6 +149,8 @@ def main(argv):
         os.mkdir('{}/step3'.format(file_writer.folder))
     except:
         print('step files exist')
+
+    os.chdir(file_writer.folder)
         
 
 

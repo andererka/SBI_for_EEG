@@ -70,7 +70,6 @@ class WriteToFile(object):
 
 
         torch.save(prior, "{}/prior.pt".format(self.folder))
-        self.prior = prior
 
 
     def save_proposal(self, prop, name='default'):
@@ -79,7 +78,6 @@ class WriteToFile(object):
             torch.save(prop, "{}/proposal.pt".format(self.folder))
         else:
             torch.save(prop, "{}/{}/proposal.pt".format(self.folder, name))
-        self.prop = prop
 
     def save_observations(self, x, name='default'):
 
@@ -87,7 +85,6 @@ class WriteToFile(object):
             torch.save(x, "{}/obs.pt".format(self.folder))
         else:
             torch.save(x, "{}/{}/obs.pt".format(self.folder, name))
-        self.x = x
 
     def save_obs_without(self, x_without, name='default'):
 
@@ -102,7 +99,6 @@ class WriteToFile(object):
             torch.save(thetas, "{}/thetas.pt".format(self.folder))
         else:
             torch.save(thetas, "{}/{}/thetas.pt".format(self.folder, name))
-        self.thetas = thetas
 
     def save_fig(self, fig, figname=None):
 
@@ -143,7 +139,7 @@ class WriteToFile(object):
         self,
         start_time=None,
         finish_time=None,
-        source=None,
+        source=__file__,
     ):
 
 
