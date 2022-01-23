@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "sequential_inference_6params.py", line 339, in <module>
-    main(sys.argv[1:])
-  File "sequential_inference_6params.py", line 137, in main
-    os.chdir(file_writer.folder)
-FileNotFoundError: [Errno 2] No such file or directory: '/mnt/qb/work/macke/kanderer29/results/1000_sims_6_params'

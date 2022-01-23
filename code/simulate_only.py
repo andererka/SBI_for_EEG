@@ -101,6 +101,8 @@ def main(argv):
         print('file exists')
         exit
 
+    os.chdir(file_writer.folder)
+
     prior_min = [7.9, 43.8,  89.49] 
 
     prior_max = [30, 79.9, 152.96]

@@ -1,3 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-/var/spool/slurmd/job1137991/slurm_script: line 19: 48775 Segmentation fault      python3 sequential_inference_6params.py 10000 1000 64 10000_sims_6_params 0
