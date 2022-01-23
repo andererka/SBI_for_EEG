@@ -129,8 +129,6 @@ def main(argv):
     finish_time = get_time()
 
     file_writer.save_all(
-    posterior=None,
-    prior=prior,
     start_time=start_time,
     finish_time=finish_time,
 )
