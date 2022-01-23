@@ -123,8 +123,8 @@ def main(argv):
     
 
 
-    torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
-    torch.save(true_params, "{}/true_params.pt".format(file_writer.folder))
+    torch.save(file_writer, "class.pt")
+    torch.save(true_params, "true_params.pt")
 
     finish_time = get_time()
 
