@@ -157,8 +157,8 @@ def main(argv):
 
     
     try:
-        theta = torch.load('{}/step1/thetas.pt'.format(file_writer.folder))
-        x_without = torch.load('{}/step1/obs_without.pt'.format(file_writer.folder))
+        theta = torch.load('step1/thetas.pt')
+        x_without = torch.load('step1/obs_without.pt')
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -210,8 +210,8 @@ def main(argv):
 
 
     try:
-        theta = torch.load('{}/step2/thetas.pt'.format(file_writer.folder))
-        x_without = torch.load('{}/step2/obs_without.pt'.format(file_writer.folder))
+        theta = torch.load('step2/thetas.pt')
+        x_without = torch.load('step2/obs_without.pt')
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -264,8 +264,8 @@ def main(argv):
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     try:
-        theta = torch.load('{}/step3/thetas.pt'.format(file_writer.folder))
-        x_without = torch.load('{}/step3/obs_without.pt'.format(file_writer.folder))
+        theta = torch.load('step3/thetas.pt')
+        x_without = torch.load('step3/obs_without.pt')
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -307,7 +307,7 @@ def main(argv):
     )
 
     
-    fig.savefig('{}/posterior_dens.png'.format(file_writer.folder))
+    fig.savefig('posterior_dens.png')
 
     finish_time = get_time()
 
@@ -328,8 +328,8 @@ def main(argv):
 
     file_writer.save_fig(fig4, 'sim_from_posterior')
 
-    fig3.savefig('{}/from_prior.png'.format(file_writer.folder))
-    fig4.savefig('{}/from_posterior_dens.png'.format(file_writer.folder))
+    fig3.savefig('from_prior.png')
+    fig4.savefig('from_posterior_dens.png')
 
     #file_writer.save_posterior(posterior)
     #file_writer.save_prior(combined_prior)
