@@ -101,6 +101,8 @@ def main(argv):
         print('file exists')
         exit
 
+    os.chdir(file_writer.folder)
+
     prior_min = [7.9, 43.8,  89.49] 
 
     prior_max = [30, 79.9, 152.96]
@@ -121,14 +123,12 @@ def main(argv):
     
 
 
-    torch.save(file_writer, "{}/class.pt".format(file_writer.folder))
-    torch.save(true_params, "{}/true_params.pt".format(file_writer.folder))
+    torch.save(file_writer, "class.pt")
+    torch.save(true_params, "true_params.pt")
 
     finish_time = get_time()
 
     file_writer.save_all(
-    posterior=None,
-    prior=prior,
     start_time=start_time,
     finish_time=finish_time,
 )

@@ -146,10 +146,6 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
     """
 
-    print(type(params))
-
-    
-
     early_stop = 170.0
 
     if params.dim() > 1:
@@ -185,6 +181,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 
     if (param_size == 2 or param_size == 4 or param_size == 6):
         net = set_network_weights_2_per_step(params)
+        print('set network weights 2 per step')
     else:
         net = set_network_weights(params)
 
@@ -406,7 +403,6 @@ def set_network_weights_2_per_step(params=None):
 
     # all NMDA weights are zero; pass None explicitly
 
-    print('is here the problem?')
     net.add_evoked_drive(
         "evprox1",
         mu=params[1],
@@ -419,7 +415,6 @@ def set_network_weights_2_per_step(params=None):
         event_seed=event_seed(),
     )
 
-    print('check')
 
     if (len(params)==2):
         print('stop here')

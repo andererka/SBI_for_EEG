@@ -10,6 +10,7 @@ from summary_features.calculate_summary_features import (
 
 import numpy as np
 import torch
+import json
 
 from utils.helpers import get_time
 
@@ -96,13 +97,13 @@ def main(argv):
 
     ### for also inferring connection weights etc.:
 
-    prior_min_fix = [0, 17.3, 0, 51.980, 0, 112.13]
-    prior_max_fix = [0.160, 35.9, 0.0259, 75.08, 4.104, 162.110]
+    prior_min_fix = [0.0, 11.3, 0.0, 43.8, 0.0, 89.491]
+    prior_max_fix = [0.160, 35.9, 0.821, 79.0, 8.104, 162.110]
 
-    prior_min = [0, 17.3, 0, 51.980, 0, 112.13]
-    prior_max = [0.160, 35.9, 0.0259, 75.08, 4.104, 162.110]
+    prior_min = [0.0, 11.3, 0.0, 43.8, 0.0, 89.491]
+    prior_max = [0.160, 35.9, 0.821, 79.0, 8.104, 162.110]
     #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    true_params = torch.tensor([[0.0399, 18.977, 0.0134, 63.08, 0.3308, 120.86]])
+    true_params = torch.tensor([[0.0274, 19.01, 0.1369, 61.89, 0.1435, 120.86]])
 
     
     #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
@@ -127,7 +128,7 @@ def main(argv):
     experiment=experiment_name,
     num_sim=num_sim,
     density_estimator='nsf',
-    num_params=3,
+    num_params=6,
     num_samples=num_samples,
     slurm=slurm,
     )
@@ -156,8 +157,8 @@ def main(argv):
 
     
     try:
-        theta = torch.load('{}/step1/thetas.pt'.format(file_writer.folder))
-        x_without = torch.load('{}/step1/obs_without.pt'.format(file_writer.folder))
+        theta = torch.load('step1/thetas.pt')
+        x_without = torch.load('step1/obs_without.pt')
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -167,7 +168,13 @@ def main(argv):
             num_workers=num_workers
         )
 
-        print('done with simulations')
+        step_time = get_time()
+        json_dict = {
+        "start time:": start_time,
+        "round 1 time": step_time}
+        with open( "step1/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
@@ -209,8 +216,8 @@ def main(argv):
 
 
     try:
-        theta = torch.load('{}/step2/thetas.pt'.format(file_writer.folder))
-        x_without = torch.load('{}/step2/obs_without.pt'.format(file_writer.folder))
+        theta = torch.load('step2/thetas.pt')
+        x_without = torch.load('step2/obs_without.pt')
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -221,6 +228,14 @@ def main(argv):
         )
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
+
+        step_time = get_time()
+        json_dict = {
+        "start time:": start_time,
+        "round 3 time": step_time}
+        with open( "step2/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
 
     print("second round completed")
@@ -263,8 +278,8 @@ def main(argv):
     inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     try:
-        theta = torch.load('{}/step3/thetas.pt'.format(file_writer.folder))
-        x_without = torch.load('{}/step3/obs_without.pt'.format(file_writer.folder))
+        theta = torch.load('step3/thetas.pt')
+        x_without = torch.load('step3/obs_without.pt')
 
     except:
         theta, x_without = inference.run_sim_theta_x(
@@ -276,6 +291,17 @@ def main(argv):
 
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
+
+        step_time = get_time()
+
+        json_dict = {
+
+        "start time:": start_time,
+        "round 3 time": step_time,
+    }
+        with open( "step3/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
     x_P200 = calculate_summary_stats_temporal(x_without)
 
@@ -306,7 +332,7 @@ def main(argv):
     )
 
     
-    fig.savefig('{}/posterior_dens.png'.format(file_writer.folder))
+    fig.savefig('posterior_dens.png')
 
     finish_time = get_time()
 
@@ -317,18 +343,18 @@ def main(argv):
     ax.set_title("Simulating from proposal")
     for x in x_without:
         plt.plot(x)
+    plt.show()
 
-    file_writer.save_fig(fig3, 'sim_from_proposal')
 
     fig4, ax = plt.subplots(1, 1)
     ax.set_title("Simulating from posterior")
     for s in s_x:
         plt.plot(s)
+    plt.show()
 
-    file_writer.save_fig(fig4, 'sim_from_posterior')
 
-    fig3.savefig('{}/from_prior.png'.format(file_writer.folder))
-    fig4.savefig('{}/from_posterior_dens.png'.format(file_writer.folder))
+    fig3.savefig('from_prior.png')
+    fig4.savefig('from_posterior_dens.png')
 
     #file_writer.save_posterior(posterior)
     #file_writer.save_prior(combined_prior)
