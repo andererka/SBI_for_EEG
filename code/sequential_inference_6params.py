@@ -10,6 +10,7 @@ from summary_features.calculate_summary_features import (
 
 import numpy as np
 import torch
+import json
 
 from utils.helpers import get_time
 
@@ -167,7 +168,13 @@ def main(argv):
             num_workers=num_workers
         )
 
-        print('done with simulations')
+        step_time = get_time()
+        json_dict = {
+        "start time:": start_time,
+        "round 1 time": step_time}
+        with open( "step1/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
@@ -221,6 +228,14 @@ def main(argv):
         )
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
+
+        step_time = get_time()
+        json_dict = {
+        "start time:": start_time,
+        "round 3 time": step_time}
+        with open( "step2/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
 
     print("second round completed")
@@ -276,6 +291,17 @@ def main(argv):
 
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
+
+        step_time = get_time()
+
+        json_dict = {
+
+        "start time:": start_time,
+        "round 3 time": step_time,
+    }
+        with open( "step3/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
     x_P200 = calculate_summary_stats_temporal(x_without)
 
