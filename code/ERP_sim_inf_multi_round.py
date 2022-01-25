@@ -8,8 +8,10 @@ import datetime
 
 
 import numpy as np
-from summary_features.calculate_summary_features import calculate_summary_stats
+from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_stats_number
 import torch
+import os
+import json
 from data_load_writer import write_to_file
 import pickle
 
@@ -21,12 +23,15 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import simulation_wrapper
+from utils.simulation_wrapper import simulation_wrapper, simulation_wrapper_obs
 from utils.helpers import get_time
 
 
 from utils import inference
 import sys
+
+##sbi
+from sbi.inference import SNPE_C
 
 
 def main(argv):
@@ -68,36 +73,27 @@ def main(argv):
     try:
         num_params = int(argv[4])
     except:
-        num_params = None
+        num_params = 6
     try:
         sample_method = argv[5]
     except:
         sample_method = "rejection"
 
-    print(num_params)
+   
     ##defining the prior lower and upper bounds
     if num_params == 6:
-        prior_min = [
-            43.8,
-            3.01,
-            11.364,
-            1.276,
-            89.49,
-            5.29,
-        ]  # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
+        prior_min = [0.0, 11.3, 0.0, 43.8, 0.0, 89.491]
+        prior_max = [0.160, 35.9, 0.821, 79.0, 8.104, 162.110]
+        #true_params = torch.tensor([[26.61, 63.53,  137.12]])
+        true_params = torch.tensor([[0.0274, 19.01, 0.1369, 61.89, 0.1435, 120.86]])
 
-        prior_max = [79.9, 9.03, 26.67, 3.828, 152.96, 15.87]
 
-        true_params = torch.tensor([[63.53, 6.022, 18.97, 2.55, 137.12, 10.58]])
-
-        parameter_names = [
-            "t_evdist_1",
-            "sigma_t_evdist_1",
-            "t_evprox_1",
-            "sigma_t_evprox_1",
-            "t_evprox_2",
-            "sigma_t_evprox_2",
-        ]
+        parameter_names = ["prox_1_ampa_l2_pyr",
+        "t_evprox_1",
+        "dist_nmda_l2_pyr",
+        "t_evdist_1", 
+        "prox_2_ampa_l5_pyr",
+        "t_evprox_2"]
 
     if num_params == 3:
         prior_min = [43.8, 7.9, 89.49]
@@ -122,96 +118,84 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
+    obs_real_stat = calculate_summary_stats_number(obs_real, 17)
+
     posteriors = []
     proposal = prior
 
-    for _ in range(2):
-        posterior, theta, x, _ = inference.run_sim_inference(
-            proposal,
-            simulation_wrapper,
-            number_simulations,
-            num_workers=num_workers,
-            density_estimator=density_estimator,
+    for _ in range(3):
+        theta, x_without = inference.run_sim_theta_x(
+        proposal, 
+        simulation_wrapper_obs,
+        num_simulations=number_simulations,
+        num_workers=num_workers
         )
 
+        x = calculate_summary_stats_number(x_without, 17)
+        
+        density_estimator = 'nsf'
+
+
+        inf = SNPE_C(prior=prior, density_estimator = density_estimator)
+
+
+        inf = inf.append_simulations(theta, x)
+
+        neural_dens= inf.train()
+
+        posterior = inf.build_posterior(neural_dens)
+
         posteriors.append(posterior)
-        proposal = posterior.set_default_x(obs_real[0])
+        proposal = posterior.set_default_x(obs_real_stat)
 
-    # next two lines are not necessary if we have a real observation from experiment
-    # here we simulate this 'real observation' by simulation
 
-    # 't_evdist_1', 'sigma_t_evdist_1', 't_evprox_1', 'sigma_t_evprox_1', 't_evprox_2', 'sigma_t_evprox_2'
 
-    samples = posterior.sample((num_samples,), x=obs_real[0], sample_with=sample_method)
+    samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
 
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
-    s_x_stats = calculate_summary_stats(s_x)
 
-    limits = [list(tup) for tup in zip(prior_min, prior_max)]
-    fig, axes = analysis.pairplot(
-        samples,
-        limits=limits,
-        ticks=limits,
-        figsize=(5, 5),
-        points=true_params,
-        points_offdiag={"markersize": 6},
-        points_colors="r",
-        labels=parameter_names,
-        tick_labels=parameter_names,
-    )
-
-    corr_matrix_marginal = np.corrcoef(samples.T)
-    fig2, ax = plt.subplots(1, 1, figsize=(4, 4))
-    im = plt.imshow(corr_matrix_marginal, clim=[-1, 1], cmap="PiYG")
-    _ = fig2.colorbar(im)
-
-    fig3, ax = plt.subplots(1, 1, figsize=(4, 4))
-    ax.set_title("Simulating from posterior (with summary stats")
-    for s in s_x_stats:
-        im = plt.plot(s)
-
-    fig4, ax = plt.subplots(1, 1)
-    ax.set_title("Simulating from posterior (without summary stats)")
-    for s in s_x:
-        im = plt.plot(s)
-
-    # condition = posterior.sample((1,))
-    # cond_coeff_mat = analysis.conditional_corrcoeff(
-    # density=posterior,
-    # condition=condition,
-    # limits=torch.tensor([[-2., 2.]]*3),)
-    # fig3, ax = plt.subplots(1,1, figsize=(4,4))
-    # im = plt.imshow(cond_coeff_mat, clim=[-1, 1], cmap='PiYG')
-    # _ = fig3.colorbar(im)
 
     file_writer = write_to_file.WriteToFile(
-        experiment="ERP_multi_round{}_num_params:{}_".format(
-            density_estimator, num_params
+        experiment="{}_per_multi_round_num_params:{}_".format(
+            number_simulations, num_params
         ),
         num_sim=number_simulations,
         true_params=true_params,
         density_estimator=density_estimator,
         num_params=num_params,
         num_samples=num_samples,
+        slurm=True
     )
+
+    os.chdir(file_writer.folder)
+
+    file_writer.save_posterior(posterior)
+    file_writer.save_obs_without(x_without)
+    file_writer.save_prior(prior)
 
     finish_time = get_time()
-    file_writer.save_all(
-        posterior,
-        prior,
-        theta=theta,
-        x=x,
-        fig=fig,
-        start_time=start_time,
-        finish_time=finish_time,
-    )
 
-    file_writer.save_fig(fig2)
-    file_writer.save_fig(fig3)
-    file_writer.save_fig(fig4)
+    json_dict = {
+    "start time:": start_time,
+    "round 1 time": finish_time,
+    "parameter names": parameter_names,
+    'num simulations':number_simulations,
+    'true_params': true_params,
+    'density_estimator':density_estimator,
+    'number of parameters': num_params,
+    'number of samples': num_samples}
+
+    with open( "meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
     ##save class
-    with open("{}/class".format(file_writer.folder), "wb") as pickle_file:
+    with open("class", "wb") as pickle_file:
         pickle.dump(file_writer, pickle_file)
+
+    ##save simulations from samples
+    with open("sim_from_samples", "wb") as pickle_file:
+        pickle.dump(s_x, pickle_file)
 
 
 if __name__ == "__main__":
