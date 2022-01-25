@@ -8,7 +8,7 @@ import datetime
 
 
 import numpy as np
-from summary_features.calculate_summary_features import calculate_summary_stats, calculate_summary_stats_number
+from summary_features.calculate_summary_features import calculate_summary_stats_number
 import torch
 import os
 import json
@@ -23,7 +23,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import simulation_wrapper, simulation_wrapper_obs
+from utils.simulation_wrapper import simulation_wrapper_obs
 from utils.helpers import get_time
 
 
