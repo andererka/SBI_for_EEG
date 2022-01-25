@@ -1,4 +1,4 @@
-name: sbi_env
+name: sbi
 channels:
   - conda-forge
   - defaults
