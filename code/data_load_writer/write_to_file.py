@@ -54,16 +54,7 @@ class WriteToFile(object):
     def save_posterior(self, posterior):
 
         file_name = "posterior.pt"
-        if os.path.isfile(file_name):
-            expand = 1
-            while True:
-                expand += 1
-                new_file_name = file_name.split(".pt")[0] + str(expand) + ".pt"
-                if os.path.isfile(new_file_name):
-                    continue
-                else:
-                    file_name = new_file_name
-                    break
+        file_name = make_file_name(file_name)
         torch.save(posterior, file_name)
 
     def save_prior(self, prior):
@@ -74,48 +65,55 @@ class WriteToFile(object):
 
     def save_proposal(self, prop, name='default'):
 
+        file_name = "proposal.pt"
+        file_name = make_file_name(file_name)
+
         if (name=='default'):
-            torch.save(prop, "proposal.pt")
+            torch.save(prop, file_name)
         else:
-            torch.save(prop, "{}/proposal.pt".format(name))
+            torch.save(prop, "{}/{}".format(name, file_name))
 
     def save_observations(self, x, name='default'):
 
+        file_name = "obs.pt"
+        file_name = make_file_name(file_name)
+
         if (name=='default'):
-            torch.save(x, "obs.pt")
+            torch.save(x, file_name)
         else:
-            torch.save(x, "{}/obs.pt".format(name))
+            torch.save(x, "{}/{}".format(name, file_name))
 
     def save_obs_without(self, x_without, name='default'):
 
+        file_name = "obs_without.pt"
+        file_name = make_file_name(file_name)
+
         if (name=='default'):
-            torch.save(x_without, "obs_without.pt")
+            torch.save(x_without, file_name)
         else:
-            torch.save(x_without, "{}/obs_without.pt".format(name))
+            torch.save(x_without, "{}/{}".format(name, file_name))
 
     def save_thetas(self, thetas, name='default'):
 
+        file_name = "thetas.pt"
+        file_name = make_file_name(file_name)
+
         if (name=='default'):
-            torch.save(thetas, "thetas.pt")
+            torch.save(thetas, file_name)
         else:
-            torch.save(thetas, "{}/thetas.pt".format(name))
+            torch.save(thetas, "{}/{}".format(name, file_name))
 
     def save_fig(self, fig, figname=None):
 
-        if figname == None:
-            file_name = "{}/figure.png".format(self.folder)
-            if os.path.isfile(file_name):
-                expand = 1
-                while True:
-                    expand += 1
-                    new_file_name = file_name.split(".png")[0] + str(expand) + ".png"
-                    if os.path.isfile(new_file_name):
-                        continue
-                    else:
-                        file_name = new_file_name
-                        break
+        file_name = figname     
+        if file_name== None:
+            file_name = "{}/fig.png".format(self.folder)
+
+
         else:
-            file_name = "{}/figure{}.png".format(self.folder, figname)
+            file_name = make_file_name(file_name) 
+            file_name = "{}/figure{}.png".format(self.folder, file_name)
+
         fig.savefig(file_name)
 
     def save_meta(self, start_time, finish_time):
@@ -131,7 +129,10 @@ class WriteToFile(object):
             "start time:": start_time,
             "finish_time": finish_time,
         }
-        with open(self.folder + "/meta.json", "a") as f:
+
+        file_name = make_file_name('meta') 
+
+        with open(self.folder + "/" + file_name, "a") as f:
             json.dump(json_dict, f)
             f.close()
 
@@ -154,3 +155,16 @@ class WriteToFile(object):
             print("File copied successfully.")
         except:
             print("File could not be copied")
+
+
+def make_file_name(file_name):
+    if os.path.isfile(file_name):
+        expand = 1
+        while True:
+            expand += 1
+            new_file_name = file_name.split(".pt")[0] + str(expand) + ".pt"
+            if os.path.isfile(new_file_name):
+                continue
+            else:
+                file_name = new_file_name
+                break

@@ -11,6 +11,8 @@ from summary_features.calculate_summary_features import (
 import numpy as np
 import torch
 import json
+import pandas as pd
+import seaborn as sns
 
 from utils.helpers import get_time
 
@@ -121,6 +123,8 @@ def main(argv):
     ###### starting with P50 parameters/summary stats:
     #prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
 
+    prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
+
     prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
 
     inf = SNPE_C(prior1, density_estimator='nsf')
@@ -152,6 +156,8 @@ def main(argv):
         print('step files exist')
 
     os.chdir(file_writer.folder)
+
+    print(file_writer.folder)
         
 
 
@@ -180,6 +186,15 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
 
+    os.chdir('..')
+    os.chdir('..')
+    print(os.getcwd())
+    os.chdir('data')
+
+    obs_real = pd.read_csv('no_trial_S1_ERP_all_avg.txt', sep='\t', header=None)
+
+    obs_real = torch.tensor(obs_real.values)
+
     x_P50 = calculate_summary_stats_temporal(x_without)
 
     print('x50 shape 0', x_P50.shape[0], x_P50.shape)
@@ -191,19 +206,24 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
+
+    #### either simulate 'fake observation' or load data from hnn 
+
+
+
     #obs_real = inference.run_only_sim(
     #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
 #)  
 
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
-    )  # first output gives summary statistics, second without
+    #obs_real = inference.run_only_sim(
+    #    torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
+    #)  # first output gives summary statistics, second without
 
-    obs_real = calculate_summary_stats_temporal(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
-    samples = posterior.sample((num_samples,), x=obs_real)
+    samples = posterior.sample((num_samples,), x=obs_real_stat)
 
-    proposal1 = posterior.set_default_x(obs_real)
+    proposal1 = posterior.set_default_x(obs_real_stat)
 
     ###### continuing with N100 parameters/summary stats:
     #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
@@ -253,19 +273,19 @@ def main(argv):
     #    sim_wrapper,
     #    num_workers=num_workers
     #)
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:12])]),
-        simulation_wrapper_all,
-        num_workers=num_workers
-    )  # first output gives summary statistics, second without
+    #obs_real = inference.run_only_sim(
+    #    torch.tensor([list(true_params[0][0:12])]),
+    #    simulation_wrapper_all,
+    #    num_workers=num_workers
+    #)  # first output gives summary statistics, second without
 
-    obs_real = calculate_summary_stats_temporal(obs_real)
+    #obs_real = calculate_summary_stats_temporal(obs_real)
 
-    print("obs real", obs_real.size())
+    #print("obs real", obs_real.size())
 
-    samples = posterior.sample((num_samples,), x=obs_real)
+    samples = posterior.sample((num_samples,), x=obs_real_stat)
 
-    proposal2 = posterior.set_default_x(obs_real)
+    proposal2 = posterior.set_default_x(obs_real_stat)
 
     ###### continuing with P200 parameters/summary stats:
     #prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
@@ -309,26 +329,38 @@ def main(argv):
 
     posterior = inf.build_posterior(density_estimator)
 
-    obs_real = inference.run_only_sim(
-        true_params, sim_wrapper, num_workers=num_workers
-    )  # first output gives summary statistics, second without
+    #obs_real = inference.run_only_sim(
+    #    true_params, sim_wrapper, num_workers=num_workers
+    #)  # first output gives summary statistics, second without
 
-    obs_real = calculate_summary_stats_temporal(obs_real)
+    #obs_real = calculate_summary_stats_temporal(obs_real)
 
-    samples = posterior.sample((num_samples,), x=obs_real)
+    samples = posterior.sample((num_samples,), x=obs_real_stat)
 
     limits = [list(tup) for tup in zip(prior_min_fix, prior_max_fix)]
+
+    list_min = list(torch.min(samples, 0)[0]-0.1)
+    list_max = list(torch.max(samples, 0)[0]+0.1)
+
+    limits = [list(tup) for tup in zip(list_min, list_max)]
 
     fig, axes = analysis.pairplot(
         samples,
         limits=limits,
-        ticks=limits,
-        figsize=(5, 5),
+        ticks=np.round(limits,2),
+        figsize=(30, 30),
         points=true_params,
         points_offdiag={"markersize": 6},
         points_colors="r",
         labels=parameter_names,
     )
+
+    for i in range(5):
+        axes[i][i].xaxis.label.set_color('magenta')
+    for i in range(5, 12):
+        axes[i][i].xaxis.label.set_color('navy')
+    for i in range(12, 17):
+        axes[i][i].xaxis.label.set_color('deeppink')
 
     
     fig.savefig('posterior_dens.png')
@@ -338,25 +370,89 @@ def main(argv):
 
     s_x = inference.run_only_sim(samples, simulation_wrapper=sim_wrapper, num_workers=num_workers)
 
-    fig3, ax = plt.subplots(1, 1)
-    ax.set_title("Simulating from proposal")
-    for x in x_without:
-        plt.plot(x)
 
-    file_writer.save_fig(fig3, 'sim_from_proposal')
+    samples_prior = []
 
-    fig4, ax = plt.subplots(1, 1)
-    ax.set_title("Simulating from posterior")
+
+    for i in range(num_samples):
+        sample = prior.sample()
+        samples_prior.append(sample)
+        
+    s_x_prior = inference.run_only_sim(samples_prior, sim_wrapper, num_workers=8)
+
+
+    s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
+
+    s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
+
+
+    ### calculating confidence intervals:
+
+    mean = torch.mean(s_x_torch, 0)
+    std = torch.std(s_x_torch, 0)
+
+    mean_prior = torch.mean(s_x_prior_torch, 0)
+    std_prior = torch.std(s_x_prior_torch, 0)
+
+    lower = mean - 1.96 * std
+
+
+    upper = mean + 1.96 * std
+
+
+    lower_prior = mean_prior - 1.96 * std_prior
+
+
+    upper_prior = mean_prior + 1.96 * std_prior
+
+
+    sns.set() 
+
+    sns.set_style("whitegrid", {'axes.grid' : False})
+    #sns.set_style('ticks')
+
+    fig1, ax = plt.subplots(1, 1)
+    #ax.set_title("Comparing signal")
+
+        
+    plt.plot(mean, color ='blue', label='mean of posterior')
+
     for s in s_x:
-        plt.plot(s)
+        plt.plot(s, alpha=0.05, color='blue')
+        #plt.ylim(-30,30)
+        plt.xlim(0, 7000)
 
-    file_writer.save_fig(fig4, 'sim_from_posterior')
+    plt.plot(lower, color='blue', linestyle='dashed', label='95% confidence')
+    plt.plot(upper, color='blue', linestyle='dashed')
+    plt.fill_between(x= torch.arange(len(mean_prior)), y1=lower, y2=upper, color='blue', alpha=0.1)
+    plt.xlim(0, 7000)
 
-    fig3.savefig('from_prior.png')
-    fig4.savefig('from_posterior_dens.png')
 
-    #file_writer.save_posterior(posterior)
-    #file_writer.save_prior(combined_prior)
+    plt.plot(mean_prior, color ='orange', label='mean of prior')
+
+
+    for x_w in s_x_prior:
+        plt.plot(x_w, alpha=0.05, color='orange')
+
+    plt.plot(lower_prior, color='orange', linestyle='dashed', label='95% confidence')
+    plt.plot(upper_prior, color='orange', linestyle='dashed')
+    plt.fill_between(x= torch.arange(len(mean_prior)), y1=lower_prior, y2=upper_prior, color='orange', alpha=0.2)
+    plt.xlim(0, 7000)
+
+    plt.xlabel('time in ms')
+    #plt.ylabel('voltage ()')
+
+    fig1.gca().set_ylabel(r'voltage ($\mu V$)')
+        
+    plt.plot(obs_real[0], label='Ground truth', color='red')
+
+    plt.legend()
+
+
+    fig1.savefig('posterior_predictive_check.png')
+
+
+
 
     file_writer.save_all(
         start_time=start_time,
