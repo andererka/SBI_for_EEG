@@ -268,6 +268,9 @@ def main(argv):
 
     print("second round completed")
 
+    print(x_without.shape)
+    x_without = x_without[:,:4200]
+
     x_N100 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_N100)
@@ -290,8 +293,6 @@ def main(argv):
 
     #print("obs real", obs_real.size())
 
-    print(x_without.shape)
-    x_without = x_without[:,:4200]
  
     obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
 
@@ -333,25 +334,15 @@ def main(argv):
         "start time:": start_time,
         "round 3 time": step_time}
         with open( "step3/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
+            json.dump(json_dict, f)    #obs_real = calculate_summary_stats_temporal(obs_real)
 
-
-    x_P200 = calculate_summary_stats_temporal(x_without)
-
-    inf = inf.append_simulations(theta, x_P200)
-    density_estimator = inf.train()
-
-    posterior = inf.build_posterior(density_estimator)
-
-    #obs_real = inference.run_only_sim(
     #    true_params, sim_wrapper, num_workers=num_workers
     #)  # first output gives summary statistics, second without
 
     obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
-    
+
     samples = posterior.sample((num_samples,), x=obs_real_stat)
 
     limits = [list(tup) for tup in zip(prior_min_fix, prior_max_fix)]
