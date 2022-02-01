@@ -176,13 +176,7 @@ def main(argv):
         )
         step_time = get_time()
         json_dict = {
-        ciency comparison
-‘form hypotheses on whether some parameters were more important to matching features’ (Jonson: ‘we found that increasing the L5 pyramidal NMDA weight was necessary to produce the second “bump” at 45 ms’)
-→ thinking this further: compare 2 different ERPs (maybe from healthy and schizophrenic patient and evaluate which microscale parameters change)
-RmseTime efficiency comparison
-‘form hypotheses on whether some parameters were more important to matching features’ (Jonson: ‘we found that increasing the L5 pyramidal NMDA weight was necessary to produce the second “bump” at 45 ms’)
-→ thinking this further: compare 2 different ERPs (maybe from healthy and schizophrenic patient and evaluate which microscale parameters change)
-Rmse"start time:": start_time,
+        "start time:": start_time,
         "round 1 time": step_time}
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
@@ -194,10 +188,7 @@ Rmse"start time:": start_time,
 
     os.chdir('..')
     os.chdir('..')
-    Time efficiency comparison
-‘form hypotheses on whether some parameters were more important to matching features’ (Jonson: ‘we found that increasing the L5 pyramidal NMDA weight was necessary to produce the second “bump” at 45 ms’)
-→ thinking this further: compare 2 different ERPs (maybe from healthy and schizophrenic patient and evaluate which microscale parameters change)
-Rmseprint(os.getcwd())
+    print(os.getcwd())
     os.chdir('data')
 
     trace = pd.read_csv('default/dpl.txt', sep='\t', header=None, dtype= np.float32)
@@ -279,6 +270,9 @@ Rmseprint(os.getcwd())
 
     print("second round completed")
 
+    print(x_without.shape)
+    x_without = x_without[:,:4200]
+
     x_N100 = calculate_summary_stats_temporal(x_without)
 
  
@@ -300,8 +294,7 @@ Rmseprint(os.getcwd())
     #    num_workers=num_workers
     #)  # first output gives summary statistics, second without
 
-    print(x_without.shape)
-    x_without = x_without[:,:4200]
+
     print('x without shape' , x_without.shape)
     obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
 
