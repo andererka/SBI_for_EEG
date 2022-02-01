@@ -1,0 +1,28 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+WARNING:root:Found 24 NaN simulations and 0 Inf simulations. They will be excluded from training.
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 465, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 226, in main
+    samples = posterior.sample((num_samples,), x=obs_real_stat)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/direct_posterior.py", line 395, in sample
+    **rejection_sampling_parameters,
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/autograd/grad_mode.py", line 28, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/sbiutils.py", line 220, in rejection_sample_posterior_within_prior
+    candidates = posterior_nn.sample(sampling_batch_size, context=x).reshape(
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/distributions/base.py", line 65, in sample
+    return self._sample(num_samples, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/flows/base.py", line 44, in _sample
+    embedded_context = self._embedding_net(context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1051, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/nn/modules/container.py", line 139, in forward
+    input = module(input)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1051, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/sbiutils.py", line 115, in forward
+    return (tensor - self._mean) / self._std
+RuntimeError: The size of tensor a (7) must match the size of tensor b (12) at non-singleton dimension 1
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]

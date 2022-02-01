@@ -1,0 +1,35 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+WARNING:root:Found 24 NaN simulations and 0 Inf simulations. They will be excluded from training.
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 464, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 225, in main
+    samples = posterior.sample((num_samples,), x=obs_real_stat)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/direct_posterior.py", line 345, in sample
+    x, num_samples = self._prepare_for_sample(x, sample_shape)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/base_posterior.py", line 386, in _prepare_for_sample
+    self._ensure_single_x(x)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/base_posterior.py", line 971, in _ensure_single_x
+    """
+ValueError: The `x` passed to condition the posterior for evaluation or sampling
+                has an inferred batch shape larger than one. This is not supported in
+                some sbi methods for reasons depending on the scenario:
+
+                    - in case you want to evaluate or sample conditioned on several xs
+                    e.g., (p(theta | [x1, x2, x3])), this is not supported yet except
+                    when using likelihood based SNLE.
+
+                    - in case you trained with a single round to do amortized inference
+                    and now you want to evaluate or sample a given theta conditioned on
+                    several xs, one after the other, e.g, p(theta | x1), p(theta | x2),
+                    p(theta| x3): this broadcasting across xs is not supported in sbi.
+                    Instead, what you can do it to call posterior.log_prob(theta, xi)
+                    multiple times with different xi.
+
+                    - finally, if your observation is multidimensional, e.g., an image,
+                    make sure to pass it with a leading batch dimension, e.g., with
+                    shape (1, xdim1, xdim2). Beware that the current implementation
+                    of sbi might not provide stable support for this and result in
+                    shape mismatches.
+                

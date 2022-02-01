@@ -1,0 +1,4 @@
+  File "sequential_inference_17params.py", line 179
+    ciency comparison
+                    ^
+SyntaxError: invalid syntax

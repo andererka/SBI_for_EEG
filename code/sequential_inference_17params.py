@@ -189,6 +189,7 @@ def main(argv):
     os.chdir('..')
     os.chdir('..')
     print(os.getcwd())
+
     os.chdir('data')
 
     trace = pd.read_csv('default/dpl.txt', sep='\t', header=None, dtype= np.float32)
@@ -201,9 +202,6 @@ def main(argv):
 
     x_without = x_without[:,:2700]
 
-    print('obs_real shape', obs_real[0].shape)
-    print('x without shape', x_without.shape)
-  
     x_P50 = calculate_summary_stats_temporal(x_without)
 
     print('x50 shape 0', x_P50.shape[0], x_P50.shape)
@@ -275,9 +273,6 @@ def main(argv):
 
     x_N100 = calculate_summary_stats_temporal(x_without)
 
- 
-    print('x without shape', x_without.shape)
-
     inf = inf.append_simulations(theta, x_N100)
     density_estimator = inf.train()
 
@@ -294,16 +289,15 @@ def main(argv):
     #    num_workers=num_workers
     #)  # first output gives summary statistics, second without
 
-
-    print('x without shape' , x_without.shape)
-    obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
-
-
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
-
     #print("obs real", obs_real.size())
 
+ 
+    obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
+
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
     samples = posterior.sample((num_samples,), x=obs_real_stat)
+
+
 
     proposal2 = posterior.set_default_x(obs_real_stat)
 
@@ -338,20 +332,11 @@ def main(argv):
         "start time:": start_time,
         "round 3 time": step_time}
         with open( "step3/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
+            json.dump(json_dict, f)    #obs_real = calculate_summary_stats_temporal(obs_real)
 
-
-    x_P200 = calculate_summary_stats_temporal(x_without)
-
-    inf = inf.append_simulations(theta, x_P200)
-    density_estimator = inf.train()
-
-    posterior = inf.build_posterior(density_estimator)
-
-    #obs_real = inference.run_only_sim(
     #    true_params, sim_wrapper, num_workers=num_workers
     #)  # first output gives summary statistics, second without
+
     obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
