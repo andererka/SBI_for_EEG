@@ -296,8 +296,15 @@ def set_network_weights(params=None):
 
 
     weights_ampa_p1 = {
-        "L2_basket": params[0],
-        "L2_pyramidal": params[1],
+       # "L2_basket": ,
+        "L2_pyramidal": params[0],
+        "L5_basket": params[1],
+      #  "L5_pyramidal": ,
+    }
+
+    weights_nmda = {
+       # "L2_basket": params[4],
+       # "L2_pyramidal": params[5],
         "L5_basket": params[2],
         "L5_pyramidal": params[3],
     }
@@ -318,7 +325,7 @@ def set_network_weights(params=None):
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
+        weights_nmda=weights_nmda,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
         event_seed=event_seed(),
@@ -356,8 +363,15 @@ def set_network_weights(params=None):
         return net
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
-        "L2_basket": params[12],
-        "L2_pyramidal": params[13],
+        #"L2_basket": params[12],
+        "L2_pyramidal": params[12],
+        "L5_basket": params[13],
+        #"L5_pyramidal": params[13],
+    }
+
+    weights_nmda_p2 = {
+        #"L2_basket": params[12],
+        #"L2_pyramidal": params[13],
         "L5_basket": params[14],
         "L5_pyramidal": params[15],
     }
@@ -370,6 +384,7 @@ def set_network_weights(params=None):
         sigma=8.33,
         numspikes=1,
         weights_ampa=weights_ampa_p2,
+        weights_nmda = weights_nmda_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
         event_seed=event_seed(),
