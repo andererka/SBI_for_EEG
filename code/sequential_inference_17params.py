@@ -458,12 +458,5 @@ def main(argv):
     fig1.savefig('posterior_predictive_check.png')
 
 
-
-
-    file_writer.save_all(
-        start_time=start_time,
-        finish_time=finish_time,
-        source='sequential_inference')
-
 if __name__ == "__main__":
     main(sys.argv[1:])

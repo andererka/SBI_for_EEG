@@ -143,6 +143,21 @@ def main(argv):
     posteriors = []
     proposal = prior
 
+
+    file_writer = write_to_file.WriteToFile(
+    experiment="{}_per_multi_round_num_params:{}_".format(
+        number_simulations, num_params
+    ),
+    num_sim=number_simulations,
+    true_params=true_params,
+    density_estimator=density_estimator,
+    num_params=num_params,
+    num_samples=num_samples,
+    slurm=True
+)
+
+    os.chdir(file_writer.folder)
+
     for i in range(3):
 
         start_time = datetime.datetime.now()
@@ -179,8 +194,8 @@ def main(argv):
 
 
         json_dict = {
-        "start time:": start_time,
-        "finish time": finish_time,
+        "start time:": start_time_str,
+        "finish time": finish_time_str,
         'total CPU time:': diff_time}
 
         filename = 'meta_round_' + str(i) + '.json'
@@ -195,20 +210,6 @@ def main(argv):
 
     s_x = inference.run_only_sim(samples, num_workers=num_workers)
 
-
-    file_writer = write_to_file.WriteToFile(
-        experiment="{}_per_multi_round_num_params:{}_".format(
-            number_simulations, num_params
-        ),
-        num_sim=number_simulations,
-        true_params=true_params,
-        density_estimator=density_estimator,
-        num_params=num_params,
-        num_samples=num_samples,
-        slurm=True
-    )
-
-    os.chdir(file_writer.folder)
 
     file_writer.save_posterior(posterior)
     file_writer.save_obs_without(x_without)
