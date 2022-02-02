@@ -141,7 +141,11 @@ def main(argv):
     posteriors = []
     proposal = prior
 
-    for _ in range(3):
+    for i in range(3):
+
+        start_time = datetime.datetime.now()
+        start_time_str = get_time()
+
         theta, x_without = inference.run_sim_theta_x(
         proposal, 
         simulation_wrapper_obs,
@@ -165,6 +169,23 @@ def main(argv):
 
         posteriors.append(posterior)
         proposal = posterior.set_default_x(obs_real_stat)
+
+        finish_time_str = get_time()
+        finish_time = datetime.datetime.now()
+
+        diff_time = finish_time - start_time
+
+
+        json_dict = {
+        "start time:": start_time,
+        "finish time": finish_time,
+        'total CPU time:': diff_time}
+
+        filename = 'meta_round_' + str(i) + '.json'
+
+        with open( filename, "a") as f:
+            json.dump(json_dict, f)
+            f.close()
 
 
 

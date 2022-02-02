@@ -3,10 +3,25 @@
 import torch
 import os
 import sys
+import datetime
 
-sys.path.append('/mnt/qb/work/macke/kanderer29/')
+from utils.helpers import get_time
 
-
-os.chdir('/mnt/qb/work/macke/kanderer29/')
 
 print(os.getcwd())
+
+
+
+start1 = datetime.datetime.now()
+start = get_time()
+
+print('hello')
+
+finish = get_time()
+finish1 = datetime.datetime.now()
+
+diff = finish1 - start1
+
+print(diff)
+
+
