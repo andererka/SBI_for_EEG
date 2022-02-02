@@ -12,16 +12,11 @@ print(os.getcwd())
 
 
 
-start1 = datetime.datetime.now()
-start = get_time()
 
-print('hello')
 
-finish = get_time()
-finish1 = datetime.datetime.now()
+finish = datetime.datetime(year= 2022, month= 1, day= 24, hour= 18, minute=9, second=10)
 
-diff = finish1 - start1
+start= datetime.datetime(year=2022, month=1, day=23, hour=13, minute=59, second=43)
 
-print(diff)
-
+print(finish-start)
 

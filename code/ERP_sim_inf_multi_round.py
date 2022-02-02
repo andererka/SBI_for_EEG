@@ -23,7 +23,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import simulation_wrapper_obs
+from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
 from utils.helpers import get_time
 
 
@@ -165,7 +165,7 @@ def main(argv):
 
         theta, x_without = inference.run_sim_theta_x(
         proposal, 
-        simulation_wrapper_obs,
+        simulation_wrapper_all,
         num_simulations=number_simulations,
         num_workers=num_workers
         )
@@ -196,7 +196,8 @@ def main(argv):
         json_dict = {
         "start time:": start_time_str,
         "finish time": finish_time_str,
-        'total CPU time:': diff_time}
+        'total CPU time:': diff_time,
+        'parameter names': parameter_names}
 
         filename = 'meta_round_' + str(i) + '.json'
 
@@ -215,21 +216,7 @@ def main(argv):
     file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior)
 
-    finish_time = get_time()
 
-    json_dict = {
-    "start time:": start_time,
-    "round 1 time": finish_time,
-    "parameter names": parameter_names,
-    'num simulations':number_simulations,
-    'true_params': true_params,
-    'density_estimator':density_estimator,
-    'number of parameters': num_params,
-    'number of samples': num_samples}
-
-    with open( "meta.json", "a") as f:
-        json.dump(json_dict, f)
-        f.close()
 
     ##save class
     with open("class", "wb") as pickle_file:
