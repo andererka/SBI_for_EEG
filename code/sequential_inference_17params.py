@@ -289,8 +289,6 @@ def main(argv):
     #    num_workers=num_workers
     #)  # first output gives summary statistics, second without
 
-    #obs_real = calculate_summary_stats_temporal(obs_real)
-
     #print("obs real", obs_real.size())
 
  
