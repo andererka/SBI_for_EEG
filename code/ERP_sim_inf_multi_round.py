@@ -117,9 +117,11 @@ def main(argv):
         prior_max = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
 
 
+        #true_params = torch.tensor([[26.61, 63.53,  137.12]])
         true_params = torch.tensor([[0.277, 0.0399, 0.3739, 0.034, 18.977, 0.0115, 0.000012, 0.466, 0.06337, 0.0134, 0.0766, 63.08, 0.000005, 4.6729, 0.0115, 0.3308, 120.86]])
 
-
+        
+        #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
 
         parameter_names = ["prox_1_ampa_l2_bas","prox_1_ampa_l2_pyr","prox_1_ampa_l5_bas","prox_1_ampa_l5_pyr",
         "t_evprox_1",
