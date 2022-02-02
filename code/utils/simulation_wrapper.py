@@ -296,15 +296,15 @@ def set_network_weights(params=None):
 
 
     weights_ampa_p1 = {
-       # "L2_basket": ,
+        "L2_basket": 0.08831,
         "L2_pyramidal": params[0],
         "L5_basket": params[1],
-      #  "L5_pyramidal": ,
+        "L5_pyramidal": 0.00865,
     }
 
-    weights_nmda = {
-       # "L2_basket": params[4],
-       # "L2_pyramidal": params[5],
+    weights_nmda_p1 = {
+       "L2_basket": 0.08831,
+        "L2_pyramidal": 0.01525,
         "L5_basket": params[2],
         "L5_pyramidal": params[3],
     }
@@ -325,7 +325,7 @@ def set_network_weights(params=None):
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
-        weights_nmda=weights_nmda,
+        weights_nmda=weights_nmda_p1,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
         event_seed=event_seed(),
