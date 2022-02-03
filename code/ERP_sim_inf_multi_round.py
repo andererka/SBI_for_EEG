@@ -156,7 +156,14 @@ def main(argv):
     slurm=True
 )
 
+    try:
+        os.mkdir(file_writer.folder)
+    except:
+        print('file exists')
+
     os.chdir(file_writer.folder)
+
+
 
     for i in range(3):
 
