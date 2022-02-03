@@ -158,6 +158,9 @@ def main(argv):
 
     try:
         os.mkdir(file_writer.folder)
+
+        print(file_writer.folder)
+        print('mkdir file')
     except:
         print('file exists')
 
