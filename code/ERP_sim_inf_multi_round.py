@@ -137,7 +137,7 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
-    obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
+    obs_real = inference.run_only_sim(true_params, simulation_wrapper = simulation_wrapper_all,  num_workers=num_workers)
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posteriors = []
@@ -145,7 +145,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_per_multi_round_num_params:{}_".format(
+    experiment="{}_multi_round_num_params:{}_".format(
         number_simulations, num_params
     ),
     num_sim=number_simulations,
@@ -219,7 +219,7 @@ def main(argv):
 
     samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
 
-    s_x = inference.run_only_sim(samples, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, simulation_wrapper = simulation_wrapper_all, num_workers=num_workers)
 
 
     file_writer.save_posterior(posterior)
