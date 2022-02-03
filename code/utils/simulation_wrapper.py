@@ -318,7 +318,6 @@ def set_network_weights(params=None):
 
     # all NMDA weights are zero; pass None explicitly
 
-    print('is here the problem?')
     net.add_evoked_drive(
         "evprox1",
         mu=params[4],
@@ -331,11 +330,11 @@ def set_network_weights(params=None):
         event_seed=event_seed(),
     )
 
-    print('check')
 
     if (len(params)==5):
-        print('stop here')
+
         return net
+
     weights_ampa_d1 = {
         "L2_basket": params[5],
         "L2_pyramidal": params[6],
@@ -360,7 +359,9 @@ def set_network_weights(params=None):
     )
 
     if (len(params)==12):
+
         return net
+
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
         #"L2_basket": params[12],
@@ -376,6 +377,11 @@ def set_network_weights(params=None):
         "L5_pyramidal": 0.684013,
     }
 
+    synaptic_delays_prox = {
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
 
     # all NMDA weights are zero; omit weights_nmda (defaults to None)
     net.add_evoked_drive(
@@ -432,7 +438,7 @@ def set_network_weights_2_per_step(params=None):
 
 
     if (len(params)==2):
-        print('stop here')
+       
         return net
 
 
