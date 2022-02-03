@@ -8,7 +8,7 @@ import datetime
 
 
 import numpy as np
-from summary_features.calculate_summary_features import calculate_summary_stats_number
+from summary_features.calculate_summary_features import calculate_summary_stats_temporal
 import torch
 import os
 import json
@@ -23,7 +23,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
+from utils.simulation_wrapper import simulation_wrapper_all
 from utils.helpers import get_time
 
 
@@ -138,7 +138,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     obs_real = inference.run_only_sim(true_params, num_workers=num_workers)
-    obs_real_stat = calculate_summary_stats_number(obs_real, 17)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posteriors = []
     proposal = prior
@@ -171,13 +171,13 @@ def main(argv):
         start_time_str = get_time()
 
         theta, x_without = inference.run_sim_theta_x(
-        proposal, 
-        simulation_wrapper_all,
+        prior = proposal, 
+        simulation_wrapper = simulation_wrapper_all,
         num_simulations=number_simulations,
         num_workers=num_workers
         )
 
-        x = calculate_summary_stats_number(x_without, 17)
+        x = calculate_summary_stats_temporal(x_without)
         
         density_estimator = 'nsf'
 
