@@ -364,16 +364,16 @@ def set_network_weights(params=None):
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
         #"L2_basket": params[12],
-        "L2_pyramidal": params[12],
+        "L2_pyramidal": 1.438840,
         "L5_basket": params[13],
-        #"L5_pyramidal": params[13],
+        "L5_pyramidal": params[13],
     }
 
     weights_nmda_p2 = {
         #"L2_basket": params[12],
-        #"L2_pyramidal": params[13],
+        "L2_pyramidal": params[13],
         "L5_basket": params[14],
-        "L5_pyramidal": params[15],
+        "L5_pyramidal": 0.684013,
     }
 
 
