@@ -192,7 +192,7 @@ def main(argv):
 
     os.chdir('data')
 
-    trace = pd.read_csv('default/dpl.txt', sep='\t', header=None, dtype= np.float32)
+    trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
     trace_torch = torch.tensor(trace.values, dtype = torch.float32)
 
     os.chdir(file_writer.folder)
