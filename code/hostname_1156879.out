@@ -1,0 +1,34 @@
+JobId=1156879 JobName=script.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=47951 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:01 TimeLimit=3-00:00:00 TimeMin=N/A
+   SubmitTime=2022-02-03T10:10:00 EligibleTime=2022-02-03T10:10:00
+   AccrueTime=2022-02-03T10:10:01
+   StartTime=2022-02-03T10:10:01 EndTime=2022-02-06T10:10:01 Deadline=N/A
+   PreemptEligibleTime=2022-02-03T10:11:01 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-02-03T10:10:01
+   Partition=cpu-long AllocNode:Sid=bg-slurmb-login1:9258
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-cpu-hm-8
+   BatchHost=slurm-cpu-hm-8
+   NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=64,mem=70G,node=1,billing=11
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=64 MinMemoryNode=70G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1156879.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1156879.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
+17
+params size torch.Size([17])
+there is no simulation wrapper defined for this number of parameters!
+[Parallel(n_jobs=64)]: Using backend MultiprocessingBackend with 64 concurrent workers.
