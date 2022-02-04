@@ -170,3 +170,4 @@ def make_file_name(file_name):
             else:
                 file_name = new_file_name
                 break
+    return file_name
