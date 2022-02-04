@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "sequential_inference_17params.py", line 463, in <module>
-    main(sys.argv[1:])
-  File "sequential_inference_17params.py", line 192, in main
-    os.chdir('data')
-FileNotFoundError: [Errno 2] No such file or directory: 'data'

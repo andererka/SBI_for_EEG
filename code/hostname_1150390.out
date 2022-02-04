@@ -1,142 +1,0 @@
-JobId=1150390 JobName=script.sh
-   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
-   Priority=57540 Nice=0 Account=macke QOS=normal
-   JobState=RUNNING Reason=None Dependency=(null)
-   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
-   RunTime=00:00:01 TimeLimit=12:00:00 TimeMin=N/A
-   SubmitTime=2022-02-01T00:53:42 EligibleTime=2022-02-01T00:53:42
-   AccrueTime=2022-02-01T00:53:43
-   StartTime=2022-02-01T00:53:43 EndTime=2022-02-01T12:53:43 Deadline=N/A
-   PreemptEligibleTime=2022-02-01T00:54:43 PreemptTime=None
-   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-02-01T00:53:43
-   Partition=cpu-short AllocNode:Sid=bg-slurmb-login1:9258
-   ReqNodeList=(null) ExcNodeList=(null)
-   NodeList=slurm-cpu-hm-2
-   BatchHost=slurm-cpu-hm-2
-   NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:*
-   TRES=cpu=64,mem=70G,node=1,billing=13
-   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
-   MinCPUsNode=64 MinMemoryNode=70G MinTmpDiskNode=0
-   Features=(null) DelayBoot=00:00:00
-   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
-   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
-   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
-   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1150390.err
-   StdIn=/dev/null
-   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1150390.out
-   Power=
-   MailUser=k.anderer@t-online.de MailType=END
-   NtasksPerTRES:0
-
-/mnt/qb/work/macke/kanderer29/results/10000_sims_17_params
-file exists
-step files exist
-/mnt/qb/work/macke/kanderer29/results/10000_sims_17_params
-/mnt/qb/work/macke/kanderer29
-[[  0.         -17.391098  ]
- [  1.6649601  -17.522802  ]
- [  3.3299203  -16.434229  ]
- [  4.99488    -14.408149  ]
- [  6.6598406  -12.348419  ]
- [  8.3248005  -10.854474  ]
- [  9.98976    -10.196031  ]
- [ 11.65472    -10.218043  ]
- [ 13.319681   -10.3810005 ]
- [ 14.984641    -9.657615  ]
- [ 16.649601    -7.882513  ]
- [ 18.314562    -5.4089656 ]
- [ 19.97952     -2.866959  ]
- [ 21.644482    -1.018015  ]
- [ 23.30944     -0.4451583 ]
- [ 24.974401    -0.60779214]
- [ 26.639362    -0.42914772]
- [ 28.304321     0.44649297]
- [ 29.969282     1.4402806 ]
- [ 31.634243     1.9920782 ]
- [ 33.299202     2.3562112 ]
- [ 34.96416      2.65484   ]
- [ 36.629124     2.5639083 ]
- [ 38.294083     1.8961071 ]
- [ 39.95904      0.56095535]
- [ 41.624004    -1.4172498 ]
- [ 43.288963    -3.5712461 ]
- [ 44.953922    -5.6741414 ]
- [ 46.61888     -8.125775  ]
- [ 48.283844   -11.26257   ]
- [ 49.948803   -15.098261  ]
- [ 51.61376    -19.549618  ]
- [ 53.278725   -24.645117  ]
- [ 54.943684   -30.077364  ]
- [ 56.608643   -35.196022  ]
- [ 58.273605   -39.246334  ]
- [ 59.938564   -42.212955  ]
- [ 61.603523   -44.154472  ]
- [ 63.268486   -45.337097  ]
- [ 64.93344    -46.189102  ]
- [ 66.598404   -47.387344  ]
- [ 68.26337    -48.801804  ]
- [ 69.92832    -49.99134   ]
- [ 71.593285   -51.38709   ]
- [ 73.25825    -53.90187   ]
- [ 74.9232     -56.941032  ]
- [ 76.588165   -58.690792  ]
- [ 78.25313    -58.478294  ]
- [ 79.91808    -57.175858  ]
- [ 81.583046   -55.374763  ]
- [ 83.24801    -53.130527  ]
- [ 84.912964   -50.53065   ]
- [ 86.57793    -48.032864  ]
- [ 88.24289    -45.858356  ]
- [ 89.907845   -43.84123   ]
- [ 91.57281    -41.67122   ]
- [ 93.23776    -38.98802   ]
- [ 94.902725   -35.5763    ]
- [ 96.56769    -31.620314  ]
- [ 98.23264    -27.7103    ]
- [ 99.897606   -24.019964  ]
- [101.56257    -20.57986   ]
- [103.22752    -17.459333  ]
- [104.89249    -15.125553  ]
- [106.55745    -14.007231  ]
- [108.222404   -13.639485  ]
- [109.88737    -13.149095  ]
- [111.55233    -12.52355   ]
- [113.217285   -12.221879  ]
- [114.88225    -11.965487  ]
- [116.54721    -11.270827  ]
- [118.212166   -10.124683  ]
- [119.87713     -8.993625  ]
- [121.54209     -8.256946  ]
- [123.20705     -7.9881783 ]
- [124.87201     -7.6966767 ]
- [126.53697     -6.8558955 ]
- [128.20193     -5.4490333 ]
- [129.86688     -3.5845706 ]
- [131.53185     -1.5862938 ]
- [133.19681      0.3127525 ]
- [134.86177      2.4248211 ]
- [136.52673      5.267111  ]
- [138.1917       8.542632  ]
- [139.85664     11.592122  ]
- [141.5216      14.639761  ]
- [143.18657     18.381674  ]
- [144.85153     22.531807  ]
- [146.5165      25.868227  ]
- [148.18144     28.054861  ]
- [149.8464      29.548046  ]
- [151.51137     30.444616  ]
- [153.17633     30.80876   ]
- [154.8413      30.718496  ]
- [156.50626     29.968538  ]
- [158.1712      28.622463  ]
- [159.83617     27.195658  ]
- [161.50113     25.870775  ]
- [163.16609     24.5838    ]
- [164.83105     23.377644  ]
- [166.49602     22.07248   ]
- [168.16096     20.803446  ]
- [169.82593     20.339855  ]]
-<class 'numpy.ndarray'>
-x50 shape 0 10000 torch.Size([10000, 12])
-theta shape 0 10000 torch.Size([10000, 5])
-Training neural network. Epochs trained:  1Training neural network. Epochs trained:  2Training neural network. Epochs trained:  3Training neural network. Epochs trained:  4Training neural network. Epochs trained:  5Training neural network. Epochs trained:  6Training neural network. Epochs trained:  7Training neural network. Epochs trained:  8Training neural network. Epochs trained:  9Training neural network. Epochs trained:  10Training neural network. Epochs trained:  11Training neural network. Epochs trained:  12Training neural network. Epochs trained:  13Training neural network. Epochs trained:  14Training neural network. Epochs trained:  15Training neural network. Epochs trained:  16Training neural network. Epochs trained:  17Training neural network. Epochs trained:  18Training neural network. Epochs trained:  19Training neural network. Epochs trained:  20Training neural network. Epochs trained:  21Training neural network. Epochs trained:  22Training neural network. Epochs trained:  23Training neural network. Epochs trained:  24Training neural network. Epochs trained:  25Training neural network. Epochs trained:  26Training neural network. Epochs trained:  27Training neural network. Epochs trained:  28Training neural network. Epochs trained:  29Training neural network. Epochs trained:  30Training neural network. Epochs trained:  31Training neural network. Epochs trained:  32Training neural network. Epochs trained:  33Training neural network. Epochs trained:  34Training neural network. Epochs trained:  35Training neural network. Epochs trained:  36Training neural network. Epochs trained:  37Training neural network. Epochs trained:  38Training neural network. Epochs trained:  39Training neural network. Epochs trained:  40Training neural network. Epochs trained:  41Training neural network. Epochs trained:  42Training neural network. Epochs trained:  43Training neural network. Epochs trained:  44Training neural network. Epochs trained:  45Training neural network. Epochs trained:  46Training neural network. Epochs trained:  47Training neural network. Epochs trained:  48Training neural network. Epochs trained:  49Training neural network. Epochs trained:  50Training neural network. Epochs trained:  51Training neural network. Epochs trained:  52Training neural network. Epochs trained:  53Training neural network. Epochs trained:  54Training neural network. Epochs trained:  55Training neural network. Epochs trained:  56Training neural network. Epochs trained:  57Training neural network. Epochs trained:  58Training neural network. Epochs trained:  59Training neural network. Epochs trained:  60Training neural network. Epochs trained:  61Training neural network. Epochs trained:  62Training neural network. Epochs trained:  63Training neural network. Epochs trained:  64Training neural network. Epochs trained:  65Training neural network. Epochs trained:  66Training neural network. Epochs trained:  67Training neural network. Epochs trained:  68Training neural network. Epochs trained:  69Training neural network. Epochs trained:  70Training neural network. Epochs trained:  71Training neural network. Epochs trained:  72Training neural network. Epochs trained:  73Training neural network. Epochs trained:  74Training neural network. Epochs trained:  75Training neural network. Epochs trained:  76Training neural network. Epochs trained:  77Training neural network. Epochs trained:  78Training neural network. Epochs trained:  79Training neural network. Epochs trained:  80Training neural network. Epochs trained:  81Training neural network. Epochs trained:  82Training neural network. Epochs trained:  83Training neural network. Epochs trained:  84Training neural network. Epochs trained:  85Training neural network. Epochs trained:  86Training neural network. Epochs trained:  87Training neural network. Epochs trained:  88Training neural network. Epochs trained:  89Training neural network. Epochs trained:  90Training neural network. Epochs trained:  91Training neural network. Epochs trained:  92Training neural network. Epochs trained:  93Training neural network. Epochs trained:  94Training neural network. Epochs trained:  95Training neural network. Epochs trained:  96Training neural network. Epochs trained:  97Training neural network. Epochs trained:  98Neural network successfully converged after 98 epochs.
