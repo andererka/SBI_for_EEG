@@ -87,6 +87,7 @@ class WriteToFile(object):
 
         file_name = "obs_without.pt"
         file_name = make_file_name(file_name)
+        print(file_name)
 
         if (name=='default'):
             torch.save(x_without, file_name)
@@ -97,6 +98,7 @@ class WriteToFile(object):
 
         file_name = "thetas.pt"
         file_name = make_file_name(file_name)
+        print(file_name)
 
         if (name=='default'):
             torch.save(thetas, file_name)
@@ -162,7 +164,7 @@ def make_file_name(file_name):
         expand = 1
         while True:
             expand += 1
-            new_file_name = file_name.split(".pt")[0] + str(expand) + ".pt"
+            new_file_name = file_name + str(expand) + ".pt"
             if os.path.isfile(new_file_name):
                 continue
             else:
