@@ -1,0 +1,18 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+WARNING:root:Found 24 NaN simulations and 0 Inf simulations. They will be excluded from training.
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 10746it [00:00, 77465.51it/s]           Drawing 1000 posterior samples: 10746it [00:00, 77186.26it/s]
+/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/distributions/distribution.py:46: UserWarning: <class 'utils.sbi_modulated_functions.Combined'> does not define `arg_constraints`. Please set `arg_constraints = {}` or initialize the distribution with `validate_args=False` to turn off validation.
+  'with `validate_args=False` to turn off validation.')
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 132.63it/s]
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 100%|██████████| 1000/1000 [00:00<00:00, 31905.80it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 12.27it/s]
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 100%|██████████| 1000/1000 [00:00<00:00, 21889.80it/s]
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 484, in <module>
+  File "sequential_inference_17params.py", line 481, in main
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/data_load_writer/write_to_file.py", line 147, in save_all
+    self.save_meta(start_time, finish_time)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/data_load_writer/write_to_file.py", line 135, in save_meta
+    with open(self.folder + "/" + file_name, "a") as f:
+TypeError: can only concatenate str (not "NoneType") to str

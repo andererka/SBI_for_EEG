@@ -1,0 +1,26 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+WARNING:root:Found 50 NaN simulations and 0 Inf simulations. They will be excluded from training.
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 10954it [00:00, 62484.40it/s]           Drawing 1000 posterior samples: 10954it [00:00, 62293.36it/s]
+/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/distributions/distribution.py:46: UserWarning: <class 'utils.sbi_modulated_functions.Combined'> does not define `arg_constraints`. Please set `arg_constraints = {}` or initialize the distribution with `validate_args=False` to turn off validation.
+  'with `validate_args=False` to turn off validation.')
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  9.89it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  9.81it/s]
+Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 100%|██████████| 1000/1000 [00:00<00:00, 22379.65it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 20.55it/s]
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 469, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 344, in main
+    samples = posterior.sample((num_samples,), x=obs_real_stat)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/direct_posterior.py", line 345, in sample
+    x, num_samples = self._prepare_for_sample(x, sample_shape)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/base_posterior.py", line 387, in _prepare_for_sample
+    self._ensure_x_consistent_with_default_x(x)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/base_posterior.py", line 940, in _ensure_x_consistent_with_default_x
+    used during training, {self.default_x.shape}."""
+AssertionError: The shape of the passed `x` torch.Size([1, 20]) and must match the shape of `x`
+            used during training, torch.Size([1, 12]).
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+None
+slurmstepd: error: *** JOB 1152245 ON slurm-cpu-hm-3 CANCELLED AT 2022-02-02T05:20:55 DUE TO TIME LIMIT ***

@@ -1,0 +1,39 @@
+JobId=1155459 JobName=script.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=47951 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:01 TimeLimit=3-00:00:00 TimeMin=N/A
+   SubmitTime=2022-02-02T15:31:49 EligibleTime=2022-02-02T15:31:49
+   AccrueTime=2022-02-02T15:31:50
+   StartTime=2022-02-02T15:32:52 EndTime=2022-02-05T15:32:52 Deadline=N/A
+   PreemptEligibleTime=2022-02-02T15:33:52 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-02-02T15:32:52
+   Partition=cpu-long AllocNode:Sid=bg-slurmb-login1:9258
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-cpu-hm-6
+   BatchHost=slurm-cpu-hm-6
+   NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=64,mem=70G,node=1,billing=11
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=64 MinMemoryNode=70G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1155459.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1155459.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
+/mnt/qb/work/macke/kanderer29/results/10000_sims_17_newparams
+/mnt/qb/work/macke/kanderer29/results/10000_sims_17_newparams
+5 params investigated
+early stop 90.0
+param size  5
+5 params investigated
+early stop 90.0
+param size  5
+is here the problem?
