@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "sequential_inference_17params.py", line 465, in <module>
-    main(sys.argv[1:])
-  File "sequential_inference_17params.py", line 199, in main
-    print('obs real shape', obs_real.shape)
-AttributeError: 'list' object has no attribute 'shape'

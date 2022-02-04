@@ -206,7 +206,7 @@ def main(argv):
         json_dict = {
         "start time:": start_time_str,
         "finish time": finish_time_str,
-        'total CPU time:': diff_time,
+        'total CPU time:': str(diff_time),
         'parameter names': parameter_names}
 
         filename = 'meta_round_' + str(i) + '.json'
