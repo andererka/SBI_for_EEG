@@ -18,6 +18,28 @@ import cycler
 
 
 
+import collections
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import matplotlib as mpl
+import numpy as np
+import six
+import torch
+from matplotlib import pyplot as plt
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+from scipy.stats import binom, gaussian_kde
+from torch import Tensor
+
+from sbi.utils import eval_conditional_density
+
+
+
+try:
+    collectionsAbc = collections.abc
+except:
+    collectionsAbc = collections
+
 
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 
@@ -315,3 +337,541 @@ def plot_KLs(
             )
     plt.ylabel(r"$D_{KL}$")
     return ax
+
+
+def conditional_pairplot_comparison(
+    density: Any,
+    condition: torch.Tensor,
+    condition2: torch.Tensor,
+    limits: Union[List, torch.Tensor],
+    points: Optional[
+        Union[List[np.ndarray], List[torch.Tensor], np.ndarray, torch.Tensor]
+    ] = None,
+    subset: List[int] = None,
+    resolution: int = 50,
+    figsize: Tuple = (10, 10),
+    labels: Optional[List[str]] = None,
+    ticks: Union[List, torch.Tensor] = [],
+    points_colors: List[str] = plt.rcParams["axes.prop_cycle"].by_key()["color"],
+    warn_about_deprecation: bool = True,
+    fig=None,
+    axes=None,
+    **kwargs,
+):
+    r"""
+    Plot conditional distribution given all other parameters.
+    The conditionals can be interpreted as slices through the `density` at a location
+    given by `condition`.
+    For example:
+    Say we have a 3D density with parameters $\theta_0$, $\theta_1$, $\theta_2$ and
+    a condition $c$ passed by the user in the `condition` argument.
+    For the plot of $\theta_0$ on the diagonal, this will plot the conditional
+    $p(\theta_0 | \theta_1=c[1], \theta_2=c[2])$. For the upper
+    diagonal of $\theta_1$ and $\theta_2$, it will plot
+    $p(\theta_1, \theta_2 | \theta_0=c[0])$. All other diagonals and upper-diagonals
+    are built in the corresponding way.
+    Args:
+        density: Probability density with a `log_prob()` method.
+        condition: Condition that all but the one/two regarded parameters are fixed to.
+            The condition should be of shape (1, dim_theta), i.e. it could e.g. be
+            a sample from the posterior distribution.
+        limits: Limits in between which each parameter will be evaluated.
+        points: Additional points to scatter.
+        subset: List containing the dimensions to plot. E.g. subset=[1,3] will plot
+            plot only the 1st and 3rd dimension but will discard the 0th and 2nd (and,
+            if they exist, the 4th, 5th and so on)
+        resolution: Resolution of the grid at which we evaluate the `pdf`.
+        figsize: Size of the entire figure.
+        labels: List of strings specifying the names of the parameters.
+        ticks: Position of the ticks.
+        points_colors: Colors of the `points`.
+        warn_about_deprecation: With sbi v0.15.0, we depracated the import of this
+            function from `sbi.utils`. Instead, it should be imported from
+            `sbi.analysis`.
+        fig: matplotlib figure to plot on.
+        axes: matplotlib axes corresponding to fig.
+        **kwargs: Additional arguments to adjust the plot, see the source code in
+            `_get_default_opts()` in `sbi.utils.plot` for more details.
+    Returns: figure and axis of posterior distribution plot
+    """
+    device = density._device if hasattr(density, "_device") else "cpu"
+
+    # Setting these is required because _pairplot_scaffold will check if opts['diag'] is
+    # `None`. This would break if opts has no key 'diag'. Same for 'upper'.
+    diag = "cond"
+    upper = "cond"
+
+    opts = _get_default_opts()
+    # update the defaults dictionary by the current values of the variables (passed by
+    # the user)
+    opts = _update(opts, locals())
+    opts = _update(opts, kwargs)
+    opts["lower"] = None
+
+    dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
+    diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
+
+    # for condition 2:
+
+    dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
+    diag_func2 = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
+
+    def upper_func(row, col, **kwargs):
+        p_image = (
+            eval_conditional_density(
+                opts["density"],
+                opts["condition"].to(device),
+                limits.to(device),
+                row,
+                col,
+                resolution=resolution,
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[col],
+                warn_about_deprecation=False,
+            )
+            .to("cpu")
+            .numpy()
+        )
+        p_image2 = (
+                eval_conditional_density(
+                    opts["density"],
+                    opts["condition"].to(device),
+                    limits2.to(device),
+                    row,
+                    col,
+                    resolution=resolution,
+                    eps_margins1=eps_margins2[row],
+                    eps_margins2=eps_margins2[col],
+                    warn_about_deprecation=False,
+                )
+                .to("cpu")
+                .numpy()
+            )
+        h = plt.plt(
+            p_image.T,
+            origin="lower",
+            extent=[
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
+            ],
+            aspect="auto",
+        )
+
+        h2 = plt.plt(
+            p_image2.T,
+            origin="lower",
+            extent=[
+                limits2[col, 0],
+                limits2[col, 1],
+                limits2[row, 0],
+                limits2[row, 1],
+            ],
+            aspect="auto",
+        )
+
+    return _arrange_plots(
+        diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
+    )
+
+
+
+def _arrange_plots(
+    diag_func, upper_func, dim, limits, points, opts, fig=None, axes=None
+):
+    """
+    Arranges the plots for any function that plots parameters either in a row of 1D
+    marginals or a pairplot setting.
+    Args:
+        diag_func: Plotting function that will be executed for the diagonal elements of
+            the plot (or the columns of a row of 1D marginals). It will be passed the
+            current `row` (i.e. which parameter that is to be plotted) and the `limits`
+            for all dimensions.
+        upper_func: Plotting function that will be executed for the upper-diagonal
+            elements of the plot. It will be passed the current `row` and `col` (i.e.
+            which parameters are to be plotted and the `limits` for all dimensions. None
+            if we are in a 1D setting.
+        dim: The dimensionality of the density.
+        limits: Limits for each parameter.
+        points: Additional points to be scatter-plotted.
+        opts: Dictionary built by the functions that call `_arrange_plots`. Must
+            contain at least `labels`, `subset`, `figsize`, `subplots`,
+            `fig_subplots_adjust`, `title`, `title_format`, ..
+        fig: matplotlib figure to plot on.
+        axes: matplotlib axes corresponding to fig.
+    Returns: figure and axis
+    """
+
+    # Prepare points
+    if points is None:
+        points = []
+    if type(points) != list:
+        points = ensure_numpy(points)
+        points = [points]
+    points = [np.atleast_2d(p) for p in points]
+    points = [np.atleast_2d(ensure_numpy(p)) for p in points]
+
+    # TODO: add asserts checking compatibility of dimensions
+
+    # Prepare labels
+    if opts["labels"] == [] or opts["labels"] is None:
+        labels_dim = ["dim {}".format(i + 1) for i in range(dim)]
+    else:
+        labels_dim = opts["labels"]
+
+    # Prepare ticks
+    if opts["ticks"] == [] or opts["ticks"] is None:
+        ticks = None
+    else:
+        if len(opts["ticks"]) == 1:
+            ticks = [opts["ticks"][0] for _ in range(dim)]
+        else:
+            ticks = opts["ticks"]
+
+    # Figure out if we subset the plot
+    subset = opts["subset"]
+    if subset is None:
+        rows = cols = dim
+        subset = [i for i in range(dim)]
+    else:
+        if type(subset) == int:
+            subset = [subset]
+        elif type(subset) == list:
+            pass
+        else:
+            raise NotImplementedError
+        rows = cols = len(subset)
+    flat = upper_func is None
+    if flat:
+        rows = 1
+        opts["lower"] = None
+
+    # Create fig and axes if they were not passed.
+    if fig is None or axes is None:
+        fig, axes = plt.subplots(
+            rows, cols, figsize=opts["figsize"], **opts["subplots"]
+        )
+    else:
+        assert axes.shape == (
+            rows,
+            cols,
+        ), f"Passed axes must match subplot shape: {rows, cols}."
+    # Cast to ndarray in case of 1D subplots.
+    axes = np.array(axes).reshape(rows, cols)
+
+    # Style figure
+    fig.subplots_adjust(**opts["fig_subplots_adjust"])
+    fig.suptitle(opts["title"], **opts["title_format"])
+
+    # Style axes
+    row_idx = -1
+    for row in range(rows):
+        if row not in subset and not flat:
+            continue
+        else:
+            row_idx += 1
+
+        col_idx = -1
+        for col in range(dim):
+            if col not in subset:
+                continue
+            else:
+                col_idx += 1
+
+            if flat:
+                current = "diag"
+            elif row == col:
+                current = "diag"
+            elif row < col:
+                current = "upper"
+            else:
+                current = "lower"
+
+            ax = axes[row_idx, col_idx]
+            plt.sca(ax)
+
+            # Background color
+            if (
+                current in opts["fig_bg_colors"]
+                and opts["fig_bg_colors"][current] is not None
+            ):
+                ax.set_facecolor(opts["fig_bg_colors"][current])
+
+            # Axes
+            if opts[current] is None:
+                ax.axis("off")
+                continue
+
+            # Limits
+            ax.set_xlim((limits[col][0], limits[col][1]))
+            if current != "diag":
+                ax.set_ylim((limits[row][0], limits[row][1]))
+
+            # Ticks
+            if ticks is not None:
+                ax.set_xticks((ticks[col][0], ticks[col][1]))
+                if current != "diag":
+                    ax.set_yticks((ticks[row][0], ticks[row][1]))
+
+            # Despine
+            ax.spines["right"].set_visible(False)
+            ax.spines["top"].set_visible(False)
+            ax.spines["bottom"].set_position(("outward", opts["despine"]["offset"]))
+
+            # Formatting axes
+            if current == "diag":  # off-diagnoals
+                if opts["lower"] is None or col == dim - 1 or flat:
+                    _format_axis(
+                        ax,
+                        xhide=False,
+                        xlabel=labels_dim[col],
+                        yhide=True,
+                        tickformatter=opts["tickformatter"],
+                    )
+                else:
+                    _format_axis(ax, xhide=True, yhide=True)
+            else:  # off-diagnoals
+                if row == dim - 1:
+                    _format_axis(
+                        ax,
+                        xhide=False,
+                        xlabel=labels_dim[col],
+                        yhide=True,
+                        tickformatter=opts["tickformatter"],
+                    )
+                else:
+                    _format_axis(ax, xhide=True, yhide=True)
+            if opts["tick_labels"] is not None:
+                ax.set_xticklabels(
+                    (
+                        str(opts["tick_labels"][col][0]),
+                        str(opts["tick_labels"][col][1]),
+                    )
+                )
+
+            # Diagonals
+            if current == "diag":
+                diag_func(row=col, limits=limits)
+
+                if len(points) > 0:
+                    extent = ax.get_ylim()
+                    for n, v in enumerate(points):
+                        h = plt.plot(
+                            [v[:, col], v[:, col]],
+                            extent,
+                            color=opts["points_colors"][n],
+                            **opts["points_diag"],
+                        )
+
+            # Off-diagonals
+            else:
+                upper_func(
+                    row=row,
+                    col=col,
+                    limits=limits,
+                )
+
+                if len(points) > 0:
+
+                    for n, v in enumerate(points):
+                        h = plt.plot(
+                            v[:, col],
+                            v[:, row],
+                            color=opts["points_colors"][n],
+                            **opts["points_offdiag"],
+                        )
+
+    if len(subset) < dim:
+        if flat:
+            ax = axes[0, len(subset) - 1]
+            x0, x1 = ax.get_xlim()
+            y0, y1 = ax.get_ylim()
+            text_kwargs = {"fontsize": plt.rcParams["font.size"] * 2.0}
+            ax.text(x1 + (x1 - x0) / 8.0, (y0 + y1) / 2.0, "...", **text_kwargs)
+        else:
+            for row in range(len(subset)):
+                ax = axes[row, len(subset) - 1]
+                x0, x1 = ax.get_xlim()
+                y0, y1 = ax.get_ylim()
+                text_kwargs = {"fontsize": plt.rcParams["font.size"] * 2.0}
+                ax.text(x1 + (x1 - x0) / 8.0, (y0 + y1) / 2.0, "...", **text_kwargs)
+                if row == len(subset) - 1:
+                    ax.text(
+                        x1 + (x1 - x0) / 12.0,
+                        y0 - (y1 - y0) / 1.5,
+                        "...",
+                        rotation=-45,
+                        **text_kwargs,
+                    )
+
+    return fig, axes
+
+
+
+def ensure_numpy(t: Union[np.ndarray, torch.Tensor]) -> np.ndarray:
+    """
+    Returns np.ndarray if torch.Tensor was provided.
+    Used because samples_nd() can only handle np.ndarray.
+    """
+    if isinstance(t, torch.Tensor):
+        return t.numpy()
+    else:
+        return t
+
+
+def prepare_for_conditional_plot(condition, opts):
+    """
+    Ensures correct formatting for limits. Returns the margins just inside
+    the domain boundaries, and the dimension of the samples.
+    """
+    # Dimensions
+    dim = condition.shape[-1]
+
+    # Prepare limits
+    if len(opts["limits"]) == 1:
+        limits = [opts["limits"][0] for _ in range(dim)]
+    else:
+        limits = opts["limits"]
+    limits = torch.as_tensor(limits)
+
+    # Infer the margin. This is to avoid that we evaluate the posterior **exactly**
+    # at the boundary.
+    limits_diffs = limits[:, 1] - limits[:, 0]
+    eps_margins = limits_diffs / 1e5
+
+    return dim, limits, eps_margins
+
+
+def _format_axis(ax, xhide=True, yhide=True, xlabel="", ylabel="", tickformatter=None):
+    for loc in ["right", "top", "left", "bottom"]:
+        ax.spines[loc].set_visible(False)
+    if xhide:
+        ax.set_xlabel("")
+        ax.xaxis.set_ticks_position("none")
+        ax.xaxis.set_tick_params(labelbottom=False)
+    if yhide:
+        ax.set_ylabel("")
+        ax.yaxis.set_ticks_position("none")
+        ax.yaxis.set_tick_params(labelleft=False)
+    if not xhide:
+        ax.set_xlabel(xlabel)
+        ax.xaxis.set_ticks_position("bottom")
+        ax.xaxis.set_tick_params(labelbottom=True)
+        if tickformatter is not None:
+            ax.xaxis.set_major_formatter(tickformatter)
+        ax.spines["bottom"].set_visible(True)
+    if not yhide:
+        ax.set_ylabel(ylabel)
+        ax.yaxis.set_ticks_position("left")
+        ax.yaxis.set_tick_params(labelleft=True)
+        if tickformatter is not None:
+            ax.yaxis.set_major_formatter(tickformatter)
+        ax.spines["left"].set_visible(True)
+    return ax
+
+
+def _get_default_opts():
+    """Return default values for plotting specs."""
+
+    return {
+        # 'lower': None,     # hist/scatter/None  # TODO: implement
+        # title and legend
+        "title": None,
+        "legend": False,
+        # labels
+        "labels_points": [],  # for points
+        "labels_samples": [],  # for samples
+        # colors
+        "samples_colors": plt.rcParams["axes.prop_cycle"].by_key()["color"],
+        # ticks
+        "tickformatter": mpl.ticker.FormatStrFormatter("%g"),
+        "tick_labels": None,
+        # options for hist
+        "hist_diag": {"alpha": 1.0, "bins": 50, "density": False, "histtype": "step"},
+        "hist_offdiag": {
+            # 'edgecolor': 'none',
+            # 'linewidth': 0.0,
+            "bins": 50,
+        },
+        # options for kde
+        "kde_diag": {"bw_method": "scott", "bins": 50, "color": "black"},
+        "kde_offdiag": {"bw_method": "scott", "bins": 50},
+        # options for contour
+        "contour_offdiag": {"levels": [0.68], "percentile": True},
+        # options for scatter
+        "scatter_offdiag": {
+            "alpha": 0.5,
+            "edgecolor": "none",
+            "rasterized": False,
+        },
+        "scatter_diag": {},
+        # options for plot
+        "plot_offdiag": {},
+        # formatting points (scale, markers)
+        "points_diag": {},
+        "points_offdiag": {
+            "marker": ".",
+            "markersize": 20,
+        },
+        # other options
+        "fig_bg_colors": {"upper": None, "diag": None, "lower": None},
+        "fig_subplots_adjust": {
+            "top": 0.9,
+        },
+        "subplots": {},
+        "despine": {
+            "offset": 5,
+        },
+        "title_format": {"fontsize": 16},
+    }
+
+
+
+def get_conditional_diag_func(opts, limits, eps_margins, resolution):
+    """
+    Returns the diag_func which returns the 1D marginal conditional plot for
+    the parameter indexed by row.
+    """
+
+    def diag_func(row, **kwargs):
+        p_vector = (
+            eval_conditional_density(
+                opts["density"],
+                opts["condition"],
+                limits,
+                row,
+                row,
+                resolution=resolution,
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[row],
+                warn_about_deprecation=False,
+            )
+            .to("cpu")
+            .numpy()
+        )
+        h = plt.plot(
+            np.linspace(
+                limits[row, 0],
+                limits[row, 1],
+                resolution,
+            ),
+            p_vector,
+            c=opts["samples_colors"][0],
+        )
+
+    return diag_func
+
+
+
+def _update(d, u):
+    # https://stackoverflow.com/a/3233356
+    for k, v in six.iteritems(u):
+        dv = d.get(k, {})
+        if not isinstance(dv, collectionsAbc.Mapping):
+            d[k] = v
+        elif isinstance(v, collectionsAbc.Mapping):
+            d[k] = _update(dv, v)
+        else:
+            d[k] = v
+    return d
