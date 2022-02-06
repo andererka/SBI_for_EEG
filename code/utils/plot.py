@@ -9,11 +9,9 @@ import matplotlib.cm as cm
 import re
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-import matplotlib.pyplot as plt
 
 from scipy import spatial
 
-import matplotlib as mpl
 import cycler
 
 
