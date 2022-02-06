@@ -405,15 +405,15 @@ def conditional_pairplot_comparison(
 
     opts = _get_default_opts()
 
-    opts2 = _get_default_opts()
+
     # update the defaults dictionary by the current values of the variables (passed by
     # the user)
     opts = _update(opts, locals())
     opts = _update(opts, kwargs)
 
-    opts2 = _update(opts, locals())
+ 
     opts = _update(opts, kwargs)
-    opts2["lower"] = None
+
 
     if color_map == None:
         opts["samples_colors"] = ['viridis', 'plasma']
@@ -421,10 +421,14 @@ def conditional_pairplot_comparison(
         opts["samples_colors"] = color_map 
 
 
+    opts['diag_func_color'] = 'viridis'
+
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
     diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
 
-    dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
+    opts['diag_func_color'] = 'plasma'
+
+    dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
     diag_func2 = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
 
 
@@ -493,13 +497,13 @@ def conditional_pairplot_comparison(
 
 
     return _arrange_plots(
-        diag_func,  upper_func, dim, limits, points, opts, fig=fig, axes=axes
+        diag_func, diag_func2,  upper_func, dim, limits, points, opts, fig=fig, axes=axes
     )
 
 
 
 def _arrange_plots(
-    diag_func, upper_func, dim, limits, points, opts, fig=None, axes=None
+    diag_func, diag_func2, upper_func, dim, limits, points, opts, fig=None, axes=None
 ):
     """
     Arranges the plots for any function that plots parameters either in a row of 1D
@@ -674,6 +678,7 @@ def _arrange_plots(
             # Diagonals
             if current == "diag":
                 diag_func(row=col, limits=limits)
+                diag_func2(row=col, limits=limits)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
@@ -880,7 +885,7 @@ def get_conditional_diag_func(opts, limits, eps_margins, resolution):
                 resolution,
             ),
             p_vector,
-            c=opts["samples_colors"][0],
+            c=opts['diag_func_color'],
         )
 
     return diag_func
