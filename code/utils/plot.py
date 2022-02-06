@@ -493,6 +493,8 @@ def conditional_pairplot_comparison(
             cmap=opts["samples_colors"][1]
         )
 
+        plt.show()
+
 
 
 
