@@ -415,6 +415,10 @@ def conditional_pairplot_comparison(
     dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
     diag_func = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
 
+    opts["samples_colors"] = 'viridis'
+
+    opts["samples_colors2"] = 'plasma'
+
 
     def upper_func(row, col, **kwargs):
         p_image = (
@@ -443,6 +447,7 @@ def conditional_pairplot_comparison(
                 eps_margins1=eps_margins2[row],
                 eps_margins2=eps_margins2[col],
                 warn_about_deprecation=False,
+                
             )
             .to("cpu")
             .numpy()
