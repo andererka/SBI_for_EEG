@@ -466,7 +466,9 @@ def conditional_pairplot_comparison(
             .numpy()
         )
 
-        h = plt.imshow(
+        fig, ax = plt.subplots()
+
+        h = ax.imshow(
             p_image.T,
             origin="lower",
             extent=[
@@ -480,7 +482,7 @@ def conditional_pairplot_comparison(
             alpha=0.6
         )
 
-        h2 = plt.imshow(
+        h2 = ax.imshow(
             p_image2.T,
             origin="lower",
             extent=[
@@ -495,7 +497,6 @@ def conditional_pairplot_comparison(
             alpha=0.6
         )
 
-        plt.show()
 
 
 
