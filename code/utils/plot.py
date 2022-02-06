@@ -440,8 +440,8 @@ def conditional_pairplot_comparison(
                 row,
                 col,
                 resolution=resolution,
-                eps_margins1=eps_margins[row],
-                eps_margins2=eps_margins[col],
+                eps_margins1=eps_margins2[row],
+                eps_margins2=eps_margins2[col],
                 warn_about_deprecation=False,
             )
             .to("cpu")
@@ -458,19 +458,22 @@ def conditional_pairplot_comparison(
                 limits[row, 1],
             ],
             aspect="auto",
+            cmap='viridis'
         )
 
-        # h2 = plt.imshow(
-        #     p_image2.T,
-        #     origin="lower",
-        #     extent=[
-        #         limits[col, 0],
-        #         limits[col, 1],
-        #         limits[row, 0],
-        #         limits[row, 1],
-        #     ],
-        #     aspect="auto",
-        # )
+        h2 = plt.imshow(
+            p_image2.T,
+            origin="lower",
+            extent=[
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
+                
+            ],
+            aspect="auto",
+            cmap='plasma',
+        )
 
 
 
