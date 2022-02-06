@@ -466,36 +466,9 @@ def conditional_pairplot_comparison(
             .numpy()
         )
 
-        fig, ax = plt.subplots()
 
-        h = ax.imshow(
-            p_image.T,
-            origin="lower",
-            extent=[
-                limits[col, 0],
-                limits[col, 1],
-                limits[row, 0],
-                limits[row, 1],
-            ],
-            aspect="auto",
-            cmap=opts["samples_colors"][0],
-            alpha=0.6
-        )
 
-        h2 = ax.imshow(
-            p_image2.T,
-            origin="lower",
-            extent=[
-                limits[col, 0],
-                limits[col, 1],
-                limits[row, 0],
-                limits[row, 1],
-                
-            ],
-            aspect="auto",
-            cmap=opts["samples_colors"][1],
-            alpha=0.6
-        )
+        return p_image, p_image2
 
 
 
@@ -683,7 +656,6 @@ def _arrange_plots(
             # Diagonals
             if current == "diag":
                 diag_func(row=col, limits=limits)
-                diag_func2(row=col, limits=limits)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
@@ -697,12 +669,41 @@ def _arrange_plots(
 
             # Off-diagonals
             else:
-                upper_func(
+                p_image, p_image2 = upper_func(
                     opts=opts,
                     row=row,
                     col=col,
                     limits=limits,
 
+                )
+
+                h = plt.imshow(
+                p_image.T,
+                origin="lower",
+                extent=[
+                    limits[col, 0],
+                    limits[col, 1],
+                    limits[row, 0],
+                    limits[row, 1],
+                ],
+                aspect="auto",
+                cmap=opts["samples_colors"][0],
+
+            )
+
+                h2 = plt.imshow(
+                    p_image2.T,
+                    origin="lower",
+                    extent=[
+                        limits[col, 0],
+                        limits[col, 1],
+                        limits[row, 0],
+                        limits[row, 1],
+                        
+                    ],
+                    aspect="auto",
+                    cmap=opts["samples_colors"][1],
+                    alpha=0.6
                 )
 
                 if len(points) > 0:
