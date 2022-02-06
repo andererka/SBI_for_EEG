@@ -341,6 +341,7 @@ def plot_KLs(
 
 def conditional_pairplot_comparison(
     density: Any,
+    density2: Any,
     condition: torch.Tensor,
     condition2: torch.Tensor,
     limits: Union[List, torch.Tensor],
@@ -396,6 +397,8 @@ def conditional_pairplot_comparison(
     """
     device = density._device if hasattr(density, "_device") else "cpu"
 
+    device2 = density2._device if hasattr(density, "_device") else "cpu"
+
     # Setting these is required because _pairplot_scaffold will check if opts['diag'] is
     # `None`. This would break if opts has no key 'diag'. Same for 'upper'.
     diag = "cond"
@@ -435,7 +438,7 @@ def conditional_pairplot_comparison(
         p_image2 = (
                 eval_conditional_density(
                     opts["density"],
-                    opts["condition"].to(device),
+                    opts["condition"].to(device2),
                     limits2.to(device),
                     row,
                     col,
@@ -447,7 +450,7 @@ def conditional_pairplot_comparison(
                 .to("cpu")
                 .numpy()
             )
-        h = plt.plt(
+        h = plt.imshow(
             p_image.T,
             origin="lower",
             extent=[
@@ -459,7 +462,7 @@ def conditional_pairplot_comparison(
             aspect="auto",
         )
 
-        h2 = plt.plt(
+        h2 = plt.imshow(
             p_image2.T,
             origin="lower",
             extent=[
