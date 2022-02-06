@@ -467,8 +467,35 @@ def conditional_pairplot_comparison(
         )
 
 
+        h = plt.imshow(
+            p_image.T,
+            origin="lower",
+            extent=[
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
+            ],
+            aspect="auto",
+            cmap=opts["samples_colors"][0],
 
-        return p_image, p_image2
+        )
+
+        h2 = plt.imshow(
+            p_image2.T,
+            origin="lower",
+            extent=[
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
+                
+            ],
+            aspect="auto",
+            cmap=opts["samples_colors"][1],
+            alpha=0.6
+        )
+
 
 
 
@@ -656,7 +683,6 @@ def _arrange_plots(
             # Diagonals
             if current == "diag":
                 diag_func(row=col, limits=limits)
-                diag_func2(row=col, limits=limits)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
@@ -670,41 +696,12 @@ def _arrange_plots(
 
             # Off-diagonals
             else:
-                p_image, p_image2 = upper_func(
+                upper_func(
                     opts=opts,
                     row=row,
                     col=col,
                     limits=limits,
 
-                )
-
-                h = ax.imshow(
-                p_image.T,
-                origin="lower",
-                extent=[
-                    limits[col, 0],
-                    limits[col, 1],
-                    limits[row, 0],
-                    limits[row, 1],
-                ],
-                aspect="auto",
-                cmap=opts["samples_colors"][0],
-
-            )
-
-                h2 = ax.imshow(
-                    p_image2.T,
-                    origin="lower",
-                    extent=[
-                        limits[col, 0],
-                        limits[col, 1],
-                        limits[row, 0],
-                        limits[row, 1],
-                        
-                    ],
-                    aspect="auto",
-                    cmap=opts["samples_colors"][1],
-                    alpha=0.6
                 )
 
                 if len(points) > 0:
@@ -892,7 +889,7 @@ def get_conditional_diag_func(opts, limits, eps_margins, resolution):
                 resolution,
             ),
             p_vector,
-            c='red',
+            c=opts['diag_func_color'],
         )
 
     return diag_func
