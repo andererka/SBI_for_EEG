@@ -500,7 +500,6 @@ def conditional_pairplot_comparison(
 
 
 
-
     return _arrange_plots(
         diag_func, diag_func2,  upper_func, dim, limits, points, opts, fig=fig, axes=axes
     )
