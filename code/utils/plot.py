@@ -355,6 +355,7 @@ def conditional_pairplot_comparison(
     warn_about_deprecation: bool = True,
     fig=None,
     axes=None,
+    color_map=None,
     **kwargs,
 ):
     r"""
@@ -403,21 +404,29 @@ def conditional_pairplot_comparison(
     upper = "cond"
 
     opts = _get_default_opts()
+
+    opts2 = _get_default_opts()
     # update the defaults dictionary by the current values of the variables (passed by
     # the user)
     opts = _update(opts, locals())
     opts = _update(opts, kwargs)
-    opts["lower"] = None
+
+    opts2 = _update(opts, locals())
+    opts = _update(opts, kwargs)
+    opts2["lower"] = None
+
+    if color_map == None:
+        opts["samples_colors"] = 'viridis'
+    else:
+        opts["samples_colors"] = color_map 
+
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
     diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
 
-    dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
-    diag_func = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
+    dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
+    diag_func2 = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
 
-    opts["samples_colors"] = 'viridis'
-
-    opts["samples_colors2"] = 'plasma'
 
 
     def upper_func(row, col, **kwargs):
@@ -484,7 +493,7 @@ def conditional_pairplot_comparison(
 
 
     return _arrange_plots(
-        diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
+        diag_func,  upper_func, dim, limits, points, opts, fig=fig, axes=axes
     )
 
 
