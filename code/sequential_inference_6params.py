@@ -1,4 +1,4 @@
-from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
+from my_utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
@@ -12,9 +12,9 @@ import numpy as np
 import torch
 import json
 
-from utils.helpers import get_time
+from my_utils.helpers import get_time
 
-from utils.sbi_modulated_functions import Combined
+from my_utils.sbi_modulated_functions import Combined
 
 # visualization
 import matplotlib as mpl
@@ -26,7 +26,7 @@ from sbi import analysis as analysis
 from sbi.inference import SNPE_C, prepare_for_sbi, simulate_for_sbi
 from sbi.utils.get_nn_models import posterior_nn
 
-from utils import inference
+from my_utils import inference
 
 
 import pickle

@@ -24,7 +24,7 @@ from sbi import analysis as analysis
 from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
-from utils import inference
+from my_utils import inference
 import sys
 
 

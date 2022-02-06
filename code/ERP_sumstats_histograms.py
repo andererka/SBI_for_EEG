@@ -32,14 +32,14 @@ from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
 
-from utils.simulation_wrapper import event_seed, set_network_default
+from my_utils.simulation_wrapper import event_seed, set_network_default
 
 
 import matplotlib.gridspec as gridspec
 
-from utils import inference
-from utils.simulation_wrapper import event_seed, simulation_wrapper
-from utils.helpers import get_time
+from my_utils import inference
+from my_utils.simulation_wrapper import event_seed, simulation_wrapper
+from my_utils.helpers import get_time
 
 from data_load_writer import write_to_file
 from summary_features.calculate_summary_features import calculate_summary_stats

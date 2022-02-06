@@ -22,10 +22,10 @@ from sbi import analysis as analysis
 from sbi.inference import SNPE_C
 
 
-from utils.helpers import get_time
+from my_utils.helpers import get_time
 
 
-from utils import inference
+from my_utils import inference
 import sys
 
 

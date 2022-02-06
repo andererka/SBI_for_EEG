@@ -25,9 +25,9 @@ from sbi import analysis as analysis
 from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
-from utils import inference
+from my_utils import inference
 
-from utils.helpers import SummaryNet
+from my_utils.helpers import SummaryNet
 import sys
 
 from data_load_writer import write_to_file
@@ -38,12 +38,12 @@ import pickle
 
 import sys
 
-from utils.helpers import get_time
+from my_utils.helpers import get_time
 
 
 ## defining neuronal network model
 
-from utils.simulation_wrapper import event_seed, set_network_default, simulation_wrapper,simulation_wrapper_obs
+from my_utils.simulation_wrapper import event_seed, set_network_default, simulation_wrapper,simulation_wrapper_obs
 
 from joblib import Parallel, delayed
 
