@@ -656,6 +656,7 @@ def _arrange_plots(
             # Diagonals
             if current == "diag":
                 diag_func(row=col, limits=limits)
+                diag_func2(row=col, limits=limits)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
@@ -677,7 +678,7 @@ def _arrange_plots(
 
                 )
 
-                h = plt.imshow(
+                h = ax.imshow(
                 p_image.T,
                 origin="lower",
                 extent=[
@@ -691,7 +692,7 @@ def _arrange_plots(
 
             )
 
-                h2 = plt.imshow(
+                h2 = ax.imshow(
                     p_image2.T,
                     origin="lower",
                     extent=[
@@ -891,7 +892,7 @@ def get_conditional_diag_func(opts, limits, eps_margins, resolution):
                 resolution,
             ),
             p_vector,
-            c=opts['diag_func_color'],
+            c='red',
         )
 
     return diag_func
