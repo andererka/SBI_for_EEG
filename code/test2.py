@@ -5,7 +5,7 @@ import os
 import sys
 import datetime
 
-from my_utils.helpers import get_time
+from utils.helpers import get_time
 
 
 print(os.getcwd())

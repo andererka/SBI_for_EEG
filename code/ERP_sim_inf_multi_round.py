@@ -23,11 +23,11 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from my_utils.simulation_wrapper import simulation_wrapper_all
-from my_utils.helpers import get_time
+from utils.simulation_wrapper import simulation_wrapper_all
+from utils.helpers import get_time
 
 
-from my_utils import inference
+from utils import inference
 import sys
 
 ##sbi
