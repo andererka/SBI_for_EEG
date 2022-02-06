@@ -23,7 +23,7 @@ import matplotlib as mpl
 import numpy as np
 import six
 import torch
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 from scipy.stats import binom, gaussian_kde
