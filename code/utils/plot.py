@@ -416,7 +416,7 @@ def conditional_pairplot_comparison(
     opts2["lower"] = None
 
     if color_map == None:
-        opts["samples_colors"] = 'viridis'
+        opts["samples_colors"] = ['viridis', 'plasma']
     else:
         opts["samples_colors"] = color_map 
 
@@ -472,7 +472,7 @@ def conditional_pairplot_comparison(
                 limits[row, 1],
             ],
             aspect="auto",
-            cmap='viridis'
+            cmap=opts["samples_colors"][0]
         )
 
         h2 = plt.imshow(
@@ -486,7 +486,7 @@ def conditional_pairplot_comparison(
                 
             ],
             aspect="auto",
-            cmap='plasma',
+            cmap=opts["samples_colors"][1]
         )
 
 
@@ -688,9 +688,11 @@ def _arrange_plots(
             # Off-diagonals
             else:
                 upper_func(
+                    opts,
                     row=row,
                     col=col,
                     limits=limits,
+
                 )
 
                 if len(points) > 0:
