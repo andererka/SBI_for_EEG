@@ -476,7 +476,8 @@ def conditional_pairplot_comparison(
                 limits[row, 1],
             ],
             aspect="auto",
-            cmap=opts["samples_colors"][0]
+            cmap=opts["samples_colors"][0],
+            alpha=0.6
         )
 
         h2 = plt.imshow(
@@ -490,7 +491,8 @@ def conditional_pairplot_comparison(
                 
             ],
             aspect="auto",
-            cmap=opts["samples_colors"][1]
+            cmap=opts["samples_colors"][1],
+            alpha=0.6
         )
 
         plt.show()
