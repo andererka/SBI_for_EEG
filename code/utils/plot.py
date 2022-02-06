@@ -414,10 +414,9 @@ def conditional_pairplot_comparison(
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
     diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
 
-    # for condition 2:
-
     dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
-    diag_func2 = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
+    diag_func = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
+
 
     def upper_func(row, col, **kwargs):
         p_image = (
@@ -436,21 +435,22 @@ def conditional_pairplot_comparison(
             .numpy()
         )
         p_image2 = (
-                eval_conditional_density(
-                    opts["density"],
-                    opts["condition"].to(device2),
-                    limits2.to(device),
-                    row,
-                    col,
-                    resolution=resolution,
-                    eps_margins1=eps_margins2[row],
-                    eps_margins2=eps_margins2[col],
-                    warn_about_deprecation=False,
-                )
-                .to("cpu")
-                .numpy()
+            eval_conditional_density(
+                opts["density"],
+                opts["condition"].to(device2),
+                limits.to(device2),
+                row,
+                col,
+                resolution=resolution,
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[col],
+                warn_about_deprecation=False,
             )
-        h = plt.imshow(
+            .to("cpu")
+            .numpy()
+        )
+
+        plt.imshow(
             p_image.T,
             origin="lower",
             extent=[
@@ -462,17 +462,20 @@ def conditional_pairplot_comparison(
             aspect="auto",
         )
 
-        h2 = plt.imshow(
+        plt.imshow(
             p_image2.T,
             origin="lower",
             extent=[
-                limits2[col, 0],
-                limits2[col, 1],
-                limits2[row, 0],
-                limits2[row, 1],
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
             ],
             aspect="auto",
         )
+
+
+
 
     return _arrange_plots(
         diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
