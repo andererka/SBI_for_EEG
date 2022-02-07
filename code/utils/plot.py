@@ -513,7 +513,7 @@ def conditional_pairplot_comparison(
 
 
     return _arrange_plots(
-        diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
+        diag_func, upper_func, dim, limits, points, opts,  fig=fig, axes=axes
     )
 
 
@@ -693,6 +693,9 @@ def _arrange_plots(
 
             # Diagonals       diag_func2(row=col, limits=limits)
 
+            if current == "diag":
+                diag_func(row=col, limits=limits)
+
                 if len(points) > 0:
                     extent = ax.get_ylim()
                     for n, v in enumerate(points):
@@ -708,6 +711,7 @@ def _arrange_plots(
                 upper_func(
                     row=row,
                     col=col,
+                    limits=limits
 
                 )
 
