@@ -433,6 +433,7 @@ def conditional_pairplot_comparison(
     dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
     diag_func2 = get_conditional_diag_func(opts, limits, eps_margins2, resolution)
 
+    opts['lower'] = None
 
 
     def upper_func(row, col, **kwargs):
