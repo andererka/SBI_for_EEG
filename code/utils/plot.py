@@ -414,7 +414,14 @@ def conditional_pairplot_comparison(
     opts = _update(opts, kwargs)
 
  
-    opts = _update(opts, kwargs)
+    opts2 = _update(opts, kwargs)
+
+
+    opts2 = _update(opts, locals())
+    opts2 = _update(opts, kwargs)
+
+ 
+    opts2 = _update(opts, kwargs)
 
 
     if color_map == None:
@@ -428,10 +435,10 @@ def conditional_pairplot_comparison(
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
     diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
 
-    opts['diag_func_color'] = 'red'
+    opts2['diag_func_color'] = 'red'
 
-    dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
-    diag_func2 = get_conditional_diag_func(opts, limits, eps_margins, resolution)
+    dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
+    diag_func2 = get_conditional_diag_func(opts2, limits, eps_margins, resolution)
 
     opts['lower'] = None
 
@@ -454,8 +461,8 @@ def conditional_pairplot_comparison(
         )
         p_image2 = (
             eval_conditional_density(
-                opts["density"],
-                opts["condition"].to(device2),
+                opts2["density"],
+                opts2["condition"].to(device2),
                 limits.to(device2),
                 row,
                 col,
