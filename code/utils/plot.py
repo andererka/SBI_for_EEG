@@ -430,15 +430,10 @@ def conditional_pairplot_comparison(
         opts["samples_colors"] = color_map 
 
 
-    opts['diag_func_color'] = 'blue'
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
-    diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
+    diag_func = get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution)
 
-    opts2['diag_func_color'] = 'red'
-
-    dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
-    diag_func2 = get_conditional_diag_func(opts2, limits, eps_margins, resolution)
 
     opts['lower'] = None
 
@@ -488,7 +483,7 @@ def conditional_pairplot_comparison(
             ],
             aspect="auto",
             cmap=opts["samples_colors"][0],
-            alpha = 0.5
+            #alpha = 0.5
 
         )
 
@@ -512,13 +507,13 @@ def conditional_pairplot_comparison(
 
 
     return _arrange_plots(
-        diag_func, diag_func2,  upper_func, dim, limits, points, opts, fig=fig, axes=axes
+        diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
     )
 
 
 
 def _arrange_plots(
-    diag_func, diag_func2, upper_func, dim, limits, points, opts, fig=None, axes=None
+    diag_func, upper_func, dim, limits, points, opts, fig=None, axes=None
 ):
     """
     Arranges the plots for any function that plots parameters either in a row of 1D
@@ -690,10 +685,7 @@ def _arrange_plots(
                     )
                 )
 
-            # Diagonals
-            if current == "diag":
-                diag_func(row=col, limits=limits)
-                diag_func2(row=col, limits=limits)
+            # Diagonals       diag_func2(row=col, limits=limits)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
@@ -869,7 +861,7 @@ def _get_default_opts():
 
 
 
-def get_conditional_diag_func(opts, limits, eps_margins, resolution):
+def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
     """
     Returns the diag_func which returns the 1D marginal conditional plot for
     the parameter indexed by row.
@@ -891,6 +883,21 @@ def get_conditional_diag_func(opts, limits, eps_margins, resolution):
             .to("cpu")
             .numpy()
         )
+        p_vector2 = (
+            eval_conditional_density(
+                opts2["density"],
+                opts2["condition"],
+                limits,
+                row,
+                row,
+                resolution=resolution,
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[row],
+                warn_about_deprecation=False,
+            )
+            .to("cpu")
+            .numpy()
+        )
         h = plt.plot(
             np.linspace(
                 limits[row, 0],
@@ -898,7 +905,16 @@ def get_conditional_diag_func(opts, limits, eps_margins, resolution):
                 resolution,
             ),
             p_vector,
-            c=opts['diag_func_color'],
+            c='blue',
+        )
+        h2 = plt.plot(
+            np.linspace(
+                limits[row, 0],
+                limits[row, 1],
+                resolution,
+            ),
+            p_vector,
+            c='red',
         )
 
     return diag_func
