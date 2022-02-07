@@ -481,20 +481,20 @@ def conditional_pairplot_comparison(
 
         )
 
-        h2 = plt.imshow(
-            p_image2.T,
-            origin="lower",
-            extent=[
-                limits2[col, 0],
-                limits2[col, 1],
-                limits2[row, 0],
-                limits2[row, 1],
+        # h2 = plt.imshow(
+        #     p_image2.T,
+        #     origin="lower",
+        #     extent=[
+        #         limits[col, 0],
+        #         limits[col, 1],
+        #         limits[row, 0],
+        #         limits[row, 1],
                 
-            ],
-            aspect="auto",
-            cmap=opts["samples_colors"][1],
-            alpha=0.6
-        )
+        #     ],
+        #     aspect="auto",
+        #     cmap=opts["samples_colors"][1],
+        #     alpha=0.6
+        # )
 
 
 
