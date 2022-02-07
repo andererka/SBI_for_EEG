@@ -500,10 +500,10 @@ def conditional_pairplot_comparison(
             p_image2.T,
             origin="lower",
             extent=[
-                limits[col, 0],
-                limits[col, 1],
-                limits[row, 0],
-                limits[row, 1],
+                limits2[col, 0],
+                limits2[col, 1],
+                limits2[row, 0],
+                limits2[row, 1],
                 
             ],
             aspect="auto",
@@ -516,13 +516,13 @@ def conditional_pairplot_comparison(
 
 
     return _arrange_plots(
-        diag_func, upper_func, dim, limits, points, opts,  fig=fig, axes=axes
+        diag_func, upper_func, dim, limits, limits2, points, opts,  fig=fig, axes=axes
     )
 
 
 
 def _arrange_plots(
-    diag_func, upper_func, dim, limits, points, opts, fig=None, axes=None
+    diag_func, upper_func, dim, limits, limits2, points, opts, fig=None, axes=None
 ):
     """
     Arranges the plots for any function that plots parameters either in a row of 1D
@@ -697,8 +697,8 @@ def _arrange_plots(
             # Diagonals       diag_func2(row=col, limits=limits)
 
             if current == "diag":
-                print('diag')
-                diag_func(row=col, limits=limits)
+              
+                diag_func(row=col, limits=limits, limits2 = limits2)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
@@ -712,11 +712,10 @@ def _arrange_plots(
 
             # Off-diagonals
             else:
-                print('upper')
+           
                 upper_func(
                     row=row,
-                    col=col,
-                    limits=limits
+                    col=col
 
                 )
 
