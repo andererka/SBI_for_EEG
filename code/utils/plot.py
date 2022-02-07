@@ -1020,6 +1020,9 @@ def pairplot_comparison(
     points_colors: List[str] = plt.rcParams["axes.prop_cycle"].by_key()["color"],
     fig=None,
     axes=None,
+    color_map = ['viridis', 'Greys'],
+    alpha1 = 1,
+    alpha2 = 1,
     **kwargs,
 ):
     """
@@ -1073,7 +1076,7 @@ def pairplot_comparison(
 
     diag_func = get_diag_func2(samples, samples2, limits, opts, **kwargs)
 
-    def upper_func(row, col, limits, **kwargs):
+    def upper_func(row, col, **kwargs):
         if len(samples) > 0:
             for n, v in enumerate(samples):
                 if opts["upper"][n] == "hist" or opts["upper"][n] == "hist2d":
@@ -1096,6 +1099,8 @@ def pairplot_comparison(
                             yedges[-1],
                         ],
                         aspect="auto",
+                        cmap=color_map[0],
+                        alpha = alpha1
                     )
 
                 elif opts["upper"][n] in [
@@ -1134,6 +1139,8 @@ def pairplot_comparison(
                             ],
                             origin="lower",
                             aspect="auto",
+                            cmap=color_map[1],
+                            alpha = alpha2
                         )
                     elif opts["upper"][n] == "contour":
                         if opts["contour_offdiag"]["percentile"]:
