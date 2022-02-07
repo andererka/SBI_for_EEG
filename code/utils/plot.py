@@ -438,7 +438,10 @@ def conditional_pairplot_comparison(
 
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
-    diag_func = get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution)
+
+    dim, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
+
+    diag_func = get_conditional_diag_func(opts, opts2, limits, limits2, eps_margins, eps_margins2, resolution)
 
 
     opts['lower'] = None
@@ -464,12 +467,12 @@ def conditional_pairplot_comparison(
             eval_conditional_density(
                 opts2["density"],
                 opts2["condition"].to(device2),
-                limits.to(device2),
+                limits2.to(device2),
                 row,
                 col,
                 resolution=resolution,
-                eps_margins1=eps_margins[row],
-                eps_margins2=eps_margins[col],
+                eps_margins1=eps_margins2[row],
+                eps_margins2=eps_margins2[col],
                 warn_about_deprecation=False,
                 
             )
@@ -873,7 +876,7 @@ def _get_default_opts():
 
 
 
-def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
+def get_conditional_diag_func(opts, opts2, limits, limits2, eps_margins, eps_margins2, resolution):
     """
     Returns the diag_func which returns the 1D marginal conditional plot for
     the parameter indexed by row.
@@ -899,12 +902,12 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
             eval_conditional_density(
                 opts2["density"],
                 opts2["condition"],
-                limits,
+                limits2,
                 row,
                 row,
                 resolution=resolution,
-                eps_margins1=eps_margins[row],
-                eps_margins2=eps_margins[row],
+                eps_margins1=eps_margins2[row],
+                eps_margins2=eps_margins2[row],
                 warn_about_deprecation=False,
             )
             .to("cpu")
@@ -928,7 +931,7 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
             p_vector2,
             c='blue',
         )
-        print('second check')
+        
 
     return diag_func
 
