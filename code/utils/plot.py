@@ -1139,6 +1139,108 @@ def pairplot_comparison(
                             ],
                             origin="lower",
                             aspect="auto",
+                            cmap=color_map[0],
+                            alpha = alpha2
+                        )
+                    elif opts["upper"][n] == "contour":
+                        if opts["contour_offdiag"]["percentile"]:
+                            Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
+                        else:
+                            Z = (Z - Z.min()) / (Z.max() - Z.min())
+                        h = plt.contour(
+                            X,
+                            Y,
+                            Z,
+                            origin="lower",
+                            extent=[
+                                limits[col][0],
+                                limits[col][1],
+                                limits[row][0],
+                                limits[row][1],
+                            ],
+                            colors='red',
+                            levels=opts["contour_offdiag"]["levels"],
+                        )
+                    else:
+                        pass
+                elif opts["upper"][n] == "scatter":
+                    h = plt.scatter(
+                        v[:, col],
+                        v[:, row],
+                        color='red',
+                        **opts["scatter_offdiag"],
+                    )
+                elif opts["upper"][n] == "plot":
+                    h = plt.plot(
+                        v[:, col],
+                        v[:, row],
+                        color='red',
+                        **opts["plot_offdiag"],
+                    )
+                else:
+                    pass
+
+            for n, v in enumerate(samples2): 
+                if opts["upper"][n] == "hist" or opts["upper"][n] == "hist2d":
+                    hist, xedges, yedges = np.histogram2d(
+                        v[:, col],
+                        v[:, row],
+                        range=[
+                            [limits[col][0], limits[col][1]],
+                            [limits[row][0], limits[row][1]],
+                        ],
+                        **opts["hist_offdiag"],
+                    )
+                    h = plt.imshow(
+                        hist.T,
+                        origin="lower",
+                        extent=[
+                            xedges[0],
+                            xedges[-1],
+                            yedges[0],
+                            yedges[-1],
+                        ],
+                        aspect="auto",
+                        cmap=color_map[1],
+                        alpha = alpha1
+                    )
+
+                elif opts["upper"][n] in [
+                    "kde",
+                    "kde2d",
+                    "contour",
+                    "contourf",
+                ]:
+                    density = gaussian_kde(
+                        v[:, [col, row]].T,
+                        bw_method=opts["kde_offdiag"]["bw_method"],
+                    )
+                    X, Y = np.meshgrid(
+                        np.linspace(
+                            limits[col][0],
+                            limits[col][1],
+                            opts["kde_offdiag"]["bins"],
+                        ),
+                        np.linspace(
+                            limits[row][0],
+                            limits[row][1],
+                            opts["kde_offdiag"]["bins"],
+                        ),
+                    )
+                    positions = np.vstack([X.ravel(), Y.ravel()])
+                    Z = np.reshape(density(positions).T, X.shape)
+
+                    if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
+                        h = plt.imshow(
+                            Z,
+                            extent=[
+                                limits[col][0],
+                                limits[col][1],
+                                limits[row][0],
+                                limits[row][1],
+                            ],
+                            origin="lower",
+                            aspect="auto",
                             cmap=color_map[1],
                             alpha = alpha2
                         )
@@ -1158,7 +1260,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            colors=opts["samples_colors"][n],
+                            colors='blue',
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
@@ -1167,14 +1269,14 @@ def pairplot_comparison(
                     h = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color=opts["samples_colors"][n],
+                        color='red',
                         **opts["scatter_offdiag"],
                     )
                 elif opts["upper"][n] == "plot":
                     h = plt.plot(
                         v[:, col],
                         v[:, row],
-                        color=opts["samples_colors"][n],
+                        color='red',
                         **opts["plot_offdiag"],
                     )
                 else:
