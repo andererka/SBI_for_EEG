@@ -1074,7 +1074,66 @@ def pairplot_comparison(
     #    opts['lower'] = [opts['lower'] for _ in range(len(samples))]
     opts["lower"] = None
 
-    diag_func = get_diag_func2(samples, samples2, limits, opts, **kwargs)
+    #diag_func = get_diag_func2(samples, samples2, limits, opts, **kwargs)
+
+    def diag_func(row, **kwargs):
+        if len(samples) > 0:
+            for n, v in enumerate(samples):
+                if opts["diag"][n] == "hist":
+                    h = plt.hist(
+                        v[:, row], color='red', **opts["hist_diag"]
+                    )
+                elif opts["diag"][n] == "kde":
+                    density = gaussian_kde(
+                        v[:, row], bw_method=opts["kde_diag"]["bw_method"]
+                    )
+                    xs = np.linspace(
+                        limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
+                    )
+                    ys = density(xs)
+                    h = plt.plot(
+                        xs,
+                        ys,
+                        color='red',
+                    )
+                elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
+                    for single_sample in v:
+                        plt.axvline(
+                            single_sample[row],
+                            color='red',
+                            **opts["scatter_diag"],
+                        )
+                else:
+                    pass
+
+            for n, v in enumerate(samples2):
+                if opts["diag"][n] == "hist":
+                    h = plt.hist(
+                        v[:, row], color='blue', **opts["hist_diag"]
+                    )
+                elif opts["diag"][n] == "kde":
+                    density = gaussian_kde(
+                        v[:, row], bw_method=opts["kde_diag"]["bw_method"]
+                    )
+                    xs = np.linspace(
+                        limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
+                    )
+                    ys = density(xs)
+                    h = plt.plot(
+                        xs,
+                        ys,
+                        color='blue',
+                    )
+                elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
+                    for single_sample in v:
+                        plt.axvline(
+                            single_sample[row],
+                            color='blue',
+                            **opts["scatter_diag"],
+                        )
+                else:
+                    pass
+
 
     def upper_func(row, col, **kwargs):
         if len(samples) > 0:
@@ -1269,14 +1328,14 @@ def pairplot_comparison(
                     h = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color='red',
+                        color='blue',
                         **opts["scatter_offdiag"],
                     )
                 elif opts["upper"][n] == "plot":
                     h = plt.plot(
                         v[:, col],
                         v[:, row],
-                        color='red',
+                        color='blue',
                         **opts["plot_offdiag"],
                     )
                 else:
