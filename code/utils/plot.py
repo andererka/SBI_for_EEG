@@ -400,6 +400,8 @@ def conditional_pairplot_comparison(
 
     # Setting these is required because _pairplot_scaffold will check if opts['diag'] is
     # `None`. This would break if opts has no key 'diag'. Same for 'upper'.
+
+    print('check')
     diag = "cond"
     upper = "cond"
 
