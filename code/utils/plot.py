@@ -423,12 +423,12 @@ def conditional_pairplot_comparison(
         opts["samples_colors"] = color_map 
 
 
-    opts['diag_func_color'] = 'viridis'
+    opts['diag_func_color'] = 'blue'
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
     diag_func = get_conditional_diag_func(opts, limits, eps_margins, resolution)
 
-    opts['diag_func_color'] = 'plasma'
+    opts['diag_func_color'] = 'red'
 
     dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
     diag_func2 = get_conditional_diag_func(opts, limits, eps_margins2, resolution)
