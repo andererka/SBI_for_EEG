@@ -433,7 +433,7 @@ def conditional_pairplot_comparison(
 
 
 
-    def upper_func(opts, row, col, **kwargs):
+    def upper_func(row, col, **kwargs):
         p_image = (
             eval_conditional_density(
                 opts["density"],
@@ -697,10 +697,8 @@ def _arrange_plots(
             # Off-diagonals
             else:
                 upper_func(
-                    opts=opts,
                     row=row,
                     col=col,
-                    limits=limits,
 
                 )
 
