@@ -428,8 +428,8 @@ def conditional_pairplot_comparison(
 
     opts['diag_func_color'] = 'plasma'
 
-    dim2, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
-    diag_func2 = get_conditional_diag_func(opts, limits2, eps_margins2, resolution)
+    dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
+    diag_func2 = get_conditional_diag_func(opts, limits, eps_margins2, resolution)
 
 
 
