@@ -1250,7 +1250,7 @@ def pairplot_comparison(
                         ],
                         **opts["hist_offdiag"],
                     )
-                    h = plt.imshow(
+                    h2 = plt.imshow(
                         hist.T,
                         origin="lower",
                         extent=[
@@ -1290,7 +1290,7 @@ def pairplot_comparison(
                     Z = np.reshape(density(positions).T, X.shape)
 
                     if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
-                        h = plt.imshow(
+                        h2 = plt.imshow(
                             Z,
                             extent=[
                                 limits[col][0],
@@ -1308,7 +1308,7 @@ def pairplot_comparison(
                             Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
                         else:
                             Z = (Z - Z.min()) / (Z.max() - Z.min())
-                        h = plt.contour(
+                        h2 = plt.contour(
                             X,
                             Y,
                             Z,
@@ -1325,14 +1325,14 @@ def pairplot_comparison(
                     else:
                         pass
                 elif opts["upper"][n] == "scatter":
-                    h = plt.scatter(
+                    h2 = plt.scatter(
                         v[:, col],
                         v[:, row],
                         color='blue',
                         **opts["scatter_offdiag"],
                     )
                 elif opts["upper"][n] == "plot":
-                    h = plt.plot(
+                    h2 = plt.plot(
                         v[:, col],
                         v[:, row],
                         color='blue',
