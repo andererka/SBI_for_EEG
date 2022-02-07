@@ -441,7 +441,7 @@ def conditional_pairplot_comparison(
 
     dim, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
 
-    diag_func = get_conditional_diag_func(opts, opts2, limits, limits2, eps_margins, eps_margins2, resolution)
+    diag_func = get_conditional_diag_func(opts, opts2, limits,  eps_margins,  resolution)
 
 
     opts['lower'] = None
@@ -467,12 +467,12 @@ def conditional_pairplot_comparison(
             eval_conditional_density(
                 opts2["density"],
                 opts2["condition"].to(device2),
-                limits2.to(device2),
+                limits.to(device2),
                 row,
                 col,
                 resolution=resolution,
-                eps_margins1=eps_margins2[row],
-                eps_margins2=eps_margins2[col],
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[col],
                 warn_about_deprecation=False,
                 
             )
@@ -500,10 +500,10 @@ def conditional_pairplot_comparison(
             p_image2.T,
             origin="lower",
             extent=[
-                limits2[col, 0],
-                limits2[col, 1],
-                limits2[row, 0],
-                limits2[row, 1],
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
                 
             ],
             aspect="auto",
@@ -875,7 +875,7 @@ def _get_default_opts():
 
 
 
-def get_conditional_diag_func(opts, opts2, limits, limits2, eps_margins, eps_margins2, resolution):
+def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
     """
     Returns the diag_func which returns the 1D marginal conditional plot for
     the parameter indexed by row.
@@ -901,12 +901,12 @@ def get_conditional_diag_func(opts, opts2, limits, limits2, eps_margins, eps_mar
             eval_conditional_density(
                 opts2["density"],
                 opts2["condition"],
-                limits2,
+                limits,
                 row,
                 row,
                 resolution=resolution,
-                eps_margins1=eps_margins2[row],
-                eps_margins2=eps_margins2[row],
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[row],
                 warn_about_deprecation=False,
             )
             .to("cpu")
