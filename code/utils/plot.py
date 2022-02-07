@@ -1261,7 +1261,7 @@ def pairplot_comparison(
                         ],
                         aspect="auto",
                         cmap=color_map[1],
-                        alpha = alpha1
+                        alpha = alpha2
                     )
 
                 elif opts["upper"][n] in [
