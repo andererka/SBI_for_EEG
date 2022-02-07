@@ -485,10 +485,10 @@ def conditional_pairplot_comparison(
             p_image2.T,
             origin="lower",
             extent=[
-                limits[col, 0],
-                limits[col, 1],
-                limits[row, 0],
-                limits[row, 1],
+                limits2[col, 0],
+                limits2[col, 1],
+                limits2[row, 0],
+                limits2[row, 1],
                 
             ],
             aspect="auto",
@@ -682,6 +682,7 @@ def _arrange_plots(
             # Diagonals
             if current == "diag":
                 diag_func(row=col, limits=limits)
+                diag_func2(row=col, limits=limits)
 
                 if len(points) > 0:
                     extent = ax.get_ylim()
