@@ -439,10 +439,60 @@ def conditional_pairplot_comparison(
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
 
-    dim, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
+    #dim, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
 
-    diag_func = get_conditional_diag_func(opts, opts2, limits,  eps_margins,  resolution)
+    #diag_func = get_conditional_diag_func(opts, opts2, limits, eps_margins,  resolution)
 
+
+    def diag_func(row, **kwargs):
+        p_vector = (
+            eval_conditional_density(
+                opts["density"],
+                opts["condition"],
+                limits,
+                row,
+                row,
+                resolution=resolution,
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[row],
+                warn_about_deprecation=False,
+            )
+            .to("cpu")
+            .numpy()
+        )
+        p_vector2 = (
+            eval_conditional_density(
+                opts2["density"],
+                opts2["condition"],
+                limits,
+                row,
+                row,
+                resolution=resolution,
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[row],
+                warn_about_deprecation=False,
+            )
+            .to("cpu")
+            .numpy()
+        )
+        h = plt.plot(
+            np.linspace(
+                limits[row, 0],
+                limits[row, 1],
+                resolution,
+            ),
+            p_vector,
+            c='red',
+        )
+        h2 = plt.plot(
+            np.linspace(
+                limits[row, 0],
+                limits[row, 1],
+                resolution,
+            ),
+            p_vector2,
+            c='blue',
+        )
 
     opts['lower'] = None
 
@@ -1242,4 +1292,42 @@ def probs2contours(probs, levels):
     contours = np.reshape(contours[idx_unsort], shape)
 
     return contours
+
+
+def prepare_for_plot(samples, limits):
+    """
+    Ensures correct formatting for samples and limits, and returns dimension
+    of the samples.
+    """
+
+    # Prepare samples
+    if type(samples) != list:
+        samples = ensure_numpy(samples)
+        samples = [samples]
+    else:
+        for i, sample_pack in enumerate(samples):
+            samples[i] = ensure_numpy(samples[i])
+
+    # Dimensionality of the problem.
+    dim = samples[0].shape[1]
+
+    # Prepare limits. Infer them from samples if they had not been passed.
+    if limits == [] or limits is None:
+        limits = []
+        for d in range(dim):
+            min = +np.inf
+            max = -np.inf
+            for sample in samples:
+                min_ = sample[:, d].min()
+                min = min_ if min_ < min else min
+                max_ = sample[:, d].max()
+                max = max_ if max_ > max else max
+            limits.append([min, max])
+    else:
+        if len(limits) == 1:
+            limits = [limits[0] for _ in range(dim)]
+        else:
+            limits = limits
+    limits = torch.as_tensor(limits)
+    return samples, dim, limits
 
