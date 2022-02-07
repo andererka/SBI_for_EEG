@@ -413,15 +413,19 @@ def conditional_pairplot_comparison(
     opts = _update(opts, locals())
     opts = _update(opts, kwargs)
 
- 
-    opts2 = _update(opts, kwargs)
-
-
-    opts2 = _update(opts, locals())
-    opts2 = _update(opts, kwargs)
+    opts['density'] = density
+    opts['condition'] = condition
 
  
-    opts2 = _update(opts, kwargs)
+    opts2 = _get_default_opts()
+
+
+    opts2 = _update(opts2, locals())
+    opts2 = _update(opts2, kwargs)
+
+ 
+    opts2['density'] = density2
+    opts2['condition'] = condition2
 
 
     if color_map == None:
