@@ -917,7 +917,7 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
                 limits[row, 1],
                 resolution,
             ),
-            p_vector,
+            p_vector2,
             c='red',
         )
 
