@@ -694,6 +694,7 @@ def _arrange_plots(
             # Diagonals       diag_func2(row=col, limits=limits)
 
             if current == "diag":
+                print('diag')
                 diag_func(row=col, limits=limits)
 
                 if len(points) > 0:
@@ -708,6 +709,7 @@ def _arrange_plots(
 
             # Off-diagonals
             else:
+                print('upper')
                 upper_func(
                     row=row,
                     col=col,
@@ -918,14 +920,15 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
             c='red',
         )
         h2 = plt.plot(
-            np.linspace(
-                limits[row, 0],
-                limits[row, 1],
-                resolution,
-            ),
+            #np.linspace(
+            ##    limits[row, 0],
+            #    limits[row, 1],
+            #    resolution,
+            #),
             p_vector2,
             c='blue',
         )
+        print('second check')
 
     return diag_func
 
