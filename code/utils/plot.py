@@ -431,7 +431,7 @@ def conditional_pairplot_comparison(
     opts['diag_func_color'] = 'red'
 
     dim2, _, eps_margins2 = prepare_for_conditional_plot(condition2, opts)
-    diag_func2 = get_conditional_diag_func(opts, limits, eps_margins2, resolution)
+    diag_func2 = get_conditional_diag_func(opts, limits, eps_margins, resolution)
 
     opts['lower'] = None
 
@@ -460,8 +460,8 @@ def conditional_pairplot_comparison(
                 row,
                 col,
                 resolution=resolution,
-                eps_margins1=eps_margins2[row],
-                eps_margins2=eps_margins2[col],
+                eps_margins1=eps_margins[row],
+                eps_margins2=eps_margins[col],
                 warn_about_deprecation=False,
                 
             )
@@ -481,23 +481,24 @@ def conditional_pairplot_comparison(
             ],
             aspect="auto",
             cmap=opts["samples_colors"][0],
+            alpha = 0.5
 
         )
 
-        # h2 = plt.imshow(
-        #     p_image2.T,
-        #     origin="lower",
-        #     extent=[
-        #         limits[col, 0],
-        #         limits[col, 1],
-        #         limits[row, 0],
-        #         limits[row, 1],
+        h2 = plt.imshow(
+            p_image2.T,
+            origin="lower",
+            extent=[
+                limits[col, 0],
+                limits[col, 1],
+                limits[row, 0],
+                limits[row, 1],
                 
-        #     ],
-        #     aspect="auto",
-        #     cmap=opts["samples_colors"][1],
-        #     alpha=0.6
-        # )
+            ],
+            aspect="auto",
+            cmap=opts["samples_colors"][1],
+            alpha=0.6
+        )
 
 
 
