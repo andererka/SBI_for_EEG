@@ -356,6 +356,8 @@ def conditional_pairplot_comparison(
     fig=None,
     axes=None,
     color_map=None,
+    alpha1 = 1,
+    alpha2 = 1,
     **kwargs,
 ):
     r"""
@@ -396,7 +398,7 @@ def conditional_pairplot_comparison(
     """
     device = density._device if hasattr(density, "_device") else "cpu"
 
-    device2 = density2._device if hasattr(density, "_device") else "cpu"
+    device2 = density2._device if hasattr(density2, "_device") else "cpu"
 
     # Setting these is required because _pairplot_scaffold will check if opts['diag'] is
     # `None`. This would break if opts has no key 'diag'. Same for 'upper'.
@@ -487,7 +489,7 @@ def conditional_pairplot_comparison(
             ],
             aspect="auto",
             cmap=opts["samples_colors"][0],
-            #alpha = 0.5
+            alpha = alpha1
 
         )
 
@@ -503,7 +505,7 @@ def conditional_pairplot_comparison(
             ],
             aspect="auto",
             cmap=opts["samples_colors"][1],
-            alpha=0.6
+            alpha=alpha2
         )
 
 
@@ -909,7 +911,7 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
                 resolution,
             ),
             p_vector,
-            c='blue',
+            c='red',
         )
         h2 = plt.plot(
             np.linspace(
@@ -918,7 +920,7 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
                 resolution,
             ),
             p_vector2,
-            c='red',
+            c='blue',
         )
 
     return diag_func
