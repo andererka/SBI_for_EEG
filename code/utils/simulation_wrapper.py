@@ -381,7 +381,7 @@ def set_network_weights(params=None):
 
     synaptic_delays_prox = {
         "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
+        #"L5_basket": 1.0,
         "L5_pyramidal": 1.0,
     }
 
