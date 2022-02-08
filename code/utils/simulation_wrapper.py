@@ -330,7 +330,7 @@ def set_network_weights(params=None):
     )
 
 
-    if (len(params)==5):
+    if (len(params)==6):
 
         return net
 
