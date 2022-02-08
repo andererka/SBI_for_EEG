@@ -118,7 +118,7 @@ def main(argv):
         prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
         #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-        true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
+        true_params = torch.tensor([0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86])
 
         
         #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
@@ -138,7 +138,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
+        true_params, simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
     ) 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
