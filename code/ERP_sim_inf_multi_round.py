@@ -113,23 +113,21 @@ def main(argv):
 
     if num_params == 17:
 
-        prior_min = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-        prior_max = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+
+        prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+        prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.117, 75.08, 8.633, 1.0, 1.0, 162.110]
 
 
-        #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-        true_params = torch.tensor([[0.277, 0.0399, 0.3739, 0.034, 18.977, 0.0115, 0.000012, 0.466, 0.06337, 0.0134, 0.0766, 63.08, 0.000005, 4.6729, 0.0115, 0.3308, 120.86]])
+        true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 18.977, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 0.0115, 0.061556, 0.0679, 120.86]])
 
         
-        #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
-
-        parameter_names = ["prox_1_ampa_l2_bas","prox_1_ampa_l2_pyr","prox_1_ampa_l5_bas","prox_1_ampa_l5_pyr",
-        "t_evprox_1",
-        "dist_ampa_l2_bas","dist_ampa_l2_pyr","dist_ampa_l5_pyr",
-        "dist_nmda_l2_bas","dist_nmda_l2_pyr","dist_nmda_l5_pyr",
-        "t_evdist_1", 
-        "prox_2_ampa_l2_bas","prox_2_ampa_l2_pyr","prox_2_ampa_l5_bas","prox_2_ampa_l5_pyr",
-        "t_evprox_2"]
+        parameter_names = ["prox1_ampa_l2_bas","prox1_ampa_l2_pyr","prox1_ampa_l5_bas","prox1_nmda_l5_bas", "prox1_nmda_l5_pyr",
+        "t_prox1",
+        "dist_ampa_l2_pyr","dist_ampa_l2_bas","dist_nmda_l2_pyr",
+        "dist_nmda_l5_pyr","dist_nmda_l2_bas",
+        "t_dist", 
+        "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_ampa_l5_bas","prox2_ampa_l5_pyr",
+        "t_prox2"]
 
     elif num_params == None:
         print("number of parameters must be defined in the arguments")
@@ -145,7 +143,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_multi_round_num_params_{}".format(
+    experiment="{}_multi_round_num_params_{}newparams".format(
         number_simulations, num_params
     ),
     num_sim=number_simulations,
@@ -225,6 +223,7 @@ def main(argv):
     file_writer.save_posterior(posterior)
     file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior)
+    file_writer.save_thetas(theta)
 
 
 

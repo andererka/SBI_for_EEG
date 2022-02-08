@@ -296,17 +296,17 @@ def set_network_weights(params=None):
 
 
     weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": params[0],
-        "L5_basket": params[1],
+        "L2_basket": params[0],
+        "L2_pyramidal": params[1],
+        "L5_basket": params[2],
         "L5_pyramidal": 0.00865,
     }
 
     weights_nmda_p1 = {
        "L2_basket": 0.08831,
         "L2_pyramidal": 0.01525,
-        "L5_basket": params[2],
-        "L5_pyramidal": params[3],
+        "L5_basket": params[3],
+        "L5_pyramidal": params[4],
     }
 
     synaptic_delays_prox = {
@@ -320,7 +320,7 @@ def set_network_weights(params=None):
 
     net.add_evoked_drive(
         "evprox1",
-        mu=params[4],
+        mu=params[5],
         sigma=2.47,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
@@ -336,14 +336,16 @@ def set_network_weights(params=None):
         return net
 
     weights_ampa_d1 = {
-        "L2_basket": params[5],
+        "L2_basket": params[7],
         "L2_pyramidal": params[6],
-        "L5_pyramidal": params[7],
+        "L5_pyramidal": 0.142300,
+        #"L5_basket": params[7],
     }
     weights_nmda_d1 = {
-        "L2_basket": params[8],
-        "L2_pyramidal": params[9],
-        "L5_pyramidal": params[10],
+        "L2_basket": params[10],
+        "L2_pyramidal": params[8],
+        "L5_pyramidal": params[9],
+        #"L5_basket": params[10],
     }
     synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
     net.add_evoked_drive(
@@ -365,16 +367,16 @@ def set_network_weights(params=None):
     # Second proximal evoked drive. NB: only AMPA weights differ from first
     weights_ampa_p2 = {
         #"L2_basket": params[12],
-        "L2_pyramidal": 1.438840,
+        "L2_pyramidal": [12],
         "L5_basket": params[13],
-        "L5_pyramidal": params[13],
+        #"L5_pyramidal": params[15],
     }
 
     weights_nmda_p2 = {
         #"L2_basket": params[12],
-        "L2_pyramidal": params[13],
+        #"L2_pyramidal": params[13],
         "L5_basket": params[14],
-        "L5_pyramidal": 0.684013,
+        "L5_pyramidal": params[15],
     }
 
     synaptic_delays_prox = {
