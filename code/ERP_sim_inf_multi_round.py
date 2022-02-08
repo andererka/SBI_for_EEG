@@ -225,6 +225,7 @@ def main(argv):
     file_writer.save_posterior(posterior)
     file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior)
+    file_writer.save_thetas(theta)
 
 
 

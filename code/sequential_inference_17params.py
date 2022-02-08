@@ -14,6 +14,8 @@ import json
 import pandas as pd
 import seaborn as sns
 
+import datetime
+
 from utils.helpers import get_time
 
 from utils.sbi_modulated_functions import Combined
@@ -99,26 +101,26 @@ def main(argv):
 
     ### for also inferring connection weights etc.:
 
-    prior_min_fix = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max_fix = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+    prior_min_fix = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    prior_max_fix = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.117, 75.08, 8.633, 1.0, 1.0, 162.110]
 
-    prior_min = [0, 0, 0, 0, 17.3, 0, 0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max = [0.927, 0.160, 2.093, 0.0519, 35.9, 0.039, 0.000042, 0.854, 0.117, 0.0259, 0.480, 75.08, 0.0000018, 8.633, 0.0537, 4.104, 162.110]
+    prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.117, 75.08, 8.633, 1.0, 1.0, 162.110]
 
 
     #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    true_params = torch.tensor([[0.277, 0.0399, 0.3739, 0.034, 18.977, 0.0115, 0.000012, 0.466, 0.06337, 0.0134, 0.0766, 63.08, 0.000005, 4.6729, 0.0115, 0.3308, 120.86]])
+    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 18.977, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 0.0115, 0.061556, 0.0679, 120.86]])
 
     
     #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
 
-    parameter_names = ["prox_1_ampa_l2_bas","prox_1_ampa_l2_pyr","prox_1_ampa_l5_bas","prox_1_ampa_l5_pyr",
-     "t_evprox_1",
-     "dist_ampa_l2_bas","dist_ampa_l2_pyr","dist_ampa_l5_pyr",
-     "dist_nmda_l2_bas","dist_nmda_l2_pyr","dist_nmda_l5_pyr",
-     "t_evdist_1", 
-     "prox_2_ampa_l2_bas","prox_2_ampa_l2_pyr","prox_2_ampa_l5_bas","prox_2_ampa_l5_pyr",
-     "t_evprox_2"]
+    parameter_names = ["prox1_ampa_l2_bas","prox1_ampa_l2_pyr","prox1_ampa_l5_bas","prox1_nmda_l5_bas", "prox1_nmda_l5_pyr",
+     "t_prox1",
+     "dist_ampa_l2_pyr","dist_ampa_l2_bas","dist_nmda_l2_pyr",
+     "dist_nmda_l5_pyr","dist_nmda_l2_bas",
+     "t_dist", 
+     "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_ampa_l5_bas","prox2_ampa_l5_pyr",
+     "t_prox2"]
 
     ###### starting with P50 parameters/summary stats:
     #prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
@@ -174,10 +176,19 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+
+
+        finish_time = datetime.datetime.now()
+
+        diff_time = finish_time - start_time
+
+
+
         step_time = get_time()
         json_dict = {
         "start time:": start_time,
-        "round 1 time": step_time}
+        "round 1 time": step_time,
+        "CPU time for step:": diff_time}
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -192,13 +203,13 @@ def main(argv):
 
     os.chdir('data')
 
-    trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
-    trace_torch = torch.tensor(trace.values, dtype = torch.float32)
+    #trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+    #trace_torch = torch.tensor(trace.values, dtype = torch.float32)
 
     os.chdir(file_writer.folder)
 
     
-    obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
+    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
 
     x_without = x_without[:,:2700]
 
@@ -222,9 +233,9 @@ def main(argv):
     #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
 #)  
 
-    #obs_real = inference.run_only_sim(
-    #    torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
-    #)  # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
+    )  # first output gives summary statistics, second without
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -283,16 +294,16 @@ def main(argv):
     #    sim_wrapper,
     #    num_workers=num_workers
     #)
-    #obs_real = inference.run_only_sim(
-    #    torch.tensor([list(true_params[0][0:12])]),
-    #    simulation_wrapper_all,
-    #    num_workers=num_workers
-    #)  # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:12])]),
+        simulation_wrapper_all,
+        num_workers=num_workers
+    )  # first output gives summary statistics, second without
 
     #print("obs real", obs_real.size())
 
  
-    obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
+    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
     samples = posterior.sample((num_samples,), x=obs_real_stat)
@@ -332,130 +343,18 @@ def main(argv):
         "start time:": start_time,
         "round 3 time": step_time}
         with open( "step3/meta.json", "a") as f:
-            json.dump(json_dict, f)    #obs_real = calculate_summary_stats_temporal(obs_real)
+            json.dump(json_dict, f)    
 
-    #    true_params, sim_wrapper, num_workers=num_workers
-    #)  # first output gives summary statistics, second without
+    file_writer.save_posterior(posterior)
+    file_writer.save_obs_without(x_without)
+    file_writer.save_prior(prior)
+    file_writer.save_thetas(theta)
 
-    obs_real = obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)]
+    os.chdir(file_writer.folder)
 
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
-
-    samples = posterior.sample((num_samples,), x=obs_real_stat)
-
-    limits = [list(tup) for tup in zip(prior_min_fix, prior_max_fix)]
-
-    list_min = list(torch.min(samples, 0)[0]-0.1)
-    list_max = list(torch.max(samples, 0)[0]+0.1)
-
-    limits = [list(tup) for tup in zip(list_min, list_max)]
-
-    fig, axes = analysis.pairplot(
-        samples,
-        limits=limits,
-        ticks=np.round(limits,2),
-        figsize=(30, 30),
-        points=true_params,
-        points_offdiag={"markersize": 6},
-        points_colors="r",
-        labels=parameter_names,
-    )
-
-    for i in range(5):
-        axes[i][i].xaxis.label.set_color('magenta')
-    for i in range(5, 12):
-        axes[i][i].xaxis.label.set_color('navy')
-    for i in range(12, 17):
-        axes[i][i].xaxis.label.set_color('deeppink')
-
-    
-    fig.savefig('posterior_dens.png')
-
-    finish_time = get_time()
-
-
-    s_x = inference.run_only_sim(samples, simulation_wrapper=sim_wrapper, num_workers=num_workers)
-
-
-    samples_prior = []
-
-
-    for i in range(num_samples):
-        sample = prior.sample()
-        samples_prior.append(sample)
-        
-    s_x_prior = inference.run_only_sim(samples_prior, sim_wrapper, num_workers=8)
-
-
-    s_x_torch = torch.stack(([s_x[i] for i in range(len(s_x))]))
-
-    s_x_prior_torch = torch.stack(([s_x_prior[i] for i in range(len(s_x_prior))]))
-
-
-    ### calculating confidence intervals:
-
-    mean = torch.mean(s_x_torch, 0)
-    std = torch.std(s_x_torch, 0)
-
-    mean_prior = torch.mean(s_x_prior_torch, 0)
-    std_prior = torch.std(s_x_prior_torch, 0)
-
-    lower = mean - 1.96 * std
-
-
-    upper = mean + 1.96 * std
-
-
-    lower_prior = mean_prior - 1.96 * std_prior
-
-
-    upper_prior = mean_prior + 1.96 * std_prior
-
-
-    sns.set() 
-
-    sns.set_style("whitegrid", {'axes.grid' : False})
-    #sns.set_style('ticks')
-
-    fig1, ax = plt.subplots(1, 1)
-    #ax.set_title("Comparing signal")
-
-        
-    plt.plot(mean, color ='blue', label='mean of posterior')
-
-    for s in s_x:
-        plt.plot(s, alpha=0.05, color='blue')
-        #plt.ylim(-30,30)
-        plt.xlim(0, 7000)
-
-    plt.plot(lower, color='blue', linestyle='dashed', label='95% confidence')
-    plt.plot(upper, color='blue', linestyle='dashed')
-    plt.fill_between(x= torch.arange(len(mean_prior)), y1=lower, y2=upper, color='blue', alpha=0.1)
-    plt.xlim(0, 7000)
-
-
-    plt.plot(mean_prior, color ='orange', label='mean of prior')
-
-
-    for x_w in s_x_prior:
-        plt.plot(x_w, alpha=0.05, color='orange')
-
-    plt.plot(lower_prior, color='orange', linestyle='dashed', label='95% confidence')
-    plt.plot(upper_prior, color='orange', linestyle='dashed')
-    plt.fill_between(x= torch.arange(len(mean_prior)), y1=lower_prior, y2=upper_prior, color='orange', alpha=0.2)
-    plt.xlim(0, 7000)
-
-    plt.xlabel('time in ms')
-    #plt.ylabel('voltage ()')
-
-    fig1.gca().set_ylabel(r'voltage ($\mu V$)')
-        
-    plt.plot(obs_real[0], label='Ground truth', color='red')
-
-    plt.legend()
-
-
-    fig1.savefig('posterior_predictive_check.png')
+    ##save class
+    with open("class", "wb") as pickle_file:
+        pickle.dump(file_writer, pickle_file)
 
 
 if __name__ == "__main__":
