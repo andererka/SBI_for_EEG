@@ -137,9 +137,11 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
+    print(torch.tensor([list(true_params[0])]))
+    
     obs_real = inference.run_only_sim(
-        true_params, simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
-    ) 
+        torch.tensor([list(true_params[0])]), simulation_wrapper = simulation_wrapper_all, num_workers=1) 
+
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posteriors = []
