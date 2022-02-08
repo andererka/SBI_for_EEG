@@ -143,7 +143,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_multi_round_num_params_{}".format(
+    experiment="{}_multi_round_num_params_{}newparams".format(
         number_simulations, num_params
     ),
     num_sim=number_simulations,

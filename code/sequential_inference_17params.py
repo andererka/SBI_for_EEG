@@ -209,7 +209,7 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     
-    obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
+    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
 
     x_without = x_without[:,:2700]
 
@@ -233,9 +233,9 @@ def main(argv):
     #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
 #)  
 
-    #obs_real = inference.run_only_sim(
-    #    torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
-    #)  # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
+    )  # first output gives summary statistics, second without
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -340,6 +340,9 @@ def main(argv):
         "round 3 time": step_time}
         with open( "step3/meta.json", "a") as f:
             json.dump(json_dict, f)    
+
+
+   
 
     file_writer.save_posterior(posterior)
     file_writer.save_obs_without(x_without)
