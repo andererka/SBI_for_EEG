@@ -124,7 +124,7 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
-    prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
+    prior1 = utils.torchutils.BoxUniform(low=prior_min[0:6], high=prior_max[0:6])
 
     inf = SNPE_C(prior1, density_estimator='nsf')
 
