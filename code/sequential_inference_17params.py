@@ -101,14 +101,12 @@ def main(argv):
 
     ### for also inferring connection weights etc.:
 
-    prior_min_fix = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max_fix = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 0.0537, 1.0, 1.0, 162.110]
 
     prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 0.0537, 1.0, 1.0, 162.110]
+    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
     #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 0.0115, 0.061556, 0.0679, 120.86]])
+    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
 
     
     #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
@@ -118,7 +116,7 @@ def main(argv):
      "dist_ampa_l2_pyr","dist_ampa_l2_bas","dist_nmda_l2_pyr",
      "dist_nmda_l5_pyr","dist_nmda_l2_bas",
      "t_dist", 
-     "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_ampa_l5_bas","prox2_ampa_l5_pyr",
+     "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_nmda_l2_pyr","prox2_nmda_l5_pyr",
      "t_prox2"]
 
     ###### starting with P50 parameters/summary stats:
@@ -203,7 +201,7 @@ def main(argv):
     os.chdir('data')
 
     #trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
-    #trace_torch = torch.tensor(trace.values, dtype = torch.float32)
+    #itrace_torch = torch.tensor(trace.values, dtype = torch.float32)
 
     os.chdir(file_writer.folder)
 
@@ -233,7 +231,7 @@ def main(argv):
 #)  
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
+        torch.tensor([list(true_params[0][0:6])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
     )  # first output gives summary statistics, second without
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
@@ -244,7 +242,7 @@ def main(argv):
 
     ###### continuing with N100 parameters/summary stats:
     #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
-    prior2 = utils.torchutils.BoxUniform(low=prior_min[5:12], high=prior_max[5:12])
+    prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
     combined_prior = Combined(proposal1, prior2, number_params_1=5)

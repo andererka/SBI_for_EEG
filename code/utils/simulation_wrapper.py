@@ -368,14 +368,14 @@ def set_network_weights(params=None):
     weights_ampa_p2 = {
         #"L2_basket": params[12],
         "L2_pyramidal": [12],
-        "L5_basket": params[13],
-        #"L5_pyramidal": params[15],
+        #"L5_basket": params[13],
+        "L5_pyramidal": params[13],
     }
 
     weights_nmda_p2 = {
         #"L2_basket": params[12],
-        #"L2_pyramidal": params[13],
-        "L5_basket": params[14],
+        "L2_pyramidal": params[14],
+        #"L5_basket": params[16],
         "L5_pyramidal": params[15],
     }
 
