@@ -1153,6 +1153,7 @@ def pairplot_comparison(
                     )
                     h = plt.imshow(
                         hist.T,
+                        opts["hist_offdiag"][0],
                         origin="lower",
                         extent=[
                             xedges[0],
@@ -1162,7 +1163,7 @@ def pairplot_comparison(
                         ],
                         aspect="auto",
                         cmap=color_map[0],
-                        alpha = alpha1
+                        
                     )
 
                 elif opts["upper"][n] in [
@@ -1173,18 +1174,18 @@ def pairplot_comparison(
                 ]:
                     density = gaussian_kde(
                         v[:, [col, row]].T,
-                        bw_method=opts["kde_offdiag"]["bw_method"],
+                        bw_method=opts["kde_offdiag"][0]["bw_method"],
                     )
                     X, Y = np.meshgrid(
                         np.linspace(
                             limits[col][0],
                             limits[col][1],
-                            opts["kde_offdiag"]["bins"],
+                            opts["kde_offdiag"][0]["bins"],
                         ),
                         np.linspace(
                             limits[row][0],
                             limits[row][1],
-                            opts["kde_offdiag"]["bins"],
+                            opts["kde_offdiag"][0]["bins"],
                         ),
                     )
                     positions = np.vstack([X.ravel(), Y.ravel()])
@@ -1193,7 +1194,7 @@ def pairplot_comparison(
                     if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
                         h = plt.imshow(
                             Z,
-                            opts["kde_offdiag"][1],
+                            opts["kde_offdiag"][0],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
@@ -1255,6 +1256,7 @@ def pairplot_comparison(
                     )
                     h2 = plt.imshow(
                         hist.T,
+                        opts["hist_offdiag"][1],
                         origin="lower",
                         extent=[
                             xedges[0],
@@ -1264,7 +1266,7 @@ def pairplot_comparison(
                         ],
                         aspect="auto",
                         cmap=color_map[1],
-                        alpha = alpha2
+                        
                     )
 
                 elif opts["upper"][n] in [
@@ -1275,18 +1277,18 @@ def pairplot_comparison(
                 ]:
                     density = gaussian_kde(
                         v[:, [col, row]].T,
-                        bw_method=opts["kde_offdiag"]["bw_method"],
+                        bw_method=opts["kde_offdiag"][1]["bw_method"],
                     )
                     X, Y = np.meshgrid(
                         np.linspace(
                             limits[col][0],
                             limits[col][1],
-                            opts["kde_offdiag"]["bins"],
+                            opts["kde_offdiag"][1]["bins"],
                         ),
                         np.linspace(
                             limits[row][0],
                             limits[row][1],
-                            opts["kde_offdiag"]["bins"],
+                            opts["kde_offdiag"][1]["bins"],
                         ),
                     )
                     positions = np.vstack([X.ravel(), Y.ravel()])
