@@ -1221,6 +1221,7 @@ def pairplot_comparison(
                             alpha =  opts["contour_offdiag"]["alpha"],
                             colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
+                            
                         )
                     if "contourf" in opts["upper"][n]:
                         if opts["contour_offdiag"]["percentile"]:
@@ -1239,7 +1240,7 @@ def pairplot_comparison(
                                 limits[row][1],
                             ],
                             alpha =  opts["contour_offdiag"]["alpha"],
-                            colors="blue",
+                            cmap = opts["contour_offdiag"]["cmap1"],
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
@@ -1364,6 +1365,7 @@ def pairplot_comparison(
                             alpha =  opts["contour_offdiag"]["alpha"],
                             colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
+                            cmap = opts["contour_offdiag"]["cmap2"]
                         )
                     else:
                         pass
