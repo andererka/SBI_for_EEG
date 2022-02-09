@@ -1218,7 +1218,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            colors=opts["contour_offdiag"][0]["color"],
+                            colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
@@ -1227,14 +1227,14 @@ def pairplot_comparison(
                     h4 = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color=opts["contour_offdiag"][0]["color"],
+                        color='blue',
                         **opts["scatter_offdiag"][0],
                     )
                 if "plot" in opts["upper"][n] :
                     h5 = plt.plot(
                         v[:, col],
                         v[:, row],
-                        color=opts["contour_offdiag"][0]["color"],
+                        color='blue',
                         **opts["plot_offdiag"][0],
                     )
                 else:
@@ -1319,7 +1319,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            colors=opts["contour_offdiag"][1]["color"],
+                            colors='red',
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
@@ -1328,14 +1328,14 @@ def pairplot_comparison(
                     h9 = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color=opts["contour_offdiag"][1]["color"],
+                        color='red',
                         **opts["scatter_offdiag"][1],
                     )
                 if "plot" in opts["upper"][n] :
                     h10 = plt.plot(
                         v[:, col],
                         v[:, row],
-                        color=opts["contour_offdiag"][1]["color"],
+                        color='red',
                         **opts["plot_offdiag"][1],
                     )
                 else:
