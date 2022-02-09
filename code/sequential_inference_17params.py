@@ -252,9 +252,9 @@ def main(argv):
     prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
-    combined_prior = Combined(proposal1, prior2, number_params_1=5)
+    combined_prior = Combined(proposal1, prior2, number_params_1=6)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    #inf = SNPE_C(combined_prior, density_estimator="nsf")
 
 
     try:
