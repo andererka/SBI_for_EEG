@@ -1141,7 +1141,7 @@ def pairplot_comparison(
     def upper_func(row, col, **kwargs):
         if len(samples) > 0:
             for n, v in enumerate(samples):
-                if opts["upper"][n] == "hist" or opts["upper"][n] == "hist2d":
+                if "hist" in opts["upper"][n] or "hist2d" in opts["upper"][n]:
                     hist, xedges, yedges = np.histogram2d(
                         v[:, col],
                         v[:, row],
@@ -1277,7 +1277,7 @@ def pairplot_comparison(
                         np.linspace(
                             limits[col][0],
                             limits[col][1],
-                            opts["kde_offdiag"][1]["bins"],
+                            opts["kde_offdiag"][1]["bins"],"plot"
                         ),
                         np.linspace(
                             limits[row][0],
@@ -1324,14 +1324,14 @@ def pairplot_comparison(
                         )
                     else:
                         pass
-                elif opts["upper"][n] == "scatter":
+                if "scatter" in opts["upper"][n] :
                     h9 = plt.scatter(
                         v[:, col],
                         v[:, row],
                         color=opts["contour_offdiag"][1]["color"],
                         **opts["scatter_offdiag"][1],
                     )
-                elif opts["upper"][n] == "plot":
+                if "plot" in opts["upper"][n] :
                     h10 = plt.plot(
                         v[:, col],
                         v[:, row],
