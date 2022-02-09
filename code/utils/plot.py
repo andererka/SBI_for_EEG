@@ -1307,7 +1307,6 @@ def pairplot_comparison(
                             
                             origin="lower",
                             aspect="auto",
-                            cmap=color_map[1],
                             
                         )
                     elif opts["upper"][n] == "contour":
