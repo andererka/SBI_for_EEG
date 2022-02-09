@@ -1166,7 +1166,7 @@ def pairplot_comparison(
                         
                     )
 
-                elif opts["upper"][n] in [
+                if opts["upper"][n] in [
                     "kde",
                     "kde2d",
                     "contour",
@@ -1191,7 +1191,7 @@ def pairplot_comparison(
                     positions = np.vstack([X.ravel(), Y.ravel()])
                     Z = np.reshape(density(positions).T, X.shape)
 
-                    if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
+                    if "kde" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
                         h = plt.imshow(
                             Z,
                             cmap = opts["kde_offdiag"][0]['cmap'],
@@ -1205,7 +1205,7 @@ def pairplot_comparison(
                             aspect="auto",
                           
                         )
-                    elif opts["upper"][n] == "contour":
+                    if "contour" in opts["upper"][n]:
                         if opts["contour_offdiag"]["percentile"]:
                             Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
                         else:
@@ -1226,14 +1226,14 @@ def pairplot_comparison(
                         )
                     else:
                         pass
-                elif opts["upper"][n] == "scatter":
+                if "scatter" in opts["upper"][n] :
                     h = plt.scatter(
                         v[:, col],
                         v[:, row],
                         color='red',
                         **opts["scatter_offdiag"][0],
                     )
-                elif opts["upper"][n] == "plot":
+                if "plot" in opts["upper"][n] :
                     h = plt.plot(
                         v[:, col],
                         v[:, row],
@@ -1244,7 +1244,7 @@ def pairplot_comparison(
                     pass
 
             for n, v in enumerate(samples2): 
-                if opts["upper"][n] == "hist" or opts["upper"][n] == "hist2d":
+                if "hist" in opts["upper"][n] or "hist2d" in opts["upper"][n]:
                     hist, xedges, yedges = np.histogram2d(
                         v[:, col],
                         v[:, row],
@@ -1269,7 +1269,7 @@ def pairplot_comparison(
                         
                     )
 
-                elif opts["upper"][n] in [
+                if opts["upper"][n] in [
                     "kde",
                     "kde2d",
                     "contour",
@@ -1294,7 +1294,7 @@ def pairplot_comparison(
                     positions = np.vstack([X.ravel(), Y.ravel()])
                     Z = np.reshape(density(positions).T, X.shape)
 
-                    if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
+                    if "kde" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
                         h2 = plt.imshow(
                             Z,
                             cmap = opts["kde_offdiag"][1]['cmap'],
@@ -1309,7 +1309,7 @@ def pairplot_comparison(
                             aspect="auto",
                             
                         )
-                    elif opts["upper"][n] == "contour":
+                    if "contour" in opts["upper"][n]:
                         if opts["contour_offdiag"]["percentile"]:
                             Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
                         else:
