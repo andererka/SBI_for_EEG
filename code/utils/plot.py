@@ -358,6 +358,8 @@ def conditional_pairplot_comparison(
     color_map=None,
     alpha1 = 1,
     alpha2 = 1,
+    color1 = 'red',
+    color2 = 'blue',
     **kwargs,
 ):
     r"""
@@ -482,7 +484,7 @@ def conditional_pairplot_comparison(
                 resolution,
             ),
             p_vector,
-            c='red',
+            c=color1,
         )
         h2 = plt.plot(
             np.linspace(
@@ -491,7 +493,7 @@ def conditional_pairplot_comparison(
                 resolution,
             ),
             p_vector2,
-            c='blue',
+            c=color2,
         )
 
     opts['lower'] = None

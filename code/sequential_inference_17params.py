@@ -86,7 +86,8 @@ def main(argv):
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    start_time = get_time()
+    start_time_str = get_time()
+    start_time = datetime.datetime.now()
 
     #sim_wrapper = simulation_wrapper_obs
     sim_wrapper = simulation_wrapper_all
@@ -101,15 +102,12 @@ def main(argv):
 
     ### for also inferring connection weights etc.:
 
-    prior_min_fix = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max_fix = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.117, 75.08, 8.633, 1.0, 1.0, 162.110]
 
     prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.117, 75.08, 8.633, 1.0, 1.0, 162.110]
-
+    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
     #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 18.977, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 0.0115, 0.061556, 0.0679, 120.86]])
+    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
 
     
     #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
@@ -119,7 +117,7 @@ def main(argv):
      "dist_ampa_l2_pyr","dist_ampa_l2_bas","dist_nmda_l2_pyr",
      "dist_nmda_l5_pyr","dist_nmda_l2_bas",
      "t_dist", 
-     "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_ampa_l5_bas","prox2_ampa_l5_pyr",
+     "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_nmda_l2_pyr","prox2_nmda_l5_pyr",
      "t_prox2"]
 
     ###### starting with P50 parameters/summary stats:
@@ -127,7 +125,7 @@ def main(argv):
 
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
-    prior1 = utils.torchutils.BoxUniform(low=prior_min[0:5], high=prior_max[0:5])
+    prior1 = utils.torchutils.BoxUniform(low=prior_min[0:6], high=prior_max[0:6])
 
     inf = SNPE_C(prior1, density_estimator='nsf')
 
@@ -137,7 +135,7 @@ def main(argv):
     experiment=experiment_name,
     num_sim=num_sim,
     density_estimator='nsf',
-    num_params=3,
+    num_params=len(prior_max),
     num_samples=num_samples,
     slurm=slurm,
     )
@@ -160,6 +158,10 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     print(file_writer.folder)
+
+    #obs_real = inference.run_only_sim(
+    #torch.tensor([list(true_params[0][0:6])]), simulation_wrapper = simulation_wrapper_all, num_workers=1
+#)
         
 
 
@@ -177,18 +179,18 @@ def main(argv):
             num_workers=num_workers
         )
 
-
+    
         finish_time = datetime.datetime.now()
 
         diff_time = finish_time - start_time
 
 
 
-        step_time = get_time()
+        step_time_str = get_time()
         json_dict = {
-        "start time:": start_time,
-        "round 1 time": step_time,
-        "CPU time for step:": diff_time}
+        "start time:": start_time_str,
+        "round 1 time": step_time_str,
+        "CPU time for step:": str(diff_time)}
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -196,6 +198,8 @@ def main(argv):
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
+
+    start_time = datetime.datetime.now()
 
     os.chdir('..')
     os.chdir('..')
@@ -209,7 +213,7 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     
-    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
+    obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
 
     x_without = x_without[:,:2700]
 
@@ -233,24 +237,24 @@ def main(argv):
     #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
 #)  
 
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:5])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
-    )  # first output gives summary statistics, second without
+    #obs_real = inference.run_only_sim(
+    #    torch.tensor([list(true_params[0][0:6])]), simulation_wrapper = simulation_wrapper_all, num_workers=1
+    #)  # first output gives summary statistics, second without
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
-    samples = posterior.sample((num_samples,), x=obs_real_stat)
+    #samples = posterior.sample((num_samples,), x=obs_real_stat)
 
     proposal1 = posterior.set_default_x(obs_real_stat)
 
     ###### continuing with N100 parameters/summary stats:
     #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
-    prior2 = utils.torchutils.BoxUniform(low=prior_min[5:12], high=prior_max[5:12])
+    prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
-    combined_prior = Combined(proposal1, prior2, number_params_1=5)
+    combined_prior = Combined(proposal1, prior2, number_params_1=6)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    #inf = SNPE_C(combined_prior, density_estimator="nsf")
 
 
     try:
@@ -267,17 +271,26 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
-        step_time = get_time()
+        finish_time = datetime.datetime.now()
+
+        diff_time = finish_time - start_time
+
+
+
+        step_time_str = get_time()
         json_dict = {
-        "start time:": start_time,
-        "round 2 time": step_time}
-        with open( "step2/meta.json", "a") as f:
+        "start time:": start_time_str,
+        "round 1 time": step_time_str,
+        "CPU time for step:": str(diff_time)}
+        with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
 
 
 
     print("second round completed")
+
+    start_time = datetime.datetime.now()
 
     print(x_without.shape)
     x_without = x_without[:,:4200]
@@ -302,7 +315,7 @@ def main(argv):
     obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
-    samples = posterior.sample((num_samples,), x=obs_real_stat)
+    #samples = posterior.sample((num_samples,), x=obs_real_stat)
 
 
 
@@ -317,7 +330,7 @@ def main(argv):
 
     combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    #inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     try:
         theta = torch.load('step3/thetas.pt')
@@ -334,14 +347,20 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
 
-        step_time = get_time()
+        finish_time = datetime.datetime.now()
+
+        diff_time = finish_time - start_time
+
+
+
+        step_time_str = get_time()
         json_dict = {
-        "start time:": start_time,
-        "round 3 time": step_time}
-        with open( "step3/meta.json", "a") as f:
-            json.dump(json_dict, f)    
-
-
+        "start time:": start_time_str,
+        "round 1 time": step_time_str,
+        "CPU time for step:": str(diff_time)}
+        with open( "step1/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
    
 
     file_writer.save_posterior(posterior)
