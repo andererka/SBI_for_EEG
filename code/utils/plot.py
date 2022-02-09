@@ -358,8 +358,8 @@ def conditional_pairplot_comparison(
     color_map=None,
     alpha1 = 1,
     alpha2 = 1,
-    color1 = 'red',
-    color2 = 'blue',
+    color_contours = ['red', 'blue'],
+
     **kwargs,
 ):
     r"""
@@ -437,6 +437,8 @@ def conditional_pairplot_comparison(
     else:
         opts["samples_colors"] = color_map 
 
+    opts['samples_colors2'] = color_contours
+
 
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
@@ -484,7 +486,7 @@ def conditional_pairplot_comparison(
                 resolution,
             ),
             p_vector,
-            c=color1,
+            c=opts['samples_colors2'][0],
         )
         h2 = plt.plot(
             np.linspace(
@@ -493,7 +495,7 @@ def conditional_pairplot_comparison(
                 resolution,
             ),
             p_vector2,
-            c=color2,
+            c=opts['samples_colors2'][1],
         )
 
     opts['lower'] = None
@@ -1023,8 +1025,7 @@ def pairplot_comparison(
     fig=None,
     axes=None,
     color_map = ['viridis', 'Greys'],
-    alpha1 = 1,
-    alpha2 = 1,
+
     **kwargs,
 ):
     """
@@ -1192,6 +1193,7 @@ def pairplot_comparison(
                     if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
                         h = plt.imshow(
                             Z,
+                            opts["kde_offdiag"][1],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
@@ -1201,7 +1203,6 @@ def pairplot_comparison(
                             origin="lower",
                             aspect="auto",
                             cmap=color_map[0],
-                            alpha = alpha2
                         )
                     elif opts["upper"][n] == "contour":
                         if opts["contour_offdiag"]["percentile"]:
@@ -1229,14 +1230,14 @@ def pairplot_comparison(
                         v[:, col],
                         v[:, row],
                         color='red',
-                        **opts["scatter_offdiag"],
+                        **opts["scatter_offdiag"][0],
                     )
                 elif opts["upper"][n] == "plot":
                     h = plt.plot(
                         v[:, col],
                         v[:, row],
                         color='red',
-                        **opts["plot_offdiag"],
+                        **opts["plot_offdiag"][0],
                     )
                 else:
                     pass
@@ -1250,7 +1251,7 @@ def pairplot_comparison(
                             [limits[col][0], limits[col][1]],
                             [limits[row][0], limits[row][1]],
                         ],
-                        **opts["hist_offdiag"],
+                        **opts["hist_offdiag"][1],
                     )
                     h2 = plt.imshow(
                         hist.T,
@@ -1294,16 +1295,18 @@ def pairplot_comparison(
                     if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
                         h2 = plt.imshow(
                             Z,
+                            opts["kde_offdiag"][1],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
                                 limits[row][0],
                                 limits[row][1],
                             ],
+                            
                             origin="lower",
                             aspect="auto",
                             cmap=color_map[1],
-                            alpha = alpha2
+                            
                         )
                     elif opts["upper"][n] == "contour":
                         if opts["contour_offdiag"]["percentile"]:
@@ -1331,14 +1334,14 @@ def pairplot_comparison(
                         v[:, col],
                         v[:, row],
                         color='blue',
-                        **opts["scatter_offdiag"],
+                        **opts["scatter_offdiag"][1],
                     )
                 elif opts["upper"][n] == "plot":
                     h2 = plt.plot(
                         v[:, col],
                         v[:, row],
                         color='blue',
-                        **opts["plot_offdiag"],
+                        **opts["plot_offdiag"][1],
                     )
                 else:
                     pass
