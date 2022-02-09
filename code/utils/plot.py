@@ -1222,6 +1222,26 @@ def pairplot_comparison(
                             colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
                         )
+                    if "contourf" in opts["upper"][n]:
+                        if opts["contour_offdiag"]["percentile"]:
+                            Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
+                        else:
+                            Z = (Z - Z.min()) / (Z.max() - Z.min())
+                        h3 = plt.contourf(
+                            X,
+                            Y,
+                            Z,
+                            origin="lower",
+                            extent=[
+                                limits[col][0],
+                                limits[col][1],
+                                limits[row][0],
+                                limits[row][1],
+                            ],
+                            alpha =  opts["contour_offdiag"]["alpha"],
+                            colors="blue",
+                            levels=opts["contour_offdiag"]["levels"],
+                        )
                     else:
                         pass
                 if "scatter" in opts["upper"][n] :
@@ -1322,6 +1342,27 @@ def pairplot_comparison(
                             ],
                             alpha = opts["contour_offdiag"]["alpha"],
                             colors='red',
+                            levels=opts["contour_offdiag"]["levels"],
+                        )
+
+                    if "contourf" in opts["upper"][n]:
+                        if opts["contour_offdiag"]["percentile"]:
+                            Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
+                        else:
+                            Z = (Z - Z.min()) / (Z.max() - Z.min())
+                        h3 = plt.contourf(
+                            X,
+                            Y,
+                            Z,
+                            origin="lower",
+                            extent=[
+                                limits[col][0],
+                                limits[col][1],
+                                limits[row][0],
+                                limits[row][1],
+                            ],
+                            alpha =  opts["contour_offdiag"]["alpha"],
+                            colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
