@@ -1149,7 +1149,7 @@ def pairplot_comparison(
                             [limits[col][0], limits[col][1]],
                             [limits[row][0], limits[row][1]],
                         ],
-                        **opts["hist_offdiag"],
+                        **opts["hist_offdiag"][0],
                     )
                     h = plt.imshow(
                         hist.T,
@@ -1217,7 +1217,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            colors='red',
+                            colors=opts["contour_offdiag"][0]["color"],
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
@@ -1226,14 +1226,14 @@ def pairplot_comparison(
                     h4 = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color='red',
+                        color=opts["contour_offdiag"][0]["color"],
                         **opts["scatter_offdiag"][0],
                     )
                 if "plot" in opts["upper"][n] :
                     h5 = plt.plot(
                         v[:, col],
                         v[:, row],
-                        color='red',
+                        color=opts["contour_offdiag"][0]["color"],
                         **opts["plot_offdiag"][0],
                     )
                 else:
@@ -1317,7 +1317,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            colors='blue',
+                            colors=opts["contour_offdiag"][1]["color"],
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
@@ -1326,14 +1326,14 @@ def pairplot_comparison(
                     h9 = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color='blue',
+                        color=opts["contour_offdiag"][1]["color"],
                         **opts["scatter_offdiag"][1],
                     )
                 elif opts["upper"][n] == "plot":
                     h10 = plt.plot(
                         v[:, col],
                         v[:, row],
-                        color='blue',
+                        color=opts["contour_offdiag"][1]["color"],
                         **opts["plot_offdiag"][1],
                     )
                 else:
