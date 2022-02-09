@@ -1166,12 +1166,8 @@ def pairplot_comparison(
                         
                     )
 
-                if opts["upper"][n] in [
-                    "kde",
-                    "kde2d",
-                    "contour",
-                    "contourf",
-                ]:
+                if "contour" in opts["upper"][n] or "kde" in opts["upper"][n] or "contourf" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
+  
                     density = gaussian_kde(
                         v[:, [col, row]].T,
                         bw_method=opts["kde_offdiag"][0]["bw_method"],
@@ -1269,12 +1265,8 @@ def pairplot_comparison(
                         
                     )
 
-                if opts["upper"][n] in [
-                    "kde",
-                    "kde2d",
-                    "contour",
-                    "contourf",
-                ]:
+                if "contour" in opts["upper"][n] or "kde" in opts["upper"][n] or "contourf" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
+                    
                     density = gaussian_kde(
                         v[:, [col, row]].T,
                         bw_method=opts["kde_offdiag"][1]["bw_method"],
