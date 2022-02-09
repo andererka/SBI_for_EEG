@@ -1218,6 +1218,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
+                            alpha =  opts["contour_offdiag"]["alpha"],
                             colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
                         )
@@ -1319,6 +1320,7 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
+                            alpha = opts["contour_offdiag"]["alpha"],
                             colors='red',
                             levels=opts["contour_offdiag"]["levels"],
                         )
