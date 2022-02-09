@@ -1154,7 +1154,7 @@ def pairplot_comparison(
                     )
                     h = plt.imshow(
                         hist.T,
-                        #opts["hist_offdiag"][0],
+                        alpha = opts["hist_offdiag"][0]['alpha'],
                         origin="lower",
                         extent=[
                             xedges[0],
@@ -1254,7 +1254,7 @@ def pairplot_comparison(
                     )
                     h6 = plt.imshow(
                         hist.T,
-                        #opts["hist_offdiag"][1],
+                        alpha = opts["hist_offdiag"][0]['alpha'],
                         origin="lower",
                         extent=[
                             xedges[0],
