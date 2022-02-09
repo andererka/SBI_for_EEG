@@ -207,7 +207,7 @@ def main(argv):
 
     os.chdir('data')
 
-    trace = pd.read_csv('default/dpl.txt', sep='\t', header=None, dtype= np.float32)
+    trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
     trace_torch = torch.tensor(trace.values, dtype = torch.float32)
 
     os.chdir(file_writer.folder)
@@ -346,7 +346,7 @@ def main(argv):
 
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
-        
+
         finish_time = datetime.datetime.now()
 
         diff_time = finish_time - start_time
