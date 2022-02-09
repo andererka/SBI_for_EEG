@@ -1194,7 +1194,7 @@ def pairplot_comparison(
                     if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
                         h = plt.imshow(
                             Z,
-                            opts["kde_offdiag"][0],
+                            cmap = opts["kde_offdiag"]['cmap'][0],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
@@ -1297,7 +1297,7 @@ def pairplot_comparison(
                     if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
                         h2 = plt.imshow(
                             Z,
-                            opts["kde_offdiag"][1],
+                            cmap = opts["kde_offdiag"]['cmap'][1],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
