@@ -1149,11 +1149,12 @@ def pairplot_comparison(
                             [limits[col][0], limits[col][1]],
                             [limits[row][0], limits[row][1]],
                         ],
+                        bins = 50
                 
                     )
                     h = plt.imshow(
                         hist.T,
-                        opts["hist_offdiag"][0],
+                        #opts["hist_offdiag"][0],
                         origin="lower",
                         extent=[
                             xedges[0],
@@ -1248,11 +1249,12 @@ def pairplot_comparison(
                             [limits[col][0], limits[col][1]],
                             [limits[row][0], limits[row][1]],
                         ],
+                        bins = 50
                         
                     )
                     h6 = plt.imshow(
                         hist.T,
-                        opts["hist_offdiag"][1],
+                        #opts["hist_offdiag"][1],
                         origin="lower",
                         extent=[
                             xedges[0],
