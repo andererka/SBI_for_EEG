@@ -86,7 +86,8 @@ def main(argv):
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    start_time = get_time()
+    start_time_str = get_time()
+    start_time = datetime.datetime.now()
 
     #sim_wrapper = simulation_wrapper_obs
     sim_wrapper = simulation_wrapper_all
@@ -178,17 +179,17 @@ def main(argv):
             num_workers=num_workers
         )
 
-
+    
         finish_time = datetime.datetime.now()
 
         diff_time = finish_time - start_time
 
 
 
-        step_time = get_time()
+        step_time_str = get_time()
         json_dict = {
-        "start time:": start_time,
-        "round 1 time": step_time,
+        "start time:": start_time_str,
+        "round 1 time": step_time_str,
         "CPU time for step:": diff_time}
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
@@ -198,13 +199,15 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
 
+    start_time = datetime.datetime.now()
+
     os.chdir('..')
     os.chdir('..')
     print(os.getcwd())
 
     os.chdir('data')
 
-    trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+    trace = pd.read_csv('default/dpl.txt', sep='\t', header=None, dtype= np.float32)
     trace_torch = torch.tensor(trace.values, dtype = torch.float32)
 
     os.chdir(file_writer.folder)
@@ -268,17 +271,26 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
-        step_time = get_time()
+        finish_time = datetime.datetime.now()
+
+        diff_time = finish_time - start_time
+
+
+
+        step_time_str = get_time()
         json_dict = {
-        "start time:": start_time,
-        "round 2 time": step_time}
-        with open( "step2/meta.json", "a") as f:
+        "start time:": start_time_str,
+        "round 1 time": step_time_str,
+        "CPU time for step:": diff_time}
+        with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
 
 
 
     print("second round completed")
+
+    start_time = datetime.datetime.now()
 
     print(x_without.shape)
     x_without = x_without[:,:4200]
@@ -334,15 +346,21 @@ def main(argv):
 
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
+        
+        finish_time = datetime.datetime.now()
 
-        step_time = get_time()
+        diff_time = finish_time - start_time
+
+
+
+        step_time_str = get_time()
         json_dict = {
-        "start time:": start_time,
-        "round 3 time": step_time}
-        with open( "step3/meta.json", "a") as f:
-            json.dump(json_dict, f)    
-
-
+        "start time:": start_time_str,
+        "round 1 time": step_time_str,
+        "CPU time for step:": diff_time}
+        with open( "step1/meta.json", "a") as f:
+            json.dump(json_dict, f)
+            f.close()
    
 
     file_writer.save_posterior(posterior)
