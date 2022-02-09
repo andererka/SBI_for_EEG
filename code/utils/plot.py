@@ -1203,7 +1203,7 @@ def pairplot_comparison(
                             ],
                             origin="lower",
                             aspect="auto",
-                            cmap=color_map[0],
+                          
                         )
                     elif opts["upper"][n] == "contour":
                         if opts["contour_offdiag"]["percentile"]:
