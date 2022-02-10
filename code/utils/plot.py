@@ -897,7 +897,7 @@ def _get_default_opts():
         },
         # options for kde
         "kde_diag": {"bw_method": "scott", "bins": 50, "color": "black"},
-        "kde_offdiag": {"bw_method": "scott", "bins": 50},
+        "kde_offdiag": {"bw_method": "scott", "bins": 50, 'alpha':0.5},
         # options for contour
         "contour_offdiag": {"levels": [0.68], "percentile": True},
         # options for scatter
@@ -1546,3 +1546,217 @@ def prepare_for_plot(samples, limits):
     limits = torch.as_tensor(limits)
     return samples, dim, limits
 
+
+
+def pairplot(
+    samples: Union[
+        List[np.ndarray], List[torch.Tensor], np.ndarray, torch.Tensor
+    ] = None,
+    points: Optional[
+        Union[List[np.ndarray], List[torch.Tensor], np.ndarray, torch.Tensor]
+    ] = None,
+    limits: Optional[Union[List, torch.Tensor]] = None,
+    subset: List[int] = None,
+    upper: Optional[str] = "hist",
+    diag: Optional[str] = "hist",
+    figsize: Tuple = (10, 10),
+    labels: Optional[List[str]] = None,
+    ticks: Union[List, torch.Tensor] = [],
+    points_colors: List[str] = plt.rcParams["axes.prop_cycle"].by_key()["color"],
+    fig=None,
+    axes=None,
+    **kwargs,
+):
+    """
+    Plot samples in a 2D grid showing marginals and pairwise marginals.
+    Each of the diagonal plots can be interpreted as a 1D-marginal of the distribution
+    that the samples were drawn from. Each upper-diagonal plot can be interpreted as a
+    2D-marginal of the distribution.
+    Args:
+        samples: Samples used to build the histogram.
+        points: List of additional points to scatter.
+        limits: Array containing the plot xlim for each parameter dimension. If None,
+            just use the min and max of the passed samples
+        subset: List containing the dimensions to plot. E.g. subset=[1,3] will plot
+            plot only the 1st and 3rd dimension but will discard the 0th and 2nd (and,
+            if they exist, the 4th, 5th and so on).
+        upper: Plotting style for upper diagonal, {hist, scatter, contour, cond, None}.
+        diag: Plotting style for diagonal, {hist, cond, None}.
+        figsize: Size of the entire figure.
+        labels: List of strings specifying the names of the parameters.
+        ticks: Position of the ticks.
+        points_colors: Colors of the `points`.
+        fig: matplotlib figure to plot on.
+        axes: matplotlib axes corresponding to fig.
+        **kwargs: Additional arguments to adjust the plot, see the source code in
+            `_get_default_opts()` in `sbi.utils.plot` for more details.
+    Returns: figure and axis of posterior distribution plot
+    """
+
+    # TODO: add color map support
+    # TODO: automatically determine good bin sizes for histograms
+    # TODO: add legend (if legend is True)
+
+    opts = _get_default_opts()
+    # update the defaults dictionary by the current values of the variables (passed by
+    # the user)
+
+    opts = _update(opts, locals())
+    opts = _update(opts, kwargs)
+
+    samples, dim, limits = prepare_for_plot(samples, limits)
+
+    # Prepare diag/upper/lower
+    if type(opts["diag"]) is not list:
+        opts["diag"] = [opts["diag"] for _ in range(len(samples))]
+    if type(opts["upper"]) is not list:
+        opts["upper"] = [opts["upper"] for _ in range(len(samples))]
+    # if type(opts['lower']) is not list:
+    #    opts['lower'] = [opts['lower'] for _ in range(len(samples))]
+    opts["lower"] = None
+
+    diag_func = get_diag_func(samples, limits, opts, **kwargs)
+
+    def upper_func(row, col, limits, **kwargs):
+        if len(samples) > 0:
+            for n, v in enumerate(samples):
+                if opts["upper"][n] == "hist" or opts["upper"][n] == "hist2d":
+                    hist, xedges, yedges = np.histogram2d(
+                        v[:, col],
+                        v[:, row],
+                        range=[
+                            [limits[col][0], limits[col][1]],
+                            [limits[row][0], limits[row][1]],
+                        ],
+                        **opts["hist_offdiag"],
+                    )
+                    h = plt.imshow(
+                        hist.T,
+                        origin="lower",
+                        extent=[
+                            xedges[0],
+                            xedges[-1],
+                            yedges[0],
+                            yedges[-1],
+                        ],
+                        aspect="auto",
+                    )
+
+                elif opts["upper"][n] in [
+                    "kde",
+                    "kde2d",
+                    "contour",
+                    "contourf",
+                ]:
+                    density = gaussian_kde(
+                        v[:, [col, row]].T,
+                        bw_method=opts["kde_offdiag"]["bw_method"],
+                    )
+                    X, Y = np.meshgrid(
+                        np.linspace(
+                            limits[col][0],
+                            limits[col][1],
+                            opts["kde_offdiag"]["bins"],
+                        ),
+                        np.linspace(
+                            limits[row][0],
+                            limits[row][1],
+                            opts["kde_offdiag"]["bins"],
+                        ),
+                    )
+                    positions = np.vstack([X.ravel(), Y.ravel()])
+                    Z = np.reshape(density(positions).T, X.shape)
+
+                    if opts["upper"][n] == "kde" or opts["upper"][n] == "kde2d":
+                        h = plt.imshow(
+                            Z,
+                            extent=[
+                                limits[col][0],
+                                limits[col][1],
+                                limits[row][0],
+                                limits[row][1],
+                            ],
+                            origin="lower",
+                            aspect="auto",
+                            alpha = opts["kde_offdiag"]['alpha']
+                        )
+                    elif opts["upper"][n] == "contour":
+                        if opts["contour_offdiag"]["percentile"]:
+                            Z = probs2contours(Z, opts["contour_offdiag"]["levels"])
+                        else:
+                            Z = (Z - Z.min()) / (Z.max() - Z.min())
+                        h = plt.contour(
+                            X,
+                            Y,
+                            Z,
+                            origin="lower",
+                            extent=[
+                                limits[col][0],
+                                limits[col][1],
+                                limits[row][0],
+                                limits[row][1],
+                            ],
+                            colors=opts["samples_colors"][n],
+                            levels=opts["contour_offdiag"]["levels"],
+                        )
+                    else:
+                        pass
+                elif opts["upper"][n] == "scatter":
+                    h = plt.scatter(
+                        v[:, col],
+                        v[:, row],
+                        color=opts["samples_colors"][n],
+                        **opts["scatter_offdiag"],
+                    )
+                elif opts["upper"][n] == "plot":
+                    h = plt.plot(
+                        v[:, col],
+                        v[:, row],
+                        color=opts["samples_colors"][n],
+                        **opts["plot_offdiag"],
+                    )
+                else:
+                    pass
+
+    return _arrange_plots(
+        diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
+    )
+
+
+def get_diag_func(samples, limits, opts, **kwargs):
+    """
+    Returns the diag_func which returns the 1D marginal plot for the parameter
+    indexed by row.
+    """
+
+    def diag_func(row, **kwargs):
+        if len(samples) > 0:
+            for n, v in enumerate(samples):
+                if opts["diag"][n] == "hist":
+                    h = plt.hist(
+                        v[:, row], color=opts["samples_colors"][n], **opts["hist_diag"]
+                    )
+                elif opts["diag"][n] == "kde":
+                    density = gaussian_kde(
+                        v[:, row], bw_method=opts["kde_diag"]["bw_method"]
+                    )
+                    xs = np.linspace(
+                        limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
+                    )
+                    ys = density(xs)
+                    h = plt.plot(
+                        xs,
+                        ys,
+                        color=opts["samples_colors"][n],
+                    )
+                elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
+                    for single_sample in v:
+                        plt.axvline(
+                            single_sample[row],
+                            color=opts["samples_colors"][n],
+                            **opts["scatter_diag"],
+                        )
+                else:
+                    pass
+
+    return diag_func

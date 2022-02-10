@@ -138,7 +138,7 @@ def main(argv):
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     print(torch.tensor([list(true_params[0])]))
-    
+
     obs_real = inference.run_only_sim(
         torch.tensor([list(true_params[0])]), simulation_wrapper = simulation_wrapper_all, num_workers=1) 
 
@@ -230,6 +230,10 @@ def main(argv):
     file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior)
     file_writer.save_thetas(theta)
+
+    torch.save(obs_real, 'obs_real.pt')
+
+
 
 
 
