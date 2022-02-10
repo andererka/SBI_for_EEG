@@ -10,7 +10,7 @@ The simulations are based on the HNN-simulator: https://hnn.brown.edu/
 
 In order to infer a large parameter set from high dimensional data like a time series, we developed a new approach, that splits the inference process in separate parts. This can be done under the assumption that some parameters do not depend on some other parameters.
 
-![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/week_summaries/figures/scheme_model.png)
+![](week_summaries/figures/scheme_model.png)
 
 
 
