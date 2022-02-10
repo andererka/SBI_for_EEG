@@ -895,6 +895,7 @@ def _get_default_opts():
             # 'linewidth': 0.0,
             "bins": 50,
         },
+        "hist_offdiag_alpha": 0.5,
         # options for kde
         "kde_diag": {"bw_method": "scott", "bins": 50, "color": "black"},
         "kde_offdiag": {"bw_method": "scott", "bins": 50, 'alpha':0.5},
@@ -1640,6 +1641,7 @@ def pairplot(
                             yedges[-1],
                         ],
                         aspect="auto",
+                        alpha = opts['hist_offdiag_alpha']
                     )
 
                 elif opts["upper"][n] in [
