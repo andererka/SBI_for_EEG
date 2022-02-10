@@ -1,4 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-None
-slurmstepd: error: *** JOB 1156867 ON slurm-cpu-hm-5 CANCELLED AT 2022-02-03T10:18:03 ***
