@@ -1681,7 +1681,7 @@ def pairplot(
                             ],
                             origin="lower",
                             aspect="auto",
-                            alpha = opts["kde_offdiag"]['alpha'],
+                            alpha = opts["kde_offdiag"]['alpha'][n],
                             cmap = opts["samples_cmap"][n],
                         )
                     elif opts["upper"][n] == "contour":
