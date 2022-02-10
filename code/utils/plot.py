@@ -1251,7 +1251,7 @@ def pairplot_comparison(
                         v[:, row],
                         color='blue',
                         **opts["scatter_offdiag"][0],
-                        zorder = 2
+                        zorder = 3
                     )
                 if "plot" in opts["upper"][n] :
                     h5 = plt.plot(
@@ -1376,7 +1376,7 @@ def pairplot_comparison(
                         v[:, row],
                         color='red',
                         **opts["scatter_offdiag"][1],
-                        zorder = 2,
+                        zorder = 3,
                     )
                 if "plot" in opts["upper"][n] :
                     h10 = plt.plot(
