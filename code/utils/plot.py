@@ -1764,3 +1764,64 @@ def get_diag_func(samples, limits, opts, **kwargs):
                     pass
 
     return diag_func
+
+def marginal_plot(
+    samples: Union[
+        List[np.ndarray], List[torch.Tensor], np.ndarray, torch.Tensor
+    ] = None,
+    points: Optional[
+        Union[List[np.ndarray], List[torch.Tensor], np.ndarray, torch.Tensor]
+    ] = None,
+    limits: Optional[Union[List, torch.Tensor]] = None,
+    subset: List[int] = None,
+    diag: Optional[str] = "hist",
+    figsize: Tuple = (10, 10),
+    labels: Optional[List[str]] = None,
+    ticks: Union[List, torch.Tensor] = [],
+    points_colors: List[str] = plt.rcParams["axes.prop_cycle"].by_key()["color"],
+    fig=None,
+    axes=None,
+    **kwargs,
+):
+    """
+    Plot samples in a row showing 1D marginals of selected dimensions.
+    Each of the plots can be interpreted as a 1D-marginal of the distribution
+    that the samples were drawn from.
+    Args:
+        samples: Samples used to build the histogram.
+        points: List of additional points to scatter.
+        limits: Array containing the plot xlim for each parameter dimension. If None,
+            just use the min and max of the passed samples
+        subset: List containing the dimensions to plot. E.g. subset=[1,3] will plot
+            plot only the 1st and 3rd dimension but will discard the 0th and 2nd (and,
+            if they exist, the 4th, 5th and so on).
+        diag: Plotting style for 1D marginals, {hist, kde cond, None}.
+        figsize: Size of the entire figure.
+        labels: List of strings specifying the names of the parameters.
+        ticks: Position of the ticks.
+        points_colors: Colors of the `points`.
+        fig: matplotlib figure to plot on.
+        axes: matplotlib axes corresponding to fig.
+        **kwargs: Additional arguments to adjust the plot, see the source code in
+            `_get_default_opts()` in `sbi.utils.plot` for more details.
+    Returns: figure and axis of posterior distribution plot
+    """
+
+    opts = _get_default_opts()
+    # update the defaults dictionary by the current values of the variables (passed by
+    # the user)
+
+    opts = _update(opts, locals())
+    opts = _update(opts, kwargs)
+
+    samples, dim, limits = prepare_for_plot(samples, limits)
+
+    # Prepare diag/upper/lower
+    if type(opts["diag"]) is not list:
+        opts["diag"] = [opts["diag"] for _ in range(len(samples))]
+
+    diag_func = get_diag_func(samples, limits, opts, **kwargs)
+
+    return _arrange_plots(
+        diag_func, None, dim, limits, points, opts, fig=fig, axes=axes
+    )
