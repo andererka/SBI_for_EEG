@@ -158,13 +158,7 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     print(file_writer.folder)
-
-    #obs_real = inference.run_only_sim(
-    #torch.tensor([list(true_params[0][0:6])]), simulation_wrapper = simulation_wrapper_all, num_workers=1
-#)
         
-
-
 
     
     try:
@@ -207,13 +201,13 @@ def main(argv):
 
     os.chdir('data')
 
-    trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
-    trace_torch = torch.tensor(trace.values, dtype = torch.float32)
+    #trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+    #trace_torch = torch.tensor(trace.values, dtype = torch.float32)
 
     os.chdir(file_writer.folder)
 
     
-    obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
+    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
 
     x_without = x_without[:,:2700]
 
@@ -237,9 +231,11 @@ def main(argv):
     #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
 #)  
 
-    #obs_real = inference.run_only_sim(
-    #    torch.tensor([list(true_params[0][0:6])]), simulation_wrapper = simulation_wrapper_all, num_workers=1
-    #)  # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:6])]), 
+        simulation_wrapper = simulation_wrapper_all, 
+        num_workers=1
+    )  # first output gives summary statistics, second without
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -303,30 +299,28 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
 
-    #obs_real = inference.run_only_sim(
-    #    torch.tensor([list(true_params[0][0:12])]),
-    #    simulation_wrapper_all,
-    #    num_workers=num_workers
-    #)  # first output gives summary statistics, second without
+    obs_real = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:12])]),
+        simulation_wrapper_all,
+        num_workers=num_workers
+    )  # first output gives summary statistics, second without
 
     #print("obs real", obs_real.size())
 
  
-    obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
+    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
-    #samples = posterior.sample((num_samples,), x=obs_real_stat)
 
 
 
     proposal2 = posterior.set_default_x(obs_real_stat)
 
     ###### continuing with P200 parameters/summary stats:
-    #prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
 
     prior3 = utils.torchutils.BoxUniform(low=prior_min[12:], high=prior_max[12:])
 
-    #combined_prior = Combined(proposal2, prior3, number_params_1=2)
+
 
     combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
