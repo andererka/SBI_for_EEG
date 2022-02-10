@@ -157,10 +157,10 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     print('param size', param_size)
 
 
-    if (param_size == 5):
+    if (param_size == 6):
         
         early_stop = 90.0
-        print('5 params investigated')
+        print('6 params investigated')
 
     if (param_size == 2):
         

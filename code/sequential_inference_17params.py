@@ -213,14 +213,12 @@ def main(argv):
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
-    print('x50 shape 0', x_P50.shape[0], x_P50.shape)
 
-    print('theta shape 0', theta.shape[0], theta.shape)
 
     inf = inf.append_simulations(theta, x_P50)
-    density_estimator = inf.train()
+    neural_dens = inf.train()
 
-    posterior = inf.build_posterior(density_estimator)
+    posterior = inf.build_posterior(neural_dens)
 
 
     #### either simulate 'fake observation' or load data from hnn 
