@@ -885,6 +885,7 @@ def _get_default_opts():
         "labels_samples": [],  # for samples
         # colors
         "samples_colors": plt.rcParams["axes.prop_cycle"].by_key()["color"],
+        "samples_cmap": ['Blues', 'Reds'],
         # ticks
         "tickformatter": mpl.ticker.FormatStrFormatter("%g"),
         "tick_labels": None,
@@ -1680,7 +1681,8 @@ def pairplot(
                             ],
                             origin="lower",
                             aspect="auto",
-                            alpha = opts["kde_offdiag"]['alpha']
+                            alpha = opts["kde_offdiag"]['alpha'],
+                            cmap = opts["samples_cmap"][n],
                         )
                     elif opts["upper"][n] == "contour":
                         if opts["contour_offdiag"]["percentile"]:
