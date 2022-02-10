@@ -254,7 +254,7 @@ def main(argv):
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
     combined_prior = Combined(proposal1, prior2, number_params_1=6)
 
-    #inf = SNPE_C(combined_prior, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator="nsf")
 
 
     try:
@@ -330,7 +330,7 @@ def main(argv):
 
     combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
-    #inf = SNPE_C(combined_prior, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     try:
         theta = torch.load('step3/thetas.pt')
