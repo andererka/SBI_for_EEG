@@ -213,6 +213,8 @@ def main(argv):
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
+    print('x_P50', x_P50)
+
 
 
     inf = inf.append_simulations(theta, x_P50)
