@@ -7,15 +7,14 @@ import torch
 
 
 class SimulationWrapper:
-    def __init__(self, params, num_params = 17, change_order = False):
+    def __init__(self, num_params = 17, change_order = False):
         self.num_params = num_params
         self.change_order = change_order
-        self.params = params
-        self.__call__(params)
+    
 
-    def __call__(self):
+    def __call__(self, params):
         if self.num_params == 17:
-            simulation_wrapper_all(self.params)
+            simulation_wrapper_all(params)
 
 
 

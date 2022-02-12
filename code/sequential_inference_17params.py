@@ -1,4 +1,4 @@
-from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
+from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all, simulation_wrapper_obs
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
@@ -90,7 +90,7 @@ def main(argv):
     start_time = datetime.datetime.now()
 
     #sim_wrapper = simulation_wrapper_obs
-    sim_wrapper = simulation_wrapper_all
+    sim_wrapper = SimulationWrapper()
 
     #prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
 
@@ -235,11 +235,11 @@ def main(argv):
 
     obs_real = inference.run_only_sim(
         torch.tensor([list(true_params[0][0:6])]), 
-        simulation_wrapper = simulation_wrapper_all, 
+        simulation_wrapper = sim_wrapper, 
         num_workers=1
     )  # first output gives summary statistics, second without
 
-    print('obs real shape', obs_real.size())
+    print('obs real shape', obs_real[0].size())
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     #samples = posterior.sample((num_samples,), x=obs_real_stat)
@@ -304,7 +304,7 @@ def main(argv):
 
     obs_real = inference.run_only_sim(
         torch.tensor([list(true_params[0][0:12])]),
-        simulation_wrapper_all,
+        sim_wrapper,
         num_workers=num_workers
     )  # first output gives summary statistics, second without
 
