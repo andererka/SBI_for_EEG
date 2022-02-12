@@ -7,30 +7,36 @@ import torch
 
 
 class SimulationWrapper:
-    def __init__(self, num_params = 17, change_order = False, incremental = True, only_one = False):
+    def __init__(self, num_params = 17, change_order = False, incremental = True, small_steps = False):
         self.num_params = num_params
         self.change_order = change_order
         self.incremental = incremental
-        self.only_one = only_one
+        self.small_steps = small_steps
     
 
-    def __call__(self, params):
+    def __call__(self):
         if (self.num_params == 17 or self.num_params == 6) and (self.incremental == True):
             if (self.change_order == False) and (self.only_one == False):
-                return simulation_wrapper_all(params)
-            elif (self.change_order == False) and (self.only_one == True):
-                return simulation_wrapper_all_small_steps(params)       
+                return simulation_wrapper_all
+            #elif (self.change_order == False) and (self.small_steps == True):
+            #    return simulation_wrapper_all_small_steps  
+        elif (self.num_params == 25) and (self.incremental == True):
+            return simulation_wrapper_all_small_steps
+        elif (self.num_params == 17) and (self.incremental == False):
+            return simulation_wrapper_obs    
 
 
 
 def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     """
-    Returns summary statistics from conductance values in `params`.
+    simulation wrapper for the neural incremental approach where wrapper can take 
+    different number of parameters and then sets weights for hnn simulator
+    according to the drawn parameters
 
-    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
-    in order to infer more than 2 parameters
+    simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
+    are changed and stops also earlier if distal weights are changed (~120ms)
 
-    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
+    Output [torch.tensor]: observation of simulated ERP
     """
 
     early_stop = 200.0
@@ -76,19 +82,15 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
     for dpl in dpls:
         obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-        #obs = dpl.smooth(window_len).data["agg"]
 
     return torch.from_numpy(obs)
 
 
 def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or more params
     """
-    Returns summary statistics from conductance values in `params`.
-
-    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
-    in order to infer more than 2 parameters
-
-    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
+    Input: Parameter list; can be of different size: 2, 4, 6, 8, 9, 11, 13, 15, 16, 18, 20, 22, 24 or 25
+    
+    
     """
 
     early_stop = 200.0
@@ -99,28 +101,15 @@ def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or 
     else:
         param_size = params.size(dim=1)
 
-    print('param size', param_size)
 
-
-    if (param_size == 6):
+    if (param_size < 10):
         
         early_stop = 70.0
-        print('6 params investigated')
 
-    if (param_size == 2):
-        
-        early_stop = 70.0
-        print('2 params investigated')
-
-    if (param_size == 12):
-        print('12 params investigated')
+    if (param_size < 17):
 
         early_stop = 120.0
 
-    if (param_size == 4):
-        print('4 params investigated')
-
-        early_stop = 120.0
     
     print('early stop', early_stop)
     print('param size ', param_size)
@@ -138,88 +127,6 @@ def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or 
 
     return torch.from_numpy(obs)
 
-
-
-
-
-def simulation_wrapper(params):  # input possibly array of 1 or more params
-    """
-    Returns summary statistics from conductance values in `params`.
-
-    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
-    in order to infer more than 2 parameters
-
-    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
-    """
-    if params.dim() > 1:
-        param_size = params.size(dim=1)
-    else:
-        param_size = params.size(dim=0)
-
-    if param_size == 1:
-        net = set_network_1_params(params)
-        print("1 params are investigated")
-
-    if param_size == 2:
-        net = set_network_2_params(params)
-        print("2 params are investigated")
-
-    elif param_size == 3:
-        net = set_network_3_params(params)
-        print("3 params are investigated")
-    else:
-        print(
-            "there is no simulation wrapper defined for this number of parameters! kkk"
-        )
-        print("param size", param_size)
-
-    window_len, scaling_factor = 30, 3000
-
-    dpls = simulate_dipole(net, tstop=170.0, n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-
-    # left out summary statistics for a start
-    sum_stats = calculate_summary_stats_number(torch.from_numpy(obs))
-
-    return sum_stats
-
-
-def simulation_wrapper_extended(params):  # input possibly array of 1 or more params
-    """
-    Returns summary statistics from conductance values in `params`.
-
-    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
-    in order to infer more than 2 parameters
-
-    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
-    """
-    if params.dim() > 1:
-        param_size = params.size(dim=1)
-    else:
-        param_size = params.size(dim=0)
-
-    if param_size == 2:
-        net = set_network_2_params(params)
-        print("2 params are investigated")
-
-    elif param_size == 3:
-        net = set_network_3_params(params)
-        print("3 params are investigated")
-    else:
-        print("there is no simulation wrapper defined for this number of parameters!")
-        exit()
-
-    window_len, scaling_factor = 30, 3000
-
-    dpls = simulate_dipole(net, tstop=170.0, n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-
-    # left out summary statistics for a start
-    sum_stats = calculate_summary_stats_number(torch.from_numpy(obs))
-
-    return sum_stats, obs
 
 
 def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
@@ -835,206 +742,6 @@ def set_network_weights_2_per_step(params=None):
 
     return net
 
-
-
-def set_network_1_params(params=None):
-
-    """
-    description: changes the network due to parameter settings drawn during sbi
-
-    here one changes only the first distal drive and the second proximal drive, which was 
-    used as toy example to see if the sbi is working for the case of the hnn simulator.
-    """
-    net = jones_2009_model()
-
-    weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": 0.01525,
-        "L5_basket": 0.19934,
-        "L5_pyramidal": 0.00865,
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    # all NMDA weights are zero; pass None explicitly
-    net.add_evoked_drive(
-        "evprox1",
-        mu=params[0],
-        sigma=2.47,
-        numspikes=1,
-        weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-        # Second proximal evoked drive. NB: only AMPA weights differ from first
-    weights_ampa_p2 = {
-        "L2_basket": 0.000003,
-        "L2_pyramidal": 1.438840,
-        "L5_basket": 0.008958,
-        "L5_pyramidal": 0.684013,
-    }
-    # all NMDA weights are zero; omit weights_nmda (defaults to None)
-    net.add_evoked_drive(
-        "evprox2",
-        mu=137.12,
-        sigma=8.33,
-        numspikes=1,
-        weights_ampa=weights_ampa_p2,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-
-    return net
-
-
-def set_network_2_params(params=None):
-
-    """
-    description: changes the network due to parameter settings drawn during sbi
-
-    here one changes only the first distal drive and the second proximal drive, which was 
-    used as toy example to see if the sbi is working for the case of the hnn simulator.
-    """
-
-    net = jones_2009_model()
-    weights_ampa_d1 = {
-        "L2_basket": 0.006562,
-        "L2_pyramidal": 0.000007,
-        "L5_pyramidal": 0.142300,
-    }
-    weights_nmda_d1 = {
-        "L2_basket": 0.019482,
-        "L2_pyramidal": 0.004317,
-        "L5_pyramidal": 0.080074,
-    }
-    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
-    net.add_evoked_drive(
-        "evdist1",
-        mu=params[1],
-        sigma=3.85,
-        numspikes=1,
-        weights_ampa=weights_ampa_d1,
-        weights_nmda=weights_nmda_d1,
-        location="distal",
-        synaptic_delays=synaptic_delays_d1,
-        event_seed=event_seed(),
-    )
-
-    weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": 0.01525,
-        "L5_basket": 0.19934,
-        "L5_pyramidal": 0.00865,
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    # all NMDA weights are zero; pass None explicitly
-    net.add_evoked_drive(
-        "evprox1",
-        mu=params[0],
-        sigma=2.47,
-        numspikes=1,
-        weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-
-    return net
-
-
-def set_network_3_params(params=None):
-
-    """
-    description: changes the network due to parameter settings drawn during sbi
-
-    here one changes only the first distal drive and the second proximal drive, which was 
-    used as toy example to see if the sbi is working for the case of the hnn simulator.
-    """
-
-    net = jones_2009_model()
-    weights_ampa_d1 = {
-        "L2_basket": 0.006562,
-        "L2_pyramidal": 0.000007,
-        "L5_pyramidal": 0.142300,
-    }
-    weights_nmda_d1 = {
-        "L2_basket": 0.019482,
-        "L2_pyramidal": 0.004317,
-        "L5_pyramidal": 0.080074,
-    }
-    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
-    net.add_evoked_drive(
-        "evdist1",
-        mu=params[1],
-        sigma=3.85,
-        numspikes=1,
-        weights_ampa=weights_ampa_d1,
-        weights_nmda=weights_nmda_d1,
-        location="distal",
-        synaptic_delays=synaptic_delays_d1,
-        event_seed=event_seed(),
-    )
-
-    weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": 0.01525,
-        "L5_basket": 0.19934,
-        "L5_pyramidal": 0.00865,
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    # all NMDA weights are zero; pass None explicitly
-    net.add_evoked_drive(
-        "evprox1",
-        mu=params[0],
-        sigma=2.47,
-        numspikes=1,
-        weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-
-    # Second proximal evoked drive. NB: only AMPA weights differ from first
-    weights_ampa_p2 = {
-        "L2_basket": 0.000003,
-        "L2_pyramidal": 1.438840,
-        "L5_basket": 0.008958,
-        "L5_pyramidal": 0.684013,
-    }
-    # all NMDA weights are zero; omit weights_nmda (defaults to None)
-    net.add_evoked_drive(
-        "evprox2",
-        mu=params[2],
-        sigma=8.33,
-        numspikes=1,
-        weights_ampa=weights_ampa_p2,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
-    )
-
-    return net
 
 
 def set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, mu=18.98):

@@ -86,7 +86,7 @@ def main(argv):
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    sim_wrapper = simulation_wrapper_all_small_steps
+    sim_wrapper = SimulationWrapper(num_params=25)
 
 
     prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
@@ -144,7 +144,7 @@ def main(argv):
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
     ##define list of number of parameters inferred in each incremental round:
-    range_list = [2,4,6,8,9,10,12,14,15,16,18,20,22,24,25]
+    range_list = [2,4,6,8,9,11,13,15,16,18,20,22,24,25]
 
     for index in range(len(range_list)):
 
