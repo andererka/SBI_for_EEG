@@ -17,9 +17,9 @@ class SimulationWrapper:
     def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6) and (self.incremental == True):
             if (self.change_order == False) and (self.only_one == False):
-                simulation_wrapper_all(params)
+                return simulation_wrapper_all(params)
             elif (self.change_order == False) and (self.only_one == True):
-                simulation_wrapper_all_only_one(params)       
+                return simulation_wrapper_all_only_one(params)       
 
 
 
