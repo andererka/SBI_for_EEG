@@ -1,4 +1,4 @@
-from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all, simulation_wrapper_obs
+from utils.simulation_wrapper import SimulationWrapper
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
@@ -89,7 +89,7 @@ def main(argv):
     start_time_str = get_time()
     start_time = datetime.datetime.now()
 
-    sim_wrapper = simulation_wrapper_all
+    sim_wrapper = SimulationWrapper(num_params=17, small_steps=False)
 
 
 
