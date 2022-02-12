@@ -376,6 +376,10 @@ def set_network_weights_small_steps(params=None):
        "L2_basket": params[1],
     }
 
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+    }
+
     if (len(params)==2):
         set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
         return net
