@@ -174,15 +174,10 @@ def main(argv):
         x_without = x_without[:,:sim_len]
 
         x_P50 = calculate_summary_stats_temporal(x_without)
-
-        inf = SNPE_C(combined_prior, density_estimator="nsf")
-
-
         inf = inf.append_simulations(theta, x_P50)
         neural_dens = inf.train()
 
         posterior = inf.build_posterior(neural_dens)
-
 
         obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -192,6 +187,8 @@ def main(argv):
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
+        ## set inf for next round:
+        inf = SNPE_C(combined_prior, density_estimator="nsf")
 
     
         ## set combined prior to be the new prior_i:
@@ -201,9 +198,6 @@ def main(argv):
 
         diff_time = finish_time - start_time
 
-
-
-        step_time_str = get_time()
         json_dict = {
         "CPU time for step:": str(diff_time)}
         with open( "meta_{}.json".format(i), "a") as f:
