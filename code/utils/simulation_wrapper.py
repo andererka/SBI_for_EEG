@@ -7,14 +7,17 @@ import torch
 
 
 class SimulationWrapper:
-    def __init__(self, num_params = 17, change_order = False):
+    def __init__(self, num_params = 17, change_order = False, incremental = True):
         self.num_params = num_params
         self.change_order = change_order
+        self.incremental = incremental
     
 
     def __call__(self, params):
-        if self.num_params == 17:
-            simulation_wrapper_all(params)
+        if (self.num_params == 17 or self.num_params == 6) and (self.incremental == True):
+            if self.change_order == False:
+                simulation_wrapper_all(params)
+        
 
 
 
