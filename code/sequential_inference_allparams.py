@@ -73,17 +73,17 @@ def main(argv):
     except:
         experiment_name = "All_params_ERP"
     try:
-        slurm = bool(argv[4])
+        slurm = bool(int(argv[4]))
     except:
         slurm = True
     try:
         #if argument input is 0, bool is giving False, if 1 bool is returning True
-        changed_order = bool(argv[5])
+        changed_order = bool(int(argv[5]))
     except:
         changed_order = False
 
 
-
+    print(slurm)
     ## using a density estimator with only 1 transform (which should be enough for the 1D case)
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
@@ -110,7 +110,12 @@ def main(argv):
                     0.011467, 0.06337, 0.000012, 0.013407, 0.466095, 0.0767, 63.08, 
                     0.000005, 0.116706, 4.6729, 0.016733, 0.011468, 0.061556, 2.33, 0.0679, 120.86]])
 
-    
+    parameter_names = ["prox1_ampa_l2_bas","prox1_nmda_l2_bas","prox1_ampa_l2_pyr", "prox1_nmda_l2_pyr", "prox1_ampa_l5_bas", "prox1_nmda_l5_bas", "prox1_ampa_l5_pyr", "prox1_nmda_l5_pyr",
+     "t_prox1",
+     "dist_ampa_l2_bas", "dist_nmda_l2_bas", "dist_ampa_l2_pyr", "dist_nmda_l2_pyr", "dist_ampa_l5_pyr","dist_nmda_l5_pyr",
+     "t_dist", 
+     "prox2_ampa_l2_bas","prox2_nmda_l2_bas","prox2_ampa_l2_pyr", "prox2_nmda_l2_pyr", "prox2_ampa_l5_bas", "prox2_nmda_l5_bas", "prox2_ampa_l5_pyr", "prox2_nmda_l5_pyr",
+     "t_prox2"]
 
     if changed_order:
 
@@ -123,21 +128,12 @@ def main(argv):
                         2.33, 0.0679, 0.011468, 0.061556, 4.6729, 0.016733, 0.000005, 0.116706, 120.86]])
 
 
-
-
-
-    #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
-
-    parameter_names = ["prox1_ampa_l2_bas","prox1_ampa_l2_pyr","prox1_ampa_l5_bas","prox1_nmda_l5_bas", "prox1_nmda_l5_pyr",
-     "t_prox1",
-     "dist_ampa_l2_pyr","dist_ampa_l2_bas","dist_nmda_l2_pyr",
-     "dist_nmda_l5_pyr","dist_nmda_l2_bas",
-     "t_dist", 
-     "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_nmda_l2_pyr","prox2_nmda_l5_pyr",
-     "t_prox2"]
-
-    ###### starting with P50 parameters/summary stats:
-    #prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
+        parameter_names = ["prox1_ampa_l5_pyr", "prox1_nmda_l5_pyr", "prox1_ampa_l5_bas", "prox1_nmda_l5_bas",  "prox1_ampa_l2_pyr", "prox1_nmda_l2_pyr", "prox1_ampa_l2_bas","prox1_nmda_l2_bas",
+        "t_prox1",
+        "dist_ampa_l5_pyr","dist_nmda_l5_pyr", "dist_ampa_l2_pyr", "dist_nmda_l2_pyr", "dist_ampa_l2_bas", "dist_nmda_l2_bas", 
+        "t_dist", 
+        "prox2_ampa_l5_pyr", "prox2_nmda_l5_pyr", "prox2_ampa_l5_bas", "prox2_nmda_l5_bas", "prox2_ampa_l2_pyr", "prox2_nmda_l2_pyr", "prox2_ampa_l2_bas","prox2_nmda_l2_bas", 
+        "t_prox2"]
 
 
     file_writer = write_to_file.WriteToFile(
@@ -175,6 +171,8 @@ def main(argv):
         #to come in the next round
         i = range_list[index]
         j = range_list[index+1]
+
+        print(i, j)
 
 
         start_time = datetime.datetime.now()
@@ -242,6 +240,16 @@ def main(argv):
     ##save class
     with open("class", "wb") as pickle_file:
         pickle.dump(file_writer, pickle_file)
+
+    json_dict = {
+    "parameter names:": str(parameter_names),
+    'change order:': str(changed_order),
+    'true parameters:': str(true_params),
+    'number of simulations:': str(num_sim)}
+
+    with open( "meta_overview.json".format(i), "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
 
 if __name__ == "__main__":

@@ -121,7 +121,7 @@ class SimulationWrapper:
             
             early_stop = 70.0
 
-        if (param_size < 17):
+        elif (param_size < 17):
 
             early_stop = 120.0
 
