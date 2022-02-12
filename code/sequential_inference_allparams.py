@@ -175,6 +175,14 @@ def main(argv):
 
         x_P50 = calculate_summary_stats_temporal(x_without)
 
+        inf = SNPE_C(combined_prior, density_estimator="nsf")
+
+
+        inf = inf.append_simulations(theta, x_P50)
+        neural_dens = inf.train()
+
+        posterior = inf.build_posterior(neural_dens)
+
 
         obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -184,13 +192,6 @@ def main(argv):
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
-        inf = SNPE_C(combined_prior, density_estimator="nsf")
-
-
-        inf = inf.append_simulations(theta, x_P50)
-        neural_dens = inf.train()
-
-        posterior = inf.build_posterior(neural_dens)
 
     
         ## set combined prior to be the new prior_i:
