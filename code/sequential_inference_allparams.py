@@ -195,8 +195,8 @@ def main(argv):
 
         x_without = x_without[:,:sim_len]
 
-        x_P50 = calculate_summary_stats_temporal(x_without)
-        inf = inf.append_simulations(theta, x_P50)
+        x = calculate_summary_stats_temporal(x_without)
+        inf = inf.append_simulations(theta, x)
         neural_dens = inf.train()
 
         posterior = inf.build_posterior(neural_dens)
