@@ -110,18 +110,16 @@ class SimulationWrapper:
 
         early_stop = 200.0
 
+        params = params.tolist()
 
-        if params.dim() == 1:
-            param_size = params.size(dim=0)
-        else:
-            param_size = params.size(dim=1)
-
+        param_size = len(params)
 
         if (param_size < 10):
+
             
             early_stop = 70.0
 
-        elif (param_size < 17):
+        elif (param_size >= 10 and param_size < 17):
 
             early_stop = 120.0
 
@@ -129,7 +127,6 @@ class SimulationWrapper:
         print('early stop', early_stop)
         print('param size ', param_size)
 
-        params = params.tolist()
     
         if self.change_order == False:
             net = set_network_weights_small_steps(params)

@@ -91,6 +91,7 @@ def main(argv):
     sim_wrapper = SimulationWrapper(num_params=25, small_steps=True)
 
 
+
     prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
                 0, 0, 0, 0, 0, 0, 51.980,            # distal weights
                 0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights

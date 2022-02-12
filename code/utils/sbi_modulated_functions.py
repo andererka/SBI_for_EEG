@@ -62,7 +62,7 @@ class Combined(Distribution):
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
         print(log_prob)
-        # print(torch.unsqueeze(log_prob, 0))
+
 
         return log_prob
 
@@ -84,6 +84,8 @@ class Combined(Distribution):
 
 
             theta = torch.cat((theta_posterior, theta_prior), 1)
+
+            print(theta.shape)
         
             return theta
 
