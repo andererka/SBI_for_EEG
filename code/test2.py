@@ -16,11 +16,21 @@ from sbi import analysis as analysis
 from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 
+from utils import inference
+
+from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all, simulation_wrapper_obs
 
 
-true_params = torch.tensor([0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86])
+true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
 
 
-print(torch.tensor(list(true_params[0:6])))
 
-print(true_params)
+
+
+obs_real = inference.run_only_sim(
+    torch.tensor([list(true_params[0][0:6])]), 
+    simulation_wrapper = simulation_wrapper_all, 
+    num_workers=1
+) 
+
+print(obs_real)
