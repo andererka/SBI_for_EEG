@@ -14,16 +14,16 @@ class SimulationWrapper:
         self.small_steps = small_steps
     
 
-    def __call__(self):
+    def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6) and (self.incremental == True):
             if (self.change_order == False) and (self.only_one == False):
-                return simulation_wrapper_all
+                return simulation_wrapper_all(params)
             #elif (self.change_order == False) and (self.small_steps == True):
             #    return simulation_wrapper_all_small_steps  
         elif (self.num_params == 25) and (self.incremental == True):
-            return simulation_wrapper_all_small_steps
+            return simulation_wrapper_all_small_steps(params)
         elif (self.num_params == 17) and (self.incremental == False):
-            return simulation_wrapper_obs    
+            return simulation_wrapper_obs(params)    
 
 
 
@@ -89,7 +89,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
 def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or more params
     """
     Input: Parameter list; can be of different size: 2, 4, 6, 8, 9, 11, 13, 15, 16, 18, 20, 22, 24 or 25
-    
+
     
     """
 
