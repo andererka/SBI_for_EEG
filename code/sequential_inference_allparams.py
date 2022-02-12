@@ -86,7 +86,7 @@ def main(argv):
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    sim_wrapper = SimulationWrapper(num_params=25)
+    sim_wrapper = SimulationWrapper(num_params=25, small_steps=True)
 
 
     prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights

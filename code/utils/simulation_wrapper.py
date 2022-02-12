@@ -7,23 +7,33 @@ import torch
 
 
 class SimulationWrapper:
-    def __init__(self, num_params = 17, change_order = False, incremental = True, small_steps = False):
+    """
+    Class in order to select and call a simulation wrapper according to:
+    - num_params: number of parameters that are to be inferred in total
+    - change_order: default False; if True, calls a simulation wrapper that takes another 
+                    inference order. Could test if the inference order plays a role or if
+                    inference is robust
+    - small_steps: if True, takes incremental steps of 2. otherwise parameter sets consist of
+                    about 6 parameters
+    
+    """
+
+    def __init__(self, num_params = 17, change_order = False, small_steps = True):
         self.num_params = num_params
         self.change_order = change_order
-        self.incremental = incremental
         self.small_steps = small_steps
     
 
     def __call__(self, params):
-        if (self.num_params == 17 or self.num_params == 6) and (self.incremental == True):
-            if (self.change_order == False) and (self.only_one == False):
+        if (self.num_params == 17 or self.num_params == 6):
+            if (self.change_order == False) and (self.small_steps == False):
                 return simulation_wrapper_all(params)
             #elif (self.change_order == False) and (self.small_steps == True):
-            #    return simulation_wrapper_all_small_steps  
-        elif (self.num_params == 25) and (self.incremental == True):
+            #    return simulation_wrapper_all_small_steps 
+            #  
+        elif (self.num_params == 25) and (self.small_steps==True):
             return simulation_wrapper_all_small_steps(params)
-        elif (self.num_params == 17) and (self.incremental == False):
-            return simulation_wrapper_obs(params)    
+ 
 
 
 
@@ -128,55 +138,6 @@ def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or 
     return torch.from_numpy(obs)
 
 
-
-def simulation_wrapper_obs(params):  # input possibly array of 1 or more params
-    """
-    Returns summary statistics from conductance values in `params`.
-
-    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
-    in order to infer more than 2 parameters
-
-    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
-    """
-
-    early_stop = 170.0
-
-
-    if params.dim() > 1:
-        param_size = params.size(dim=1)
-    else:
-        param_size = params.size(dim=0)
-
-    print(param_size)
-    print("params size", params.size())
-
-    if param_size == 1:
-        net = set_network_1_params(params)
-        print("1 params are investigated")
-
-        #early_stop = 90.0
-
-    elif param_size == 2:
-        net = set_network_2_params(params)
-        print("2 params are investigated")
-
-        #early_stop = 140.0
-
-    elif param_size == 3:
-        net = set_network_3_params(params)
-        print("3 params are investigated")
-        
-    else:
-        print("there is no simulation wrapper defined for this number of parameters!")
-        exit()
-
-    window_len, scaling_factor = 30, 3000
-
-    dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-
-    return torch.from_numpy(obs)
 
 
 
