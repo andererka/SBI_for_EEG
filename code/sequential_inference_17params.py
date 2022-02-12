@@ -89,28 +89,15 @@ def main(argv):
     start_time_str = get_time()
     start_time = datetime.datetime.now()
 
-    #sim_wrapper = simulation_wrapper_obs
-    sim_wrapper = SimulationWrapper()
+    sim_wrapper = simulation_wrapper_all
 
-    #prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
-
-    #prior_max_fix = [30, 79.9,  152.96]
-
-    #prior_min = [7.9, 43.8,  89.49] 
-
-    #prior_max = [30, 79.9, 152.96]
-
-    ### for also inferring connection weights etc.:
 
 
     prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
     prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
-    #true_params = torch.tensor([[26.61, 63.53,  137.12]])
     true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
 
-    
-    #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
 
     parameter_names = ["prox1_ampa_l2_bas","prox1_ampa_l2_pyr","prox1_ampa_l5_bas","prox1_nmda_l5_bas", "prox1_nmda_l5_pyr",
      "t_prox1",

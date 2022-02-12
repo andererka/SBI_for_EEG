@@ -71,7 +71,7 @@ def main(argv):
     try:
         experiment_name = argv[3]
     except:
-        experiment_name = "ERP_sequential"
+        experiment_name = "All_params_ERP"
     try:
         slurm = int(argv[4])
     except:
@@ -89,11 +89,18 @@ def main(argv):
     sim_wrapper = SimulationWrapper()
 
 
-    prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
+    prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
+                0, 0, 0, 0, 0, 0, 51.980,            # distal weights
+                0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights
+
+    prior_max = [0.927, 0.160, 2.093, 0.0519, 1.0, 1.0, 1.0, 1.0, 35.9, 
+                0.0394, 0.000042, 0.039372, 0.854, 0.117,  0.480, 75.08, 
+                0.000018, 8.633, 0.05375, 4.104, 1.0, 1.0, 1.0, 1.0, 162.110]
 
     #true_params = torch.tensor([[26.61, 63.53,  137.12]])
-    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
+    true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.034, 0.3739, 0.0, 0.3739, 0.0, 18.977, 
+                    0.011467, 0.000012, 0.466095, 0.06337, 0.013407, 0.0767, 63.08, 
+                    0.000005, 4.6729, 0.011468, 2.33, 0.116706,  0.016733, 0.061556, 0.0679, 120.86]])
 
     
     #parameter_names = ["t_evprox_1", "t_evdist_1", "t_evprox_2"]
@@ -136,11 +143,17 @@ def main(argv):
 
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
-    
+    ##define list of number of parameters inferred in each incremental round:
+    range_list = [2,4,6,8,9,10,12,14,15,16,18,20,22,24,25]
 
-    for i in range(len(prior_max)-1):
+    for index in range(len(range_list)):
 
-        print('i', i)
+        ## i defines number of parameters to be inferred, j indicates how many parameters 
+        #to come in the next round
+        i = range_list[index]
+        j = range_list[index+1]
+
+
         start_time = datetime.datetime.now()
 
         theta, x_without = inference.run_sim_theta_x(
@@ -151,10 +164,10 @@ def main(argv):
         )
 
         obs_real = inference.run_only_sim(
-            torch.tensor([list(true_params[0][0:i+1])]), 
+            torch.tensor([list(true_params[0][0:i])]), 
             simulation_wrapper = sim_wrapper, 
             num_workers=1
-        )  # first output gives summary statistics, second without
+        )  
 
         sim_len = int(obs_real[0].shape)
 
@@ -167,10 +180,9 @@ def main(argv):
 
         proposal1 = posterior.set_default_x(obs_real_stat)
 
-        next_prior = utils.torchutils.BoxUniform(low=prior_min[i+1:i+2], high=prior_max[i+1:i+2])
+        next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-        #combined_prior = Combined(proposal1, prior2, number_params_1=1)
-        combined_prior = Combined(proposal1, next_prior, number_params_1=i+1)
+        combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
         inf = SNPE_C(combined_prior, density_estimator="nsf")
 
@@ -192,8 +204,6 @@ def main(argv):
 
         step_time_str = get_time()
         json_dict = {
-        "start time:": start_time_str,
-        "round 1 time": step_time_str,
         "CPU time for step:": str(diff_time)}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
