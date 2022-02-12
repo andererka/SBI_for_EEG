@@ -1,4 +1,4 @@
-from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all, simulation_wrapper_all_small_steps
+from utils.simulation_wrapper import SimulationWrapper
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
