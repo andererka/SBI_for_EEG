@@ -1,7 +1,5 @@
 from utils.simulation_wrapper import (
     set_network_default,
-    simulation_wrapper,
-    simulation_wrapper_extended,
     simulation_wrapper_obs,
     simulation_wrapper_all
 )
