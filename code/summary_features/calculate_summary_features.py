@@ -341,7 +341,7 @@ def calculate_summary_stats_temporal(x):
         p50_moment2 = torch.var(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # variance
 
         ## define area under the curve with respect to the x-axis, and only up to the early stopping of step1
-        x_t = batch[:90*30]
+        x_t = batch[:70*30]
         sign_x = np.sign(x_t)
 
         index_pos = np.where(sign_x == 1)
@@ -384,7 +384,7 @@ def calculate_summary_stats_temporal(x):
         N100_moment2 = torch.var(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # variance
 
 
-        x_t = batch[90*30:140*30]
+        x_t = batch[70*30:120*30]
         sign_x = np.sign(x_t)
 
         index_pos = np.where(sign_x == 1)
@@ -424,7 +424,7 @@ def calculate_summary_stats_temporal(x):
         P200_moment1 = torch.mean(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # mean
         P200_moment2 = torch.var(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # variance
 
-        x_t = batch[140*30:]
+        x_t = batch[120*30:]
         sign_x = np.sign(x_t)
 
         index_pos = np.where(sign_x == 1)
