@@ -27,115 +27,124 @@ class SimulationWrapper:
     def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6):
             if (self.change_order == False) and (self.small_steps == False):
-                return simulation_wrapper_all(params)
-            #elif (self.change_order == False) and (self.small_steps == True):
-            #    return simulation_wrapper_all_small_steps 
-            #  
+                return self.simulation_wrapper_all(params)
+            
         elif (self.num_params == 25) and (self.small_steps==True):
-            return simulation_wrapper_all_small_steps(params)
- 
+            return self.simulation_wrapper_all_small_steps(params)
 
 
 
-def simulation_wrapper_all(params):  # input possibly array of 1 or more params
-    """
-    simulation wrapper for the neural incremental approach where wrapper can take 
-    different number of parameters and then sets weights for hnn simulator
-    according to the drawn parameters
+    def simulation_wrapper_all(self, params):  # input possibly array of 1 or more params
+        """
+        simulation wrapper for the neural incremental approach where wrapper can take 
+        different number of parameters and then sets weights for hnn simulator
+        according to the drawn parameters
 
-    simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
-    are changed and stops also earlier if distal weights are changed (~120ms)
+        simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
+        are changed and stops also earlier if distal weights are changed (~120ms)
 
-    Output [torch.tensor]: observation of simulated ERP
-    """
+        Output [torch.tensor]: observation of simulated ERP
+        """
 
-    early_stop = 200.0
-
-
-    if params.dim() == 1:
-        param_size = params.size(dim=0)
-    else:
-        param_size = params.size(dim=1)
-
-    print('param size', param_size)
+        early_stop = 200.0
 
 
-    if (param_size == 6):
+        if params.dim() == 1:
+            param_size = params.size(dim=0)
+        else:
+            param_size = params.size(dim=1)
+
+        print('param size', param_size)
+
+
+        if (param_size == 6):
+            
+            early_stop = 70.0
+            print('6 params investigated')
+
+        if (param_size == 2):
+            
+            early_stop = 70.0
+            print('2 params investigated')
+
+        if (param_size == 12):
+            print('12 params investigated')
+
+            early_stop = 120.0
+
+        if (param_size == 4):
+            print('4 params investigated')
+
+            early_stop = 120.0
         
-        early_stop = 70.0
-        print('6 params investigated')
+        print('early stop', early_stop)
+        print('param size ', param_size)
 
-    if (param_size == 2):
+        params = params.tolist()
+    
+        net = set_network_weights(params)
+
+        window_len, scaling_factor = 30, 3000
+
+        dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
+        for dpl in dpls:
+            obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
+
+        return torch.from_numpy(obs)
+
+
+    def simulation_wrapper_all_small_steps(self, params):  # input possibly array of 1 or more params
+        """
+        Input: Parameter list; can be of different size: 2, 4, 6, 8, 9, 11, 13, 15, 16, 18, 20, 22, 24 or 25
+
+        simulation wrapper where wrapper can take 
+        different number of parameters and then sets weights for hnn simulator
+        according to the drawn parameters
+
+        simulation stops earlier (after ~70ms) if number of parameters smaller
+        than 10 and stops also earlier if number of parameters smaller than 17 (~120ms)
+
+        Output [torch.tensor]: observation of simulated ERP
         
-        early_stop = 70.0
-        print('2 params investigated')
+        """
 
-    if (param_size == 12):
-        print('12 params investigated')
-
-        early_stop = 120.0
-
-    if (param_size == 4):
-        print('4 params investigated')
-
-        early_stop = 120.0
-    
-    print('early stop', early_stop)
-    print('param size ', param_size)
-
-    params = params.tolist()
- 
-    net = set_network_weights(params)
-
-    window_len, scaling_factor = 30, 3000
-
-    dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-
-    return torch.from_numpy(obs)
+        early_stop = 200.0
 
 
-def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or more params
-    """
-    Input: Parameter list; can be of different size: 2, 4, 6, 8, 9, 11, 13, 15, 16, 18, 20, 22, 24 or 25
-
-    
-    """
-
-    early_stop = 200.0
+        if params.dim() == 1:
+            param_size = params.size(dim=0)
+        else:
+            param_size = params.size(dim=1)
 
 
-    if params.dim() == 1:
-        param_size = params.size(dim=0)
-    else:
-        param_size = params.size(dim=1)
+        if (param_size < 10):
+            
+            early_stop = 70.0
 
+        if (param_size < 17):
 
-    if (param_size < 10):
+            early_stop = 120.0
+
         
-        early_stop = 70.0
+        print('early stop', early_stop)
+        print('param size ', param_size)
 
-    if (param_size < 17):
-
-        early_stop = 120.0
-
+        params = params.tolist()
     
-    print('early stop', early_stop)
-    print('param size ', param_size)
+        if self.change_order == False:
+            net = set_network_weights_small_steps(params)
+        else:
+            net = set_weights_small_steps_changed_order(params)
 
-    params = params.tolist()
- 
-    net = set_network_weights_small_steps(params)
 
-    window_len, scaling_factor = 30, 3000
+        window_len, scaling_factor = 30, 3000
 
-    dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
-    for dpl in dpls:
-        obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-        #obs = dpl.smooth(window_len).data["agg"]
+        dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
+        for dpl in dpls:
+            obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
+            #obs = dpl.smooth(window_len).data["agg"]
 
-    return torch.from_numpy(obs)
+        return torch.from_numpy(obs)
 
 
 
@@ -368,6 +377,7 @@ def set_network_weights_small_steps(params=None):
     }
 
     if (len(params)==2):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
         return net
 
     weights_ampa_p1 = {
@@ -379,8 +389,13 @@ def set_network_weights_small_steps(params=None):
        "L2_basket": params[1],
         "L2_pyramidal":params[3],
     }
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+    }
 
     if (len(params)==4):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
         return net
 
     weights_ampa_p1 = {
@@ -396,8 +411,14 @@ def set_network_weights_small_steps(params=None):
         "L5_basket": params[5],
 
     }
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+    }
 
     if (len(params)==6):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
         return net
 
     weights_ampa_p1 = {
@@ -441,13 +462,10 @@ def set_network_weights_small_steps(params=None):
     }
     synaptic_delays_d1 = {
         "L2_basket": 0.1}
-
-    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-
     
  
     if (len(params)==11):
-
+        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
         return net
 
     weights_ampa_d1 = {
@@ -465,11 +483,8 @@ def set_network_weights_small_steps(params=None):
     "L2_basket": 0.1,
     "L2_pyramidal": 0.1}
 
-
-    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-
     if (len(params)==13):
-
+        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
         return net
         
     weights_ampa_d1 = {
@@ -589,6 +604,298 @@ def set_network_weights_small_steps(params=None):
         "L2_pyramidal": params[19],
         "L5_basket": params[21],
         "L5_pyramidal": params[23],
+    }
+
+
+    synaptic_delays_p2 = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    if (len(params)==24):
+        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
+
+        return net
+
+    set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=params[24])
+
+
+    return net
+
+def set_weights_small_steps_changed_order(params=None):
+
+    """
+    description: sets network to default values for an ERP as described in hnn tutorial
+    """
+
+    net = jones_2009_model()
+
+
+    weights_ampa_p1 = {
+
+        "L5_pyramidal": params[0],
+    }
+
+    weights_nmda_p1 = {
+
+        "L5_pyramidal": params[1],
+    }
+
+    synaptic_delays_prox = {
+
+        "L5_pyramidal": 1.0,
+    }
+
+    if (len(params)==2):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
+        return net
+
+    weights_ampa_p1 = {
+
+        "L5_basket": params[2],
+        "L5_pyramidal": params[0],
+    }
+
+    weights_nmda_p1 = {
+
+        "L5_basket": params[3],
+        "L5_pyramidal": params[1],
+    }
+
+    synaptic_delays_prox = {
+        "L5_basket": 0.1,
+        "L5_pyramidal": 0.1,
+
+    }
+
+    if (len(params)==4):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
+        return net
+
+    weights_ampa_p1 = {
+
+        "L2_pyramidal": params[4],
+        "L5_basket": params[2],
+        "L5_pyramidal": params[0],
+    }
+
+    weights_nmda_p1 = {
+
+        "L2_pyramidal":params[5],
+        "L5_basket": params[3],
+        "L5_pyramidal": params[1],
+    }
+
+    synaptic_delays_prox = {
+
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    if (len(params)==6):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
+        return net
+
+    weights_ampa_p1 = {
+        "L2_basket": params[6],
+        "L2_pyramidal": params[4],
+        "L5_basket": params[2],
+        "L5_pyramidal": params[0],
+    }
+
+    weights_nmda_p1 = {
+       "L2_basket": params[7],
+        "L2_pyramidal":params[5],
+        "L5_basket": params[3],
+        "L5_pyramidal": params[1],
+    }
+
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    if (len(params)==8):
+        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
+
+        return net
+
+    set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, mu=params[8])
+
+    if (len(params)==9):
+
+        return net
+
+    weights_ampa_d1 = {
+
+        "L5_pyramidal": params[9],
+
+    }
+    weights_nmda_d1 = {
+
+        "L5_pyramidal": params[10],
+
+    }
+
+    synaptic_delays_d1 = {
+
+    "L5_pyramidal": 1.0}
+
+    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
+
+    
+ 
+    if (len(params)==11):
+
+        return net
+
+    weights_ampa_d1 = {
+
+        "L2_pyramidal": params[11],
+        "L5_pyramidal": params[9],
+
+    }
+    weights_nmda_d1 = {
+
+        "L2_pyramidal": params[12],
+        "L5_pyramidal": params[10],
+
+    }
+
+    synaptic_delays_d1 = {
+        "L2_pyramidal": 0.1,
+        "L5_pyramidal": 1.0}
+
+
+    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
+
+    if (len(params)==13):
+
+        return net
+        
+    weights_ampa_d1 = {
+        "L2_basket": params[13],
+        "L2_pyramidal": params[11],
+        "L5_pyramidal": params[9],
+
+    }
+    weights_nmda_d1 = {
+        "L2_basket": params[14],
+        "L2_pyramidal": params[12],
+        "L5_pyramidal": params[10],
+
+    }
+
+    synaptic_delays_d1 = {
+    "L2_basket": 0.1,
+    "L2_pyramidal": 0.1,
+    "L5_pyramidal": 1.0}
+
+    
+
+    if (len(params)==15):
+
+        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
+
+        return net
+
+
+    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu = params[15])
+
+
+    if (len(params)==16):
+
+        return net
+
+    weights_ampa_p2 = {
+
+        "L5_pyramidal": params[16],
+    }
+
+    weights_nmda_p2 = {
+ 
+        "L5_pyramidal": params[17],
+    }
+
+
+    synaptic_delays_p2 = {
+
+        "L5_pyramidal": 1.0,
+    }
+
+
+    if (len(params)==18):
+        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
+
+        return net
+
+    weights_ampa_p2 = {
+
+        "L5_basket": params[18],
+        "L5_pyramidal": params[16],
+    }
+
+    weights_nmda_p2 = {
+
+        "L5_basket": params[19],
+        "L5_pyramidal": params[17],
+    }
+
+
+    synaptic_delays_p2 = {
+
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+    if (len(params)==20):
+        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
+
+        return net
+
+    weights_ampa_p2 = {
+
+        "L2_pyramidal": params[20],
+        "L5_basket": params[18],
+        "L5_pyramidal": params[16],
+    }
+
+    weights_nmda_p2 = {
+
+        "L2_pyramidal": params[21],
+        "L5_basket": params[19],
+        "L5_pyramidal": params[17],
+    }
+
+
+    synaptic_delays_p2 = {
+
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    if (len(params)==22):
+        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
+
+        return net
+
+    weights_ampa_p2 = {
+        "L2_basket": params[22],
+        "L2_pyramidal": params[20],
+        "L5_basket": params[18],
+        "L5_pyramidal": params[16],
+    }
+
+    weights_nmda_p2 = {
+        "L2_basket": params[23],
+        "L2_pyramidal": params[21],
+        "L5_basket": params[19],
+        "L5_pyramidal": params[17],
     }
 
 
