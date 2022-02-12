@@ -19,7 +19,7 @@ class SimulationWrapper:
             if (self.change_order == False) and (self.only_one == False):
                 return simulation_wrapper_all(params)
             elif (self.change_order == False) and (self.only_one == True):
-                return simulation_wrapper_all_only_one(params)       
+                return simulation_wrapper_all_small_steps(params)       
 
 
 
@@ -81,7 +81,7 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
     return torch.from_numpy(obs)
 
 
-def simulation_wrapper_all_only_one(params):  # input possibly array of 1 or more params
+def simulation_wrapper_all_small_steps(params):  # input possibly array of 1 or more params
     """
     Returns summary statistics from conductance values in `params`.
 
@@ -127,7 +127,7 @@ def simulation_wrapper_all_only_one(params):  # input possibly array of 1 or mor
 
     params = params.tolist()
  
-    net = set_network_weights_only_one(params)
+    net = set_network_weights_small_steps(params)
 
     window_len, scaling_factor = 30, 3000
 

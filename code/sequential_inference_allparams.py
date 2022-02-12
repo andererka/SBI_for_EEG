@@ -1,4 +1,4 @@
-from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all, simulation_wrapper_obs
+from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all, simulation_wrapper_all_only_one, simulation_wrapper_all_small_steps, simulation_wrapper_obs
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
@@ -86,7 +86,7 @@ def main(argv):
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    sim_wrapper = SimulationWrapper()
+    sim_wrapper = simulation_wrapper_all_small_steps
 
 
     prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
