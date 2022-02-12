@@ -213,7 +213,9 @@ def main(argv):
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
-    print('x_P50', x_P50)
+    print('x_P50',x_P50)
+
+    print('x without', x_without.shape)
 
 
 
@@ -237,6 +239,7 @@ def main(argv):
         num_workers=1
     )  # first output gives summary statistics, second without
 
+    print('obs real shape', obs_real.shape)
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     #samples = posterior.sample((num_samples,), x=obs_real_stat)
