@@ -28,19 +28,6 @@ true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.00001
 
 
 
+print(true_params.shape[0])
 
 
-obs_real = inference.run_only_sim(
-    torch.tensor([list(true_params[0][0:6])]), 
-    simulation_wrapper = simulation_wrapper_all, 
-    num_workers=1
-) 
-
-
-obs_real_stat = calculate_summary_stats_temporal(obs_real)
-print(obs_real)
-print(obs_real_stat)
-
-for batch in obs_real:
-    print(batch.size(dim=0))
-    print(batch)

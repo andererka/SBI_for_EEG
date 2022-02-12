@@ -169,7 +169,7 @@ def main(argv):
             num_workers=1
         )  
 
-        sim_len = obs_real[0].shape
+        sim_len = obs_real[0].shape[0]
 
         x_without = x_without[:,:sim_len]
 
