@@ -235,11 +235,11 @@ def main(argv):
 
     obs_real = inference.run_only_sim(
         torch.tensor([list(true_params[0][0:6])]), 
-        simulation_wrapper = sim_wrapper, 
+        simulation_wrapper = sim_wrapper(), 
         num_workers=1
     )  # first output gives summary statistics, second without
 
-
+    print(obs_real)
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     #samples = posterior.sample((num_samples,), x=obs_real_stat)

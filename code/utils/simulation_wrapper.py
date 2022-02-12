@@ -7,17 +7,19 @@ import torch
 
 
 class SimulationWrapper:
-    def __init__(self, num_params = 17, change_order = False, incremental = True):
+    def __init__(self, num_params = 17, change_order = False, incremental = True, only_one = False):
         self.num_params = num_params
         self.change_order = change_order
         self.incremental = incremental
+        self.only_one = only_one
     
 
     def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6) and (self.incremental == True):
-            if self.change_order == False:
+            if (self.change_order == False) and (self.only_one == False):
                 simulation_wrapper_all(params)
-        
+            elif (self.change_order == False) and (self.only_one == True):
+                simulation_wrapper_all_only_one(params)       
 
 
 
@@ -77,6 +79,66 @@ def simulation_wrapper_all(params):  # input possibly array of 1 or more params
         #obs = dpl.smooth(window_len).data["agg"]
 
     return torch.from_numpy(obs)
+
+
+def simulation_wrapper_all_only_one(params):  # input possibly array of 1 or more params
+    """
+    Returns summary statistics from conductance values in `params`.
+
+    One can outcomment the line 'net = set_network_2_params' and instead choose 'net = set_network_6_params'
+    in order to infer more than 2 parameters
+
+    Summarizes the output of the HH simulator and converts it to `torch.Tensor`.
+    """
+
+    early_stop = 200.0
+
+
+    if params.dim() == 1:
+        param_size = params.size(dim=0)
+    else:
+        param_size = params.size(dim=1)
+
+    print('param size', param_size)
+
+
+    if (param_size == 6):
+        
+        early_stop = 70.0
+        print('6 params investigated')
+
+    if (param_size == 2):
+        
+        early_stop = 70.0
+        print('2 params investigated')
+
+    if (param_size == 12):
+        print('12 params investigated')
+
+        early_stop = 120.0
+
+    if (param_size == 4):
+        print('4 params investigated')
+
+        early_stop = 120.0
+    
+    print('early stop', early_stop)
+    print('param size ', param_size)
+
+    params = params.tolist()
+ 
+    net = set_network_weights(params)
+
+    window_len, scaling_factor = 30, 3000
+
+    dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
+    for dpl in dpls:
+        obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
+        #obs = dpl.smooth(window_len).data["agg"]
+
+    return torch.from_numpy(obs)
+
+
 
 
 

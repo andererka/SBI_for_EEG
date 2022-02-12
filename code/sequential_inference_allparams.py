@@ -86,21 +86,7 @@ def main(argv):
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    start_time_str = get_time()
-    start_time = datetime.datetime.now()
-
-    #sim_wrapper = simulation_wrapper_obs
     sim_wrapper = SimulationWrapper()
-
-    #prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
-
-    #prior_max_fix = [30, 79.9,  152.96]
-
-    #prior_min = [7.9, 43.8,  89.49] 
-
-    #prior_max = [30, 79.9, 152.96]
-
-    ### for also inferring connection weights etc.:
 
 
     prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
@@ -145,15 +131,17 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     print(file_writer.folder)
-        
+
+    prior_i = utils.torchutils.BoxUniform(low=prior_min[0:1], high=prior_max[0:1])
+
+    inf = SNPE_C(prior_i, density_estimator='nsf')
+
+    
 
     for i in range(len(prior_max)-1):
 
         print('i', i)
-
-        prior_i = utils.torchutils.BoxUniform(low=prior_min[0:i+1], high=prior_max[0:i+1])
-
-        inf = SNPE_C(prior_i, density_estimator='nsf')
+        start_time = datetime.datetime.now()
 
         theta, x_without = inference.run_sim_theta_x(
             prior_i, 
@@ -179,13 +167,12 @@ def main(argv):
 
         proposal1 = posterior.set_default_x(obs_real_stat)
 
-        prior_plus = utils.torchutils.BoxUniform(low=prior_min[i+1:i+2], high=prior_max[i+1:i+2])
+        next_prior = utils.torchutils.BoxUniform(low=prior_min[i+1:i+2], high=prior_max[i+1:i+2])
 
         #combined_prior = Combined(proposal1, prior2, number_params_1=1)
-        combined_prior = Combined(proposal1, prior2, number_params_1=6)
+        combined_prior = Combined(proposal1, next_prior, number_params_1=i+1)
 
         inf = SNPE_C(combined_prior, density_estimator="nsf")
-
 
 
         inf = inf.append_simulations(theta, x_P50)
@@ -194,67 +181,8 @@ def main(argv):
         posterior = inf.build_posterior(neural_dens)
 
     
-        finish_time = datetime.datetime.now()
-
-        diff_time = finish_time - start_time
-
-
-
-        step_time_str = get_time()
-        json_dict = {
-        "start time:": start_time_str,
-        "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
-
-
-        file_writer.save_obs_without(x_without, name='step1')
-        file_writer.save_thetas(theta, name='step1')
-
-    start_time = datetime.datetime.now()
-
-    os.chdir('..')
-    os.chdir('..')
-    print(os.getcwd())
-
-    os.chdir('data')
-
-    #trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
-    #trace_torch = torch.tensor(trace.values, dtype = torch.float32)
-
-    os.chdir(file_writer.folder)
-
-    
-    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
-
-
-
-
-    #### either simulate 'fake observation' or load data from hnn 
-
-
-
-    #obs_real = inference.run_only_sim(
-    #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
-#)  
-
-
-
-    try:
-        theta = torch.load('step2/thetas.pt')
-        x_without = torch.load('step2/obs_without.pt')
-
-    except:
-        theta, x_without = inference.run_sim_theta_x(
-            combined_prior,
-            sim_wrapper,
-            num_simulations=num_sim,
-            num_workers=num_workers
-        )
-        file_writer.save_obs_without(x_without, name='step2')
-        file_writer.save_thetas(theta, name='step2')
+        ## set combined prior to be the new prior_i:
+        prior_i = combined_prior
 
         finish_time = datetime.datetime.now()
 
@@ -267,88 +195,18 @@ def main(argv):
         "start time:": start_time_str,
         "round 1 time": step_time_str,
         "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
+        with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
 
+        torch.save(x_without, 'x_without{}.pt'.format(i))
+        torch.save(theta, 'thetas{}.pt'.format(i))
 
 
-    print("second round completed")
-
-    start_time = datetime.datetime.now()
-
-    print(x_without.shape)
-    x_without = x_without[:,:4200]
-
-    x_N100 = calculate_summary_stats_temporal(x_without)
-
-    inf = inf.append_simulations(theta, x_N100)
-    density_estimator = inf.train()
-
-    posterior = inf.build_posterior(density_estimator)
-
-
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:12])]),
-        sim_wrapper,
-        num_workers=num_workers
-    )  # first output gives summary statistics, second without
-
-    print("obs real", obs_real.size())
-
- 
-    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
-
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
-
-
-
-    proposal2 = posterior.set_default_x(obs_real_stat)
-
-    ###### continuing with P200 parameters/summary stats:
-
-    prior3 = utils.torchutils.BoxUniform(low=prior_min[12:], high=prior_max[12:])
-
-
-
-    combined_prior = Combined(proposal2, prior3, number_params_1=12)
-
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
-
-    try:
-        theta = torch.load('step3/thetas.pt')
-        x_without = torch.load('step3/obs_without.pt')
-
-    except:
-        theta, x_without = inference.run_sim_theta_x(
-            combined_prior,
-            sim_wrapper,
-            num_simulations=num_sim,
-            num_workers=num_workers
-        )
-
-        file_writer.save_obs_without(x_without, name='step3')
-        file_writer.save_thetas(theta, name='step3')
-
-        finish_time = datetime.datetime.now()
-
-        diff_time = finish_time - start_time
-
-
-
-        step_time_str = get_time()
-        json_dict = {
-        "start time:": start_time_str,
-        "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
-   
 
     file_writer.save_posterior(posterior)
     file_writer.save_obs_without(x_without)
-    file_writer.save_prior(prior)
+    file_writer.save_prior(prior_i)
     file_writer.save_thetas(theta)
 
     os.chdir(file_writer.folder)
