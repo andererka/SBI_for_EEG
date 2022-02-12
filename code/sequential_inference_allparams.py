@@ -139,7 +139,7 @@ def main(argv):
 
     print(file_writer.folder)
 
-    prior_i = utils.torchutils.BoxUniform(low=prior_min[0:1], high=prior_max[0:1])
+    prior_i = utils.torchutils.BoxUniform(low=prior_min[0:2], high=prior_max[0:2])
 
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
