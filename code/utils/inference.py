@@ -1,6 +1,5 @@
 from utils.simulation_wrapper import (
     set_network_default,
-    simulation_wrapper_obs,
     simulation_wrapper_all
 )
 
@@ -13,7 +12,7 @@ from math import sqrt
 
 
 def run_sim_inference(
-    prior, simulation_wrapper=simulation_wrapper_obs, calc_sum_stats = calculate_summary_stats_number, sum_stats_number = 12, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
+    prior, simulation_wrapper=simulation_wrapper_all, calc_sum_stats = calculate_summary_stats_number, sum_stats_number = 12, num_simulations=1000, density_estimator="nsf", num_workers=8, early_stopping = 170
 ):
 
     # posterior = infer(simulation_wrapper, prior, method='SNPE_C',
@@ -50,7 +49,7 @@ def run_only_inference(theta, x, prior):
     return posterior
 
 
-def run_only_sim(samples, simulation_wrapper=simulation_wrapper_obs, num_workers=1):
+def run_only_sim(samples, simulation_wrapper=simulation_wrapper_all, num_workers=1):
 
     obs_real = Parallel(
         n_jobs=num_workers,
@@ -63,7 +62,7 @@ def run_only_sim(samples, simulation_wrapper=simulation_wrapper_obs, num_workers
 
 
 def run_sim_theta_x(
-    prior, simulation_wrapper=simulation_wrapper_obs, num_simulations=1000, num_workers=8):
+    prior, simulation_wrapper=simulation_wrapper_all, num_simulations=1000, num_workers=8):
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
