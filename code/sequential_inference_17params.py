@@ -308,7 +308,7 @@ def main(argv):
         num_workers=num_workers
     )  # first output gives summary statistics, second without
 
-    #print("obs real", obs_real.size())
+    print("obs real", obs_real.size())
 
  
     #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
