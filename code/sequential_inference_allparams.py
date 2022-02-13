@@ -260,7 +260,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print(os.getcwd())
-    os.chdir('code')
+    #print(os.getcwd())
+    #os.chdir('code')
     main(sys.argv[1:])
     #main(['20', '20', '4', 'try', '0'])

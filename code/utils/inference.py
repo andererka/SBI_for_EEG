@@ -72,6 +72,7 @@ def run_sim_theta_x(
         proposal=prior,
         num_simulations=num_simulations,
         num_workers=num_workers,
+        show_progress_bar=False
     )
 
     return theta, x_without
