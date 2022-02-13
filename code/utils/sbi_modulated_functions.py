@@ -82,8 +82,8 @@ class Combined(Distribution):
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
-            print('theta posterior', theta_posterior)
-            print('theta prior', theta_prior)
+            #print('theta posterior', theta_posterior)
+            #print('theta prior', theta_prior)
             theta = torch.cat((theta_posterior, theta_prior), 1)
 
             print('theta shape', theta.shape)

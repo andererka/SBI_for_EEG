@@ -256,6 +256,8 @@ def set_network_weights_small_steps(params=None, num=2):
 
     num_params = num
 
+    print('set network params:', params)
+
 
     weights_ampa_p1 = {
         "L2_basket": params[0],
@@ -427,9 +429,6 @@ def set_network_weights_small_steps(params=None, num=2):
 
     synaptic_delays_p2 = {
         "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
     }
 
     if (num_params==18):

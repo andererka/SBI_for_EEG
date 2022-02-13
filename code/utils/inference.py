@@ -67,12 +67,18 @@ def run_sim_theta_x(
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
+    print('prep part done')
+
     theta, x_without = simulate_for_sbi(
         simulator_stats,
         proposal=prior,
         num_simulations=num_simulations,
         num_workers=num_workers,
         show_progress_bar=False
+
+    
     )
+
+    print('real sim part done')
 
     return theta, x_without
