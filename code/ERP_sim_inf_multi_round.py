@@ -23,7 +23,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import simulation_wrapper_all
+from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all
 from utils.helpers import get_time
 
 
@@ -79,6 +79,8 @@ def main(argv):
     except:
         sample_method = "rejection"
 
+    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=False)
+
    
     ##defining the prior lower and upper bounds
     if num_params == 6:
@@ -95,7 +97,7 @@ def main(argv):
         "prox_2_ampa_l5_pyr",
         "t_evprox_2"]
 
-    if num_params == 3:
+    elif num_params == 3:
         prior_min = [43.8, 7.9, 89.49]
         prior_max = [79.9, 30, 152.96]
 
@@ -103,7 +105,7 @@ def main(argv):
 
         parameter_names = ["t_evdist_1", "t_evprox_1", "t_evprox_2"]
 
-    if num_params == 2:
+    elif num_params == 2:
         prior_min = [43.8, 89.49]
         prior_max = [79.9, 152.96]
 
@@ -111,7 +113,7 @@ def main(argv):
 
         parameter_names = ["t_evdist_1", "t_evprox_1"]
 
-    if num_params == 17:
+    elif num_params == 17:
 
 
         prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
@@ -131,6 +133,28 @@ def main(argv):
         "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_nmda_l2_pyr","prox2_nmda_l5_pyr",
         "t_prox2"]
 
+    elif num_params == 25:
+        prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
+                    0, 0, 0, 0, 0, 0, 51.980,            # distal weights
+                    0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights
+    
+
+        prior_max = [0.927, 1.0, 0.160, 1.0,  2.093, 1.0, 0.0519, 1.0, 35.9,
+                    0.0394, 0.854, 0.000042, 0.117, 0.039372, 0.480, 75.08, 
+                    0.000018, 1.0, 8.633, 1.0, 0.05375, 1.0, 4.104,  1.0, 162.110]
+
+        true_params = torch.tensor([[0.277, 0.3739, 0.0399, 0.0, 0.6244, 0.3739, 0.034, 0.0, 18.977, 
+                        0.011467, 0.06337, 0.000012, 0.013407, 0.466095, 0.0767, 63.08, 
+                        0.000005, 0.116706, 4.6729, 0.016733, 0.011468, 0.061556, 2.33, 0.0679, 120.86]])
+
+        parameter_names = ["prox1_ampa_l2_bas","prox1_nmda_l2_bas","prox1_ampa_l2_pyr", "prox1_nmda_l2_pyr", "prox1_ampa_l5_bas", "prox1_nmda_l5_bas", "prox1_ampa_l5_pyr", "prox1_nmda_l5_pyr",
+        "t_prox1",
+        "dist_ampa_l2_bas", "dist_nmda_l2_bas", "dist_ampa_l2_pyr", "dist_nmda_l2_pyr", "dist_ampa_l5_pyr","dist_nmda_l5_pyr",
+        "t_dist", 
+        "prox2_ampa_l2_bas","prox2_nmda_l2_bas","prox2_ampa_l2_pyr", "prox2_nmda_l2_pyr", "prox2_ampa_l5_bas", "prox2_nmda_l5_bas", "prox2_ampa_l5_pyr", "prox2_nmda_l5_pyr",
+        "t_prox2"]
+
+
     elif num_params == None:
         print("number of parameters must be defined in the arguments")
         sys.exit()
@@ -140,7 +164,7 @@ def main(argv):
     print(torch.tensor([list(true_params[0])]))
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0])]), simulation_wrapper = simulation_wrapper_all, num_workers=1) 
+        torch.tensor([list(true_params[0])]), simulation_wrapper = sim_wrapper, num_workers=1) 
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -179,7 +203,7 @@ def main(argv):
 
         theta, x_without = inference.run_sim_theta_x(
         prior = proposal, 
-        simulation_wrapper = simulation_wrapper_all,
+        simulation_wrapper = sim_wrapper,
         num_simulations=number_simulations,
         num_workers=num_workers
         )
@@ -223,7 +247,7 @@ def main(argv):
 
     samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
 
-    s_x = inference.run_only_sim(samples, simulation_wrapper = simulation_wrapper_all, num_workers=num_workers)
+    s_x = inference.run_only_sim(samples, simulation_wrapper = sim_wrapper, num_workers=num_workers)
 
 
     file_writer.save_posterior(posterior)
