@@ -164,8 +164,8 @@ def main(argv):
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
     ##define list of number of parameters inferred in each incremental round:
-    #range_list = [4,6,8,9,11,13,15,16,18,20,22,24,25]
-    range_list = [9, 16, 25]
+    range_list = [4,6,8,9,11,13,15,16,18,20,22,24,25]
+    #range_list = [9, 16, 25]
 
     for index in range(len(range_list)):
 
