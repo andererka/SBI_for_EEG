@@ -167,7 +167,7 @@ def main(argv):
     range_list = [4,6,9,11,13,16,18,20,25]
     #range_list = [9, 16, 25]
 
-    for index in range(len(range_list)):
+    for index in range(len(range_list)-1):
 
         ## i defines number of parameters to be inferred, j indicates how many parameters 
         #to come in the next round
@@ -234,6 +234,29 @@ def main(argv):
         torch.save(x_without, 'x_without{}.pt'.format(i))
         torch.save(theta, 'thetas{}.pt'.format(i))
 
+
+    theta, x_without = inference.run_sim_theta_x(
+        prior_i, 
+        sim_wrapper,
+        num_simulations=num_sim,
+        num_workers=num_workers
+    )
+
+    obs_real = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:range_list(len(range_list))])]), 
+        simulation_wrapper = sim_wrapper, 
+        num_workers=1
+    )  
+
+    sim_len = obs_real[0].shape[0]
+
+    x_without = x_without[:,:sim_len]
+
+    x = calculate_summary_stats_temporal(x_without)
+    inf = inf.append_simulations(theta, x)
+    neural_dens = inf.train()
+
+    posterior = inf.build_posterior(neural_dens)
 
 
     file_writer.save_posterior(posterior)

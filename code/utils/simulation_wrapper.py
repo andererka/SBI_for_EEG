@@ -133,9 +133,9 @@ class SimulationWrapper:
 
     
         if self.change_order == False:
-            net = set_network_weights_small_steps(params, num = param_size)
+            net = set_network_weights_small_steps(params)
         else:
-            net = set_weights_small_steps_changed_order(params, num = param_size)
+            net = set_weights_small_steps_changed_order(params)
 
 
         window_len, scaling_factor = 30, 3000
@@ -246,7 +246,7 @@ def set_network_default(params=None):
 
 
 
-def set_network_weights_small_steps(params=None, num=2):
+def set_network_weights_small_steps(params=None):
 
     """
     description: sets network to default values for an ERP as described in hnn tutorial
@@ -254,7 +254,11 @@ def set_network_weights_small_steps(params=None, num=2):
 
     net = jones_2009_model()
 
-    num_params = num
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
+    #num_params = num
 
     print('set network params:', params)
 
@@ -707,7 +711,7 @@ def set_weights_small_steps_changed_order(params=None, num=2):
     set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu = params[15])
 
 
-    if (num_params ==16):
+    if (num_params == 16):
 
         return net
 
