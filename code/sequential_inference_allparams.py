@@ -243,7 +243,7 @@ def main(argv):
     )
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:range_list(len(range_list))])]), 
+        torch.tensor(true_params), 
         simulation_wrapper = sim_wrapper, 
         num_workers=1
     )  
