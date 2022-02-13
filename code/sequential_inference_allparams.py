@@ -159,12 +159,12 @@ def main(argv):
 
     print(file_writer.folder)
 
-    prior_i = utils.torchutils.BoxUniform(low=prior_min[0:2], high=prior_max[0:2])
+    prior_i = utils.torchutils.BoxUniform(low=prior_min[0:4], high=prior_max[0:4])
 
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
     ##define list of number of parameters inferred in each incremental round:
-    range_list = [2,4,6,8,9,11,13,15,16,18,20,22,24,25]
+    range_list = [4,6,8,9,11,13,15,16,18,20,22,24,25]
 
     for index in range(len(range_list)):
 

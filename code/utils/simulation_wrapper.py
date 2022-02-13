@@ -48,14 +48,11 @@ class SimulationWrapper:
 
         early_stop = 200.0
 
-
-        if params.dim() == 1:
-            param_size = params.size(dim=0)
-        else:
-            param_size = params.size(dim=1)
-
-        print('param size', param_size)
-
+        if len(params.size()) == 2:
+            print('dim=1')
+            param_size = int(params.size()[1])
+        elif len(params.size()) == 1:
+            param_size = int(params.size()[0])
 
         if (param_size == 6):
             
@@ -109,10 +106,13 @@ class SimulationWrapper:
         """
 
         early_stop = 200.0
+  
 
-        params = params.tolist()
-
-        param_size = len(params)
+        if len(params.size()) == 2:
+            print('dim=1')
+            param_size = int(params.size()[1])
+        elif len(params.size()) == 1:
+            param_size = int(params.size()[0])
 
         if (param_size < 10):
 
@@ -126,6 +126,8 @@ class SimulationWrapper:
         
         print('early stop', early_stop)
         print('param size ', param_size)
+
+        params = params.tolist()
 
     
         if self.change_order == False:
@@ -649,6 +651,7 @@ def set_weights_small_steps_changed_order(params=None):
         "L5_pyramidal": 1.0,
     }
 
+
     if (len(params)==2):
         set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
         return net
@@ -725,6 +728,8 @@ def set_weights_small_steps_changed_order(params=None):
         set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
 
         return net
+
+    print(params)
 
     set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, mu=params[8])
 
