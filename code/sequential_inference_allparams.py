@@ -104,7 +104,7 @@ def main(argv):
 
 
     prior_max = [0.927, 1.0, 0.160, 1.0,  2.093, 1.0, 0.0519, 1.0, 35.9,
-                0.0394, 0.854, 0.000042, 0.117, 0.039372, 0.480, 75.08, 
+                0.0394, 0.117, 0.000042, 0.025902, 0.854, 0.480, 75.08, 
                 0.000018, 1.0, 8.633, 1.0, 0.05375, 1.0, 4.104,  1.0, 162.110]
 
     true_params = torch.tensor([[0.277, 0.3739, 0.0399, 0.0, 0.6244, 0.3739, 0.034, 0.0, 18.977, 
@@ -121,7 +121,7 @@ def main(argv):
     if changed_order:
 
         prior_max = [0.0519, 1.0, 2.093, 1.0, 0.160, 1.0, 0.927, 1.0, 35.9,
-            0.039372, 0.480, 0.000042, 0.117, 0.0394, 0.854, 75.08, 
+            0.854, 0.480, 0.000042, 0.025902, 0.0394, 0.0394, 0.117, 
             4.104,  1.0, 0.05375, 1.0,  8.633, 1.0, 0.000018, 1.0, 162.110]
 
         true_params = torch.tensor([[0.034, 0.0, 0.6244, 0.3739, 0.0399, 0.0, 0.277, 0.3739, 18.977, 
@@ -164,7 +164,7 @@ def main(argv):
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
     ##define list of number of parameters inferred in each incremental round:
-    range_list = [4,6,8,9,11,13,15,16,18,20,22,24,25]
+    range_list = [4,6,9,11,13,16,18,20,25]
     #range_list = [9, 16, 25]
 
     for index in range(len(range_list)):
@@ -209,6 +209,10 @@ def main(argv):
         next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
+
+        sample = combined_prior.sample(torch.Size([1]))
+
+        print('sample', sample)
 
         ## set inf for next round:
         inf = SNPE_C(combined_prior, density_estimator="nsf")
@@ -256,4 +260,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    print(os.getcwd())
+    os.chdir('code')
     main(sys.argv[1:])
+    #main(['20', '20', '4', 'try', '0'])

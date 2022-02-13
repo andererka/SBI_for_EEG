@@ -373,8 +373,8 @@ def set_network_weights_small_steps(params=None, num=2):
     }
 
     synaptic_delays_d1 = {
-    "L2_basket": 0.1,
-    "L2_pyramidal": 0.1}
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1}
 
     if (num_params==13):
         set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
@@ -514,8 +514,11 @@ def set_network_weights_small_steps(params=None, num=2):
 
     set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=params[24])
 
-
-    return net
+    if (num_params == 25):
+        return net
+    else:
+        print('number of parameters not implemneted')
+        exit()
 
 def set_weights_small_steps_changed_order(params=None, num=2):
 
@@ -803,7 +806,7 @@ def set_weights_small_steps_changed_order(params=None, num=2):
         "L5_pyramidal": 1.0,
     }
 
-    if (num_params ==24):
+    if (num_params == 24):
         set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
 
         return net
