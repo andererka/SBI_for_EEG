@@ -164,7 +164,8 @@ def main(argv):
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
     ##define list of number of parameters inferred in each incremental round:
-    range_list = [4,6,8,9,11,13,15,16,18,20,22,24,25]
+    #range_list = [4,6,8,9,11,13,15,16,18,20,22,24,25]
+    range_list = [9, 16, 25]
 
     for index in range(len(range_list)):
 
@@ -246,7 +247,8 @@ def main(argv):
     "parameter names:": str(parameter_names),
     'change order:': str(changed_order),
     'true parameters:': str(true_params),
-    'number of simulations:': str(num_sim)}
+    'number of simulations:': str(num_sim),
+    'range list:': str(range_list)}
 
     with open( "meta_overview.json".format(i), "a") as f:
         json.dump(json_dict, f)
