@@ -23,7 +23,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all
+from utils.simulation_wrapper import SimulationWrapper
 from utils.helpers import get_time
 
 
@@ -79,7 +79,7 @@ def main(argv):
     except:
         sample_method = "rejection"
 
-    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=False)
+    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=True)
 
    
     ##defining the prior lower and upper bounds
@@ -164,7 +164,7 @@ def main(argv):
     print(torch.tensor([list(true_params[0])]))
 
     obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0])]), simulation_wrapper = sim_wrapper, num_workers=1) 
+        torch.tensor(true_params), simulation_wrapper = sim_wrapper, num_workers=1) 
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -247,7 +247,7 @@ def main(argv):
 
     samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
 
-    s_x = inference.run_only_sim(samples, simulation_wrapper = sim_wrapper, num_workers=num_workers)
+    #s_x = inference.run_only_sim(samples, simulation_wrapper = sim_wrapper, num_workers=num_workers)
 
 
     file_writer.save_posterior(posterior)
@@ -266,8 +266,8 @@ def main(argv):
         pickle.dump(file_writer, pickle_file)
 
     ##save simulations from samples
-    with open("sim_from_samples", "wb") as pickle_file:
-        pickle.dump(s_x, pickle_file)
+    #with open("sim_from_samples", "wb") as pickle_file:
+        #pickle.dump(s_x, pickle_file)
 
 
 if __name__ == "__main__":

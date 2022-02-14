@@ -24,7 +24,7 @@ from summary_features.calculate_summary_features import (
 
 )
 
-sim_wrapper = SimulationWrapper(num_params=25)
+sim_wrapper = SimulationWrapper(num_params=25, small_steps=False)
 
 true_params = torch.tensor([[0.034, 0.0, 0.6244, 0.3739, 0.0399, 0.0, 0.277, 0.3739, 18.977, 
                 0.466095, 0.0767, 0.000012, 0.013407, 0.011467, 0.06337, 63.08, 
