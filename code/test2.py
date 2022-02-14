@@ -32,7 +32,7 @@ true_params = torch.tensor([[0.034, 0.0, 0.6244, 0.3739, 0.0399, 0.0, 0.277, 0.3
 
 
 obs_real = inference.run_only_sim(
-        torch.tensor(true_params), 
+        true_params, 
         simulation_wrapper = sim_wrapper, 
         num_workers=1
     ) 

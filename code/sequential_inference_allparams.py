@@ -242,8 +242,11 @@ def main(argv):
         num_workers=num_workers
     )
 
+    file_writer.save_obs_without(x_without)
+    file_writer.save_thetas(theta)
+
     obs_real = inference.run_only_sim(
-        torch.tensor(true_params), 
+        true_params, 
         simulation_wrapper = sim_wrapper, 
         num_workers=1
     )  
@@ -260,9 +263,7 @@ def main(argv):
 
 
     file_writer.save_posterior(posterior)
-    file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior_i)
-    file_writer.save_thetas(theta)
 
     os.chdir(file_writer.folder)
 
