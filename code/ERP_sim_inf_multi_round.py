@@ -79,7 +79,7 @@ def main(argv):
     except:
         sample_method = "rejection"
 
-    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=False)
+    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=True)
 
    
     ##defining the prior lower and upper bounds
