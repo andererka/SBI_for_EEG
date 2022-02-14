@@ -23,7 +23,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 
 
-from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all
+from utils.simulation_wrapper import SimulationWrapper
 from utils.helpers import get_time
 
 
