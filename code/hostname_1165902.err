@@ -1,0 +1,44 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/multiprocessing/pool.py", line 121, in worker
+    result = (True, func(*args, **kwds))
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 595, in __call__
+    return self.func(*args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 263, in __call__
+    for func, args, kwargs in self.items]
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 263, in <listcomp>
+    for func, args, kwargs in self.items]
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 186, in simulation_wrapper_all
+    net = set_network_weights(params)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 398, in set_network_weights
+    event_seed=event_seed(),
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/network.py", line 566, in add_evoked_drive
+    n_drive_cells, cell_specific, probability)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/network.py", line 910, in _attach_drive
+    conn_seed=drive['conn_seed'] + seed_increment)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/network.py", line 1181, in add_connection
+    _validate_type(item, (int, float), arg_name, 'int or float')
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/externals/mne.py", line 205, in _validate_type
+    % (item_name, type_name, type(item),))
+TypeError: weight must be an instance of int or float, got <class 'list'> instead
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "ERP_sim_inf_multi_round.py", line 242, in <module>
+    main(sys.argv[1:])
+  File "ERP_sim_inf_multi_round.py", line 140, in main
+    obs_real = inference.run_only_sim(true_params, simulation_wrapper = simulation_wrapper_all,  num_workers=num_workers)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/inference.py", line 62, in run_only_sim
+    )(delayed(simulation_wrapper)(sample) for sample in samples)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 1056, in __call__
+    self.retrieve()
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 935, in retrieve
+    self._output.extend(job.get(timeout=self.timeout))
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/multiprocessing/pool.py", line 657, in get
+    raise self._value
+TypeError: weight must be an instance of int or float, got <class 'list'> instead

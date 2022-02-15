@@ -1,0 +1,10 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 376, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 243, in main
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/summary_features/calculate_summary_features.py", line 326, in calculate_summary_stats_temporal
+    total_steps_ms = batch.size(dim=0) / time_window
+AttributeError: 'NoneType' object has no attribute 'size'

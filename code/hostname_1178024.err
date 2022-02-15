@@ -1,0 +1,12 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 373, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 244, in main
+    proposal1 = posterior.set_default_x(obs_real_stat)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/base_posterior.py", line 153, in set_default_x
+    self._x = process_x(x, self._x_shape, allow_iid_x=self._allow_iid_x).to(
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 465, in process_x
+    f"Observed data shape ({input_x_shape[start_idx:]}) must match "
+AssertionError: Observed data shape (torch.Size([1, 12])) must match the shape of simulated data x (torch.Size([1, 7])).
