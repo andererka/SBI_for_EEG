@@ -1,0 +1,134 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/distributions/distribution.py:46: UserWarning: <class 'utils.sbi_modulated_functions.Combined'> does not define `arg_constraints`. Please set `arg_constraints = {}` or initialize the distribution with `validate_args=False` to turn off validation.
+  'with `validate_args=False` to turn off validation.')
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]WARNING:root:Drawing samples from posterior to estimate the normalizing
+                        constant for `log_prob()`. However, only
+                        0% posterior samples are within the
+                        prior support. It may take a long time to collect the
+                        remaining 1 samples.
+                        Consider interrupting (Ctrl-C) and either basing the
+                        estimate of the normalizing constant on fewer samples (by
+                        calling `posterior.leakage_correction(x_o,
+                        num_rejection_samples=N)`, where `N` is the number of
+                        samples you want to base the
+                        estimate on (default N=10000), or not estimating the
+                        normalizing constant at all
+                        (`log_prob(..., norm_posterior=False)`. The latter will
+                        result in an unnormalized `log_prob()`.
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:01<00:00,  9.87it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:01<00:00,  1.12s/it]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]WARNING:root:Drawing samples from posterior to estimate the normalizing
+                        constant for `log_prob()`. However, only
+                        0% posterior samples are within the
+                        prior support. It may take a long time to collect the
+                        remaining 1 samples.
+                        Consider interrupting (Ctrl-C) and either basing the
+                        estimate of the normalizing constant on fewer samples (by
+                        calling `posterior.leakage_correction(x_o,
+                        num_rejection_samples=N)`, where `N` is the number of
+                        samples you want to base the
+                        estimate on (default N=10000), or not estimating the
+                        normalizing constant at all
+                        (`log_prob(..., norm_posterior=False)`. The latter will
+                        result in an unnormalized `log_prob()`.
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:01<00:00,  5.73it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:01<00:00,  1.34s/it]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]WARNING:root:Drawing samples from posterior to estimate the normalizing
+                        constant for `log_prob()`. However, only
+                        0% posterior samples are within the
+                        prior support. It may take a long time to collect the
+                        remaining 1 samples.
+                        Consider interrupting (Ctrl-C) and either basing the
+                        estimate of the normalizing constant on fewer samples (by
+                        calling `posterior.leakage_correction(x_o,
+                        num_rejection_samples=N)`, where `N` is the number of
+                        samples you want to base the
+                        estimate on (default N=10000), or not estimating the
+                        normalizing constant at all
+                        (`log_prob(..., norm_posterior=False)`. The latter will
+                        result in an unnormalized `log_prob()`.
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:01<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:02<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:02<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:02<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:02<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:02<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:02<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:03<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:03<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:03<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:03<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:03<?, ?it/s]Drawing 1 posterior samples:   0%|          | 0/1 [00:03<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:04<00:00,  4.03s/it]
+WARNING:root:Drawing samples from posterior to estimate the normalizing
+                        constant for `log_prob()`. However, only
+                        0% posterior samples are within the
+                        prior support. It may take a long time to collect the
+                        remaining 10000 samples.
+                        Consider interrupting (Ctrl-C) and either basing the
+                        estimate of the normalizing constant on fewer samples (by
+                        calling `posterior.leakage_correction(x_o,
+                        num_rejection_samples=N)`, where `N` is the number of
+                        samples you want to base the
+                        estimate on (default N=10000), or not estimating the
+                        normalizing constant at all
+                        (`log_prob(..., norm_posterior=False)`. The latter will
+                        result in an unnormalized `log_prob()`.
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 260, in main
+    theta = torch.load('step2/thetas.pt')
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/serialization.py", line 594, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/serialization.py", line 230, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/serialization.py", line 211, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: 'step2/thetas.pt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 376, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 268, in main
+    num_workers=num_workers
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/inference.py", line 70, in run_sim_theta_x
+    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 495, in prepare_for_sbi
+    prior, _, prior_returns_numpy = process_prior(prior)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 51, in process_prior
+    return process_pytorch_prior(prior)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 159, in process_pytorch_prior
+    check_prior_batch_behavior(prior)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 323, in check_prior_batch_behavior
+    log_probs = prior.log_prob(theta)
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/sbi_modulated_functions.py", line 59, in log_prob
+    log_prob_posterior = self._posterior_distribution.log_prob(x[0][:index])
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/direct_posterior.py", line 208, in log_prob
+    if norm_posterior
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/autograd/grad_mode.py", line 28, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/direct_posterior.py", line 268, in leakage_correction
+    self._leakage_density_correction_factor = acceptance_at(self.default_x)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/posteriors/direct_posterior.py", line 255, in acceptance_at
+    max_sampling_batch_size=rejection_sampling_batch_size,
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/autograd/grad_mode.py", line 28, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/sbiutils.py", line 220, in rejection_sample_posterior_within_prior
+    candidates = posterior_nn.sample(sampling_batch_size, context=x).reshape(
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/distributions/base.py", line 65, in sample
+    return self._sample(num_samples, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/flows/base.py", line 54, in _sample
+    samples, _ = self._transform.inverse(noise, context=embedded_context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/base.py", line 60, in inverse
+    return self._cascade(inputs, funcs, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/base.py", line 50, in _cascade
+    outputs, logabsdet = func(outputs, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/base.py", line 60, in inverse
+    return self._cascade(inputs, funcs, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/base.py", line 50, in _cascade
+    outputs, logabsdet = func(outputs, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/base.py", line 60, in inverse
+    return self._cascade(inputs, funcs, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/base.py", line 50, in _cascade
+    outputs, logabsdet = func(outputs, context)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/coupling.py", line 120, in inverse
+    inputs=transform_split, transform_params=transform_params
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/coupling.py", line 197, in _coupling_transform_inverse
+    return self._coupling_transform(inputs, transform_params, inverse=True)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/coupling.py", line 211, in _coupling_transform
+    outputs, logabsdet = self._piecewise_cdf(inputs, transform_params, inverse)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/coupling.py", line 501, in _piecewise_cdf
+    **spline_kwargs
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/splines/rational_quadratic.py", line 58, in unconstrained_rational_quadratic_spline
+    min_derivative=min_derivative,
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/nflows/transforms/splines/rational_quadratic.py", line 135, in rational_quadratic_spline
+    assert (discriminant >= 0).all()
+AssertionError

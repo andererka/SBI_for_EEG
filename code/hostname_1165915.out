@@ -1,0 +1,31 @@
+JobId=1165915 JobName=script.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=39354 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:01 TimeLimit=3-00:00:00 TimeMin=N/A
+   SubmitTime=2022-02-08T21:34:49 EligibleTime=2022-02-08T21:34:49
+   AccrueTime=2022-02-08T21:34:49
+   StartTime=2022-02-08T21:34:49 EndTime=2022-02-11T21:34:49 Deadline=N/A
+   PreemptEligibleTime=2022-02-08T21:35:49 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-02-08T21:34:49
+   Partition=gpu-2080ti AllocNode:Sid=bg-slurmb-login1:9258
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-bm-49
+   BatchHost=slurm-bm-49
+   NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=64,mem=70G,node=1,billing=17
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=64 MinMemoryNode=70G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1165915.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1165915.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
+[Parallel(n_jobs=64)]: Using backend MultiprocessingBackend with 64 concurrent workers.

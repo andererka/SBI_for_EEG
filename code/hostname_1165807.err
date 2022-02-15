@@ -1,0 +1,16 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "sequential_inference_17params.py", line 360, in <module>
+    main(sys.argv[1:])
+  File "sequential_inference_17params.py", line 128, in main
+    prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/torchutils.py", line 253, in __init__
+    validate_args=False,
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/distributions/uniform.py", line 42, in __init__
+    self.low, self.high = broadcast_all(low, high)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/distributions/utils.py", line 40, in broadcast_all
+    return torch.broadcast_tensors(*values)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/torch/functional.py", line 73, in broadcast_tensors
+    return _VF.broadcast_tensors(tensors)  # type: ignore[attr-defined]
+RuntimeError: The size of tensor a (17) must match the size of tensor b (15) at non-singleton dimension 0
