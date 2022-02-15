@@ -1,0 +1,3 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+slurmstepd: error: *** JOB 1174264 ON slurm-bm-49 CANCELLED AT 2022-02-10T23:25:42 ***
