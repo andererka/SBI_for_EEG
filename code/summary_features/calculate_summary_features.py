@@ -328,13 +328,13 @@ def calculate_summary_stats_temporal(x):
 
         arg200ms = int(200 * 30)
 
-        arg80ms = int(80 * 30)
+        arg120ms = int(120 * 30)
 
-        arg_p50 = torch.argmax(batch[0:arg80ms])
+        arg_p50 = torch.argmax(batch[0:arg120ms])
 
 
 
-        p50 = torch.max(batch[0:arg80ms])
+        p50 = torch.max(batch[0:arg120ms])
 
         p50_moment1 = torch.mean(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # mean
 
@@ -419,12 +419,12 @@ def calculate_summary_stats_temporal(x):
 
         arg_P200 = torch.argmax(batch)
 
-        P200 = torch.max(batch[arg80ms:])
+        P200 = torch.max(batch[arg120ms:])
 
         P200_moment1 = torch.mean(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # mean
         P200_moment2 = torch.var(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # variance
 
-        x_t = batch[120*30:]
+        x_t = batch[arg120ms:]
         sign_x = np.sign(x_t)
 
         index_pos = np.where(sign_x == 1)

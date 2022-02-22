@@ -1,186 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  4.07it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  4.05it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 132.61it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 26.87it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 144.03it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 121.46it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 124.48it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.59it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 211.79it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 126.69it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 127.44it/s]
-Drawing 5000 posterior samples:   0%|          | 0/5000 [00:00<?, ?it/s]Drawing 5000 posterior samples: 14409it [00:00, 96787.29it/s]           Drawing 5000 posterior samples: 14409it [00:00, 96438.71it/s]
-/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py:705: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
-  "timeout or by a memory leak.", UserWarning
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-slurmstepd: error: *** JOB 1181061 ON slurm-cpu-hm-1 CANCELLED AT 2022-02-14T02:28:22 DUE TO TIME LIMIT ***
