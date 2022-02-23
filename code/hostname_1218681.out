@@ -1,0 +1,57 @@
+JobId=1218681 JobName=script.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=48117 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:01 TimeLimit=2-11:00:00 TimeMin=N/A
+   SubmitTime=2022-02-23T11:40:43 EligibleTime=2022-02-23T11:40:43
+   AccrueTime=2022-02-23T11:40:44
+   StartTime=2022-02-23T11:40:44 EndTime=2022-02-25T22:40:44 Deadline=N/A
+   PreemptEligibleTime=2022-02-23T11:41:44 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-02-23T11:40:44
+   Partition=gpu-2080ti AllocNode:Sid=bg-slurmb-login1:27860
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-bm-34
+   BatchHost=slurm-bm-34
+   NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=64,mem=70G,node=1,billing=17
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=64 MinMemoryNode=70G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1218681.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1218681.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
+True
+/mnt/qb/work/macke/kanderer29/results/10000_sims_25_fake_obs_3steps_time_ratio
+/mnt/qb/work/macke/kanderer29/results/10000_sims_25_fake_obs_3steps_time_ratio
+9 16
+number of simulations in this round 1000.0
+dim=1
+early stop 70.0
+param size  9
+[[0.02092466875910759, 0.8456780910491943, 0.03341362997889519, 0.07990336418151855, 1.474893569946289, 0.16573494672775269, 0.01743595488369465, 0.5533349514007568, 31.90614891052246], [0.4590516984462738, 0.635169267654419, 0.016189783811569214, 0.40045565366744995, 1.4244643449783325, 0.9583422541618347, 0.03314255177974701, 0.5479588508605957, 34.735877990722656]]
+set network params: [[0.02092466875910759, 0.8456780910491943, 0.03341362997889519, 0.07990336418151855, 1.474893569946289, 0.16573494672775269, 0.01743595488369465, 0.5533349514007568, 31.90614891052246], [0.4590516984462738, 0.635169267654419, 0.016189783811569214, 0.40045565366744995, 1.4244643449783325, 0.9583422541618347, 0.03314255177974701, 0.5479588508605957, 34.735877990722656]]
+early stop 70.0
+param size  9
+[0.1301802396774292, 0.7353307008743286, 0.10605541616678238, 0.8578802347183228, 0.266174852848053, 0.19070398807525635, 0.03614678606390953, 0.29923123121261597, 25.516334533691406]
+set network params: [0.1301802396774292, 0.7353307008743286, 0.10605541616678238, 0.8578802347183228, 0.266174852848053, 0.19070398807525635, 0.03614678606390953, 0.29923123121261597, 25.516334533691406]
+joblib will run over 1 jobs
+Loading custom mechanism files from /home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/mod/x86_64/.libs/libnrnmech.so
+Building the NEURON model
+[Done]
+running trial 1 on 1 cores
+Simulation time: 0.03 ms...
+Simulation time: 10.0 ms...
+Simulation time: 20.0 ms...
+Simulation time: 30.0 ms...
+Simulation time: 40.0 ms...
+Simulation time: 50.0 ms...
+Simulation time: 60.0 ms...
+prep part done
