@@ -171,6 +171,8 @@ def main(argv):
 
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
+    start_num = 1
+
     for index in range(len(range_list)-1):
 
         ## i defines number of parameters to be inferred, j indicates how many parameters 
@@ -180,13 +182,19 @@ def main(argv):
 
         print(i, j)
 
+        num_sim_round = num_sim * (start_num / 10)
+
+        print('number of simulations in this round', num_sim_round)
+
+        start_num += 9
+
 
         start_time = datetime.datetime.now()
 
         theta, x_without = inference.run_sim_theta_x(
             prior_i, 
             sim_wrapper,
-            num_simulations=num_sim,
+            num_simulations=num_sim_round,
             num_workers=num_workers
         )
 
@@ -230,7 +238,8 @@ def main(argv):
         diff_time = finish_time - start_time
 
         json_dict = {
-        "CPU time for step:": str(diff_time)}
+        "CPU time for step:": str(diff_time),
+        'number of simulations in this round': num_sim_round}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -240,10 +249,12 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
+    num_sim_round = num_sim * (start_num / 10)
+
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
         sim_wrapper,
-        num_simulations=num_sim,
+        num_simulations= num_sim_round,
         num_workers=num_workers
     )
 
