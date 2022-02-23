@@ -246,7 +246,7 @@ def main(argv):
 
 
 
-    samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
+    #samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
 
     #s_x = inference.run_only_sim(samples, simulation_wrapper = sim_wrapper, num_workers=num_workers)
 

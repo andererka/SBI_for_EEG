@@ -214,9 +214,9 @@ def main(argv):
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
-        sample = combined_prior.sample(torch.Size([1]))
+        #sample = combined_prior.sample(torch.Size([1]))
 
-        print('sample', sample)
+        #print('sample', sample)
 
         ## set inf for next round:
         inf = SNPE_C(combined_prior, density_estimator="nsf")
@@ -291,6 +291,8 @@ def main(argv):
     with open( "meta_overview.json".format(i), "a") as f:
         json.dump(json_dict, f)
         f.close()
+
+    torch.save(obs_real, 'obs_real.pt')
 
 
 if __name__ == "__main__":

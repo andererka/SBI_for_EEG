@@ -1,6 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "ERP_sim_inf_multi_round.py", line 26, in <module>
-    from utils.simulation_wrapper import SimulationWrapper, simulation_wrapper_all
-ImportError: cannot import name 'simulation_wrapper_all' from 'utils.simulation_wrapper' (/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py)
