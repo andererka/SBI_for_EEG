@@ -238,6 +238,7 @@ def main(argv):
         torch.save(x_without, 'x_without{}.pt'.format(i))
         torch.save(theta, 'thetas{}.pt'.format(i))
 
+    start_time = datetime.datetime.now()
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
@@ -275,7 +276,12 @@ def main(argv):
     with open("class", "wb") as pickle_file:
         pickle.dump(file_writer, pickle_file)
 
+    finish_time = datetime.datetime.now()
+
+    diff_time = finish_time - start_time
+
     json_dict = {
+    "CPU time for step:": str(diff_time),
     "parameter names:": str(parameter_names),
     'change order:': str(changed_order),
     'true parameters:': str(true_params),
