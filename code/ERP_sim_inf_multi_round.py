@@ -139,8 +139,9 @@ def main(argv):
                     0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights
     
 
+
         prior_max = [0.927, 1.0, 0.160, 1.0,  2.093, 1.0, 0.0519, 1.0, 35.9,
-                    0.0394, 0.854, 0.000042, 0.117, 0.039372, 0.480, 75.08, 
+                    0.0394, 0.117, 0.000042, 0.025902, 0.854, 0.480, 75.08, 
                     0.000018, 1.0, 8.633, 1.0, 0.05375, 1.0, 4.104,  1.0, 162.110]
 
         true_params = torch.tensor([[0.277, 0.3739, 0.0399, 0.0, 0.6244, 0.3739, 0.034, 0.0, 18.977, 
@@ -245,7 +246,7 @@ def main(argv):
 
 
 
-    samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
+    #samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
 
     #s_x = inference.run_only_sim(samples, simulation_wrapper = sim_wrapper, num_workers=num_workers)
 

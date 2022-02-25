@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "sequential_inference_allparams.py", line 33, in <module>
-    from utils import inference
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/inference.py", line 1, in <module>
-    from utils.simulation_wrapper import (
-ImportError: cannot import name 'simulation_wrapper' from 'utils.simulation_wrapper' (/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py)

@@ -171,6 +171,8 @@ def main(argv):
 
     inf = SNPE_C(prior_i, density_estimator='nsf')
 
+    start_num = 1
+
     for index in range(len(range_list)-1):
 
         ## i defines number of parameters to be inferred, j indicates how many parameters 
@@ -180,13 +182,19 @@ def main(argv):
 
         print(i, j)
 
+        num_sim_round = int(num_sim * (start_num / 10))
+
+        print('number of simulations in this round', num_sim_round)
+
+        start_num += 9
+
 
         start_time = datetime.datetime.now()
 
         theta, x_without = inference.run_sim_theta_x(
             prior_i, 
             sim_wrapper,
-            num_simulations=num_sim,
+            num_simulations=num_sim_round,
             num_workers=num_workers
         )
 
@@ -214,9 +222,9 @@ def main(argv):
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
-        sample = combined_prior.sample(torch.Size([1]))
+        #sample = combined_prior.sample(torch.Size([1]))
 
-        print('sample', sample)
+        #print('sample', sample)
 
         ## set inf for next round:
         inf = SNPE_C(combined_prior, density_estimator="nsf")
@@ -230,7 +238,8 @@ def main(argv):
         diff_time = finish_time - start_time
 
         json_dict = {
-        "CPU time for step:": str(diff_time)}
+        "CPU time for step:": str(diff_time),
+        'number of simulations in this round': num_sim_round}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -238,11 +247,14 @@ def main(argv):
         torch.save(x_without, 'x_without{}.pt'.format(i))
         torch.save(theta, 'thetas{}.pt'.format(i))
 
+    start_time = datetime.datetime.now()
+
+    num_sim_round = int(num_sim * (start_num / 10))
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
         sim_wrapper,
-        num_simulations=num_sim,
+        num_simulations= num_sim_round,
         num_workers=num_workers
     )
 
@@ -275,7 +287,12 @@ def main(argv):
     with open("class", "wb") as pickle_file:
         pickle.dump(file_writer, pickle_file)
 
+    finish_time = datetime.datetime.now()
+
+    diff_time = finish_time - start_time
+
     json_dict = {
+    "CPU time for step:": str(diff_time),
     "parameter names:": str(parameter_names),
     'change order:': str(changed_order),
     'true parameters:': str(true_params),
@@ -285,6 +302,8 @@ def main(argv):
     with open( "meta_overview.json".format(i), "a") as f:
         json.dump(json_dict, f)
         f.close()
+
+    torch.save(obs_real, 'obs_real.pt')
 
 
 if __name__ == "__main__":

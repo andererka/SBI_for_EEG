@@ -1,230 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  6.30it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  6.27it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 6972it [00:00, 57698.26it/s]         Drawing 1 posterior samples: 6972it [00:00, 57480.50it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 135.60it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 6917it [00:00, 83500.27it/s]         
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 6809it [00:00, 87143.76it/s]         
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 132.63it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 134.69it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 236.18it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 135.41it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 134.57it/s]
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 7038it [00:00, 57977.68it/s]           Drawing 100 posterior samples: 7038it [00:00, 57749.36it/s]
-WARNING:root:Found 1 NaN simulations and 0 Inf simulations. They will be excluded from training.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 128.60it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 147.46it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 138.42it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 150.70it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 123.37it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 129.85it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 130.22it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 233.06it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 105.91it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 101.04it/s]
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 100%|██████████| 100/100 [00:00<00:00, 7527.33it/s]
-WARNING:root:Found 5 NaN simulations and 4 Inf simulations. They will be excluded from training.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 25.90it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 142.66it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 122.15it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 144.05it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 90.87it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 99.73it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 100.05it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 176.49it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 93.74it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 97.04it/s]
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 100%|██████████| 100/100 [00:00<00:00, 4635.41it/s]
-WARNING:root:Found 18 NaN simulations and 10 Inf simulations. They will be excluded from training.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 124.69it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 145.63it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 127.95it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 140.27it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 90.02it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 98.56it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 99.00it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 174.56it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 135.05it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 138.05it/s]
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 100%|██████████| 100/100 [00:00<00:00, 6245.71it/s]
-WARNING:root:Found 12 NaN simulations and 9 Inf simulations. They will be excluded from training.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 122.03it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 140.25it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 124.59it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 139.50it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 90.36it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 98.17it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 99.30it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 169.30it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 113.24it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 138.10it/s]
-Drawing 100 posterior samples:   0%|          | 0/100 [00:00<?, ?it/s]Drawing 100 posterior samples: 100%|██████████| 100/100 [00:00<00:00, 6836.46it/s]
-WARNING:root:Found 19 NaN simulations and 6 Inf simulations. They will be excluded from training.
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 116.44it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 142.44it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 122.94it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 141.66it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 109.70it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 121.88it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 122.33it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 217.97it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 121.33it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 121.75it/s]
-Traceback (most recent call last):
-  File "sequential_inference_allparams.py", line 265, in <module>
-    main(sys.argv[1:])
-  File "sequential_inference_allparams.py", line 186, in main
-    num_workers=num_workers
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/inference.py", line 68, in run_sim_theta_x
-    simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 501, in prepare_for_sbi
-    check_sbi_inputs(simulator, prior)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 518, in check_sbi_inputs
-    simulation = simulator(theta)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 434, in batch_loop_simulator
-    xs = list(map(simulator, theta))
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks.py", line 399, in pytorch_simulator
-    return torch.as_tensor(simulator(theta), dtype=float32)
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 33, in __call__
-    return self.simulation_wrapper_all_small_steps(params)
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 136, in simulation_wrapper_all_small_steps
-    net = set_network_weights_small_steps(params, num = param_size)
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 436, in set_network_weights_small_steps
-    set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 952, in set_proximal2
-    event_seed=event_seed(),
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/network.py", line 566, in add_evoked_drive
-    n_drive_cells, cell_specific, probability)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/network.py", line 834, in _attach_drive
-    location, probability)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/hnn_core/drives.py", line 52, in _get_target_properties
-    raise ValueError('synaptic_delays is either a common float or needs '
-ValueError: synaptic_delays is either a common float or needs to be specified as a dict for each of the cell types defined in weights_ampa and weights_nmda ({'L2_basket'})
