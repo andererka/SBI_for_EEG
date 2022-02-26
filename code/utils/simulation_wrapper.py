@@ -107,7 +107,7 @@ class SimulationWrapper:
 
         early_stop = 200.0
   
-
+        print(params.size())
         if len(params.size()) == 2:
             print('dim=1')
             param_size = int(params.size()[1])
