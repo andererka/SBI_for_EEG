@@ -91,7 +91,6 @@ class Combined(Distribution):
 
             print('theta shape', theta.shape)
 
-            self.mean = torch.mean(theta, dim = 0)
         
             return theta
 
@@ -101,7 +100,7 @@ class Combined(Distribution):
         """
         Returns the mean of the distribution.
         """
-        return self.mean
+        return torch.mean(self.sample((1000,)),dim = 0)
 
 
 
