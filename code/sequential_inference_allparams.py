@@ -174,10 +174,10 @@ def main(argv):
     start_num = 1
 
     obs_real_complete = inference.run_only_sim(
-    torch.tensor(true_params), 
-    simulation_wrapper = sim_wrapper, 
-    num_workers=1
-) 
+        torch.tensor([list(true_params[0][0:])]), 
+        simulation_wrapper = sim_wrapper, 
+        num_workers=1
+    )
 
     for index in range(len(range_list)-1):
 
