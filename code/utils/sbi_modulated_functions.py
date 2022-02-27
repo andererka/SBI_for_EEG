@@ -90,8 +90,21 @@ class Combined(Distribution):
             theta = torch.cat((theta_posterior, theta_prior), 1)
 
             print('theta shape', theta.shape)
+
+            self.mean = torch.mean(theta, dim = 0)
         
             return theta
+
+
+    @property
+    def mean(self):
+        """
+        Returns the mean of the distribution.
+        """
+        return self.mean
+
+
+
 
 
 
