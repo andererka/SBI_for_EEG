@@ -80,15 +80,36 @@ class Combined(Distribution):
             if theta_posterior.dim() == 1:
                 
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
+
+            if theta_prior.dim() == 1:
+
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
-            #print('theta posterior', theta_posterior)
-            #print('theta prior', theta_prior)
+            print('theta posterior', theta_posterior)
+            print('theta prior', theta_prior)
             theta = torch.cat((theta_posterior, theta_prior), 1)
 
             print('theta shape', theta.shape)
+
         
             return theta
+
+
+    @property
+    def mean(self):
+        """
+        Returns the mean of the distribution.
+        """
+        return torch.mean(self.sample((1000,)),dim = 0)
+
+    @property
+    def variance(self):
+        """
+        Returns the mean of the distribution.
+        """
+        return torch.var(self.sample((1000,)),dim = 0)
+
+
 
 
 
