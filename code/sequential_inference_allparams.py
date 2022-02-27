@@ -205,7 +205,7 @@ def main(argv):
         )
 
  
-        obs_real = obs_real_complete[0][:x_without.shape[1]]
+        obs_real = [obs_real_complete[0][:x_without.shape[1]]]
 
 
         x = calculate_summary_stats_temporal(x_without)
@@ -261,7 +261,7 @@ def main(argv):
     file_writer.save_obs_without(x_without)
     file_writer.save_thetas(theta)
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
+    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
 
     x = calculate_summary_stats_temporal(x_without)
     inf = inf.append_simulations(theta, x)
@@ -299,8 +299,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    torch.manual_seed(0)
-    np.random.seed(0)
+    torch.manual_seed(1)
+    np.random.seed(1)
     #print(os.getcwd())
     #os.chdir('code')
     main(sys.argv[1:])
