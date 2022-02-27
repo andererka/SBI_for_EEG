@@ -80,11 +80,9 @@ class Combined(Distribution):
             if theta_posterior.dim() == 1:
                 
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
-                theta_prior = torch.unsqueeze(theta_prior, 0)
 
             if theta_prior.dim() == 1:
-                
-                theta_posterior = torch.unsqueeze(theta_posterior, 0)
+
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
             print('theta posterior', theta_posterior)
