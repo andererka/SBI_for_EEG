@@ -102,6 +102,12 @@ class Combined(Distribution):
         """
         return torch.mean(self.sample((1000,)),dim = 0)
 
+    @property
+    def variance(self):
+        """
+        Returns the mean of the distribution.
+        """
+        return torch.var(self.sample((1000,)),dim = 0)
 
 
 
