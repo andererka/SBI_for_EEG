@@ -300,6 +300,7 @@ def main(argv):
 
 if __name__ == "__main__":
     torch.manual_seed(0)
+    np.random.seed(0)
     #print(os.getcwd())
     #os.chdir('code')
     main(sys.argv[1:])
