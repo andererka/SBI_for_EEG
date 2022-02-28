@@ -239,7 +239,8 @@ def main(argv):
 
         json_dict = {
         "CPU time for step:": str(diff_time),
-        'number of simulations in this round': num_sim_round}
+        'number of simulations in this round': num_sim_round,
+	'thetas used': i}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
