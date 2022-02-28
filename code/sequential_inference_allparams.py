@@ -173,6 +173,12 @@ def main(argv):
 
     start_num = 1
 
+    obs_real_complete = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:])]), 
+        simulation_wrapper = sim_wrapper, 
+        num_workers=1
+    )
+
     for index in range(len(range_list)-1):
 
         ## i defines number of parameters to be inferred, j indicates how many parameters 
@@ -198,15 +204,9 @@ def main(argv):
             num_workers=num_workers
         )
 
-        obs_real = inference.run_only_sim(
-            torch.tensor([list(true_params[0][0:i])]), 
-            simulation_wrapper = sim_wrapper, 
-            num_workers=1
-        )  
+ 
+        obs_real = obs_real_complete[0][:x_without.shape[1]]
 
-        sim_len = obs_real[0].shape[0]
-
-        x_without = x_without[:,:sim_len]
 
         x = calculate_summary_stats_temporal(x_without)
         inf = inf.append_simulations(theta, x)
@@ -261,15 +261,7 @@ def main(argv):
     file_writer.save_obs_without(x_without)
     file_writer.save_thetas(theta)
 
-    obs_real = inference.run_only_sim(
-        true_params, 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
-    )  
-
-    sim_len = obs_real[0].shape[0]
-
-    x_without = x_without[:,:sim_len]
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
 
     x = calculate_summary_stats_temporal(x_without)
     inf = inf.append_simulations(theta, x)
@@ -307,6 +299,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    torch.manual_seed(0)
+    np.random.seed(0)
     #print(os.getcwd())
     #os.chdir('code')
     main(sys.argv[1:])

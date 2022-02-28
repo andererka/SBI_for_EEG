@@ -17,7 +17,7 @@ scontrol show job $SLURM_JOB_ID
 #python3 calc_posterior_and_sample.py results/ERP_save_sim_nsf_num_params:3_11-25-2021_21:36:41/class 1000 1 64 
 #python3 ERP_simulation_and_inference.py 500 nsf 64 7 rejection
 #python3 sequential_inference_17params.py 10000 1000 64 10000_sims_17_fake_obs_stop2 1
-python3 sequential_inference_allparams.py 10000 100 64 10000_sims_25_fake_obs_3steps_time_ratio 1
+python3 sequential_inference_allparams.py 10000 100 64 10000_sims_25_fake_obs_3_steps_time_ratio 1
 #python3 efficiency_comparison_summary_statistics.py True
 #python3 investigating_summary_features.py eval_features
 #python3 simulate_only.py 10000 sim_10000_3_params_non_seq2 63
