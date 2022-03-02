@@ -333,7 +333,7 @@ def calculate_summary_stats_temporal(x):
         arg_p50 = torch.argmax(batch[0:arg120ms])
 
 
-
+        print('batch shape', batch.shape)
         p50 = torch.max(batch[0:arg120ms])
 
         p50_moment1 = torch.mean(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # mean
