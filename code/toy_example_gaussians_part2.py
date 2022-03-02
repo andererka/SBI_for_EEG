@@ -66,13 +66,6 @@ def Gaussian(thetas, normal_noise=0.1):
     
 
 
-# ### Larger comparison with KL-divergence between analytic and inferred posterior
-
-# ### Calculate posterior for different number of simulations: 1k,  3k, 5k, 10k
-
-# ### starting with multi-round snpe
-
-# In[5]:
 
 
 true_thetas = torch.tensor([[3.0, 6.0, 20.0, 10.0, 90.0, 55.0, 27.0, 27.0, 4.0, 70.0, 5.0, 66.0, 99.0, 40.0, 45.0]])
@@ -91,68 +84,6 @@ num_simulations_list = [600, 800, 1000, 1200, 1400]
 # In[7]:
 
 
-obs_real = Gaussian(true_thetas[0])
-
-obs_real
-
-
-# In[ ]:
-
-
-list_collection = []
-
-obs_real = Gaussian(true_thetas[0])
-
-for i in range(5):
-    
-
-    posterior_snpe_list = []
-
-    for num_simulations in num_simulations_list:
-        
-        prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
-        simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
-        
-        inf = SNPE_C(prior, density_estimator="mdn")
-        
-        proposal = prior
-
-        for j in range(3):
-            
-            theta, x = simulate_for_sbi(
-                simulator_stats,
-                proposal=proposal,
-                num_simulations=num_simulations,
-                num_workers=8,
-            )
-            
-            print('x', x)
-
-            density_estimator = inf.append_simulations(theta, x).train()
-
-
-            posterior = inf.build_posterior(density_estimator)
-
-
-
-            proposal = posterior.set_default_x(obs_real)
-
-
-        posterior_snpe = posterior
-
-        posterior_snpe_list.append(posterior_snpe)
-        
-    list_collection.append(posterior_snpe_list)
-
-
-# In[ ]:
-
-
-torch.save(list_collection, 'list_collection.pt')
-
-
-# In[8]:
-
 
 list_collection = torch.load('list_collection.pt')
 
@@ -160,138 +91,13 @@ list_collection = torch.load('list_collection.pt')
 # In[9]:
 
 
-list_collection
-
-
-# ### For incremental approach: 
-
-# In[ ]:
-
-
 range_list = [5,10, 15]
 
-import datetime
-
-list_collection_inc = []
-
-
-for i in range(5):
-    
-    np.random.seed(i)
-
-    posterior_incremental_list = []
-
-
-    for num_simulations in num_simulations_list:
-
-        prior_i = utils.torchutils.BoxUniform(low=prior_min[0:range_list[0]], high = prior_max[0:range_list[0]])
-
-        
-        simulator_stats, prior_i = prepare_for_sbi(Gaussian, prior_i)
-        
-        inf = SNPE_C(prior_i, density_estimator="mdn")
-        
-        proposal = prior_i
-
-        start_num = 1
-
-        for index in range(len(range_list)-1):
-
-            ## i defines number of parameters to be inferred, j indicates how many parameters 
-            #to come in the next round
-            i = range_list[index]
-            j = range_list[index+1]
-
-            print(i, j)
-
-            num_sim = int(num_simulations * (start_num / 10))
-
-            start_num += 9
-
-            start_time = datetime.datetime.now()
-
-            theta, x =  simulate_for_sbi(
-                simulator_stats,
-                proposal=proposal,
-                num_simulations=num_simulations,
-                num_workers=8,
-
-            )
-
-            inf = inf.append_simulations(theta, x)
-            neural_dens = inf.train()
-
-            posterior = inf.build_posterior(neural_dens)
-
-            if i < 2:
-                obs_real = Gaussian([true_thetas[0, 0:i]])
-
-            else:
-                obs_real = Gaussian(true_thetas[0, 0:i])
-
-
-            proposal1 = posterior.set_default_x(obs_real)
-
-            next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
-
-            combined_prior = Combined(proposal1, next_prior, number_params_1=i)
-
-
-            ## set inf for next round:
-            inf = SNPE_C(combined_prior, density_estimator="mdn")
-
-
-            ## set combined prior to be the new prior_i:
-            proposal= combined_prior
-
-            finish_time = datetime.datetime.now()
-
-            diff = finish_time - start_time
-
-            print('took ', diff, ' for this step')
-
-        num_sim = int(num_simulations * (start_num / 10))
-
-        theta, x =  simulate_for_sbi(
-            simulator_stats,
-            proposal=proposal,
-            num_simulations=num_sim,
-            num_workers=8,
-
-        )
-
-        inf = inf.append_simulations(theta, x)
-        neural_dens = inf.train()
-
-        posterior_incremental = inf.build_posterior(neural_dens) 
-
-        posterior_incremental_list.append(posterior_incremental)
-        
-    list_collection_inc.append(posterior_incremental_list)
-
-
-# In[50]:
-
-
-torch.save(list_collection_inc, 'list_collection_inc.pt')
-
-
-# In[46]:
 
 
 list_collection_inc = torch.load('list_collection_inc.pt')
 
 
-# In[ ]:
-
-
-import torch.nn.functional as F
-
-
-#out = F.kl_div(analytic_sample, posterior_sample)
-
-
-# In[ ]:
 
 
 def calc_KL_highd(posterior):
