@@ -257,9 +257,14 @@ def main(argv):
 
     posterior = inf.build_posterior(neural_dens)
 
+    posterior.set_default_x(x)
+
 
     file_writer.save_posterior(posterior)
     file_writer.save_prior(prior_i)
+
+    torch.save(combined_prior, 'combined_prior.pt')
+    torch.save(neural_dens, 'neural_dens.pt')
 
     os.chdir(file_writer.folder)
 
