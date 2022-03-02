@@ -83,11 +83,6 @@ def main(argv):
         changed_order = False
 
 
-    print(slurm)
-    ## using a density estimator with only 1 transform (which should be enough for the 1D case)
-    #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
-
-
     sim_wrapper = SimulationWrapper(num_params=25, small_steps=True)
 
 
@@ -155,12 +150,6 @@ def main(argv):
         print('file exists')
     
 
-    os.chdir(file_writer.folder)
-
-    print(file_writer.folder)
-
-    
-
     
 
     ##define list of number of parameters inferred in each incremental round:
@@ -169,7 +158,7 @@ def main(argv):
 
     prior_i = utils.torchutils.BoxUniform(low=prior_min[0:range_list[0]], high=prior_max[0:range_list[0]])
 
-    inf = SNPE_C(prior_i, density_estimator='nsf')
+    inf = SNPE_C(prior_i, density_estimator='mdn')
 
     start_num = 1
 
@@ -204,8 +193,9 @@ def main(argv):
             num_workers=num_workers
         )
 
- 
-        obs_real = obs_real_complete[0][:x_without.shape[1]]
+        print(x_without.shape)
+        print(obs_real_complete[0].shape)
+        obs_real = [obs_real_complete[0][:x_without.shape[1]]]
 
 
         x = calculate_summary_stats_temporal(x_without)
@@ -220,14 +210,11 @@ def main(argv):
 
         next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-        combined_prior = Combined(proposal1, next_prior, number_params_1=i)
+        combined_prior = Combined(proposal1, next_prior, round = index)
 
-        #sample = combined_prior.sample(torch.Size([1]))
-
-        #print('sample', sample)
 
         ## set inf for next round:
-        inf = SNPE_C(combined_prior, density_estimator="nsf")
+        inf = SNPE_C(combined_prior, density_estimator="mdn")
 
     
         ## set combined prior to be the new prior_i:
@@ -239,7 +226,8 @@ def main(argv):
 
         json_dict = {
         "CPU time for step:": str(diff_time),
-        'number of simulations in this round': num_sim_round}
+        'number of simulations in this round': num_sim_round,
+	'thetas used': i}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -261,7 +249,7 @@ def main(argv):
     file_writer.save_obs_without(x_without)
     file_writer.save_thetas(theta)
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
+    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
 
     x = calculate_summary_stats_temporal(x_without)
     inf = inf.append_simulations(theta, x)
@@ -299,8 +287,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    torch.manual_seed(0)
-    np.random.seed(0)
+    torch.manual_seed(1)
+    np.random.seed(1)
     #print(os.getcwd())
     #os.chdir('code')
     main(sys.argv[1:])
