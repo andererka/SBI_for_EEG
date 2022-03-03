@@ -77,8 +77,12 @@ def main(argv):
     except:
         slurm = True
     try:
+        density_estimator = argv[5]
+    except:
+        density_estimator = 'nsf'
+    try:
         #if argument input is 0, bool is giving False, if 1 bool is returning True
-        changed_order = bool(int(argv[5]))
+        changed_order = bool(int(argv[6]))
     except:
         changed_order = False
 
@@ -135,7 +139,7 @@ def main(argv):
     file_writer = write_to_file.WriteToFile(
     experiment=experiment_name,
     num_sim=num_sim,
-    density_estimator='nsf',
+    density_estimator=density_estimator,
     num_params=len(prior_max),
     num_samples=num_samples,
     slurm=slurm,
@@ -158,7 +162,7 @@ def main(argv):
 
     prior_i = utils.torchutils.BoxUniform(low=prior_min[0:range_list[0]], high=prior_max[0:range_list[0]])
 
-    inf = SNPE_C(prior_i, density_estimator='mdn')
+    inf = SNPE_C(prior_i, density_estimator=density_estimator)
 
     start_num = 1
 
@@ -210,11 +214,11 @@ def main(argv):
 
         next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-        combined_prior = Combined(proposal1, next_prior, round = index)
+        combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
 
         ## set inf for next round:
-        inf = SNPE_C(combined_prior, density_estimator="mdn")
+        inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
     
         ## set combined prior to be the new prior_i:
