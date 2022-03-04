@@ -265,6 +265,12 @@ def main(argv):
 
 
     file_writer.save_posterior(posterior)
+
+    ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
+    with open('posterior2.pt', 'rb') as f:
+        pickle.dump(posterior, f)
+
+
     file_writer.save_prior(prior_i)
 
     torch.save(combined_prior, 'combined_prior.pt')
