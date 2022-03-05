@@ -216,6 +216,10 @@ def main(argv):
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
+        sample_from_combined = combined_prior.sample((2,))
+
+        print(sample_from_combined)
+
 
         ## set inf for next round:
         inf = SNPE_C(combined_prior, density_estimator=density_estimator)
