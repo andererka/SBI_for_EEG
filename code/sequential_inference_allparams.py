@@ -181,11 +181,11 @@ def main(argv):
 
         print(i, j)
 
-        num_sim_round = int(num_sim * (start_num / 10))
+        num_sim_round = int(num_sim * start_num)
 
         print('number of simulations in this round', num_sim_round)
 
-        start_num += 9
+        start_num += 1
 
 
         start_time = datetime.datetime.now()
@@ -216,10 +216,6 @@ def main(argv):
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
-        sample_from_combined = combined_prior.sample((2,))
-
-        print(sample_from_combined)
-
 
         ## set inf for next round:
         inf = SNPE_C(combined_prior, density_estimator=density_estimator)
@@ -245,7 +241,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    num_sim_round = int(num_sim * (start_num / 10))
+    num_sim_round = int(num_sim * start_num)
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
