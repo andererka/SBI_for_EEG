@@ -164,7 +164,6 @@ def main(argv):
 
     inf = SNPE_C(prior_i, density_estimator=density_estimator)
 
-    start_num = 1
 
     obs_real_complete = inference.run_only_sim(
         torch.tensor([list(true_params[0][0:])]), 
@@ -181,9 +180,7 @@ def main(argv):
 
         print(i, j)
 
-        num_sim_round = int(num_sim * (start_num / 10))
-
-        start_num += 9
+        #num_sim_round = int(num_sim * (start_num / 10))
 
 
         print('number of simulations in this round', num_sim_round)
@@ -194,7 +191,7 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior_i, 
             sim_wrapper,
-            num_simulations=num_sim_round,
+            num_simulations=num_sim,
             num_workers=num_workers
         )
 
@@ -246,12 +243,11 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    num_sim_round = int(num_sim * (start_num / 10))
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
         sim_wrapper,
-        num_simulations= num_sim_round,
+        num_simulations= num_sim,
         num_workers=num_workers
     )
 
