@@ -181,7 +181,7 @@ def main(argv):
 
         print(i, j)
 
-        num_sim_round = num_sim * (start_num / 10)
+        num_sim_round = int(num_sim * (start_num / 10))
 
         start_num += 9
 
@@ -246,7 +246,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    num_sim_round = num_sim * (start_num / 10)
+    num_sim_round = int(num_sim * (start_num / 10))
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
