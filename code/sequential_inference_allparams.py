@@ -180,10 +180,6 @@ def main(argv):
 
         print(i, j)
 
-        #num_sim_round = int(num_sim * (start_num / 10))
-
-
-        print('number of simulations in this round', num_sim_round)
 
 
         start_time = datetime.datetime.now()
@@ -232,7 +228,6 @@ def main(argv):
 
         json_dict = {
         "CPU time for step:": str(diff_time),
-        'number of simulations in this round': num_sim_round,
 	    'thetas used': i}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
@@ -295,7 +290,7 @@ def main(argv):
     'change order:': str(changed_order),
     'true parameters:': str(true_params),
     'number of simulations:': str(num_sim),
-    'number of simulations last round:': str(num_sim_round),
+
     'range list:': str(range_list)}
 
     with open( "meta_overview.json".format(i), "a") as f:
