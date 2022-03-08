@@ -186,7 +186,7 @@ def main(argv):
     os.chdir('..')
     print(os.getcwd())
 
-    os.chdir('data')
+    #os.chdir('data')
 
     #trace = pd.read_csv('ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
     #trace_torch = torch.tensor(trace.values, dtype = torch.float32)

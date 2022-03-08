@@ -73,9 +73,10 @@ class Combined(Distribution):
         """
 
         with torch.no_grad():
+            print('now here')
             theta_posterior = self._posterior_distribution.sample(sample_shape)
             theta_prior = self._prior_distribution.sample(sample_shape)
-     
+            print('and now here')
     
             if theta_posterior.dim() == 1:
                 

@@ -91,7 +91,7 @@ def main(argv):
 
 
 
-    prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
+    prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 13.3,    # prox1 weights
                 0, 0, 0, 0, 0, 0, 51.980,            # distal weights
                 0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights
   
@@ -120,7 +120,7 @@ def main(argv):
     if changed_order:
 
         prior_max = [0.0519, 1.0, 2.093, 1.0, 0.160, 1.0, 0.927, 1.0, 35.9,
-            0.854, 0.480, 0.000042, 0.025902, 0.0394, 0.0394, 0.117, 
+            0.854, 0.480, 0.000042, 0.025902, 0.0394, 0.117, 75.08, 
             4.104,  1.0, 0.05375, 1.0,  8.633, 1.0, 0.000018, 1.0, 162.110]
 
         true_params = torch.tensor([[0.034, 0.0, 0.6244, 0.3739, 0.0399, 0.0, 0.277, 0.3739, 18.977, 
@@ -201,6 +201,8 @@ def main(argv):
         print(obs_real_complete[0].shape)
         obs_real = [obs_real_complete[0][:x_without.shape[1]]]
 
+        print(obs_real[0].shape)
+
 
         x = calculate_summary_stats_temporal(x_without)
         inf = inf.append_simulations(theta, x)
@@ -209,6 +211,8 @@ def main(argv):
         posterior = inf.build_posterior(neural_dens)
 
         obs_real_stat = calculate_summary_stats_temporal(obs_real)
+
+        print('obs real stat', obs_real_stat)
 
         proposal1 = posterior.set_default_x(obs_real_stat)
 
@@ -261,7 +265,9 @@ def main(argv):
 
     posterior = inf.build_posterior(neural_dens)
 
-    posterior.set_default_x(x)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+
+    posterior.set_default_x(obs_real_stat)
 
 
     file_writer.save_posterior(posterior)
