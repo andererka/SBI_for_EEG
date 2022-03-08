@@ -181,11 +181,12 @@ def main(argv):
 
         print(i, j)
 
-        num_sim_round = int(num_sim * start_num)
+        num_sim_round = num_sim * (start_num / 10)
+
+        start_num += 9
+
 
         print('number of simulations in this round', num_sim_round)
-
-        start_num += 1
 
 
         start_time = datetime.datetime.now()
@@ -235,7 +236,7 @@ def main(argv):
         json_dict = {
         "CPU time for step:": str(diff_time),
         'number of simulations in this round': num_sim_round,
-	'thetas used': i}
+	    'thetas used': i}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -245,7 +246,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    num_sim_round = int(num_sim * start_num)
+    num_sim_round = num_sim * (start_num / 10)
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
@@ -298,6 +299,7 @@ def main(argv):
     'change order:': str(changed_order),
     'true parameters:': str(true_params),
     'number of simulations:': str(num_sim),
+    'number of simulations last round:': str(num_sim_round),
     'range list:': str(range_list)}
 
     with open( "meta_overview.json".format(i), "a") as f:
