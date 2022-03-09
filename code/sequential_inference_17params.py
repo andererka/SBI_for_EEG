@@ -153,7 +153,8 @@ def main(argv):
     
 
     open('{}/sequential_inference_17params.py'.format(file_writer.folder), 'a').close()
-    shutil.copyfile(str(os.getcwd() + 'sequential_inference_17params.py'), str(file_writer.folder+ 'sequential_inference_17params.py'))
+
+    shutil.copyfile(str(os.getcwd() + '/sequential_inference_17params.py'), str(file_writer.folder+ '/sequential_inference_17params.py'))
 
 
     os.chdir(file_writer.folder)
