@@ -83,6 +83,10 @@ def main(argv):
         slurm = bool(int(argv[4]))
     except:
         slurm = True
+    try:
+        density_estimator = argv[5]
+    except:
+        density_estimator = 'nsf'
 
     ## using a density estimator with only 1 transform (which should be enough for the 1D case)
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
@@ -116,7 +120,7 @@ def main(argv):
 
     prior1 = utils.torchutils.BoxUniform(low=prior_min[0:6], high=prior_max[0:6])
 
-    inf = SNPE_C(prior1, density_estimator='nsf')
+    inf = SNPE_C(prior1, density_estimator=density_estimator)
 
 
 
@@ -245,7 +249,7 @@ def main(argv):
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
     combined_prior = Combined(proposal1, prior2, number_params_1=6)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
 
     try:
@@ -317,7 +321,7 @@ def main(argv):
 
     combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
     try:
         theta = torch.load('step3/thetas.pt')
