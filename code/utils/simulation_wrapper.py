@@ -18,18 +18,17 @@ class SimulationWrapper:
     
     """
 
-    def __init__(self, num_params = 17, change_order = False, small_steps = True):
+    def __init__(self, num_params = 17, change_order = False):
         self.num_params = num_params
         self.change_order = change_order
-        self.small_steps = small_steps
     
 
     def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6):
-            if (self.change_order == False) and (self.small_steps == False):
+            if (self.change_order == False):
                 return self.simulation_wrapper_all(params)
             
-        elif (self.num_params == 25) and (self.small_steps==True):
+        elif (self.num_params == 25):
             return self.simulation_wrapper_all_small_steps(params)
 
 
@@ -79,7 +78,7 @@ class SimulationWrapper:
 
         params = params.tolist()
     
-        net = set_network_weights(params, num=param_size)
+        net = set_network_weights(params)
 
         window_len, scaling_factor = 30, 3000
 
