@@ -79,10 +79,10 @@ def main(argv):
     except:
         slurm = 1
 
-    if (slurm==0):
+    try:
+        slurm = bool(int(argv[4]))
+    except:
         slurm = True
-    else:
-        slurm = False
 
     ## using a density estimator with only 1 transform (which should be enough for the 1D case)
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
@@ -123,13 +123,15 @@ def main(argv):
     file_writer = write_to_file.WriteToFile(
     experiment=experiment_name,
     num_sim=num_sim,
-    density_estimator='nsf',
+    density_estimator=density_estimator,
     num_params=len(prior_max),
     num_samples=num_samples,
     slurm=slurm,
     )
 
     print(file_writer.folder)
+
+    print(os.getcwd())
 
     shutil.copyfile('sequential_inference_17params.py', file_writer.folder)
 
