@@ -85,7 +85,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 800, 1000, 1200, 1400]
+num_simulations_list = [200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800]
 
 
 # In[7]:
@@ -113,7 +113,7 @@ for i in range(5):
         prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
         simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
         
-        inf = SNPE_C(prior, density_estimator="mdn")
+        inf = SNPE_C(prior, density_estimator="nsf")
         
         proposal = prior
 
@@ -128,7 +128,7 @@ for i in range(5):
             
             print('x', x)
 
-            density_estimator = inf.append_simulations(theta, x).train()
+            density_estimator = inf.append_simulations(theta, x, proposal=proposal).train()
 
 
             posterior = inf.build_posterior(density_estimator)
@@ -189,7 +189,7 @@ for i in range(5):
         
         simulator_stats, prior_i = prepare_for_sbi(Gaussian, prior_i)
         
-        inf = SNPE_C(prior_i, density_estimator="mdn")
+        inf = SNPE_C(prior_i, density_estimator="nsf")
         
         proposal = prior_i
 
@@ -238,7 +238,7 @@ for i in range(5):
 
 
             ## set inf for next round:
-            inf = SNPE_C(combined_prior, density_estimator="mdn")
+            inf = SNPE_C(combined_prior, density_estimator="nsf")
 
 
             ## set combined prior to be the new prior_i:
@@ -479,9 +479,9 @@ stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 print(stdev_incremental)
 
 
-lower_incremental = mean_incremental - [element * 1.96 for element in stdev_incremental]
+lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
 
-upper_incremental = mean_incremental + [element * 1.96 for element in stdev_incremental]
+upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
 
 
 # In[66]:
@@ -496,9 +496,9 @@ stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 print(stdev_snpe)
 
 
-lower_snpe = mean_snpe - [element * 1.96 for element in stdev_snpe]
+lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
 
-upper_snpe = mean_snpe + [element * 1.96 for element in stdev_snpe]
+upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
 
 
 # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
@@ -569,6 +569,6 @@ axes['B'].set_title('Incremental')
 
 # In[44]:
 
-plt.savefig('Gauss_plot.png')
+plt.savefig('Gauss_plot_1stddev.png')
 
 
