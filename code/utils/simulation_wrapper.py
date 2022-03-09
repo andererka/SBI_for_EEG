@@ -803,7 +803,7 @@ def set_weights_small_steps_changed_order(params=None, num=2):
     return net
 
 
-def set_network_weights_2_per_step(params=None, num=2):
+def set_network_weights_2_per_step(params=None):
 
     """
     description: sets network to default values for an ERP as described in hnn tutorial
@@ -811,7 +811,10 @@ def set_network_weights_2_per_step(params=None, num=2):
 
     net = jones_2009_model()
 
-    num_params =  num
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
 
     weights_ampa_p1 = {
         "L2_basket": 0.08831,
@@ -933,13 +936,18 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
 )
 
 
-def set_network_weights(params=None, num=6):
+def set_network_weights(params=None):
 
     """
     description: sets network to default values for an ERP as described in hnn tutorial
     """
 
     net = jones_2009_model()
+
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
 
 
     weights_ampa_p1 = {
@@ -977,7 +985,7 @@ def set_network_weights(params=None, num=6):
     )
 
 
-    if (len(params)==6):
+    if (num_params==6):
 
         return net
 
@@ -1005,7 +1013,7 @@ def set_network_weights(params=None, num=6):
         synaptic_delays=synaptic_delays_d1,
     )
 
-    if (len(params)==12):
+    if (num_params==12):
 
         return net
 
