@@ -14,6 +14,8 @@ import json
 import pandas as pd
 import seaborn as sns
 
+import shutil
+
 import datetime
 
 from utils.helpers import get_time
@@ -129,6 +131,8 @@ def main(argv):
 
     print(file_writer.folder)
 
+    shutil.copyfile('sequential_inference_17params.py', file_writer.folder)
+
 
     try:
         os.mkdir(file_writer.folder)
@@ -156,7 +160,7 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            num_simulations=num_sim,
+            num_simulations=int(num_sim*(1/10)),
             num_workers=num_workers
         )
 
@@ -321,7 +325,7 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=num_sim,
+            num_simulations=int(num_sim*(19/10)),
             num_workers=num_workers
         )
 
