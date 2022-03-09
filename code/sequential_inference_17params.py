@@ -366,6 +366,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    torch.manual_seed(0)
-    np.random.seed(0)
+    torch.manual_seed(1)
+    np.random.seed(1)
     main(sys.argv[1:])
