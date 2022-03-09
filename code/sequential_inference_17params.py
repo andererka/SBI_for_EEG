@@ -349,6 +349,10 @@ def main(argv):
     file_writer.save_prior(prior)
     file_writer.save_thetas(theta)
 
+    ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
+    with open('posterior2.pt', 'rb') as f:
+        pickle.dump(posterior, f)
+
     os.chdir(file_writer.folder)
 
     ##save class
