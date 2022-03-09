@@ -137,8 +137,6 @@ def main(argv):
 
     print(os.getcwd())
 
-    shutil.copyfile('sequential_inference_17params.py', file_writer.folder)
-
 
     try:
         os.mkdir(file_writer.folder)
@@ -155,6 +153,8 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     print(file_writer.folder)
+
+    shutil.copyfile('sequential_inference_17params.py', file_writer.folder)
         
 
     
