@@ -167,8 +167,10 @@ def main(argv):
     print(torch.tensor([list(true_params[0])]))
 
     obs_real = inference.run_only_sim(
-        torch.tensor(true_params), simulation_wrapper = sim_wrapper, num_workers=1) 
-
+        torch.tensor([list(true_params[0][0:])]), 
+        simulation_wrapper = sim_wrapper, 
+        num_workers=1
+    )
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posteriors = []
@@ -273,10 +275,6 @@ def main(argv):
     ##save class
     with open("class", "wb") as pickle_file:
         pickle.dump(file_writer, pickle_file)
-
-    ##save simulations from samples
-    #with open("sim_from_samples", "wb") as pickle_file:
-        #pickle.dump(s_x, pickle_file)
 
 
 if __name__ == "__main__":

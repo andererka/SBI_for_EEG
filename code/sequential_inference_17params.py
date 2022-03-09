@@ -159,6 +159,12 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
+    obs_real_complete = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:])]), 
+        simulation_wrapper = sim_wrapper, 
+        num_workers=1
+    )
+
     
     try:
         theta = torch.load('step1/thetas.pt')
@@ -205,8 +211,6 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-    
-    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:2700]]
 
     x_without = x_without[:,:2700]
 
@@ -226,17 +230,7 @@ def main(argv):
 
     #### either simulate 'fake observation' or load data from hnn 
 
-
-
-    #obs_real = inference.run_only_sim(
-    #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
-#)  
-
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:6])]), 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
-    )  # first output gives summary statistics, second without
+    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
 
     print('obs real', obs_real)
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
@@ -300,15 +294,7 @@ def main(argv):
     posterior = inf.build_posterior(density_estimator)
 
 
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:12])]),
-        sim_wrapper,
-        num_workers=num_workers
-    )  # first output gives summary statistics, second without
-
-
-    #obs_real = [torch.index_select(trace_torch, 1, torch.tensor([3])).squeeze(1)[:4200]]
-
+    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
 
@@ -354,6 +340,13 @@ def main(argv):
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
+
+
+    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+
+    posterior.set_default_x(obs_real_stat)
    
 
     file_writer.save_posterior(posterior)
