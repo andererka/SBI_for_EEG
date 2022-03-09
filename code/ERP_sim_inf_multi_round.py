@@ -166,12 +166,13 @@ def main(argv):
 
     print(torch.tensor([list(true_params[0])]))
 
-    obs_real = inference.run_only_sim(
+    obs_real_complete = inference.run_only_sim(
         torch.tensor([list(true_params[0][0:])]), 
         simulation_wrapper = sim_wrapper, 
         num_workers=1
     )
-    obs_real_stat = calculate_summary_stats_temporal([obs_real])
+
+    obs_real = [obs_real_complete[0]]
 
     posteriors = []
     proposal = prior
