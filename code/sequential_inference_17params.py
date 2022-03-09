@@ -289,9 +289,9 @@ def main(argv):
     x_N100 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_N100)
-    density_estimator = inf.train()
+    neural_dens = inf.train()
 
-    posterior = inf.build_posterior(density_estimator)
+    posterior = inf.build_posterior(neural_dens)
 
 
     obs_real = [obs_real_complete[0][:x_without.shape[1]]]
