@@ -6,6 +6,8 @@ import os.path as op
 import tempfile
 import datetime
 
+import shutil
+
 
 import numpy as np
 from summary_features.calculate_summary_features import calculate_summary_stats_temporal
@@ -75,9 +77,9 @@ def main(argv):
     except:
         num_params = 6
     try:
-        sample_method = argv[5]
+        slurm = bool(int(argv[5]))
     except:
-        sample_method = "rejection"
+        slurm = True
 
     sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=True)
 
@@ -182,8 +184,13 @@ def main(argv):
     density_estimator=density_estimator,
     num_params=num_params,
     num_samples=num_samples,
-    slurm=True
+    slurm=slurm
 )
+
+    open('{}/ERP_sim_inf_multi_round.py'.format(file_writer.folder), 'a').close()
+
+    shutil.copyfile(str(os.getcwd() + '/ERP_sim_inf_multi_round.py'), str(file_writer.folder+ '/ERP_sim_inf_multi_round.py'))
+
 
     try:
         os.mkdir(file_writer.folder)
@@ -217,7 +224,7 @@ def main(argv):
         inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
 
-        inf = inf.append_simulations(theta, x)
+        inf = inf.append_simulations(theta, x, proposal=proposal)
 
         neural_dens= inf.train()
 
@@ -258,8 +265,9 @@ def main(argv):
 
     torch.save(obs_real, 'obs_real.pt')
 
-
-
+    ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
+    with open('posterior2.pt', 'rb') as f:
+        pickle.dump(posterior, f)
 
 
     ##save class
