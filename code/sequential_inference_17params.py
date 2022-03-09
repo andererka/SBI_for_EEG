@@ -150,11 +150,13 @@ def main(argv):
     except:
         print('step files exist')
 
-    shutil.copyfile('sequential_inference_17params.py', file_writer.folder)
+    
+
+    open('{}/sequential_inference_17params.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + 'sequential_inference_17params.py'), str(file_writer.folder+ 'sequential_inference_17params.py'))
+
 
     os.chdir(file_writer.folder)
-
-        
 
     
     try:
