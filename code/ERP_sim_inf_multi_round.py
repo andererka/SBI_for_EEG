@@ -171,14 +171,14 @@ def main(argv):
         simulation_wrapper = sim_wrapper, 
         num_workers=1
     )
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal([obs_real])
 
     posteriors = []
     proposal = prior
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_multi_round_num_params_{}newparams".format(
+    experiment="{}_multi_round_num_params_{}validate".format(
         number_simulations, num_params
     ),
     num_sim=number_simulations,
