@@ -234,7 +234,6 @@ def main(argv):
     proposal1 = posterior.set_default_x(obs_real_stat)
 
     ###### continuing with N100 parameters/summary stats:
-    #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
     prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
@@ -358,4 +357,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    torch.manual_seed(0)
+    np.random.seed(0)
     main(sys.argv[1:])

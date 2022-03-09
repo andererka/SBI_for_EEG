@@ -301,8 +301,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    torch.manual_seed(1)
-    np.random.seed(1)
+    torch.manual_seed(3)
+    np.random.seed(3)
     #print(os.getcwd())
     #os.chdir('code')
     main(sys.argv[1:])

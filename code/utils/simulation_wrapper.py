@@ -151,20 +151,6 @@ class SimulationWrapper:
 
 
 
-
-from random import randrange
-
-
-def event_seed():
-    """
-    description: makes sure that one does not take the same random seed for each simulation as it would be the default in the hnn core code;
-    permalink to the hnn code location: https://github.com/jonescompneurolab/hnn-core/blob/0406ed1a2b2335b786e83eb1698f27a5c3dcdadc/hnn_core/drives.py#L262
-
-    """
-    seed = randrange(2000)
-    return seed
-
-
 def set_network_default(params=None):
 
     """
@@ -192,7 +178,6 @@ def set_network_default(params=None):
         weights_nmda=weights_nmda_d1,
         location="distal",
         synaptic_delays=synaptic_delays_d1,
-        event_seed=event_seed(),
     )
 
     weights_ampa_p1 = {
@@ -218,7 +203,6 @@ def set_network_default(params=None):
         weights_nmda=None,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
     )
 
     # Second proximal evoked drive. NB: only AMPA weights differ from first
@@ -237,7 +221,6 @@ def set_network_default(params=None):
         weights_ampa=weights_ampa_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
     )
 
     return net
@@ -855,7 +838,6 @@ def set_network_weights_2_per_step(params=None, num=2):
         weights_nmda=None,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        #event_seed=event_seed(),
     )
 
 
@@ -886,7 +868,6 @@ def set_network_weights_2_per_step(params=None, num=2):
         weights_nmda=weights_nmda_d1,
         location="distal",
         synaptic_delays=synaptic_delays_d1,
-        #event_seed=event_seed(),
     )
 
     if (num_params ==4):
@@ -909,7 +890,6 @@ def set_network_weights_2_per_step(params=None, num=2):
         weights_ampa=weights_ampa_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        #event_seed=event_seed(),
     )
 
     return net
@@ -926,7 +906,6 @@ def set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, m
     weights_nmda=weights_nmda_p1,
     location="proximal",
     synaptic_delays=synaptic_delays_prox,
-    #event_seed=event_seed(),
     )
 
 def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.08):
@@ -939,7 +918,6 @@ def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.
     weights_nmda=weights_nmda_d1,
     location="distal",
     synaptic_delays=synaptic_delays_d1,
-    #event_seed=event_seed(),
 )
 
 def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=120):
@@ -952,7 +930,6 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
     weights_nmda = weights_nmda_p2,
     location="proximal",
     synaptic_delays=synaptic_delays_p2,
-    #event_seed=event_seed(),
 )
 
 
@@ -997,7 +974,6 @@ def set_network_weights(params=None, num=6):
         weights_nmda=weights_nmda_p1,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        #event_seed=event_seed(),
     )
 
 
@@ -1027,7 +1003,6 @@ def set_network_weights(params=None, num=6):
         weights_nmda=weights_nmda_d1,
         location="distal",
         synaptic_delays=synaptic_delays_d1,
-        #event_seed=event_seed(),
     )
 
     if (len(params)==12):
@@ -1066,7 +1041,6 @@ def set_network_weights(params=None, num=6):
         weights_nmda = weights_nmda_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox2,
-        #event_seed=event_seed(),
     )
 
     return net
