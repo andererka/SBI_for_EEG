@@ -87,7 +87,7 @@ def main(argv):
         changed_order = False
 
 
-    sim_wrapper = SimulationWrapper(num_params=25, small_steps=True)
+    sim_wrapper = SimulationWrapper(num_params=25)
 
 
 

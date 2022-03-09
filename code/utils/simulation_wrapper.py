@@ -20,6 +20,8 @@ class SimulationWrapper:
 
     def __init__(self, num_params = 17, change_order = False):
         self.num_params = num_params
+
+        # not implemented so far in simulation function
         self.change_order = change_order
     
 

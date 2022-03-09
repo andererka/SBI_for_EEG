@@ -95,7 +95,7 @@ def main(argv):
     start_time_str = get_time()
     start_time = datetime.datetime.now()
 
-    sim_wrapper = SimulationWrapper(num_params=17, small_steps=False)
+    sim_wrapper = SimulationWrapper(num_params=17)
 
 
 

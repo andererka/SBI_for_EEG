@@ -81,7 +81,7 @@ def main(argv):
     except:
         slurm = True
 
-    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=True)
+    sim_wrapper = SimulationWrapper(num_params=num_params)
 
    
     ##defining the prior lower and upper bounds
