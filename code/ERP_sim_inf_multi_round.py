@@ -190,10 +190,6 @@ def main(argv):
     slurm=slurm
 )
 
-    open('{}/ERP_sim_inf_multi_round.py'.format(file_writer.folder), 'a').close()
-
-    shutil.copyfile(str(os.getcwd() + '/ERP_sim_inf_multi_round.py'), str(file_writer.folder+ '/ERP_sim_inf_multi_round.py'))
-
 
     try:
         os.mkdir(file_writer.folder)
@@ -202,6 +198,11 @@ def main(argv):
         print('mkdir file')
     except:
         print('file exists')
+
+    open('{}/ERP_sim_inf_multi_round.py'.format(file_writer.folder), 'a').close()
+
+    shutil.copyfile(str(os.getcwd() + '/ERP_sim_inf_multi_round.py'), str(file_writer.folder+ '/ERP_sim_inf_multi_round.py'))
+
 
     os.chdir(file_writer.folder)
 
