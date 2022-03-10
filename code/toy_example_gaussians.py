@@ -85,7 +85,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [800, 1000, 1200, 1400, 1600, 1800, 2000, 2200]
+num_simulations_list = [800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2500, 3000, 5000, 10000]
 
 
 # In[7]:
@@ -521,6 +521,70 @@ fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
 
     
 
+axes['B'].plot(num_simulations_list, np.log(mean_incremental), '-o', color='blue')
+axes['A'].plot(num_simulations_list, np.log(mean_snpe), '-o',  color='orange')
+
+axes['B'].plot(num_simulations_list, np.log(upper_incremental), '--', color='blue')
+axes['A'].plot(num_simulations_list, np.log(upper_snpe), '--',  color='orange')
+
+axes['B'].plot(num_simulations_list, np.log(lower_incremental), '--', color='blue')
+axes['A'].plot(num_simulations_list, np.log(lower_snpe), '--',  color='orange')
+
+
+axes['C'].plot(num_simulations_list, np.log(mean_incremental), '-o',label='incremental', color='blue')
+axes['C'].plot(num_simulations_list, np.log(mean_snpe), '-o', label='snpe', color='orange')
+
+axes['C'].plot(num_simulations_list, np.log(upper_incremental), '--', color='blue')
+axes['C'].plot(num_simulations_list, np.log(upper_snpe), '--',  color='orange')
+
+axes['C'].plot(num_simulations_list, np.log(lower_incremental), '--',  color='blue')
+axes['C'].plot(num_simulations_list, np.log(lower_snpe), '--',  color='orange')
+
+
+axes['C'].fill_between(x= num_simulations_list, y1=np.log(lower_incremental), y2=np.log(upper_incremental), color='blue', alpha=0.2)
+axes['C'].fill_between(x= num_simulations_list, y1=np.log(lower_snpe), y2=np.log(upper_snpe), color='orange', alpha=0.2)
+
+
+axes['B'].fill_between(x= num_simulations_list, y1=np.log(lower_incremental), y2=np.log(upper_incremental), color='blue', alpha=0.2)
+axes['A'].fill_between(x= num_simulations_list, y1=np.log(lower_snpe), y2=np.log(upper_snpe), color='orange', alpha=0.2)
+
+
+axes['B'].fill_between(x= num_simulations_list, y1=np.log(lower_incremental), y2=np.log(upper_incremental), color='blue', alpha=0.2)
+axes['A'].fill_between(x= num_simulations_list, y1=np.log(lower_snpe), y2=np.log(upper_snpe), color='orange', alpha=0.2)
+
+
+#plt.title('KL loss')
+axes['A'].legend()
+axes['B'].legend()
+axes['C'].legend()
+
+plt.xlabel('simulations per round')
+plt.ylabel('KL divergence')
+
+axes['A'].set_title('SNPE')
+axes['B'].set_title('Incremental')
+
+
+#axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#plt.xticks(['1k', '3k', '5k', '10k'])
+
+
+# In[44]:
+
+plt.savefig('Gauss_plot_1stddev.png')
+
+
+figure_mosaic = """
+ACC
+BCC
+"""
+
+fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
+
+    
+
 axes['B'].plot(num_simulations_list, mean_incremental, '-o', color='blue')
 axes['A'].plot(num_simulations_list, mean_snpe, '-o',  color='orange')
 
@@ -573,6 +637,6 @@ axes['B'].set_title('Incremental')
 
 # In[44]:
 
-plt.savefig('Gauss_plot_1stddev.png')
+plt.savefig('Gauss_plot_1stddev_log.png')
 
 
