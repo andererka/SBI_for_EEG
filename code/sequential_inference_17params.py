@@ -86,7 +86,7 @@ def main(argv):
     try:
         density_estimator = argv[5]
     except:
-        density_estimator = 'nsf'
+        density_estimator = 'maf'
 
     ## using a density estimator with only 1 transform (which should be enough for the 1D case)
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)

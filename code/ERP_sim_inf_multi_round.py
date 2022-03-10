@@ -48,7 +48,7 @@ def main(argv):
     argument settings:
 
     arg 1: number of simulations; default is 50
-    arg 2: density estimator; default is nsf
+    arg 2: density estimator; default is maf
     arg 3: number of workers; should be set to the number of available cpus; default is 8
     arg 4: number of samples that should be drawn from posterior; default is 100
     
@@ -62,7 +62,7 @@ def main(argv):
     try:
         density_estimator = argv[1]
     except:
-        density_estimator = "nsf"
+        density_estimator = "maf"
     try:
         num_workers = int(argv[2])
     except:

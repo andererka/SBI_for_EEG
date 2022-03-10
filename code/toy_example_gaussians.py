@@ -85,7 +85,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200]
+num_simulations_list = [800, 1000, 1200, 1400, 1600, 1800, 2000, 2200]
 
 
 # In[7]:
@@ -113,11 +113,13 @@ for i in range(5):
         prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
         simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
         
-        inf = SNPE_C(prior, density_estimator="nsf")
+        inf = SNPE_C(prior, density_estimator="maf")
         
         proposal = prior
 
         for j in range(3):
+
+            print('round: ', j)
             
             theta, x = simulate_for_sbi(
                 simulator_stats,
@@ -136,6 +138,8 @@ for i in range(5):
 
 
             proposal = posterior.set_default_x(obs_real)
+
+  
 
 
         posterior_snpe = posterior
@@ -189,7 +193,7 @@ for i in range(5):
         
         simulator_stats, prior_i = prepare_for_sbi(Gaussian, prior_i)
         
-        inf = SNPE_C(prior_i, density_estimator="nsf")
+        inf = SNPE_C(prior_i, density_estimator="maf")
         
         proposal = prior_i
 
@@ -238,7 +242,7 @@ for i in range(5):
 
 
             ## set inf for next round:
-            inf = SNPE_C(combined_prior, density_estimator="nsf")
+            inf = SNPE_C(combined_prior, density_estimator="maf")
 
 
             ## set combined prior to be the new prior_i:
