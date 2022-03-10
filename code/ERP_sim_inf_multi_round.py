@@ -174,6 +174,8 @@ def main(argv):
 
     obs_real = [obs_real_complete[0]]
 
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+
     posteriors = []
     proposal = prior
 
