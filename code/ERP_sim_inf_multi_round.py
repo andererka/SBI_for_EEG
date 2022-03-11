@@ -272,7 +272,7 @@ def main(argv):
     torch.save(obs_real, 'obs_real.pt')
 
     ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
-    with open('posterior2.pt', 'rb') as f:
+    with open('posterior2.pt', 'wb') as f:
         pickle.dump(posterior, f)
 
 
