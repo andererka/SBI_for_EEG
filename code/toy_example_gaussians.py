@@ -85,7 +85,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 1000, 1400, 1800, 2000, 2500, 3000]
+num_simulations_list = [1000, 2000, 3000, 4000, 5000]
 
 
 # In[7]:
@@ -103,7 +103,7 @@ list_collection = []
 
 obs_real = Gaussian(true_thetas[0])
 
-for i in range(5):
+for i in range(10):
     
 
     posterior_snpe_list = []
@@ -179,7 +179,7 @@ import datetime
 list_collection_inc = []
 
 
-for i in range(5):
+for i in range(10):
     
     np.random.seed(i)
 
