@@ -78,7 +78,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 800, 1000, 1200, 1400]
+num_simulations_list = [600, 800, 1000]
 
 
 # In[7]:
@@ -319,7 +319,7 @@ ACC
 BCC
 """
 
-fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
+fig, axes = plt.subplot_mosaic(layout=figure_mosaic, figsize=(11, 8))
 
     
 

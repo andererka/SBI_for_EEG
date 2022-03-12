@@ -85,7 +85,8 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [1000, 2000, 3000, 4000, 5000]
+num_simulations_list = [600, 800, 1000, 2000]
+density_estimator = 'maf'
 
 
 # In[7]:
@@ -113,7 +114,7 @@ for i in range(10):
         prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
         simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
         
-        inf = SNPE_C(prior, density_estimator="maf")
+        inf = SNPE_C(prior, density_estimator=density_estimator)
         
         proposal = prior
 
@@ -130,10 +131,10 @@ for i in range(10):
             
             print('x', x)
 
-            density_estimator = inf.append_simulations(theta, x, proposal=proposal).train()
+            neural_dens = inf.append_simulations(theta, x).train()
 
 
-            posterior = inf.build_posterior(density_estimator)
+            posterior = inf.build_posterior(neural_dens)
 
 
 
@@ -193,7 +194,7 @@ for i in range(10):
         
         simulator_stats, prior_i = prepare_for_sbi(Gaussian, prior_i)
         
-        inf = SNPE_C(prior_i, density_estimator="maf")
+        inf = SNPE_C(prior_i, density_estimator=density_estimator)
         
         proposal = prior_i
 
@@ -517,7 +518,7 @@ ACC
 BCC
 """
 
-fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
+fig, axes = plt.subplot_mosaic(layout=figure_mosaic, figsize=(11, 8))
 
     
 
@@ -564,6 +565,8 @@ plt.ylabel('KL divergence')
 axes['A'].set_title('SNPE')
 axes['B'].set_title('Incremental')
 
+plt.savefig('Gauss_plot_1stddev_maf_noprop.png')
+
 
 #axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
 #axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
@@ -583,7 +586,7 @@ lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
 
 upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
 
-plt.savefig('Gauss_plot_1stddev.png')
+
 
 
 figure_mosaic = """
@@ -591,7 +594,7 @@ ACC
 BCC
 """
 
-fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
+fig, axes = plt.subplot_mosaic(layout=figure_mosaic, figsize=(11, 8))
 
     
 
@@ -647,6 +650,6 @@ axes['B'].set_title('Incremental')
 
 # In[44]:
 
-plt.savefig('Gauss_plot_1stddev_log.png')
+plt.savefig('Gauss_plot_1stddev_log_maf_noprob.png')
 
 
