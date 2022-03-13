@@ -9,7 +9,7 @@
 
 # In[1]:
 
-
+import datetime
 import sys
 sys.path.append('../code/')
 
@@ -85,7 +85,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 800, 1000, 2000]
+num_simulations_list = [600, 800, 1000, 2000, 3000]
 density_estimator = 'maf'
 
 
@@ -103,6 +103,8 @@ obs_real
 list_collection = []
 
 obs_real = Gaussian(true_thetas[0])
+
+start_time = datetime.datetime.now()
 
 for i in range(10):
     
@@ -151,7 +153,19 @@ for i in range(10):
 
 
 # In[ ]:
+end_time = datetime.datetime.now()
 
+
+diff_time = end_time - start_time
+
+import json
+
+step_time_str = get_time()
+json_dict = {
+"CPU time for step:": str(diff_time)}
+with open( "time_snpe.json", "a") as f:
+    json.dump(json_dict, f)
+    f.close()
 
 torch.save(list_collection, 'list_collection.pt')
 
@@ -175,10 +189,11 @@ list_collection
 
 range_list = [5,10, 15]
 
-import datetime
+
 
 list_collection_inc = []
 
+start_time = datetime.datetime.now()
 
 for i in range(10):
     
@@ -276,6 +291,20 @@ for i in range(10):
 
 
 # In[50]:
+
+end_time = datetime.datetime.now()
+
+
+diff_time = end_time - start_time
+
+import json
+
+step_time_str = get_time()
+json_dict = {
+"CPU time for step:": str(diff_time)}
+with open( "time_incremental.json", "a") as f:
+    json.dump(json_dict, f)
+    f.close()
 
 
 torch.save(list_collection_inc, 'list_collection_inc.pt')
