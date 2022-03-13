@@ -518,7 +518,7 @@ ACC
 BCC
 """
 
-fig, axes = plt.subplot_mosaic(layout=figure_mosaic, figsize=(11, 8))
+fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
 
     
 
@@ -594,7 +594,7 @@ ACC
 BCC
 """
 
-fig, axes = plt.subplot_mosaic(layout=figure_mosaic, figsize=(11, 8))
+fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
 
     
 

@@ -266,16 +266,6 @@ for posterior_incremental_list in list_collection_inc:
 
     
 
-
-# In[37]:
-
-
-len(overall_incremental_list)
-
-
-# In[65]:
-
-
 mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
 print(mean_incremental)
@@ -285,9 +275,9 @@ stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 print(stdev_incremental)
 
 
-lower_incremental = mean_incremental - [element * 1.96 for element in stdev_incremental]
+lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
 
-upper_incremental = mean_incremental + [element * 1.96 for element in stdev_incremental]
+upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
 
 
 # In[66]:
@@ -302,9 +292,9 @@ stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 print(stdev_snpe)
 
 
-lower_snpe = mean_snpe - [element * 1.96 for element in stdev_snpe]
+lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
 
-upper_snpe = mean_snpe + [element * 1.96 for element in stdev_snpe]
+upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
 
 
 # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
@@ -319,7 +309,83 @@ ACC
 BCC
 """
 
-fig, axes = plt.subplot_mosaic(layout=figure_mosaic, figsize=(11, 8))
+fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
+
+    
+
+axes['B'].plot(num_simulations_list, mean_incremental, '-o', color='blue')
+axes['A'].plot(num_simulations_list, mean_snpe, '-o',  color='orange')
+
+axes['B'].plot(num_simulations_list, upper_incremental, '--', color='blue')
+axes['A'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+
+axes['B'].plot(num_simulations_list, lower_incremental, '--', color='blue')
+axes['A'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+
+
+axes['C'].plot(num_simulations_list, mean_incremental, '-o',label='incremental', color='blue')
+axes['C'].plot(num_simulations_list, mean_snpe, '-o', label='snpe', color='orange')
+
+axes['C'].plot(num_simulations_list, upper_incremental, '--', color='blue')
+axes['C'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+
+axes['C'].plot(num_simulations_list, lower_incremental, '--',  color='blue')
+axes['C'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+
+
+axes['C'].fill_between(x= num_simulations_list, y1=lower_incremental, y2=upper_incremental, color='blue', alpha=0.2)
+axes['C'].fill_between(x= num_simulations_list, y1=lower_snpe, y2=upper_snpe, color='orange', alpha=0.2)
+
+
+axes['B'].fill_between(x= num_simulations_list, y1=lower_incremental, y2=upper_incremental, color='blue', alpha=0.2)
+axes['A'].fill_between(x= num_simulations_list, y1=lower_snpe, y2=upper_snpe, color='orange', alpha=0.2)
+
+
+axes['B'].fill_between(x= num_simulations_list, y1=lower_incremental, y2=upper_incremental, color='blue', alpha=0.2)
+axes['A'].fill_between(x= num_simulations_list, y1=lower_snpe, y2=upper_snpe, color='orange', alpha=0.2)
+
+
+#plt.title('KL loss')
+axes['A'].legend()
+axes['B'].legend()
+axes['C'].legend()
+
+plt.xlabel('simulations per round')
+plt.ylabel('KL divergence')
+
+axes['A'].set_title('SNPE')
+axes['B'].set_title('Incremental')
+
+plt.savefig('Gauss_plot_1stddev_maf_noprop.png')
+
+
+#axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#plt.xticks(['1k', '3k', '5k', '10k'])
+
+mean_snpe = np.log(np.mean(np.array(overall_snpe_list), axis=0))
+
+
+
+stdev_snpe = np.log(np.std(np.array(overall_snpe_list), axis=0))
+
+
+
+
+lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
+
+upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
+
+
+
+
+figure_mosaic = """
+ACC
+BCC
+"""
+
+fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
 
     
 
@@ -375,6 +441,6 @@ axes['B'].set_title('Incremental')
 
 # In[44]:
 
-plt.savefig('Gauss_plot.png')
+plt.savefig('Gauss_plot_1stddev_log_maf_noprob.png')
 
 
