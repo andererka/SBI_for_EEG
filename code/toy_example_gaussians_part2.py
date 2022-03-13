@@ -78,8 +78,7 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 800, 1000]
-
+num_simulations_list = [600, 800, 1000, 2000]
 
 # In[7]:
 
@@ -116,21 +115,7 @@ def calc_KL_highd(posterior):
 # In[ ]:
 
 
-def calc_KL_1d(posterior):
-    
-    sample = posterior.sample((10000,))
-    
-    analytic = torch.distributions.normal.Normal(true_thetas, 0.1)
-    
-    analytic_sample = analytic.sample((10000,)).squeeze(1)
-    
-    out_list = []
-    for i in range(len(posterior)):
-        
-        out = F.kl_div(analytic_sample[:,i], sample[:,i])
-        out_list.append(out)
-    
-    return out_list
+
 
 
 # In[11]:
