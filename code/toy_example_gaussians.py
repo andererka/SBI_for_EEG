@@ -86,7 +86,7 @@ prior_min = [1.0] * 15
 
 
 num_simulations_list = [600, 800, 1000, 2000, 3000]
-density_estimator = 'maf'
+density_estimator = 'nsf'
 
 
 # In[7]:
@@ -163,7 +163,7 @@ import json
 step_time_str = get_time()
 json_dict = {
 "CPU time for step:": str(diff_time)}
-with open( "time_snpe.json", "a") as f:
+with open( "time_snpe_nsf.json", "a") as f:
     json.dump(json_dict, f)
     f.close()
 
@@ -302,7 +302,7 @@ import json
 step_time_str = get_time()
 json_dict = {
 "CPU time for step:": str(diff_time)}
-with open( "time_incremental.json", "a") as f:
+with open( "time_incremental_nsf.json", "a") as f:
     json.dump(json_dict, f)
     f.close()
 
@@ -594,7 +594,7 @@ plt.ylabel('KL divergence')
 axes['A'].set_title('SNPE')
 axes['B'].set_title('Incremental')
 
-plt.savefig('Gauss_plot_1stddev_maf_noprop.png')
+plt.savefig('Gauss_plot_1stddev_nsf_noprop.png')
 
 
 #axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
@@ -679,6 +679,6 @@ axes['B'].set_title('Incremental')
 
 # In[44]:
 
-plt.savefig('Gauss_plot_1stddev_log_maf_noprob.png')
+plt.savefig('Gauss_plot_1stddev_log_nsf_noprob.png')
 
 
