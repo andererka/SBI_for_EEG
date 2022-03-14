@@ -467,17 +467,18 @@ def calculate_summary_stats_temporal(x):
     return sum_stats
 
 
-def calculate_summary_statistics_alternative(x, number=0):
+def calculate_summary_statistics_alternative(x, step=20):
     """
     reduces time resolution, but does not calculate real summary statistics
     with x[:,::20] every 20th step is taken into account. there is no kind of interpolation
     """
+    print('x', x)
     if (x.dim()==2):
         print(x.shape)
-        sum_stat = x[:,::20]
-        print(sum_stat.shape)
+        sum_stat = x[:,::step]
+        print('sum stats shape', sum_stat.shape)
     else:
-        sum_stat = x[::20]
-        print(sum_stat.shape)
+        sum_stat = x[::step]
+        print('sum stats shape', sum_stat.shape)
     return sum_stat
 

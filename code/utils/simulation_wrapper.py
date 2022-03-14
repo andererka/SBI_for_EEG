@@ -5,6 +5,8 @@ from summary_features.calculate_summary_features import (
 )
 import torch
 
+import numpy as np
+
 
 class SimulationWrapper:
     """
@@ -78,6 +80,8 @@ class SimulationWrapper:
         print('early stop', early_stop)
         print('param size ', param_size)
 
+
+
         params = params.tolist()
     
         net = set_network_weights(params)
@@ -86,7 +90,18 @@ class SimulationWrapper:
 
         dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
         for dpl in dpls:
+
+
             obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
+
+            # make time series more stochastic:
+            noise = np.random.normal(0, 0.1, obs.shape[0])
+
+            obs += noise
+
+
+            print('obs', obs)
+
 
         return torch.from_numpy(obs)
 
@@ -128,9 +143,15 @@ class SimulationWrapper:
         print('early stop', early_stop)
         print('param size ', param_size)
 
+
         params = params.tolist()
 
-        print(params)
+        # add more stochasticity to params:
+        #noise = np.random.normal(0, 0.1, param_size)
+
+        #params += noise
+
+        #print(params)
 
     
         if self.change_order == False:
@@ -144,7 +165,11 @@ class SimulationWrapper:
         dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
         for dpl in dpls:
             obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-            #obs = dpl.smooth(window_len).data["agg"]
+            
+            # make time series more stochastic:
+            noise = np.random.normal(0, 0.5, obs.shape[0])
+
+            obs += noise
 
         return torch.from_numpy(obs)
 

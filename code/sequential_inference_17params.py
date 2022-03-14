@@ -4,7 +4,7 @@ from data_load_writer import write_to_file
 
 
 from summary_features.calculate_summary_features import (
-    calculate_summary_stats_temporal
+    calculate_summary_stats_temporal, calculate_summary_statistics_alternative
 
 )
 
@@ -162,6 +162,7 @@ def main(argv):
             prior1, 
             sim_wrapper,
             num_simulations=int(num_sim*(1/10)),
+            #num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -203,7 +204,7 @@ def main(argv):
 
     x_without = x_without[:,:2700]
 
-    x_P50 = calculate_summary_stats_temporal(x_without)
+    x_P50 = calculate_summary_statistics_alternative(x_without)
 
     print('x_P50',x_P50)
 
@@ -219,10 +220,10 @@ def main(argv):
 
     #### either simulate 'fake observation' or load data from hnn 
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
 
     print('obs real', obs_real)
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
 
 
 
@@ -274,7 +275,7 @@ def main(argv):
     print(x_without.shape)
     x_without = x_without[:,:4200]
 
-    x_N100 = calculate_summary_stats_temporal(x_without)
+    x_N100 = calculate_summary_statistics_alternative(x_without)
 
     print('x:N100 shape', x_N100.shape)
 
@@ -284,8 +285,8 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
+    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
 
 
 
@@ -310,7 +311,8 @@ def main(argv):
             combined_prior,
             sim_wrapper,
             num_simulations=int(num_sim*(19/10)),
-            num_workers=num_workers
+            #num_simulations = num_sim,
+            num_workers = num_workers
         )
 
         file_writer.save_obs_without(x_without, name='step3')
@@ -332,9 +334,9 @@ def main(argv):
             f.close()
 
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
 
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
 
     posterior.set_default_x(obs_real_stat)
    
