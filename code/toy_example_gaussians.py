@@ -30,7 +30,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
-from sbi.inference import SNPE_C
+from sbi.inference import SNPE
 
 import sbi
 
@@ -116,7 +116,7 @@ for i in range(10):
         prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
         simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
         
-        inf = SNPE_C(prior, density_estimator=density_estimator)
+        inf = SNPE(prior, density_estimator=density_estimator)
         
         proposal = prior
 
@@ -133,7 +133,7 @@ for i in range(10):
             
             print('x', x)
 
-            neural_dens = inf.append_simulations(theta, x).train()
+            neural_dens = inf.append_simulations(theta, x, proposal=proposal).train()
 
 
             posterior = inf.build_posterior(neural_dens)
@@ -258,7 +258,7 @@ for i in range(10):
 
 
             ## set inf for next round:
-            inf = SNPE_C(combined_prior, density_estimator="maf")
+            inf = SNPE(combined_prior, density_estimator="maf")
 
 
             ## set combined prior to be the new prior_i:
@@ -601,6 +601,19 @@ plt.savefig('Gauss_plot_1stddev_nsf_noprop.png')
 #axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
 #axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
 #plt.xticks(['1k', '3k', '5k', '10k'])
+
+
+mean_incremental = np.log(np.mean(np.array(overall_incremental_list), axis=0))
+
+
+stdev_incremental = np.log(np.std(np.array(overall_incremental_list), axis=0))
+
+
+
+lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
+
+upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
+
 
 mean_snpe = np.log(np.mean(np.array(overall_snpe_list), axis=0))
 
