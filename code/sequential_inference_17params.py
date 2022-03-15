@@ -334,6 +334,16 @@ def main(argv):
             f.close()
 
 
+    x = calculate_summary_stats_temporal(x_without)
+
+    print('x shape', x.shape)
+
+    inf = inf.append_simulations(theta, x)
+    neural_dens = inf.train()
+
+    posterior = inf.build_posterior(neural_dens)
+
+
     obs_real = obs_real_complete[0][:x_without.shape[1]]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
