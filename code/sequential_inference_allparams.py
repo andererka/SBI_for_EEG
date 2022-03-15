@@ -77,17 +77,21 @@ def main(argv):
     except:
         slurm = True
     try:
+        density_estimator = argv[5]
+    except:
+        density_estimator = 'nsf'
+    try:
         #if argument input is 0, bool is giving False, if 1 bool is returning True
-        changed_order = bool(int(argv[5]))
+        changed_order = bool(int(argv[6]))
     except:
         changed_order = False
 
 
-    sim_wrapper = SimulationWrapper(num_params=25, small_steps=True)
+    sim_wrapper = SimulationWrapper(num_params=25)
 
 
 
-    prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
+    prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 13.3,    # prox1 weights
                 0, 0, 0, 0, 0, 0, 51.980,            # distal weights
                 0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights
   
@@ -116,7 +120,7 @@ def main(argv):
     if changed_order:
 
         prior_max = [0.0519, 1.0, 2.093, 1.0, 0.160, 1.0, 0.927, 1.0, 35.9,
-            0.854, 0.480, 0.000042, 0.025902, 0.0394, 0.0394, 0.117, 
+            0.854, 0.480, 0.000042, 0.025902, 0.0394, 0.117, 75.08, 
             4.104,  1.0, 0.05375, 1.0,  8.633, 1.0, 0.000018, 1.0, 162.110]
 
         true_params = torch.tensor([[0.034, 0.0, 0.6244, 0.3739, 0.0399, 0.0, 0.277, 0.3739, 18.977, 
@@ -135,7 +139,7 @@ def main(argv):
     file_writer = write_to_file.WriteToFile(
     experiment=experiment_name,
     num_sim=num_sim,
-    density_estimator='nsf',
+    density_estimator=density_estimator,
     num_params=len(prior_max),
     num_samples=num_samples,
     slurm=slurm,
@@ -158,9 +162,8 @@ def main(argv):
 
     prior_i = utils.torchutils.BoxUniform(low=prior_min[0:range_list[0]], high=prior_max[0:range_list[0]])
 
-    inf = SNPE_C(prior_i, density_estimator='mdn')
+    inf = SNPE_C(prior_i, density_estimator=density_estimator)
 
-    start_num = 1
 
     obs_real_complete = inference.run_only_sim(
         torch.tensor([list(true_params[0][0:])]), 
@@ -177,11 +180,6 @@ def main(argv):
 
         print(i, j)
 
-        num_sim_round = int(num_sim * (start_num / 10))
-
-        print('number of simulations in this round', num_sim_round)
-
-        start_num += 9
 
 
         start_time = datetime.datetime.now()
@@ -189,13 +187,15 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior_i, 
             sim_wrapper,
-            num_simulations=num_sim_round,
+            num_simulations=num_sim,
             num_workers=num_workers
         )
 
         print(x_without.shape)
         print(obs_real_complete[0].shape)
         obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+
+        print(obs_real[0].shape)
 
 
         x = calculate_summary_stats_temporal(x_without)
@@ -206,15 +206,17 @@ def main(argv):
 
         obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
+        print('obs real stat', obs_real_stat)
+
         proposal1 = posterior.set_default_x(obs_real_stat)
 
         next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-        combined_prior = Combined(proposal1, next_prior, round = index)
+        combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
 
         ## set inf for next round:
-        inf = SNPE_C(combined_prior, density_estimator="mdn")
+        inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
     
         ## set combined prior to be the new prior_i:
@@ -226,8 +228,7 @@ def main(argv):
 
         json_dict = {
         "CPU time for step:": str(diff_time),
-        'number of simulations in this round': num_sim_round,
-	'thetas used': i}
+	    'thetas used': i}
         with open( "meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -237,12 +238,11 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    num_sim_round = int(num_sim * (start_num / 10))
 
     theta, x_without = inference.run_sim_theta_x(
         prior_i, 
         sim_wrapper,
-        num_simulations= num_sim_round,
+        num_simulations= num_sim,
         num_workers=num_workers
     )
 
@@ -257,9 +257,22 @@ def main(argv):
 
     posterior = inf.build_posterior(neural_dens)
 
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+
+    posterior.set_default_x(obs_real_stat)
+
 
     file_writer.save_posterior(posterior)
+
+    ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
+    with open('posterior2.pt', 'rb') as f:
+        pickle.dump(posterior, f)
+
+
     file_writer.save_prior(prior_i)
+
+    torch.save(combined_prior, 'combined_prior.pt')
+    torch.save(neural_dens, 'neural_dens.pt')
 
     os.chdir(file_writer.folder)
 
@@ -277,6 +290,7 @@ def main(argv):
     'change order:': str(changed_order),
     'true parameters:': str(true_params),
     'number of simulations:': str(num_sim),
+
     'range list:': str(range_list)}
 
     with open( "meta_overview.json".format(i), "a") as f:
@@ -287,8 +301,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    torch.manual_seed(1)
-    np.random.seed(1)
+    torch.manual_seed(3)
+    np.random.seed(3)
     #print(os.getcwd())
     #os.chdir('code')
     main(sys.argv[1:])

@@ -9,7 +9,7 @@
 
 # In[1]:
 
-
+import datetime
 import sys
 sys.path.append('../code/')
 
@@ -30,7 +30,7 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
-from sbi.inference import SNPE_C
+from sbi.inference import SNPE
 
 import sbi
 
@@ -85,7 +85,8 @@ prior_min = [1.0] * 15
 # In[6]:
 
 
-num_simulations_list = [600, 800, 1000, 1200, 1400]
+num_simulations_list = [600, 800, 1000, 2000, 3000]
+density_estimator = 'nsf'
 
 
 # In[7]:
@@ -103,7 +104,9 @@ list_collection = []
 
 obs_real = Gaussian(true_thetas[0])
 
-for i in range(5):
+start_time = datetime.datetime.now()
+
+for i in range(10):
     
 
     posterior_snpe_list = []
@@ -113,11 +116,13 @@ for i in range(5):
         prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
         simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
         
-        inf = SNPE_C(prior, density_estimator="mdn")
+        inf = SNPE(prior, density_estimator=density_estimator)
         
         proposal = prior
 
         for j in range(3):
+
+            print('round: ', j)
             
             theta, x = simulate_for_sbi(
                 simulator_stats,
@@ -128,14 +133,16 @@ for i in range(5):
             
             print('x', x)
 
-            density_estimator = inf.append_simulations(theta, x).train()
+            neural_dens = inf.append_simulations(theta, x, proposal=proposal).train()
 
 
-            posterior = inf.build_posterior(density_estimator)
+            posterior = inf.build_posterior(neural_dens)
 
 
 
             proposal = posterior.set_default_x(obs_real)
+
+  
 
 
         posterior_snpe = posterior
@@ -146,7 +153,19 @@ for i in range(5):
 
 
 # In[ ]:
+end_time = datetime.datetime.now()
 
+
+diff_time = end_time - start_time
+
+import json
+
+step_time_str = get_time()
+json_dict = {
+"CPU time for step:": str(diff_time)}
+with open( "time_snpe_nsf.json", "a") as f:
+    json.dump(json_dict, f)
+    f.close()
 
 torch.save(list_collection, 'list_collection.pt')
 
@@ -170,12 +189,13 @@ list_collection
 
 range_list = [5,10, 15]
 
-import datetime
+
 
 list_collection_inc = []
 
+start_time = datetime.datetime.now()
 
-for i in range(5):
+for i in range(10):
     
     np.random.seed(i)
 
@@ -189,7 +209,7 @@ for i in range(5):
         
         simulator_stats, prior_i = prepare_for_sbi(Gaussian, prior_i)
         
-        inf = SNPE_C(prior_i, density_estimator="mdn")
+        inf = SNPE_C(prior_i, density_estimator=density_estimator)
         
         proposal = prior_i
 
@@ -238,7 +258,7 @@ for i in range(5):
 
 
             ## set inf for next round:
-            inf = SNPE_C(combined_prior, density_estimator="mdn")
+            inf = SNPE(combined_prior, density_estimator="maf")
 
 
             ## set combined prior to be the new prior_i:
@@ -271,6 +291,20 @@ for i in range(5):
 
 
 # In[50]:
+
+end_time = datetime.datetime.now()
+
+
+diff_time = end_time - start_time
+
+import json
+
+step_time_str = get_time()
+json_dict = {
+"CPU time for step:": str(diff_time)}
+with open( "time_incremental_nsf.json", "a") as f:
+    json.dump(json_dict, f)
+    f.close()
 
 
 torch.save(list_collection_inc, 'list_collection_inc.pt')
@@ -366,18 +400,10 @@ def calc_KL_1d(X, Y):
     return np.log(var_y/var_x) + (var_x**2 + (mu_x - mu_y)**2)/(2*var_y**2) -(1/2)
 
 
-# calculate the jensen-shanon divergence
-def js_divergence(p, q):
-    m = 0.5 * (p + q)
-    return 0.5 * kl_divergence(p, m) + 0.5 * kl_divergence(q, m)
 
 
 # In[77]:
 
-
-analytic.sample((1000,)).shape
-
-posterior.sample((1000,)).shape
 
 
 # In[ ]:
@@ -487,9 +513,9 @@ stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 print(stdev_incremental)
 
 
-lower_incremental = mean_incremental - [element * 1.96 for element in stdev_incremental]
+lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
 
-upper_incremental = mean_incremental + [element * 1.96 for element in stdev_incremental]
+upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
 
 
 # In[66]:
@@ -504,9 +530,9 @@ stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 print(stdev_snpe)
 
 
-lower_snpe = mean_snpe - [element * 1.96 for element in stdev_snpe]
+lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
 
-upper_snpe = mean_snpe + [element * 1.96 for element in stdev_snpe]
+upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
 
 
 # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
@@ -514,6 +540,95 @@ upper_snpe = mean_snpe + [element * 1.96 for element in stdev_snpe]
 # #### x = number of simulations per round/step
 
 # In[67]:
+
+
+figure_mosaic = """
+ACC
+BCC
+"""
+
+fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
+
+    
+
+axes['B'].plot(num_simulations_list, mean_incremental, '-o', color='blue')
+axes['A'].plot(num_simulations_list, mean_snpe, '-o',  color='orange')
+
+axes['B'].plot(num_simulations_list, upper_incremental, '--', color='blue')
+axes['A'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+
+axes['B'].plot(num_simulations_list, lower_incremental, '--', color='blue')
+axes['A'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+
+
+axes['C'].plot(num_simulations_list, mean_incremental, '-o',label='incremental', color='blue')
+axes['C'].plot(num_simulations_list, mean_snpe, '-o', label='snpe', color='orange')
+
+axes['C'].plot(num_simulations_list, upper_incremental, '--', color='blue')
+axes['C'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+
+axes['C'].plot(num_simulations_list, lower_incremental, '--',  color='blue')
+axes['C'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+
+
+axes['C'].fill_between(x= num_simulations_list, y1=lower_incremental, y2=upper_incremental, color='blue', alpha=0.2)
+axes['C'].fill_between(x= num_simulations_list, y1=lower_snpe, y2=upper_snpe, color='orange', alpha=0.2)
+
+
+axes['B'].fill_between(x= num_simulations_list, y1=lower_incremental, y2=upper_incremental, color='blue', alpha=0.2)
+axes['A'].fill_between(x= num_simulations_list, y1=lower_snpe, y2=upper_snpe, color='orange', alpha=0.2)
+
+
+axes['B'].fill_between(x= num_simulations_list, y1=lower_incremental, y2=upper_incremental, color='blue', alpha=0.2)
+axes['A'].fill_between(x= num_simulations_list, y1=lower_snpe, y2=upper_snpe, color='orange', alpha=0.2)
+
+
+#plt.title('KL loss')
+axes['A'].legend()
+axes['B'].legend()
+axes['C'].legend()
+
+plt.xlabel('simulations per round')
+plt.ylabel('KL divergence')
+
+axes['A'].set_title('SNPE')
+axes['B'].set_title('Incremental')
+
+plt.savefig('Gauss_plot_1stddev_nsf_noprop.png')
+
+
+#axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+#plt.xticks(['1k', '3k', '5k', '10k'])
+
+
+mean_incremental = np.log(np.mean(np.array(overall_incremental_list), axis=0))
+
+
+stdev_incremental = np.log(np.std(np.array(overall_incremental_list), axis=0))
+
+
+
+lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
+
+upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
+
+
+mean_snpe = np.log(np.mean(np.array(overall_snpe_list), axis=0))
+
+
+
+stdev_snpe = np.log(np.std(np.array(overall_snpe_list), axis=0))
+
+
+
+
+lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
+
+upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
+
+
 
 
 figure_mosaic = """
@@ -577,6 +692,6 @@ axes['B'].set_title('Incremental')
 
 # In[44]:
 
-plt.savefig('Gauss_plot.png')
+plt.savefig('Gauss_plot_1stddev_log_nsf_noprob.png')
 
 

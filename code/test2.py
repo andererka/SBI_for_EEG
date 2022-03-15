@@ -43,32 +43,22 @@ prior_max = [0.927, 1.0, 0.160, 1.0,  2.093, 1.0, 0.0519, 1.0, 35.9,
 
 
 
-prior = utils.torchutils.BoxUniform(low=prior_min[0:9], high=prior_max[0:9])
 
 
-theta, x_without = inference.run_sim_theta_x(
-    prior, 
-    sim_wrapper,
-    num_simulations=4,
-    num_workers=2
+prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
+
+
+obs_real_complete = inference.run_only_sim(
+torch.tensor([list(true_params[0][0:])]), 
+simulation_wrapper = sim_wrapper, 
+num_workers=1
 )
 
+print(obs_real_complete.shape)
+
+obs_real = obs_real_complete[0][:2800]
 
 
-print(x_without.shape[1])
+obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
-print(torch.tensor([list(true_params[0][0:16])]))
-obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:16])]), 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
-    ) 
-
-
-
-print('shape', obs_real[0].shape[0])
-
-
-obs_real_i = obs_real[0][0:obs_real[0].shape[0]]
-
-print(obs_real_i)
+print(obs_real_stat[0])

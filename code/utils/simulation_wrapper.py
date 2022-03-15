@@ -5,6 +5,8 @@ from summary_features.calculate_summary_features import (
 )
 import torch
 
+import numpy as np
+
 
 class SimulationWrapper:
     """
@@ -18,18 +20,19 @@ class SimulationWrapper:
     
     """
 
-    def __init__(self, num_params = 17, change_order = False, small_steps = True):
+    def __init__(self, num_params = 17, change_order = False):
         self.num_params = num_params
+
+        # not implemented so far in simulation function
         self.change_order = change_order
-        self.small_steps = small_steps
     
 
     def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6):
-            if (self.change_order == False) and (self.small_steps == False):
+            if (self.change_order == False):
                 return self.simulation_wrapper_all(params)
             
-        elif (self.num_params == 25) and (self.small_steps==True):
+        elif (self.num_params == 25):
             return self.simulation_wrapper_all_small_steps(params)
 
 
@@ -77,15 +80,28 @@ class SimulationWrapper:
         print('early stop', early_stop)
         print('param size ', param_size)
 
+
+
         params = params.tolist()
     
-        net = set_network_weights(params, num=param_size)
+        net = set_network_weights(params)
 
         window_len, scaling_factor = 30, 3000
 
         dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
         for dpl in dpls:
+
+
             obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
+
+            # make time series more stochastic:
+            noise = np.random.normal(0, 0.1, obs.shape[0])
+
+            obs += noise
+
+
+            print('obs', obs)
+
 
         return torch.from_numpy(obs)
 
@@ -127,9 +143,15 @@ class SimulationWrapper:
         print('early stop', early_stop)
         print('param size ', param_size)
 
+
         params = params.tolist()
 
-        print(params)
+        # add more stochasticity to params:
+        #noise = np.random.normal(0, 0.1, param_size)
+
+        #params += noise
+
+        #print(params)
 
     
         if self.change_order == False:
@@ -143,26 +165,16 @@ class SimulationWrapper:
         dpls = simulate_dipole(net, tstop=early_stop, n_trials=1)
         for dpl in dpls:
             obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
-            #obs = dpl.smooth(window_len).data["agg"]
+            
+            # make time series more stochastic:
+            noise = np.random.normal(0, 0.5, obs.shape[0])
+
+            obs += noise
 
         return torch.from_numpy(obs)
 
 
 
-
-
-
-from random import randrange
-
-
-def event_seed():
-    """
-    description: makes sure that one does not take the same random seed for each simulation as it would be the default in the hnn core code;
-    permalink to the hnn code location: https://github.com/jonescompneurolab/hnn-core/blob/0406ed1a2b2335b786e83eb1698f27a5c3dcdadc/hnn_core/drives.py#L262
-
-    """
-    seed = randrange(2000)
-    return seed
 
 
 def set_network_default(params=None):
@@ -192,7 +204,6 @@ def set_network_default(params=None):
         weights_nmda=weights_nmda_d1,
         location="distal",
         synaptic_delays=synaptic_delays_d1,
-        event_seed=event_seed(),
     )
 
     weights_ampa_p1 = {
@@ -218,7 +229,6 @@ def set_network_default(params=None):
         weights_nmda=None,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
     )
 
     # Second proximal evoked drive. NB: only AMPA weights differ from first
@@ -237,7 +247,6 @@ def set_network_default(params=None):
         weights_ampa=weights_ampa_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        event_seed=event_seed(),
     )
 
     return net
@@ -820,7 +829,7 @@ def set_weights_small_steps_changed_order(params=None, num=2):
     return net
 
 
-def set_network_weights_2_per_step(params=None, num=2):
+def set_network_weights_2_per_step(params=None):
 
     """
     description: sets network to default values for an ERP as described in hnn tutorial
@@ -828,7 +837,10 @@ def set_network_weights_2_per_step(params=None, num=2):
 
     net = jones_2009_model()
 
-    num_params =  num
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
 
     weights_ampa_p1 = {
         "L2_basket": 0.08831,
@@ -855,7 +867,6 @@ def set_network_weights_2_per_step(params=None, num=2):
         weights_nmda=None,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        #event_seed=event_seed(),
     )
 
 
@@ -886,7 +897,6 @@ def set_network_weights_2_per_step(params=None, num=2):
         weights_nmda=weights_nmda_d1,
         location="distal",
         synaptic_delays=synaptic_delays_d1,
-        #event_seed=event_seed(),
     )
 
     if (num_params ==4):
@@ -909,7 +919,6 @@ def set_network_weights_2_per_step(params=None, num=2):
         weights_ampa=weights_ampa_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        #event_seed=event_seed(),
     )
 
     return net
@@ -926,7 +935,6 @@ def set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, m
     weights_nmda=weights_nmda_p1,
     location="proximal",
     synaptic_delays=synaptic_delays_prox,
-    #event_seed=event_seed(),
     )
 
 def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.08):
@@ -939,7 +947,6 @@ def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.
     weights_nmda=weights_nmda_d1,
     location="distal",
     synaptic_delays=synaptic_delays_d1,
-    #event_seed=event_seed(),
 )
 
 def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=120):
@@ -952,17 +959,21 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
     weights_nmda = weights_nmda_p2,
     location="proximal",
     synaptic_delays=synaptic_delays_p2,
-    #event_seed=event_seed(),
 )
 
 
-def set_network_weights(params=None, num=6):
+def set_network_weights(params=None):
 
     """
     description: sets network to default values for an ERP as described in hnn tutorial
     """
 
     net = jones_2009_model()
+
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
 
 
     weights_ampa_p1 = {
@@ -997,11 +1008,10 @@ def set_network_weights(params=None, num=6):
         weights_nmda=weights_nmda_p1,
         location="proximal",
         synaptic_delays=synaptic_delays_prox,
-        #event_seed=event_seed(),
     )
 
 
-    if (len(params)==6):
+    if (num_params==6):
 
         return net
 
@@ -1027,10 +1037,9 @@ def set_network_weights(params=None, num=6):
         weights_nmda=weights_nmda_d1,
         location="distal",
         synaptic_delays=synaptic_delays_d1,
-        #event_seed=event_seed(),
     )
 
-    if (len(params)==12):
+    if (num_params==12):
 
         return net
 
@@ -1066,7 +1075,6 @@ def set_network_weights(params=None, num=6):
         weights_nmda = weights_nmda_p2,
         location="proximal",
         synaptic_delays=synaptic_delays_prox2,
-        #event_seed=event_seed(),
     )
 
     return net

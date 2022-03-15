@@ -21,6 +21,11 @@ class Combined(Distribution):
     Inherits from Torch Distribution class
 
     implements own log_prob() and sample() for two different prior distributions such that parameter sets can be inferred sequentially - one posterior is based on another
+   
+    takes as arguments:
+    - posterior distribution of already inferred parameter set
+    - prior distribution of subsequent parameter set that is dependent on earlier parameter set
+    - number_params_1: number of parameters that was inferred already (in posterior distribution)
     """
 
     has_rsample = False
@@ -35,12 +40,6 @@ class Combined(Distribution):
         event_shape=torch.Size(),
         number_params_1=0,
     ):
-        """
-        takes as arguments:
-        - posterior distribution of already inferred parameter set
-        - prior distribution of subsequent parameter set that is dependent on earlier parameter set
-        - number_params_1: number of parameters that was inferred already (in posterior distribution)
-        """
         self._batch_shape = batch_shape
         self._event_shape = event_shape
         self._posterior_distribution = posterior_distribution
@@ -73,10 +72,11 @@ class Combined(Distribution):
         """
 
         with torch.no_grad():
+
             theta_posterior = self._posterior_distribution.sample(sample_shape)
             theta_prior = self._prior_distribution.sample(sample_shape)
-     
     
+            #make sure that thetas are in the right shape; otherwise unsqueeze:
             if theta_posterior.dim() == 1:
                 
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
@@ -85,11 +85,9 @@ class Combined(Distribution):
 
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
-            print('theta posterior', theta_posterior)
-            print('theta prior', theta_prior)
+
             theta = torch.cat((theta_posterior, theta_prior), 1)
 
-            print('theta shape', theta.shape)
 
         
             return theta

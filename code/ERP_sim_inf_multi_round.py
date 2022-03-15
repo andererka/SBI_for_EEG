@@ -6,6 +6,8 @@ import os.path as op
 import tempfile
 import datetime
 
+import shutil
+
 
 import numpy as np
 from summary_features.calculate_summary_features import calculate_summary_stats_temporal
@@ -46,7 +48,7 @@ def main(argv):
     argument settings:
 
     arg 1: number of simulations; default is 50
-    arg 2: density estimator; default is nsf
+    arg 2: density estimator; default is maf
     arg 3: number of workers; should be set to the number of available cpus; default is 8
     arg 4: number of samples that should be drawn from posterior; default is 100
     
@@ -60,7 +62,7 @@ def main(argv):
     try:
         density_estimator = argv[1]
     except:
-        density_estimator = "nsf"
+        density_estimator = "maf"
     try:
         num_workers = int(argv[2])
     except:
@@ -75,11 +77,11 @@ def main(argv):
     except:
         num_params = 6
     try:
-        sample_method = argv[5]
+        slurm = bool(int(argv[5]))
     except:
-        sample_method = "rejection"
+        slurm = True
 
-    sim_wrapper = SimulationWrapper(num_params=num_params, small_steps=True)
+    sim_wrapper = SimulationWrapper(num_params=num_params)
 
    
     ##defining the prior lower and upper bounds
@@ -164,8 +166,13 @@ def main(argv):
 
     print(torch.tensor([list(true_params[0])]))
 
-    obs_real = inference.run_only_sim(
-        torch.tensor(true_params), simulation_wrapper = sim_wrapper, num_workers=1) 
+    obs_real_complete = inference.run_only_sim(
+        torch.tensor([list(true_params[0][0:])]), 
+        simulation_wrapper = sim_wrapper, 
+        num_workers=1
+    )
+
+    obs_real = [obs_real_complete[0]]
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
@@ -174,7 +181,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_multi_round_num_params_{}newparams".format(
+    experiment="{}_multi_round_num_params_{}validate".format(
         number_simulations, num_params
     ),
     num_sim=number_simulations,
@@ -182,8 +189,9 @@ def main(argv):
     density_estimator=density_estimator,
     num_params=num_params,
     num_samples=num_samples,
-    slurm=True
+    slurm=slurm
 )
+
 
     try:
         os.mkdir(file_writer.folder)
@@ -192,6 +200,11 @@ def main(argv):
         print('mkdir file')
     except:
         print('file exists')
+
+    open('{}/ERP_sim_inf_multi_round.py'.format(file_writer.folder), 'a').close()
+
+    shutil.copyfile(str(os.getcwd() + '/ERP_sim_inf_multi_round.py'), str(file_writer.folder+ '/ERP_sim_inf_multi_round.py'))
+
 
     os.chdir(file_writer.folder)
 
@@ -217,7 +230,7 @@ def main(argv):
         inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
 
-        inf = inf.append_simulations(theta, x)
+        inf = inf.append_simulations(theta, x, proposal=proposal)
 
         neural_dens= inf.train()
 
@@ -258,17 +271,14 @@ def main(argv):
 
     torch.save(obs_real, 'obs_real.pt')
 
-
-
+    ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
+    with open('posterior2.pt', 'wb') as f:
+        pickle.dump(posterior, f)
 
 
     ##save class
     with open("class", "wb") as pickle_file:
         pickle.dump(file_writer, pickle_file)
-
-    ##save simulations from samples
-    #with open("sim_from_samples", "wb") as pickle_file:
-        #pickle.dump(s_x, pickle_file)
 
 
 if __name__ == "__main__":
