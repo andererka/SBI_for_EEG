@@ -483,7 +483,7 @@ def calculate_summary_stats_temporal(x):
     return sum_stats
 
 
-def calculate_summary_statistics_alternative(x, step=20):
+def calculate_summary_statistics_alternative(x, step=40):
     """
     reduces time resolution, but does not calculate real summary statistics
     with x[:,::20] every 20th step is taken into account. there is no kind of interpolation
