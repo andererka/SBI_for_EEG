@@ -80,6 +80,10 @@ def main(argv):
         slurm = bool(int(argv[5]))
     except:
         slurm = True
+    try:
+        experiment_name = argv[6]
+    except:
+        experiment_name = 'multi_round'
 
     sim_wrapper = SimulationWrapper(num_params=num_params)
 
@@ -181,9 +185,7 @@ def main(argv):
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_multi_round_num_params_{}validate".format(
-        number_simulations, num_params
-    ),
+    experiment=experiment_name,
     num_sim=number_simulations,
     true_params=true_params,
     density_estimator=density_estimator,
