@@ -10,7 +10,7 @@ import shutil
 
 
 import numpy as np
-from summary_features.calculate_summary_features import calculate_summary_stats_temporal
+from summary_features.calculate_summary_features import calculate_summary_stats_temporal, calculate_summary_statistics_alternative
 import torch
 import os
 import json
@@ -178,7 +178,7 @@ def main(argv):
 
     obs_real = obs_real_complete[0]
 
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
 
     posteriors = []
     proposal = prior
