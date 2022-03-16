@@ -93,6 +93,12 @@ def main(argv):
     except:
         print('file exists')
 
+    # stores the running file into the result folder for later reference:
+    open('{}/toy_example_gaussians.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + '/toy_example_gaussians.py'), str(file_writer.folder+ '/toy_example_gaussians.py'))
+
+
+
     os.chdir(file_writer.folder)
 
         
@@ -166,7 +172,7 @@ def main(argv):
                 
                 print('x', x)
 
-                neural_dens = inf.append_simulations(theta, x, proposal).train()
+                neural_dens = inf.append_simulations(theta, x).train()
 
 
                 posterior = inf.build_posterior(neural_dens)
