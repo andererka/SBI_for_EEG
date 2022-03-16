@@ -1,48 +1,63 @@
-#!/usr/bin/env python
-# coding: utf-8
+from utils.simulation_wrapper import SimulationWrapper
+from data_load_writer import load_from_file as lf
+from data_load_writer import write_to_file
 
-# ## Toy example: Inferring the mean of Gaussians
-# 
-# #### comparing the multi-round SNPE approach against our new incremental approach.
-# 
-# Goal of this little toy example is to show that provided our parameters are independent of each other, we need less simulations to derive a good approximation of our parameters.
 
-# In[1]:
+from summary_features.calculate_summary_features import (
+    calculate_summary_stats_temporal, calculate_summary_statistics_alternative
+
+)
 
 import numpy as np
-import matplotlib.pyplot as plt
 import torch
+import json
+import pandas as pd
+import seaborn as sns
+
+import shutil
 
 import datetime
-import sys
 
-from isort import file
-sys.path.append('../code/')
-
-import utils
 from utils.helpers import get_time
-from utils import inference
 
 from utils.sbi_modulated_functions import Combined
 
-
-from utils.helpers import get_time
-
-from utils.simulation_wrapper import SimulationWrapper
-
+# visualization
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
-from sbi.inference.base import infer
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
-from sbi.inference import SNPE
+from sbi.utils.get_nn_models import posterior_nn
 
+from utils import inference
+
+
+import pickle
+import sys
 
 import os
 
-from data_load_writer import write_to_file
+def Gaussian(thetas, normal_noise=1):
+    
+    np.random.seed(np.random.choice(1000))
+    
+    gauss_list = []
+    
+    for theta in thetas:
+    
+        mu, sigma = theta, normal_noise # mean and standard deviation
 
+        s = np.random.normal(mu, sigma, 1)
+    
+        
+        gauss_list.append(s[0])
+        
+    gauss_obs = torch.tensor(gauss_list)
+    
+    return gauss_obs
 
 
 
@@ -80,25 +95,6 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-
-    def Gaussian(thetas, normal_noise=1):
-        
-        np.random.seed(np.random.choice(1000))
-        
-        gauss_list = []
-        
-        for theta in thetas:
-        
-            mu, sigma = theta, normal_noise # mean and standard deviation
-
-            s = np.random.normal(mu, sigma, 1)
-        
-            
-            gauss_list.append(s[0])
-            
-        gauss_obs = torch.tensor(gauss_list)
-        
-        return gauss_obs
         
 
 
@@ -109,6 +105,8 @@ def main(argv):
     # ### starting with multi-round snpe
 
     # In[5]:
+
+    import torch
 
 
     true_thetas = torch.tensor([[3.0, 6.0, 20.0, 10.0, 90.0, 55.0, 27.0, 27.0, 4.0, 70.0, 5.0, 66.0, 99.0, 40.0, 45.0]])
