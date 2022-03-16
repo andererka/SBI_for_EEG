@@ -125,7 +125,7 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [600, 800, 1000, 2000, 3000]
+    num_simulations_list = [200, 600, 1000, 3000, 5000, 10000]
 
 
     # In[7]:
@@ -523,16 +523,11 @@ def main(argv):
 
     mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
-    print(mean_incremental)
-
     stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 
-    print(stdev_incremental)
+    lower_incremental = mean_incremental - [element for element in stdev_incremental]
 
-
-    lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
-
-    upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
+    upper_incremental = mean_incremental + [element for element in stdev_incremental]
 
 
     # In[66]:
@@ -540,16 +535,11 @@ def main(argv):
 
     mean_snpe = np.mean(np.array(overall_snpe_list), axis=0)
 
-    print(mean_snpe)
-
     stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 
-    print(stdev_snpe)
+    lower_snpe = mean_snpe - [element for element in stdev_snpe]
 
-
-    lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
-
-    upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
+    upper_snpe = mean_snpe + [element for element in stdev_snpe]
 
 
     # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
@@ -611,7 +601,7 @@ def main(argv):
     axes['A'].set_title('SNPE')
     axes['B'].set_title('Incremental')
 
-    plt.savefig('Gauss_plot_1stddev_nsf_noprop.png')
+    plt.savefig('Gauss_plot_1stddev.png')
 
 
     #axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
@@ -622,24 +612,17 @@ def main(argv):
 
     mean_incremental = np.log(mean_incremental)
 
-
     stdev_incremental = np.log(stdev_incremental)
-
-
 
     lower_incremental = np.log(lower_incremental)
 
     upper_incremental = np.log(upper_incremental)
 
 
+
     mean_snpe = np.log(mean_snpe)
 
-
-
     stdev_snpe = np.log(stdev_snpe)
-
-
-
 
     lower_snpe = np.log(lower_snpe)
 
@@ -709,7 +692,7 @@ def main(argv):
 
     # In[44]:
 
-    plt.savefig('Gauss_plot_1stddev_log_nsf_noprob.png')
+    plt.savefig('Gauss_plot_1stddev_log.png')
 
 if __name__ == "__main__":
     torch.manual_seed(5)
