@@ -14,6 +14,8 @@ import json
 import pandas as pd
 import seaborn as sns
 
+import shutil
+
 import datetime
 
 from utils.helpers import get_time
@@ -154,7 +156,10 @@ def main(argv):
         print('file exists')
     
 
-    
+    # stores the running file into the result folder for later reference:
+    open('{}/sequential_inference_allparams.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + '/sequential_inference_allparams.py'), str(file_writer.folder+ '/sequential_inference_allparams.py'))
+
 
     ##define list of number of parameters inferred in each incremental round:
     #range_list = [4,6,9,11,13,16,18,20,25]
