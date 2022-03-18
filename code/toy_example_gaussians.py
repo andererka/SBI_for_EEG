@@ -32,6 +32,8 @@ from sbi import analysis as analysis
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 from sbi.utils.get_nn_models import posterior_nn
 
+from sbi.utils import RestrictionEstimator
+
 from utils import inference
 
 
@@ -145,7 +147,19 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(10):
+    torch.manual_seed(4)
+
+
+
+    list_collection = []
+
+    import datetime
+
+    obs_real = Gaussian(true_thetas[0])
+
+    start = datetime.datetime.now()
+
+    for i in range(1):
         
 
         posterior_snpe_list = []
@@ -155,41 +169,47 @@ def main(argv):
             prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
             simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
             
-            inf = SNPE(prior, density_estimator=density_estimator)
+            inf = SNPE(prior, density_estimator="mdn")
             
-            proposal = prior
+            restriction_estimator = RestrictionEstimator(prior=prior)
+            
+            proposals = [prior]
+            
+            num_rounds = 3
 
-            for j in range(3):
-
-                print('round: ', j)
+            for j in range(num_rounds):
                 
                 theta, x = simulate_for_sbi(
                     simulator_stats,
-                    proposal=proposal,
+                    proposal=proposals[-1],
                     num_simulations=num_simulations,
-                    num_workers=num_workers,
+                    num_workers=8,
                 )
+                restriction_estimator.append_simulations(theta, x)
+                if j < num_rounds - 2: # training not needed in last round because classifier will not be used anymore.
+                    classifier = restriction_estimator.train()
+                    
+                proposals.append(restriction_estimator.restrict_prior())
                 
-                print('x', x)
+            
+                
+            all_theta, all_x, _ = restriction_estimator.get_simulations()
+            
+            density_estimator = inf.append_simulations(all_theta, all_x).train()
+            
+            posterior = inf.build_posterior()
 
-                neural_dens = inf.append_simulations(theta, x).train()
-
-
-                posterior = inf.build_posterior(neural_dens)
-
-
-
-                proposal = posterior.set_default_x(obs_real)
-
-    
-
-
-            posterior_snpe = posterior
+            posterior_snpe = posterior.set_default_x(obs_real)
 
             posterior_snpe_list.append(posterior_snpe)
             
         list_collection.append(posterior_snpe_list)
+        
+    end = datetime.datetime.now()
 
+    diff  = end - start
+
+    print(diff)
 
     # In[ ]:
     end_time = datetime.datetime.now()
