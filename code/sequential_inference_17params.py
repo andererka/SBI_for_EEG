@@ -334,7 +334,7 @@ def main(argv):
             f.close()
 
 
-    x = calculate_summary_statistics_alternative(x_without)
+    x = calculate_summary_stats_temporal(x_without)
 
     print('x shape', x.shape)
 
@@ -346,7 +346,7 @@ def main(argv):
 
     obs_real = obs_real_complete[0][:x_without.shape[1]]
 
-    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posterior.set_default_x(obs_real_stat)
    
