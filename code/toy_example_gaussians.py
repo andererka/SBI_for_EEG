@@ -83,7 +83,7 @@ def main(argv):
     try:
         experiment_name = argv[3]
     except:
-        experiment_name = "ERP_sequential"
+        experiment_name = "toy_example_mdn"
 
 
     file_writer = write_to_file.WriteToFile(
@@ -169,7 +169,7 @@ def main(argv):
             prior = utils.torchutils.BoxUniform(low=prior_min, high = prior_max)
             simulator_stats, prior = prepare_for_sbi(Gaussian, prior)
             
-            inf = SNPE(prior, density_estimator="mdn")
+            inf = SNPE(prior, density_estimator=density_estimator)
             
             restriction_estimator = RestrictionEstimator(prior=prior)
             

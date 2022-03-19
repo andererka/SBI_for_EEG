@@ -62,7 +62,7 @@ def main(argv):
     try:
         density_estimator = argv[1]
     except:
-        density_estimator = "maf"
+        density_estimator = "nsf"
     try:
         num_workers = int(argv[2])
     except:
@@ -226,8 +226,6 @@ def main(argv):
 
         x = calculate_summary_stats_temporal(x_without)
         
-        density_estimator = 'nsf'
-
 
         inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
