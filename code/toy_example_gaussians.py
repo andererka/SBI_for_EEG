@@ -286,7 +286,6 @@ def main(argv):
 
                 start_num += 9
 
-                start_time = datetime.datetime.now()
 
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
