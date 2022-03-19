@@ -321,11 +321,6 @@ def main(argv):
                 ## set combined prior to be the new prior_i:
                 proposal= combined_prior
 
-                finish_time = datetime.datetime.now()
-
-                diff = finish_time - start_time
-
-                print('took ', diff, ' for this step')
 
             num_sim = int(num_simulations * (start_num / 10))
 
