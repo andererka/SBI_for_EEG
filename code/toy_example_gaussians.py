@@ -159,7 +159,7 @@ def main(argv):
 
     start = datetime.datetime.now()
 
-    for i in range(1):
+    for i in range(10):
         
 
         posterior_snpe_list = []
@@ -171,39 +171,39 @@ def main(argv):
             
             inf = SNPE(prior, density_estimator=density_estimator)
             
-            restriction_estimator = RestrictionEstimator(prior=prior)
-            
-            proposals = [prior]
-            
-            num_rounds = 3
+            proposal = prior
 
-            for j in range(num_rounds):
+            for j in range(3):
+
+                print('round: ', j)
                 
                 theta, x = simulate_for_sbi(
                     simulator_stats,
-                    proposal=proposals[-1],
+                    proposal=proposal,
                     num_simulations=num_simulations,
-                    num_workers=8,
+                    num_workers=num_workers,
                 )
-                restriction_estimator.append_simulations(theta, x)
-                if j < num_rounds - 2: # training not needed in last round because classifier will not be used anymore.
-                    classifier = restriction_estimator.train()
-                    
-                proposals.append(restriction_estimator.restrict_prior())
                 
-            
-                
-            all_theta, all_x, _ = restriction_estimator.get_simulations()
-            
-            density_estimator = inf.append_simulations(all_theta, all_x).train()
-            
-            posterior = inf.build_posterior()
+                print('x', x)
 
-            posterior_snpe = posterior.set_default_x(obs_real)
+                neural_dens = inf.append_simulations(theta, x).train()
+
+
+                posterior = inf.build_posterior(neural_dens)
+
+
+
+                proposal = posterior.set_default_x(obs_real)
+
+    
+
+
+            posterior_snpe = posterior
 
             posterior_snpe_list.append(posterior_snpe)
             
         list_collection.append(posterior_snpe_list)
+
         
     end = datetime.datetime.now()
 
