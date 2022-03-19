@@ -14,6 +14,8 @@ import json
 import pandas as pd
 import seaborn as sns
 
+import datetime
+
 import shutil
 
 import datetime
@@ -145,7 +147,6 @@ def main(argv):
 
     obs_real = Gaussian(true_thetas[0])
 
-    start_time = datetime.datetime.now()
 
     torch.manual_seed(4)
 
@@ -153,7 +154,6 @@ def main(argv):
 
     list_collection = []
 
-    import datetime
 
     obs_real = Gaussian(true_thetas[0])
 
