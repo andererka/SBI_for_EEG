@@ -4,7 +4,7 @@ from data_load_writer import write_to_file
 
 
 from summary_features.calculate_summary_features import (
-    calculate_summary_stats_temporal
+    calculate_summary_stats_temporal, calculate_summary_statistics_alternative
 
 )
 
@@ -91,7 +91,7 @@ def main(argv):
 
 
 
-    prior_min = [0, 0, 0, 0, 0, 17.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
+    prior_min = [0, 0, 0, 0, 0, 13.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
     prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
     true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
@@ -162,6 +162,7 @@ def main(argv):
             prior1, 
             sim_wrapper,
             num_simulations=int(num_sim*(1/10)),
+            #num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -200,7 +201,7 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-
+    print(x_without.shape)
     x_without = x_without[:,:2700]
 
     x_P50 = calculate_summary_stats_temporal(x_without)
@@ -219,7 +220,7 @@ def main(argv):
 
     #### either simulate 'fake observation' or load data from hnn 
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
 
     print('obs real', obs_real)
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
@@ -284,7 +285,7 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
 
@@ -310,7 +311,8 @@ def main(argv):
             combined_prior,
             sim_wrapper,
             num_simulations=int(num_sim*(19/10)),
-            num_workers=num_workers
+            #num_simulations = num_sim,
+            num_workers = num_workers
         )
 
         file_writer.save_obs_without(x_without, name='step3')
@@ -332,9 +334,19 @@ def main(argv):
             f.close()
 
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+    x = calculate_summary_statistics_alternative(x_without)
 
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    print('x shape', x.shape)
+
+    inf = inf.append_simulations(theta, x)
+    neural_dens = inf.train()
+
+    posterior = inf.build_posterior(neural_dens)
+
+
+    obs_real = obs_real_complete[0][:x_without.shape[1]]
+
+    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
 
     posterior.set_default_x(obs_real_stat)
    
@@ -345,14 +357,9 @@ def main(argv):
     file_writer.save_thetas(theta)
 
     ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
-    with open('posterior2.pt', 'wb') as f:
+    with open('posterior2.pkl', 'wb') as f:
         pickle.dump(posterior, f)
 
-    os.chdir(file_writer.folder)
-
-    ##save class
-    with open("class", "wb") as pickle_file:
-        pickle.dump(file_writer, pickle_file)
 
 
 if __name__ == "__main__":

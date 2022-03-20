@@ -319,8 +319,13 @@ def calculate_summary_stats_temporal(x):
 
     batch_list = []
 
-
+    if (x.dim()==1):
+        print('single observation')
+        x = x.unsqueeze(0)
+        print('x shape', x.shape)
     for batch in x:
+
+        print('batch shape', batch.shape)
 
 
         total_steps_ms = batch.size(dim=0) / time_window
@@ -341,22 +346,28 @@ def calculate_summary_stats_temporal(x):
         p50_moment2 = torch.var(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # variance
 
         ## define area under the curve with respect to the x-axis, and only up to the early stopping of step1
-        x_t = batch[:90*30]
-        sign_x = np.sign(x_t)
+        #x_t = batch[:90*30]
+        #sign_x = np.sign(x_t)
 
-        index_pos = np.where(sign_x == 1)
-        index_neg = np.where(sign_x == -1)
+        #index_pos = np.where(sign_x == 1)
+        #index_neg = np.where(sign_x == -1)
 
-        area_pos1 = torch.trapz(x_t[index_pos])
-        area_neg1 = torch.trapz(x_t[index_neg])
+        #area_pos1 = torch.trapz(x_t[index_pos])
+        #area_neg1 = torch.trapz(x_t[index_neg])
 
 
 
         # mean values over different, relevant time periods:
+        mean1000 = torch.mean(batch[:1000]) 
 
-        mean1000 = torch.mean(batch[:1000])            
+        ### trying to catch values of second bump:
+        mean1500 = torch.mean(batch[1500:1700])
+        mean1700 = torch.mean(batch[1700:1900])   
+        mean1900 = torch.mean(batch[1900:2100]) 
+        mean2100 = torch.mean(batch[2100:2300]) 
+        mean2300 = torch.mean(batch[2300:2500]) 
+               
         
-
 
         if (total_steps_ms < 100):
 
@@ -366,9 +377,14 @@ def calculate_summary_stats_temporal(x):
                     p50,
                     p50_moment1,
                     p50_moment2,
-                    area_pos1,
-                    area_neg1,
-                    mean1000
+                    #area_pos1,
+                    #area_neg1,
+                    mean1000,
+                    mean1500,
+                    mean1700,
+                    mean1900,
+                    mean2100,
+                    mean2300
                 ]
             )
 
@@ -384,14 +400,14 @@ def calculate_summary_stats_temporal(x):
         N100_moment2 = torch.var(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # variance
 
 
-        x_t = batch[90*30:160*30]
-        sign_x = np.sign(x_t)
+        #x_t = batch[90*30:160*30]
+        #sign_x = np.sign(x_t)
 
-        index_pos = np.where(sign_x == 1)
-        index_neg = np.where(sign_x == -1)
+        #index_pos = np.where(sign_x == 1)
+        #index_neg = np.where(sign_x == -1)
 
-        area_pos2 = torch.trapz(x_t[index_pos])
-        area_neg2 = torch.trapz(x_t[index_neg])
+        #area_pos2 = torch.trapz(x_t[index_pos])
+        #area_neg2 = torch.trapz(x_t[index_neg])
 
         if (total_steps_ms<170):
             sum_stats_vec = torch.stack(
@@ -403,11 +419,12 @@ def calculate_summary_stats_temporal(x):
                     p50_moment1,
                     N100_moment1,
                     N100_moment2,
-                    area_pos1,
-                    area_neg1,
-                    area_pos2,
-                    area_neg2,
-                    mean1000
+                    mean1000,
+                    mean1500,
+                    mean1700,
+                    mean1900,
+                    mean2100,
+                    mean2300,
                 ]
             )
 
@@ -424,14 +441,14 @@ def calculate_summary_stats_temporal(x):
         P200_moment1 = torch.mean(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # mean
         P200_moment2 = torch.var(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # variance
 
-        x_t = batch[arg120ms:]
-        sign_x = np.sign(x_t)
+        #x_t = batch[arg120ms:]
+        #sign_x = np.sign(x_t)
 
-        index_pos = np.where(sign_x == 1)
-        index_neg = np.where(sign_x == -1)
+        #index_pos = np.where(sign_x == 1)
+        #index_neg = np.where(sign_x == -1)
 
-        area_pos3 = torch.trapz(x_t[index_pos])
-        area_neg3 = torch.trapz(x_t[index_neg])
+        #area_pos3 = torch.trapz(x_t[index_pos])
+        #area_neg3 = torch.trapz(x_t[index_neg])
         
         sum_stats_vec = torch.stack(
                 [
@@ -447,14 +464,13 @@ def calculate_summary_stats_temporal(x):
                     p50_moment2,
                     N100_moment2,
                     P200_moment2,
-                    area_pos1,
-                    area_neg1,
-                    area_pos2,
-                    area_neg2,
-                    area_pos3,
-                    area_neg3,
+                    mean1000,
+                    mean1500,
+                    mean1700,
+                    mean1900,
+                    mean2100,
+                    mean2300,
                     mean4000,
-                    mean1000
                 ])
 
         batch_list.append(sum_stats_vec)
@@ -467,17 +483,18 @@ def calculate_summary_stats_temporal(x):
     return sum_stats
 
 
-def calculate_summary_statistics_alternative(x, number=0):
+def calculate_summary_statistics_alternative(x, step=40):
     """
     reduces time resolution, but does not calculate real summary statistics
     with x[:,::20] every 20th step is taken into account. there is no kind of interpolation
     """
+    print('x', x)
     if (x.dim()==2):
         print(x.shape)
-        sum_stat = x[:,::20]
-        print(sum_stat.shape)
+        sum_stat = x[:,::step]
+        print('sum stats shape', sum_stat.shape)
     else:
-        sum_stat = x[::20]
-        print(sum_stat.shape)
+        sum_stat = x[::step]
+        print('sum stats shape', sum_stat.shape)
     return sum_stat
 
