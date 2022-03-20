@@ -211,16 +211,11 @@ def main(argv):
 
     print(diff)
 
-    # In[ ]:
-    end_time = datetime.datetime.now()
-
-
-    diff_time = end_time - start_time
 
     import json
 
     json_dict = {
-    "CPU time for step:": str(diff_time)}
+    "CPU time for step:": str(diff)}
     with open( "time_snpe_nsf.json", "a") as f:
         json.dump(json_dict, f)
         f.close()

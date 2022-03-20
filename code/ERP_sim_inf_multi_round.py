@@ -53,7 +53,7 @@ def main(argv):
     arg 4: number of samples that should be drawn from posterior; default is 100
     
     """
-    start_time = get_time()
+
 
     try:
         number_simulations = int(argv[0])
