@@ -202,7 +202,7 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     print(x_without.shape)
-    x_without = x_without[:2700]
+    x_without = x_without[:,:2700]
 
     x_P50 = calculate_summary_statistics_alternative(x_without)
 
