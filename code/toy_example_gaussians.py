@@ -14,6 +14,8 @@ import json
 import pandas as pd
 import seaborn as sns
 
+import datetime
+
 import shutil
 
 import datetime
@@ -31,6 +33,8 @@ from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
 from sbi.utils.get_nn_models import posterior_nn
+
+from sbi.utils import RestrictionEstimator
 
 from utils import inference
 
@@ -79,7 +83,7 @@ def main(argv):
     try:
         experiment_name = argv[3]
     except:
-        experiment_name = "ERP_sequential"
+        experiment_name = "toy_example_mdn"
 
 
     file_writer = write_to_file.WriteToFile(
@@ -92,6 +96,12 @@ def main(argv):
         os.mkdir(file_writer.folder)
     except:
         print('file exists')
+
+    # stores the running file into the result folder for later reference:
+    open('{}/toy_example_gaussians.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + '/toy_example_gaussians.py'), str(file_writer.folder+ '/toy_example_gaussians.py'))
+
+
 
     os.chdir(file_writer.folder)
 
@@ -119,7 +129,7 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [600, 800, 1000, 2000, 3000]
+    num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
 
 
     # In[7]:
@@ -137,7 +147,17 @@ def main(argv):
 
     obs_real = Gaussian(true_thetas[0])
 
-    start_time = datetime.datetime.now()
+
+    torch.manual_seed(4)
+
+
+
+    list_collection = []
+
+
+    obs_real = Gaussian(true_thetas[0])
+
+    start = datetime.datetime.now()
 
     for i in range(10):
         
@@ -166,7 +186,7 @@ def main(argv):
                 
                 print('x', x)
 
-                neural_dens = inf.append_simulations(theta, x, proposal).train()
+                neural_dens = inf.append_simulations(theta, x).train()
 
 
                 posterior = inf.build_posterior(neural_dens)
@@ -184,17 +204,18 @@ def main(argv):
             
         list_collection.append(posterior_snpe_list)
 
+        
+    end = datetime.datetime.now()
 
-    # In[ ]:
-    end_time = datetime.datetime.now()
+    diff  = end - start
 
+    print(diff)
 
-    diff_time = end_time - start_time
 
     import json
 
     json_dict = {
-    "CPU time for step:": str(diff_time)}
+    "CPU time for step:": str(diff)}
     with open( "time_snpe_nsf.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
@@ -260,7 +281,6 @@ def main(argv):
 
                 start_num += 9
 
-                start_time = datetime.datetime.now()
 
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
@@ -296,11 +316,6 @@ def main(argv):
                 ## set combined prior to be the new prior_i:
                 proposal= combined_prior
 
-                finish_time = datetime.datetime.now()
-
-                diff = finish_time - start_time
-
-                print('took ', diff, ' for this step')
 
             num_sim = int(num_simulations * (start_num / 10))
 
@@ -517,16 +532,11 @@ def main(argv):
 
     mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
-    print(mean_incremental)
-
     stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 
-    print(stdev_incremental)
+    lower_incremental = mean_incremental - [element for element in stdev_incremental]
 
-
-    lower_incremental = mean_incremental - [element * 1.00 for element in stdev_incremental]
-
-    upper_incremental = mean_incremental + [element * 1.00 for element in stdev_incremental]
+    upper_incremental = mean_incremental + [element for element in stdev_incremental]
 
 
     # In[66]:
@@ -534,16 +544,11 @@ def main(argv):
 
     mean_snpe = np.mean(np.array(overall_snpe_list), axis=0)
 
-    print(mean_snpe)
-
     stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 
-    print(stdev_snpe)
+    lower_snpe = mean_snpe - [element for element in stdev_snpe]
 
-
-    lower_snpe = mean_snpe - [element * 1.00 for element in stdev_snpe]
-
-    upper_snpe = mean_snpe + [element * 1.00 for element in stdev_snpe]
+    upper_snpe = mean_snpe + [element for element in stdev_snpe]
 
 
     # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
@@ -605,7 +610,7 @@ def main(argv):
     axes['A'].set_title('SNPE')
     axes['B'].set_title('Incremental')
 
-    plt.savefig('Gauss_plot_1stddev_nsf_noprop.png')
+    plt.savefig('Gauss_plot_1stddev.png')
 
 
     #axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
@@ -616,24 +621,17 @@ def main(argv):
 
     mean_incremental = np.log(mean_incremental)
 
-
     stdev_incremental = np.log(stdev_incremental)
-
-
 
     lower_incremental = np.log(lower_incremental)
 
     upper_incremental = np.log(upper_incremental)
 
 
+
     mean_snpe = np.log(mean_snpe)
 
-
-
     stdev_snpe = np.log(stdev_snpe)
-
-
-
 
     lower_snpe = np.log(lower_snpe)
 
@@ -703,7 +701,7 @@ def main(argv):
 
     # In[44]:
 
-    plt.savefig('Gauss_plot_1stddev_log_nsf_noprob.png')
+    plt.savefig('Gauss_plot_1stddev_log.png')
 
 if __name__ == "__main__":
     torch.manual_seed(5)

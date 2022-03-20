@@ -10,7 +10,7 @@ import shutil
 
 
 import numpy as np
-from summary_features.calculate_summary_features import calculate_summary_stats_temporal
+from summary_features.calculate_summary_features import calculate_summary_stats_temporal, calculate_summary_statistics_alternative
 import torch
 import os
 import json
@@ -53,7 +53,7 @@ def main(argv):
     arg 4: number of samples that should be drawn from posterior; default is 100
     
     """
-    start_time = get_time()
+
 
     try:
         number_simulations = int(argv[0])
@@ -62,7 +62,7 @@ def main(argv):
     try:
         density_estimator = argv[1]
     except:
-        density_estimator = "maf"
+        density_estimator = "nsf"
     try:
         num_workers = int(argv[2])
     except:
@@ -80,6 +80,10 @@ def main(argv):
         slurm = bool(int(argv[5]))
     except:
         slurm = True
+    try:
+        experiment_name = argv[6]
+    except:
+        experiment_name = 'multi_round'
 
     sim_wrapper = SimulationWrapper(num_params=num_params)
 
@@ -172,18 +176,16 @@ def main(argv):
         num_workers=1
     )
 
-    obs_real = [obs_real_complete[0]]
+    obs_real = obs_real_complete[0]
 
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
 
     posteriors = []
     proposal = prior
 
 
     file_writer = write_to_file.WriteToFile(
-    experiment="{}_multi_round_num_params_{}validate".format(
-        number_simulations, num_params
-    ),
+    experiment=experiment_name,
     num_sim=number_simulations,
     true_params=true_params,
     density_estimator=density_estimator,
@@ -224,8 +226,6 @@ def main(argv):
 
         x = calculate_summary_stats_temporal(x_without)
         
-        density_estimator = 'nsf'
-
 
         inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
