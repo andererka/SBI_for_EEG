@@ -161,8 +161,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            num_simulations=int(num_sim*(1/10)),
-            #num_simulations = num_sim,
+            #num_simulations=int(num_sim*(1/10)),
+            num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -202,7 +202,7 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     print(x_without.shape)
-    x_without = x_without[:,:2700]
+    x_without = x_without[:2700]
 
     x_P50 = calculate_summary_statistics_alternative(x_without)
 
