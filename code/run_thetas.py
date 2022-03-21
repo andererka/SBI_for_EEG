@@ -93,3 +93,5 @@ prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 # generate ground truth parameters and corresponding simulated observations for SBC.
 thetas = prior.sample((1000,))
 xs = inference.run_only_sim(thetas, sim_wrapper, num_workers=60)
+torch.save(xs, '1000xs.pt')
+torch.save(thetas, '1000thetas_prior.pt')
