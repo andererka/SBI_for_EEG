@@ -11,9 +11,7 @@ from hnn_core.viz import plot_dipole
 
 import sys
 sys.path.append('../code/')
-#sys.path.append('../code/utils/')
-#sys.path.append('../code/sbi/')
-#sys.path.append('../../results_cluster/')
+
 
 
 import numpy as np
