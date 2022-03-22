@@ -1,3 +1,5 @@
+import datetime
+import shutil
 from utils.simulation_wrapper import SimulationWrapper
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
@@ -7,7 +9,7 @@ from summary_features.calculate_summary_features import (
     calculate_summary_stats_temporal
 
 )
-
+import shutil
 import numpy as np
 import torch
 import json
@@ -33,6 +35,7 @@ import pickle
 import sys
 
 import os
+import datetime
 
 ## defining neuronal network model
 
@@ -77,13 +80,10 @@ def main(argv):
     except:
         density_estimator = 'nsf'
 
-    ## using a density estimator with only 1 transform (which should be enough for the 1D case)
-    #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
-
 
     start_time = get_time()
 
-    #sim_wrapper = simulation_wrapper_obs
+
     sim_wrapper = SimulationWrapper(6)
 
     #prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
@@ -111,6 +111,9 @@ def main(argv):
      "prox_2_ampa_l5_pyr",
      "t_evprox_2"]
 
+
+    start = datetime.datetime.now()
+
     ###### starting with P50 parameters/summary stats:
     #prior1 = utils.torchutils.BoxUniform(low=[prior_min[0]], high=[prior_max[0]])
 
@@ -128,9 +131,6 @@ def main(argv):
     num_samples=num_samples,
     slurm=slurm,
     )
-
-    print(file_writer.folder)
-
 
 
     obs_real = inference.run_only_sim(
@@ -152,12 +152,16 @@ def main(argv):
     except:
         print('step files exist')
 
+
+    # stores the running file into the result folder for later reference:
+    open('{}/sequential_inference_6params2.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + '/sequential_inference_6params2.py'), str(file_writer.folder+ '/sequential_inference_6params2.py'))
+
+
+
     os.chdir(file_writer.folder)
 
-        
-
-
-
+    
     
     try:
         theta = torch.load('step1/thetas.pt')
@@ -292,7 +296,23 @@ def main(argv):
 
 
 
-    posterior.set_default_x(obs_real_stat[:,:21])
+    posterior.set_default_x(obs_real_stat)
+
+    end = datetime.datetime.now()
+
+    diff = end - start
+
+    json_dict = {
+        "CPU time for step:": str(diff)}
+        
+    with open( "meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
+
+    torch.save(prior_min, 'prior_min.pt')
+    torch.save(prior_max, 'prior_max.pt')
+
 
 
 
