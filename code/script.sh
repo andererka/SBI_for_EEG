@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --ntasks=1                # Number of tasks (see below)
-#SBATCH --cpus-per-task=40         # Number of CPU cores per task
+#SBATCH --cpus-per-task=64         # Number of CPU cores per task
 #SBATCH --nodes=1                 # Ensure that all cores are on one machine
 #SBATCH --time=3-00:00            # Runtime in D-HH:MM
 #SBATCH --mem=70G                # Memory pool for all cores (see also --mem-per-cpu)
@@ -16,7 +16,7 @@ scontrol show job $SLURM_JOB_ID
 #python3 sequential_inference.py 5000 1000 64 5000_sims_3_params 1
 #python3 calc_posterior_and_sample.py results/ERP_save_sim_nsf_num_params:3_11-25-2021_21:36:41/class 1000 1 64 
 #python3 ERP_simulation_and_inference.py 500 nsf 64 7 rejection
-#python3 sequential_inference_17params.py 10000 64 10000_sims_17_fake_obs_calc_alternative2 1
+#python3 sequential_inference_17params.py 15000 64 15000_sims_17_fake_obs_calc_temporal 1
 #python3 sequential_inference_allparams.py 10000 100 64 10000_sims_25_fake_obs_3_steps_mdn 1
 #python3 efficiency_comparison_summary_statistics.py True
 #python3 investigating_summary_features.py eval_features

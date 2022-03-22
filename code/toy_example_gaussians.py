@@ -132,18 +132,7 @@ def main(argv):
     num_simulations_list = [200, 500, 750, 1000, 1500, 2000, 3000]
 
 
-    # In[7]:
 
-
-    obs_real = Gaussian(true_thetas[0])
-
-    obs_real
-
-
-    # In[ ]:
-
-
-    list_collection = []
 
     obs_real = Gaussian(true_thetas[0])
 
@@ -329,7 +318,9 @@ def main(argv):
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
-            posterior_incremental = inf.build_posterior(neural_dens) 
+            posterior_incremental = inf.build_posterior(neural_dens)
+
+            posterior_incremental.set_default_x(obs_real)
 
             posterior_incremental_list.append(posterior_incremental)
             
