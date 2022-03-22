@@ -1,0 +1,191 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+exception calling callback for <Future at 0x7f13f5c79e50 state=finished raised TerminatedWorkerError>
+Traceback (most recent call last):
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/_base.py", line 625, in _invoke_callbacks
+    callback(self)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 359, in __call__
+    self.parallel.dispatch_next()
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 794, in dispatch_next
+    if not self.dispatch_one_batch(self._original_iterator):
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 861, in dispatch_one_batch
+    self._dispatch(tasks)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 779, in _dispatch
+    job = self._backend.apply_async(batch, callback=cb)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 531, in apply_async
+    future = self._workers.submit(SafeFunction(func))
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/reusable_executor.py", line 178, in submit
+    fn, *args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py", line 1115, in submit
+    raise self._flags.broken
+joblib.externals.loky.process_executor.TerminatedWorkerError: A worker process managed by the executor was unexpectedly terminated. This could be caused by a segmentation fault while calling the function or by an excessive memory usage causing the Operating System to kill the worker.
+
+The exit codes of the workers are {SIGSEGV(-11)}
+Traceback (most recent call last):
+  File "ERP_sim_inf_multi_round.py", line 287, in <module>
+    main(sys.argv[1:])
+  File "ERP_sim_inf_multi_round.py", line 224, in main
+    num_workers=num_workers
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/inference.py", line 77, in run_sim_theta_x
+    show_progress_bar=False
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/base.py", line 550, in simulate_for_sbi
+    simulator, theta, simulation_batch_size, num_workers, show_progress_bar
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/simulators/simutils.py", line 63, in simulate_in_batches
+    delayed(simulator)(batch) for batch in batches
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 1056, in __call__
+    self.retrieve()
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 935, in retrieve
+    self._output.extend(job.get(timeout=self.timeout))
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 542, in wrap_future_result
+    return future.result(timeout=timeout)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/concurrent/futures/_base.py", line 435, in result
+    return self.__get_result()
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/_base.py", line 625, in _invoke_callbacks
+    callback(self)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 359, in __call__
+    self.parallel.dispatch_next()
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 794, in dispatch_next
+    if not self.dispatch_one_batch(self._original_iterator):
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 861, in dispatch_one_batch
+    self._dispatch(tasks)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/parallel.py", line 779, in _dispatch
+    job = self._backend.apply_async(batch, callback=cb)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 531, in apply_async
+    future = self._workers.submit(SafeFunction(func))
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/reusable_executor.py", line 178, in submit
+    fn, *args, **kwargs)
+  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py", line 1115, in submit
+    raise self._flags.broken
+joblib.externals.loky.process_executor.TerminatedWorkerError: A worker process managed by the executor was unexpectedly terminated. This could be caused by a segmentation fault while calling the function or by an excessive memory usage causing the Operating System to kill the worker.
+
+The exit codes of the workers are {SIGSEGV(-11)}
