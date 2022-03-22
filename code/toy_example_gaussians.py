@@ -152,13 +152,6 @@ def main(argv):
 
 
 
-    list_collection = []
-
-
-    obs_real = Gaussian(true_thetas[0])
-
-    print('obs real', obs_real)
-
 
     start = datetime.datetime.now()
 
