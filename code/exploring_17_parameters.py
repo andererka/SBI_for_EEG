@@ -8,8 +8,7 @@
 # In[10]:
 
 
-get_ipython().run_line_magic('load_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
+
 import os.path as op
 import tempfile
 

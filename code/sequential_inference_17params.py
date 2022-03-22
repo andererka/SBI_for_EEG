@@ -204,7 +204,7 @@ def main(argv):
     print(x_without.shape)
     x_without = x_without[:,:2700]
 
-    x_P50 = calculate_summary_statistics_alternative(x_without)
+    x_P50 = calculate_summary_stats_temporal(x_without)
 
     print('x_P50',x_P50)
 
@@ -223,7 +223,7 @@ def main(argv):
     obs_real = obs_real_complete[0][:x_without.shape[1]]
 
     print('obs real', obs_real)
-    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
 
 
@@ -275,7 +275,7 @@ def main(argv):
     print(x_without.shape)
     x_without = x_without[:,:4200]
 
-    x_N100 = calculate_summary_statistics_alternative(x_without)
+    x_N100 = calculate_summary_stats_temporal(x_without)
 
     print('x:N100 shape', x_N100.shape)
 
@@ -286,7 +286,7 @@ def main(argv):
 
 
     obs_real = obs_real_complete[0][:x_without.shape[1]]
-    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
 
 
@@ -334,7 +334,7 @@ def main(argv):
             f.close()
 
 
-    x = calculate_summary_statistics_alternative(x_without)
+    x = calculate_summary_stats_temporal(x_without)
 
     print('x shape', x.shape)
 
@@ -346,7 +346,7 @@ def main(argv):
 
     obs_real = obs_real_complete[0][:x_without.shape[1]]
 
-    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posterior.set_default_x(obs_real_stat)
    
