@@ -1,0 +1,49 @@
+JobId=1299515 JobName=script.sh
+   UserId=kanderer29(4373) GroupId=macke(4017) MCS_label=N/A
+   Priority=55688 Nice=0 Account=macke QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:01 TimeLimit=2-00:00:00 TimeMin=N/A
+   SubmitTime=2022-03-16T10:14:55 EligibleTime=2022-03-16T10:14:55
+   AccrueTime=2022-03-16T10:14:55
+   StartTime=2022-03-16T10:14:55 EndTime=2022-03-18T10:14:55 Deadline=N/A
+   PreemptEligibleTime=2022-03-16T10:15:55 PreemptTime=None
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2022-03-16T10:14:55
+   Partition=gpu-2080ti AllocNode:Sid=bg-slurmb-login1:27863
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=slurm-bm-49
+   BatchHost=slurm-bm-49
+   NumNodes=1 NumCPUs=64 NumTasks=1 CPUs/Task=64 ReqB:S:C:T=0:0:*:*
+   TRES=cpu=64,mem=70G,node=1,billing=17
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=64 MinMemoryNode=70G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/script.sh
+   WorkDir=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code
+   StdErr=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1299515.err
+   StdIn=/dev/null
+   StdOut=/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/hostname_1299515.out
+   Power=
+   MailUser=k.anderer@t-online.de MailType=END
+   NtasksPerTRES:0
+
+round:  0
+x tensor([[13.4827, 61.3868, 56.0348,  ..., 59.1720, 71.2926, 96.1508],
+        [60.2618, 58.6993, 29.3618,  ...,  8.1978, 17.8818, 35.0990],
+        [ 9.4539,  8.5575, 45.0175,  ..., 92.9354, 74.7711, 22.8705],
+        ...,
+        [93.8480, 80.8856, 90.1873,  ..., 93.7024, 42.2630, 29.2158],
+        [28.3485, 77.1401, 52.5257,  ..., 18.9682, 13.4473, 49.1632],
+        [65.3525, 76.3412, 10.1106,  ..., 14.0934,  9.7197, 26.1709]])
+Training neural network. Epochs trained:  1Training neural network. Epochs trained:  2Training neural network. Epochs trained:  3Training neural network. Epochs trained:  4Training neural network. Epochs trained:  5Training neural network. Epochs trained:  6Training neural network. Epochs trained:  7Training neural network. Epochs trained:  8Training neural network. Epochs trained:  9Training neural network. Epochs trained:  10Training neural network. Epochs trained:  11Training neural network. Epochs trained:  12Training neural network. Epochs trained:  13Training neural network. Epochs trained:  14Training neural network. Epochs trained:  15Training neural network. Epochs trained:  16Training neural network. Epochs trained:  17Training neural network. Epochs trained:  18Training neural network. Epochs trained:  19Training neural network. Epochs trained:  20Training neural network. Epochs trained:  21Training neural network. Epochs trained:  22Training neural network. Epochs trained:  23Training neural network. Epochs trained:  24Training neural network. Epochs trained:  25Training neural network. Epochs trained:  26Training neural network. Epochs trained:  27Training neural network. Epochs trained:  28Training neural network. Epochs trained:  29Training neural network. Epochs trained:  30Training neural network. Epochs trained:  31Training neural network. Epochs trained:  32Training neural network. Epochs trained:  33Training neural network. Epochs trained:  34Training neural network. Epochs trained:  35Training neural network. Epochs trained:  36Training neural network. Epochs trained:  37Training neural network. Epochs trained:  38Training neural network. Epochs trained:  39Training neural network. Epochs trained:  40Training neural network. Epochs trained:  41Training neural network. Epochs trained:  42Training neural network. Epochs trained:  43Training neural network. Epochs trained:  44Training neural network. Epochs trained:  45Training neural network. Epochs trained:  46Training neural network. Epochs trained:  47Training neural network. Epochs trained:  48Training neural network. Epochs trained:  49Training neural network. Epochs trained:  50Training neural network. Epochs trained:  51Training neural network. Epochs trained:  52Training neural network. Epochs trained:  53Training neural network. Epochs trained:  54Training neural network. Epochs trained:  55Training neural network. Epochs trained:  56Training neural network. Epochs trained:  57Training neural network. Epochs trained:  58Training neural network. Epochs trained:  59Training neural network. Epochs trained:  60Training neural network. Epochs trained:  61Training neural network. Epochs trained:  62Training neural network. Epochs trained:  63Training neural network. Epochs trained:  64Training neural network. Epochs trained:  65Training neural network. Epochs trained:  66Training neural network. Epochs trained:  67Training neural network. Epochs trained:  68Training neural network. Epochs trained:  69Training neural network. Epochs trained:  70Training neural network. Epochs trained:  71Training neural network. Epochs trained:  72Training neural network. Epochs trained:  73Training neural network. Epochs trained:  74Neural network successfully converged after 74 epochs.
+round:  1
+x tensor([[18.9268, 32.0103, 27.8367,  ..., 86.3042, 34.1714, 25.5588],
+        [ 8.6745, 55.6829, 35.2848,  ..., 74.4602, 40.8349, 83.2063],
+        [10.2899, 14.1571, 17.9616,  ..., 76.3170, 54.9443, 33.7337],
+        ...,
+        [13.5297, 17.3531, 48.0368,  ..., 86.4151, 42.9072, 51.5883],
+        [ 8.0691, 54.0176, 24.2550,  ..., 80.2610, 28.3857, 49.1794],
+        [20.9781, 36.0544,  9.7652,  ..., 89.4637, 46.8522, 61.6252]])
+Using SNPE-C with non-atomic loss
+Training neural network. Epochs trained:  1Training neural network. Epochs trained:  2Training neural network. Epochs trained:  3Training neural network. Epochs trained:  4Training neural network. Epochs trained:  5Training neural network. Epochs trained:  6Training neural network. Epochs trained:  7Training neural network. Epochs trained:  8Training neural network. Epochs trained:  9Training neural network. Epochs trained:  10Training neural network. Epochs trained:  11Training neural network. Epochs trained:  12Training neural network. Epochs trained:  13Training neural network. Epochs trained:  14Training neural network. Epochs trained:  15Training neural network. Epochs trained:  16Training neural network. Epochs trained:  17Training neural network. Epochs trained:  18Training neural network. Epochs trained:  19Training neural network. Epochs trained:  20Training neural network. Epochs trained:  21Training neural network. Epochs trained:  22Training neural network. Epochs trained:  23Training neural network. Epochs trained:  24Training neural network. Epochs trained:  25Training neural network. Epochs trained:  26Training neural network. Epochs trained:  27Training neural network. Epochs trained:  28Training neural network. Epochs trained:  29Training neural network. Epochs trained:  30Training neural network. Epochs trained:  31Training neural network. Epochs trained:  32Training neural network. Epochs trained:  33Training neural network. Epochs trained:  34Training neural network. Epochs trained:  35Training neural network. Epochs trained:  36Training neural network. Epochs trained:  37Training neural network. Epochs trained:  38Training neural network. Epochs trained:  39Training neural network. Epochs trained:  40Training neural network. Epochs trained:  41Training neural network. Epochs trained:  42Training neural network. Epochs trained:  43Training neural network. Epochs trained:  44Training neural network. Epochs trained:  45Training neural network. Epochs trained:  46Training neural network. Epochs trained:  47Training neural network. Epochs trained:  48Training neural network. Epochs trained:  49Training neural network. Epochs trained:  50Training neural network. Epochs trained:  51Training neural network. Epochs trained:  52Training neural network. Epochs trained:  53Training neural network. Epochs trained:  54Training neural network. Epochs trained:  55Training neural network. Epochs trained:  56Training neural network. Epochs trained:  57Training neural network. Epochs trained:  58Training neural network. Epochs trained:  59

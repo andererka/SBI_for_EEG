@@ -1,0 +1,278 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  6.84it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00,  6.82it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 7930it [00:00, 60290.95it/s]         Drawing 1 posterior samples: 7930it [00:00, 60163.47it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 103.19it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 103.47it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.51it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.90it/s]
+Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 197.73it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.80it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.90it/s]
+Drawing 10000 posterior samples:   0%|          | 0/10000 [00:00<?, ?it/s]Drawing 10000 posterior samples: 15965it [00:00, 89782.78it/s]            Drawing 10000 posterior samples: 15965it [00:00, 89626.08it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 28.62it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 136.37it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 137.66it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 102.06it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.67it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 107.01it/s]
+Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [00:00<00:00, 198.59it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 106.77it/s]
+Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 100%|██████████| 1/1 [00:00<00:00, 107.38it/s]
+Drawing 19000 posterior samples:   0%|          | 0/19000 [00:00<?, ?it/s]Drawing 19000 posterior samples:  53%|█████▎    | 10000/19000 [00:00<00:00, 86969.86it/s]Drawing 19000 posterior samples: 20000it [00:00, 87584.55it/s]                           Drawing 19000 posterior samples: 20000it [00:00, 87360.59it/s]
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
