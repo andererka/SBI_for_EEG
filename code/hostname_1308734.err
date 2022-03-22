@@ -1,0 +1,8 @@
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "toy_example_gaussians.py", line 720, in <module>
+    main(sys.argv[1:])
+  File "toy_example_gaussians.py", line 148, in main
+    start_time = datetime.datetime.now()
+UnboundLocalError: local variable 'datetime' referenced before assignment
