@@ -369,7 +369,7 @@ def calculate_summary_stats_temporal(x, complete=False):
                
         
 
-        if (total_steps_ms < 100 & complete==False):
+        if (total_steps_ms < 100):
 
             sum_stats_vec = torch.stack(
                                 [
@@ -390,7 +390,8 @@ def calculate_summary_stats_temporal(x, complete=False):
 
             batch_list.append(sum_stats_vec)
 
-            continue
+            if complete==False:
+                continue
 
         ## search for N100
         arg_N100 = torch.argmin(batch)
@@ -409,7 +410,7 @@ def calculate_summary_stats_temporal(x, complete=False):
         #area_pos2 = torch.trapz(x_t[index_pos])
         #area_neg2 = torch.trapz(x_t[index_neg])
 
-        if (total_steps_ms<170 & complete == False):
+        if (total_steps_ms<170):
             sum_stats_vec = torch.stack(
                 [
                     arg_p50,
@@ -430,7 +431,8 @@ def calculate_summary_stats_temporal(x, complete=False):
 
             batch_list.append(sum_stats_vec)
 
-            continue
+            if complete == False:
+                continue
 
         mean4000 = torch.mean(batch[4000:4500])
 
