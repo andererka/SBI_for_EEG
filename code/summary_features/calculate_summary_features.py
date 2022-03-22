@@ -304,7 +304,7 @@ def calculate_summary_stats_number(x, number_stats):
 ### these are the summary functions for the sequential approach:
 
 
-def calculate_summary_stats_temporal(x):
+def calculate_summary_stats_temporal(x, all=False):
     """
     Input: observations or simulations
     Returns summary statistics 
@@ -369,7 +369,7 @@ def calculate_summary_stats_temporal(x):
                
         
 
-        if (total_steps_ms < 100):
+        if (total_steps_ms < 100 & all==False):
 
             sum_stats_vec = torch.stack(
                                 [
@@ -409,7 +409,7 @@ def calculate_summary_stats_temporal(x):
         #area_pos2 = torch.trapz(x_t[index_pos])
         #area_neg2 = torch.trapz(x_t[index_neg])
 
-        if (total_steps_ms<170):
+        if (total_steps_ms<170 & all == False):
             sum_stats_vec = torch.stack(
                 [
                     arg_p50,
