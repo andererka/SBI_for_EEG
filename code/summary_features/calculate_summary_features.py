@@ -434,8 +434,8 @@ def calculate_summary_stats_temporal(x, complete=False):
 
         mean4000 = torch.mean(batch[4000:4500])
 
-        mean6000 = torch.mean(batch[6000:700])
-        mean7000 = torch.mean(batch[7000:])
+        mean5000 = torch.mean(batch[5000:5500])
+        mean5500 = torch.mean(batch[5500:])
 
         arg_P200 = torch.argmax(batch)
 
@@ -474,8 +474,8 @@ def calculate_summary_stats_temporal(x, complete=False):
                     mean2100,
                     mean2300,
                     mean4000,
-                    mean6000,
-                    mean7000,
+                    mean5000,
+                    mean5500,
                 ])
 
         batch_list.append(sum_stats_vec)
