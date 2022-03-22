@@ -129,21 +129,10 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [200, 500, 750, 1000, 1500, 2000, 3000]
+    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
 
 
-    # In[7]:
 
-
-    obs_real = Gaussian(true_thetas[0])
-
-    obs_real
-
-
-    # In[ ]:
-
-
-    list_collection = []
 
     obs_real = Gaussian(true_thetas[0])
 
@@ -152,13 +141,11 @@ def main(argv):
 
 
 
+<<<<<<< HEAD
     list_collection = []
 
-
-    obs_real = Gaussian(true_thetas[0])
-
-    print('obs real', obs_real)
-
+=======
+>>>>>>> 83ba11ad25b7ebb0c307fbd56e2ed0e4a79ac02f
 
     start = datetime.datetime.now()
 
@@ -329,7 +316,9 @@ def main(argv):
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
-            posterior_incremental = inf.build_posterior(neural_dens) 
+            posterior_incremental = inf.build_posterior(neural_dens)
+
+            posterior_incremental.set_default_x(obs_real)
 
             posterior_incremental_list.append(posterior_incremental)
             
@@ -501,7 +490,6 @@ def main(argv):
 
         for posterior_incremental in posterior_incremental_list:
 
-            posterior_incremental.set_default_x(obs_real)
 
             #KL = KLdivergence(posterior_incremental, sample_y)
 

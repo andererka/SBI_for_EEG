@@ -1,8 +1,6 @@
 import torch
 
-
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union, cast
-
 
 from sbi import utils as utils
 
@@ -11,7 +9,6 @@ import numpy as np
 from torch.distributions.distribution import Distribution
 
 from torch.distributions import constraints
-
 
 from numbers import Number
 

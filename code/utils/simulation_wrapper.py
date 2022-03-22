@@ -15,13 +15,12 @@ class SimulationWrapper:
     - change_order: default False; if True, calls a simulation wrapper that takes another 
                     inference order. Could test if the inference order plays a role or if
                     inference is robust
-    - small_steps: if True, takes incremental steps of 2. otherwise parameter sets consist of
-                    about 6 parameters
     
     """
 
-    def __init__(self, num_params = 17, change_order = False):
+    def __init__(self, num_params = 17, change_order = False, noise = True):
         self.num_params = num_params
+        self.noise = noise
 
         # not implemented so far in simulation function
         self.change_order = change_order
@@ -51,8 +50,8 @@ class SimulationWrapper:
 
         early_stop = 200.0
 
+        # get number of parameters:
         if len(params.size()) == 2:
-            print('dim=1')
             param_size = int(params.size()[1])
         elif len(params.size()) == 1:
             param_size = int(params.size()[0])
@@ -98,9 +97,10 @@ class SimulationWrapper:
             obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
 
             # make time series more stochastic:
-            noise = np.random.normal(0, 0.1, obs.shape[0])
+            if self.noise == True:
+                noise = np.random.normal(0, 1, obs.shape[0])
 
-            obs += noise
+                obs += noise
 
 
             print('obs', obs)
@@ -170,9 +170,10 @@ class SimulationWrapper:
             obs = dpl.smooth(window_len).scale(scaling_factor).data["agg"]
             
             # make time series more stochastic:
-            noise = np.random.normal(0, 0.5, obs.shape[0])
+            if self.noise == True:
+                noise = np.random.normal(0, 1, obs.shape[0])
 
-            obs += noise
+                obs += noise
 
         return torch.from_numpy(obs)
 
