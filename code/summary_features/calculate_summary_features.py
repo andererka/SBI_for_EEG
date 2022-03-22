@@ -304,7 +304,7 @@ def calculate_summary_stats_number(x, number_stats):
 ### these are the summary functions for the sequential approach:
 
 
-def calculate_summary_stats_temporal(x):
+def calculate_summary_stats_temporal(x, complete=False):
     """
     Input: observations or simulations
     Returns summary statistics 
@@ -390,7 +390,8 @@ def calculate_summary_stats_temporal(x):
 
             batch_list.append(sum_stats_vec)
 
-            continue
+            if complete==False:
+                continue
 
         ## search for N100
         arg_N100 = torch.argmin(batch)
@@ -430,12 +431,13 @@ def calculate_summary_stats_temporal(x):
 
             batch_list.append(sum_stats_vec)
 
-            continue
+            if complete == False:
+                continue
 
         mean4000 = torch.mean(batch[4000:4500])
 
-        mean6000 = torch.mean(batch[6000:700])
-        mean7000 = torch.mean(batch[7000:])
+        mean5000 = torch.mean(batch[5000:5500])
+        mean5500 = torch.mean(batch[5500:])
 
         arg_P200 = torch.argmax(batch)
 
@@ -474,8 +476,8 @@ def calculate_summary_stats_temporal(x):
                     mean2100,
                     mean2300,
                     mean4000,
-                    mean6000,
-                    mean7000,
+                    mean5000,
+                    mean5500,
                 ])
 
         batch_list.append(sum_stats_vec)

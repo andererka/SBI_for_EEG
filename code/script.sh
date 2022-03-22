@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --ntasks=1                # Number of tasks (see below)
-#SBATCH --cpus-per-task=64         # Number of CPU cores per task
+#SBATCH --cpus-per-task=40         # Number of CPU cores per task
 #SBATCH --nodes=1                 # Ensure that all cores are on one machine
-#SBATCH --time=3-00:00            # Runtime in D-HH:MM
+#SBATCH --time=1-00:00            # Runtime in D-HH:MM
 #SBATCH --mem=70G                # Memory pool for all cores (see also --mem-per-cpu)
 #SBATCH --output=hostname_%j.out  # File to which STDOUT will be written
 #SBATCH --error=hostname_%j.err   # File to which STDERR will be written
@@ -21,6 +21,6 @@ scontrol show job $SLURM_JOB_ID
 #python3 efficiency_comparison_summary_statistics.py True
 #python3 investigating_summary_features.py eval_features
 #python3 simulate_only.py 10000 sim_10000_3_params_non_seq2 63
-python3 ERP_sim_inf_multi_round.py 10000 nsf 64 1000 17 multi_round_10000_17params_calc_temporal 
-#python3 toy_example_gaussians.py mdn 40 1 toy_example_mdn_longer2  
+#python3 ERP_sim_inf_multi_round.py 10000 nsf 64 1000 17 multi_round_10000_17params_calc_temporal 
+python3 toy_example_gaussians.py mdn 40 1 toy_example_mdn_longer3  
 #python3 run_thetas.py

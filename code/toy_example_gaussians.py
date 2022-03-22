@@ -129,7 +129,7 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [200, 500, 750, 1000, 1500, 2000, 3000]
+    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
 
 
 
@@ -142,11 +142,6 @@ def main(argv):
 
 
     list_collection = []
-
-
-    obs_real = Gaussian(true_thetas[0])
-
-    print('obs real', obs_real)
 
 
     start = datetime.datetime.now()
@@ -492,7 +487,6 @@ def main(argv):
 
         for posterior_incremental in posterior_incremental_list:
 
-            posterior_incremental.set_default_x(obs_real)
 
             #KL = KLdivergence(posterior_incremental, sample_y)
 
