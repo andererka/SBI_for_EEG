@@ -141,8 +141,11 @@ def main(argv):
 
 
 
+<<<<<<< HEAD
     list_collection = []
 
+=======
+>>>>>>> 83ba11ad25b7ebb0c307fbd56e2ed0e4a79ac02f
 
     start = datetime.datetime.now()
 
