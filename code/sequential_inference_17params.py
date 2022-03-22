@@ -161,8 +161,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            num_simulations=int(num_sim*(1/10)),
-            #num_simulations = num_sim,
+            #num_simulations=int(num_sim*(1/10)),
+            num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -310,8 +310,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=int(num_sim*(19/10)),
-            #num_simulations = num_sim,
+            #num_simulations=int(num_sim*(19/10)),
+            num_simulations = num_sim,
             num_workers = num_workers
         )
 
@@ -355,6 +355,8 @@ def main(argv):
     file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior)
     file_writer.save_thetas(theta)
+
+    torch.save(obs_real, 'obs_real.pt')
 
     ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
     with open('posterior2.pkl', 'wb') as f:

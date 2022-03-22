@@ -304,7 +304,7 @@ def calculate_summary_stats_number(x, number_stats):
 ### these are the summary functions for the sequential approach:
 
 
-def calculate_summary_stats_temporal(x):
+def calculate_summary_stats_temporal(x, all=False):
     """
     Input: observations or simulations
     Returns summary statistics 
@@ -369,7 +369,7 @@ def calculate_summary_stats_temporal(x):
                
         
 
-        if (total_steps_ms < 100):
+        if (total_steps_ms < 100 & all==False):
 
             sum_stats_vec = torch.stack(
                                 [
@@ -409,7 +409,7 @@ def calculate_summary_stats_temporal(x):
         #area_pos2 = torch.trapz(x_t[index_pos])
         #area_neg2 = torch.trapz(x_t[index_neg])
 
-        if (total_steps_ms<170):
+        if (total_steps_ms<170 & all == False):
             sum_stats_vec = torch.stack(
                 [
                     arg_p50,
@@ -433,6 +433,9 @@ def calculate_summary_stats_temporal(x):
             continue
 
         mean4000 = torch.mean(batch[4000:4500])
+
+        mean6000 = torch.mean(batch[6000:700])
+        mean7000 = torch.mean(batch[7000:])
 
         arg_P200 = torch.argmax(batch)
 
@@ -471,6 +474,8 @@ def calculate_summary_stats_temporal(x):
                     mean2100,
                     mean2300,
                     mean4000,
+                    mean6000,
+                    mean7000,
                 ])
 
         batch_list.append(sum_stats_vec)
@@ -483,14 +488,13 @@ def calculate_summary_stats_temporal(x):
     return sum_stats
 
 
-def calculate_summary_statistics_alternative(x, step=40):
+def calculate_summary_statistics_alternative(x, step=200):
     """
     reduces time resolution, but does not calculate real summary statistics
     with x[:,::20] every 20th step is taken into account. there is no kind of interpolation
     """
     print('x', x)
     if (x.dim()==2):
-        print(x.shape)
         sum_stat = x[:,::step]
         print('sum stats shape', sum_stat.shape)
     else:
