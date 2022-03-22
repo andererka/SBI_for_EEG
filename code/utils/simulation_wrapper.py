@@ -57,7 +57,7 @@ class SimulationWrapper:
         elif len(params.size()) == 1:
             param_size = int(params.size()[0])
 
-        if (param_size == 6):
+        if (param_size == 6 & self.num_params == 17):
             
             early_stop = 70.0
             print('6 params investigated')
@@ -84,7 +84,10 @@ class SimulationWrapper:
 
         params = params.tolist()
     
-        net = set_network_weights(params)
+        if (self.num_params == 17):
+            net = set_network_weights(params)
+        else:
+            net = set_network_weights_2_per_step(params)
 
         window_len, scaling_factor = 30, 3000
 
