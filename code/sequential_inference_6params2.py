@@ -255,7 +255,7 @@ def main(argv):
 
     #combined_prior = Combined(proposal2, prior3, number_params_1=2)
 
-    combined_prior = Combined(proposal2, prior3, number_params_1=4)
+    combined_prior = Combined(proposal2, prior3, steps=[0, 2, 4])
 
     inf = SNPE_C(prior3, density_estimator="nsf")
 
@@ -304,7 +304,7 @@ def main(argv):
 
     json_dict = {
         "CPU time for step:": str(diff)}
-        
+
     with open( "meta.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
@@ -317,4 +317,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    torch.manual_seed(5)
+    np.random.seed(5)
     main(sys.argv[1:])

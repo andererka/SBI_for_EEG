@@ -8,6 +8,7 @@ from summary_features.calculate_summary_features import (
 
 )
 
+
 import numpy as np
 import torch
 import json
@@ -84,6 +85,14 @@ def main(argv):
         experiment_name = argv[3]
     except:
         experiment_name = "toy_example_mdn"
+    try:
+        rounds = int(argv[4])
+    except:
+        rounds = 10
+    try:
+        ratio = bool(int(argv[2]))
+    except:
+        ratio = True
 
 
     file_writer = write_to_file.WriteToFile(
@@ -105,6 +114,12 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
+    json_dict = {
+    "arguments:": str(argv)}
+    with open( "argument_list.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
         
 
 
@@ -114,7 +129,6 @@ def main(argv):
 
     # ### starting with multi-round snpe
 
-    # In[5]:
 
     import torch
 
@@ -130,6 +144,7 @@ def main(argv):
 
 
     num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    #num_simulations_list = [200, 400, 600]
 
 
 
@@ -140,16 +155,12 @@ def main(argv):
     torch.manual_seed(4)
 
 
-
-<<<<<<< HEAD
     list_collection = []
 
-=======
->>>>>>> 83ba11ad25b7ebb0c307fbd56e2ed0e4a79ac02f
 
     start = datetime.datetime.now()
 
-    for _ in range(10):
+    for _ in range(rounds):
         
 
         posterior_snpe_list = []
@@ -174,7 +185,6 @@ def main(argv):
                     num_workers=num_workers,
                 )
                 
-                print('x', x)
 
                 neural_dens = inf.append_simulations(theta, x).train()
 
@@ -202,8 +212,6 @@ def main(argv):
     print(diff)
 
 
-    import json
-
     json_dict = {
     "CPU time for step:": str(diff)}
     with open( "time_snpe_nsf.json", "a") as f:
@@ -219,18 +227,8 @@ def main(argv):
     list_collection = torch.load('list_collection.pt')
 
 
-    # In[9]:
 
-
-    list_collection
-
-
-    # ### For incremental approach: 
-
-    # In[ ]:
-
-
-    range_list = [5,10, 15]
+    range_list = [5, 10, 15]
 
 
 
@@ -238,9 +236,8 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for _ in range(10):
+    for _ in range(rounds):
         
-        np.random.seed(i)
 
         posterior_incremental_list = []
 
@@ -258,6 +255,9 @@ def main(argv):
 
             start_num = 1
 
+            previous_i = 0
+            proposal_list = []
+
             for index in range(len(range_list)-1):
 
                 ## i defines number of parameters to be inferred, j indicates how many parameters 
@@ -267,18 +267,26 @@ def main(argv):
 
                 print(i, j)
 
-                num_sim = int(num_simulations * (start_num / 10))
+                if ratio == True:
 
-                start_num += 9
+                    num_sim = int(num_simulations * (start_num / 10))
+
+                    start_num += 9
+                else:
+                    num_sim = num_simulations
 
 
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
-                    num_simulations=num_simulations,
+                    num_simulations=num_sim,
                     num_workers=num_workers,
 
                 )
+
+
+                theta = theta[:, previous_i:i]
+
 
                 inf = inf.append_simulations(theta, x)
                 neural_dens = inf.train()
@@ -292,18 +300,30 @@ def main(argv):
 
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-                combined_prior = Combined(proposal1, next_prior, number_params_1=i)
+                proposal_list.append(proposal1)
+
+                combined_prior = Combined(proposal_list, next_prior, steps=[0,2,4])
 
 
-                ## set inf for next round:
-                inf = SNPE(combined_prior, density_estimator=density_estimator)
+                ## here we only make inference on the next prior, not the whole set so far
+                inf = SNPE(next_prior, density_estimator=density_estimator)
 
 
-                ## set combined prior to be the new prior_i:
+                ## set combined prior to be the new proposal:
                 proposal= combined_prior
 
+                previous_i = i
 
-            num_sim = int(num_simulations * (start_num / 10))
+
+
+            if ratio == True:
+
+                num_sim = int(num_simulations * (start_num / 10))
+
+            else:
+                num_sim = num_simulations
+
+            print(proposal.sample((1,)))
 
             theta, x =  simulate_for_sbi(
                 simulator_stats,
@@ -313,6 +333,14 @@ def main(argv):
 
             )
 
+            print(theta.shape)
+            print(prior_i)
+
+            theta = theta[:,prior_i:]
+
+            print(theta.shape)
+
+
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
@@ -320,12 +348,13 @@ def main(argv):
 
             posterior_incremental.set_default_x(obs_real)
 
-            posterior_incremental_list.append(posterior_incremental)
+            combined_posterior = Combined(proposal_list, posterior_incremental, steps=[0,2,4])
+
+            posterior_incremental_list.append(combined_posterior)
             
         list_collection_inc.append(posterior_incremental_list)
 
 
-    # In[50]:
 
     end_time = datetime.datetime.now()
 
@@ -343,43 +372,13 @@ def main(argv):
     torch.save(list_collection_inc, 'list_collection_inc.pt')
 
 
-    # In[46]:
 
 
     list_collection_inc = torch.load('list_collection_inc.pt')
 
 
-    # In[ ]:
-
-
     import torch.nn.functional as F
 
-
-    #out = F.kl_div(analytic_sample, posterior_sample)
-
-
-
-    # In[ ]:
-
-
-    def calc_KL_1d(posterior):
-        
-        sample = posterior.sample((10000,))
-        
-        analytic = torch.distributions.normal.Normal(true_thetas, 0.1)
-        
-        analytic_sample = analytic.sample((10000,)).squeeze(1)
-        
-        out_list = []
-        for i in range(len(posterior)):
-            
-            out = F.kl_div(analytic_sample[:,i], sample[:,i])
-            out_list.append(out)
-        
-        return out_list
-
-
-    # In[11]:
 
 
     def KL_Gauss(X, Y):
@@ -469,14 +468,6 @@ def main(argv):
 
 
         
-        
-
-
-    # In[51]:
-
-
-    obs_real = Gaussian(true_thetas[0, 0:])
-
 
 
     analytic = torch.distributions.normal.Normal(true_thetas, 1)
@@ -491,13 +482,8 @@ def main(argv):
         for posterior_incremental in posterior_incremental_list:
 
 
-            #KL = KLdivergence(posterior_incremental, sample_y)
 
             KL = KL_Gauss(posterior_incremental, analytic)
-
-            #KL_1d = calc_KL_1d(posterior_incremental, analytic)
-
-            #KL_incremental_1d.append(KL_1d)
 
 
             KL_incremental.append(KL)
@@ -508,22 +494,14 @@ def main(argv):
         
 
 
-    # In[37]:
-
-
-    len(overall_incremental_list)
-
-
-    # In[65]:
-
 
     mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
     stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 
-    lower_incremental = mean_incremental - [element for element in stdev_incremental]
+    lower_incremental = mean_incremental - [element * 0.5 for element in stdev_incremental]
 
-    upper_incremental = mean_incremental + [element for element in stdev_incremental]
+    upper_incremental = mean_incremental + [element * 0.5 for element in stdev_incremental]
 
 
     # In[66]:
@@ -533,9 +511,9 @@ def main(argv):
 
     stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 
-    lower_snpe = mean_snpe - [element for element in stdev_snpe]
+    lower_snpe = mean_snpe - [element * 0.5 for element in stdev_snpe]
 
-    upper_snpe = mean_snpe + [element for element in stdev_snpe]
+    upper_snpe = mean_snpe + [element * 0.5 for element in stdev_snpe]
 
 
     # ### Compare KL-divergence of snpe approach with incremental approach in a plot:

@@ -178,7 +178,7 @@ def main(argv):
 
     obs_real = obs_real_complete[0]
 
-    obs_real_stat = calculate_summary_statistics_alternative(obs_real)
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posteriors = []
     proposal = prior
@@ -282,4 +282,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    torch.manual_seed(5)
+    np.random.seed(5)
     main(sys.argv[1:])
