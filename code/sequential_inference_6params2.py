@@ -304,7 +304,7 @@ def main(argv):
 
     json_dict = {
         "CPU time for step:": str(diff)}
-        
+
     with open( "meta.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
@@ -317,4 +317,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    torch.manual_seed(5)
+    np.random.seed(5)
     main(sys.argv[1:])

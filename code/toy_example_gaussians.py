@@ -114,7 +114,6 @@ def main(argv):
 
     # ### starting with multi-round snpe
 
-    # In[5]:
 
     import torch
 
@@ -140,12 +139,8 @@ def main(argv):
     torch.manual_seed(4)
 
 
-
-<<<<<<< HEAD
     list_collection = []
 
-=======
->>>>>>> 83ba11ad25b7ebb0c307fbd56e2ed0e4a79ac02f
 
     start = datetime.datetime.now()
 
@@ -218,16 +213,6 @@ def main(argv):
 
     list_collection = torch.load('list_collection.pt')
 
-
-    # In[9]:
-
-
-    list_collection
-
-
-    # ### For incremental approach: 
-
-    # In[ ]:
 
 
     range_list = [5,10, 15]
@@ -325,7 +310,6 @@ def main(argv):
         list_collection_inc.append(posterior_incremental_list)
 
 
-    # In[50]:
 
     end_time = datetime.datetime.now()
 
@@ -343,43 +327,13 @@ def main(argv):
     torch.save(list_collection_inc, 'list_collection_inc.pt')
 
 
-    # In[46]:
 
 
     list_collection_inc = torch.load('list_collection_inc.pt')
 
 
-    # In[ ]:
-
-
     import torch.nn.functional as F
 
-
-    #out = F.kl_div(analytic_sample, posterior_sample)
-
-
-
-    # In[ ]:
-
-
-    def calc_KL_1d(posterior):
-        
-        sample = posterior.sample((10000,))
-        
-        analytic = torch.distributions.normal.Normal(true_thetas, 0.1)
-        
-        analytic_sample = analytic.sample((10000,)).squeeze(1)
-        
-        out_list = []
-        for i in range(len(posterior)):
-            
-            out = F.kl_div(analytic_sample[:,i], sample[:,i])
-            out_list.append(out)
-        
-        return out_list
-
-
-    # In[11]:
 
 
     def KL_Gauss(X, Y):
@@ -469,14 +423,6 @@ def main(argv):
 
 
         
-        
-
-
-    # In[51]:
-
-
-    obs_real = Gaussian(true_thetas[0, 0:])
-
 
 
     analytic = torch.distributions.normal.Normal(true_thetas, 1)
@@ -491,13 +437,8 @@ def main(argv):
         for posterior_incremental in posterior_incremental_list:
 
 
-            #KL = KLdivergence(posterior_incremental, sample_y)
 
             KL = KL_Gauss(posterior_incremental, analytic)
-
-            #KL_1d = calc_KL_1d(posterior_incremental, analytic)
-
-            #KL_incremental_1d.append(KL_1d)
 
 
             KL_incremental.append(KL)
@@ -508,22 +449,14 @@ def main(argv):
         
 
 
-    # In[37]:
-
-
-    len(overall_incremental_list)
-
-
-    # In[65]:
-
 
     mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
     stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 
-    lower_incremental = mean_incremental - [element for element in stdev_incremental]
+    lower_incremental = mean_incremental - [element * 0.5 for element in stdev_incremental]
 
-    upper_incremental = mean_incremental + [element for element in stdev_incremental]
+    upper_incremental = mean_incremental + [element * 0.5 for element in stdev_incremental]
 
 
     # In[66]:
@@ -533,9 +466,9 @@ def main(argv):
 
     stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 
-    lower_snpe = mean_snpe - [element for element in stdev_snpe]
+    lower_snpe = mean_snpe - [element * 0.5 for element in stdev_snpe]
 
-    upper_snpe = mean_snpe + [element for element in stdev_snpe]
+    upper_snpe = mean_snpe + [element * 0.5 for element in stdev_snpe]
 
 
     # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
