@@ -84,6 +84,14 @@ def main(argv):
         experiment_name = argv[3]
     except:
         experiment_name = "toy_example_mdn"
+    try:
+        rounds = int(argv[4])
+    except:
+        rounds = 10
+    try:
+        ratio = bool(int(argv[2]))
+    except:
+        ratio = True
 
 
     file_writer = write_to_file.WriteToFile(
@@ -128,7 +136,8 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    #num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    num_simulations_list = [200]
 
 
 
@@ -144,7 +153,7 @@ def main(argv):
 
     start = datetime.datetime.now()
 
-    for _ in range(10):
+    for _ in range(rounds):
         
 
         posterior_snpe_list = []
@@ -223,9 +232,8 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for _ in range(10):
+    for _ in range(rounds):
         
-        np.random.seed(i)
 
         posterior_incremental_list = []
 
@@ -243,6 +251,9 @@ def main(argv):
 
             start_num = 1
 
+            prior_i = 0
+            proposal_list = []
+
             for index in range(len(range_list)-1):
 
                 ## i defines number of parameters to be inferred, j indicates how many parameters 
@@ -252,18 +263,28 @@ def main(argv):
 
                 print(i, j)
 
-                num_sim = int(num_simulations * (start_num / 10))
+                if ratio == True:
 
-                start_num += 9
+                    num_sim = int(num_simulations * (start_num / 10))
+
+                    start_num += 9
+                else:
+                    num_sim = num_simulations
 
 
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
-                    num_simulations=num_simulations,
+                    num_simulations=num_sim,
                     num_workers=num_workers,
 
                 )
+
+                print(theta.shape)
+                print(prior_i)
+
+                theta = theta[:,prior_i:i]
+                print(theta.shape)
 
                 inf = inf.append_simulations(theta, x)
                 neural_dens = inf.train()
@@ -277,18 +298,30 @@ def main(argv):
 
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-                combined_prior = Combined(proposal1, next_prior, number_params_1=i)
+                proposal_list.append(proposal1)
+
+                combined_prior = Combined(proposal_list, next_prior, steps=[0,2,4])
 
 
                 ## set inf for next round:
-                inf = SNPE(combined_prior, density_estimator=density_estimator)
+                inf = SNPE(next_prior, density_estimator=density_estimator)
 
 
                 ## set combined prior to be the new prior_i:
                 proposal= combined_prior
 
+                prior_i = i
 
-            num_sim = int(num_simulations * (start_num / 10))
+
+
+            if ratio == True:
+
+                num_sim = int(num_simulations * (start_num / 10))
+
+            else:
+                num_sim = num_simulations
+
+            print(proposal.sample((1,)))
 
             theta, x =  simulate_for_sbi(
                 simulator_stats,
@@ -298,6 +331,14 @@ def main(argv):
 
             )
 
+            print(theta.shape)
+            print(prior_i)
+
+            theta = theta[:,prior_i:]
+
+            print(theta.shape)
+
+
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
@@ -305,7 +346,9 @@ def main(argv):
 
             posterior_incremental.set_default_x(obs_real)
 
-            posterior_incremental_list.append(posterior_incremental)
+            combined_posterior = Combined(proposal_list, posterior_incremental, steps=[0,2,4])
+
+            posterior_incremental_list.append(combined_posterior)
             
         list_collection_inc.append(posterior_incremental_list)
 

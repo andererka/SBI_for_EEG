@@ -35,29 +35,42 @@ class Combined(Distribution):
         validate_args=None,
         batch_shape=torch.Size(),
         event_shape=torch.Size(),
-        number_params_1=0,
+        steps=[0],
     ):
         self._batch_shape = batch_shape
         self._event_shape = event_shape
-        self._posterior_distribution = posterior_distribution
+        self._posterior_distribution_list = posterior_distribution
         self._prior_distribution = prior_distribution
-        self.number_params = number_params_1
+        self.steps = steps
 
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
+
+        if type(self._posterior_distribution_list) != list:
+            self._posterior_distribution_list = [self._posterior_distribution_list]
+
 
     def log_prob(self, x):
 
         """
         calculates the log probability of the combined prior distribution based on some observation x
         """
-        index = self.number_params
+        steps = self.steps
+        
+        for i, posterior in enumerate(self._posterior_distribution_list):
+            print(i)
+            globals()['log_prob_posterior%s' % i] = posterior.log_prob(x[0][steps[i]:steps[i+1]])
 
-        log_prob_posterior = self._posterior_distribution.log_prob(x[0][:index])
-        log_prob_prior = self._prior_distribution.log_prob(x[0][index:])
+            number_rounds = i
 
+        log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
+
+        for i in range(1, number_rounds):
+            log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+
+        log_prob_prior = self._prior_distribution(x[0])
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
-        print(log_prob)
+        print('log prob', log_prob)
 
 
         return log_prob
@@ -70,20 +83,35 @@ class Combined(Distribution):
 
         with torch.no_grad():
 
-            theta_posterior = self._posterior_distribution.sample(sample_shape)
+            theta_posterior_list = []
+            
+            for posterior in self._posterior_distribution_list:
+
+                theta_posterior = posterior.sample(sample_shape)
+
+                print(theta_posterior.shape, 'here')
+
+                #make sure that thetas are in the right shape; otherwise unsqueeze:
+                if theta_posterior.dim()  == 1:
+                    theta_posterior = torch.unsqueeze(theta_posterior, 0) 
+
+                theta_posterior_list.append(theta_posterior)  
+
+
+
+
+            theta_posterior = torch.cat(tuple(theta_posterior_list), dim = 1)
             theta_prior = self._prior_distribution.sample(sample_shape)
+
+            if theta_prior.dim()  == 1:
+
+                theta_prior = torch.unsqueeze(theta_prior, 0) 
+
     
-            #make sure that thetas are in the right shape; otherwise unsqueeze:
-            if theta_posterior.dim() == 1:
-                
-                theta_posterior = torch.unsqueeze(theta_posterior, 0)
-
-            if theta_prior.dim() == 1:
-
-                theta_prior = torch.unsqueeze(theta_prior, 0)
-
 
             theta = torch.cat((theta_posterior, theta_prior), 1)
+
+            print('thta shape', theta.shape)
 
 
         
