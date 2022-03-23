@@ -8,7 +8,7 @@ from summary_features.calculate_summary_features import (
 
 )
 
-import json
+
 import numpy as np
 import torch
 import json
@@ -211,8 +211,6 @@ def main(argv):
 
     print(diff)
 
-
-    import json
 
     json_dict = {
     "CPU time for step:": str(diff)}
