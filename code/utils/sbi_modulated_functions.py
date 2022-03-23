@@ -20,9 +20,9 @@ class Combined(Distribution):
     implements own log_prob() and sample() for two different prior distributions such that parameter sets can be inferred sequentially - one posterior is based on another
    
     takes as arguments:
-    - posterior distribution of already inferred parameter set
+    - posterior distribution (list) of already inferred parameter set. Can be a list with several posteriors.
     - prior distribution of subsequent parameter set that is dependent on earlier parameter set
-    - number_params_1: number of parameters that was inferred already (in posterior distribution)
+    - steps: a list that holds information about how many parameters are inferred in each step.
     """
 
     has_rsample = False
@@ -57,10 +57,14 @@ class Combined(Distribution):
         steps = self.steps
         
         for i, posterior in enumerate(self._posterior_distribution_list):
-            print(i)
+
             globals()['log_prob_posterior%s' % i] = posterior.log_prob(x[0][steps[i]:steps[i+1]])
 
             number_rounds = i
+
+
+        ## for calculating the log probability, we have to add the log probabilities of the single (already inferred) posteriors
+        ## with the priors.
 
         log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
 
@@ -68,9 +72,8 @@ class Combined(Distribution):
             log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
 
         log_prob_prior = self._prior_distribution(x[0])
-        log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
-        print('log prob', log_prob)
+        log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
 
         return log_prob
@@ -89,7 +92,6 @@ class Combined(Distribution):
 
                 theta_posterior = posterior.sample(sample_shape)
 
-                print(theta_posterior.shape, 'here')
 
                 #make sure that thetas are in the right shape; otherwise unsqueeze:
                 if theta_posterior.dim()  == 1:
@@ -107,12 +109,8 @@ class Combined(Distribution):
 
                 theta_prior = torch.unsqueeze(theta_prior, 0) 
 
-    
-
+            ### concatenates samples from posterior and prior:
             theta = torch.cat((theta_posterior, theta_prior), 1)
-
-            print('thta shape', theta.shape)
-
 
         
             return theta

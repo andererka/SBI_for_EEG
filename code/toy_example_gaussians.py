@@ -136,8 +136,8 @@ def main(argv):
     # In[6]:
 
 
-    #num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
-    num_simulations_list = [200, 400, 600]
+    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    #num_simulations_list = [200, 400, 600]
 
 
 
@@ -178,7 +178,6 @@ def main(argv):
                     num_workers=num_workers,
                 )
                 
-                print('x', x)
 
                 neural_dens = inf.append_simulations(theta, x).train()
 
@@ -224,7 +223,7 @@ def main(argv):
 
 
 
-    range_list = [5,10, 15]
+    range_list = [5, 10, 15]
 
 
 
@@ -251,7 +250,7 @@ def main(argv):
 
             start_num = 1
 
-            prior_i = 0
+            previous_i = 0
             proposal_list = []
 
             for index in range(len(range_list)-1):
@@ -280,11 +279,9 @@ def main(argv):
 
                 )
 
-                print(theta.shape)
-                print(prior_i)
 
-                theta = theta[:,prior_i:i]
-                print(theta.shape)
+                theta = theta[:, previous_i:i]
+
 
                 inf = inf.append_simulations(theta, x)
                 neural_dens = inf.train()
@@ -303,14 +300,14 @@ def main(argv):
                 combined_prior = Combined(proposal_list, next_prior, steps=[0,2,4])
 
 
-                ## set inf for next round:
+                ## here we only make inference on the next prior, not the whole set so far
                 inf = SNPE(next_prior, density_estimator=density_estimator)
 
 
-                ## set combined prior to be the new prior_i:
+                ## set combined prior to be the new proposal:
                 proposal= combined_prior
 
-                prior_i = i
+                previous_i = i
 
 
 
