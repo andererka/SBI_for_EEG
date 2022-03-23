@@ -8,6 +8,7 @@ from summary_features.calculate_summary_features import (
 
 )
 
+import json
 import numpy as np
 import torch
 import json
@@ -112,6 +113,12 @@ def main(argv):
 
 
     os.chdir(file_writer.folder)
+
+    json_dict = {
+    "arguments:": str(argv)}
+    with open( "argument_list.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
         
 
