@@ -49,8 +49,12 @@ class Combined(Distribution):
         try:
 
             self.default_x = posterior_distribution.default_x
+            self._x_shape = self.default_x[self.steps[0]:self.steps[1]].shape
+            print('self x shape', self._x_shape)
         except:
             self.default_x = None
+
+        
 
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
 
