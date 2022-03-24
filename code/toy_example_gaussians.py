@@ -332,6 +332,8 @@ def main(argv):
 
                 proposal1 = posterior.set_default_x(obs_real2)
 
+                print(proposal1.sample((1,)).shape, 'proposal shape')
+
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
                 proposal_list.append(proposal1)
@@ -381,6 +383,8 @@ def main(argv):
             posterior_incremental = inf.build_posterior(neural_dens)
 
             posterior_incremental.set_default_x(obs_real)
+
+            print(posterior_incremental.sample((1,)).shape, 'proposal shape')
 
             proposal_list.append(posterior_incremental)
 
