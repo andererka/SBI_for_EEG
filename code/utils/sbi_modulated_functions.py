@@ -92,8 +92,6 @@ class Combined(Distribution):
         """
         samples from combined prior distribution
         """
-        if x == None:
-            x = self.default_x
 
         with torch.no_grad():
 
