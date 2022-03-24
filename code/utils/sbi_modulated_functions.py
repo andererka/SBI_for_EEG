@@ -51,7 +51,6 @@ class Combined(Distribution):
         if type(self._posterior_distribution_list) != list:
             self._posterior_distribution_list = [self._posterior_distribution_list]
 
-        self.default_x = self._posterior_distribution_list[0].default_x
 
 
     def log_prob(self, x):
