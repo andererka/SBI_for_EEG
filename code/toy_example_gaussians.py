@@ -1,3 +1,4 @@
+from random import gauss
 from utils.simulation_wrapper import SimulationWrapper
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
@@ -52,7 +53,7 @@ def Gaussian(thetas, normal_noise=1):
     
     gauss_list = []
     
-    for theta in thetas:
+    for i, theta in enumerate(thetas):
     
         mu, sigma = theta, normal_noise # mean and standard deviation
 
@@ -60,6 +61,7 @@ def Gaussian(thetas, normal_noise=1):
     
         
         gauss_list.append(s[0])
+
         
     gauss_obs = torch.tensor(gauss_list)
     
@@ -318,6 +320,7 @@ def main(argv):
 
 
                 theta = theta[:, previous_i:i]
+                x = x[:, previous_i:i]
 
                 print('theta shape after', theta.shape)
 
@@ -327,8 +330,15 @@ def main(argv):
 
                 posterior = inf.build_posterior(neural_dens)
 
+                obs_real2 = obs_real[previous_i:i]
 
-                proposal1 = posterior.set_default_x(obs_real)
+                print(obs_real2.shape)
+
+                print(posterior)
+
+                print(x.shape)
+
+                proposal1 = posterior.set_default_x(obs_real2)
 
                 print(proposal1.sample((1,)).shape, 'proposal shape')
 
@@ -367,12 +377,15 @@ def main(argv):
 
             )
 
-            print(theta.shape)
-            print(prior_i)
+            print('previous i ', previous_i)
 
             theta = theta[:,previous_i:]
+            x = x[:,previous_i:]
 
             print(theta.shape)
+            print(x.shape)
+
+
 
 
             inf = inf.append_simulations(theta, x)
@@ -380,10 +393,14 @@ def main(argv):
 
             posterior_incremental = inf.build_posterior(neural_dens)
 
+            obs_real2 = obs_real[previous_i:]
 
-            posterior_incremental.set_default_x(obs_real)
+            print('pbs_real shape', obs_real2.shape)
 
-            print(posterior_incremental.sample((1,)).shape, 'proposal shape')
+
+
+            posterior_incremental.set_default_x(obs_real2)
+
 
             proposal_list.append(posterior_incremental)
 
