@@ -87,19 +87,27 @@ class Combined(Distribution):
 
         return log_prob
 
-    def sample(self, x: Optional[Tensor] = None, sample_shape=torch.Size()):
+    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None):
 
         """
         samples from combined prior distribution
         """
 
+
+
         with torch.no_grad():
 
             theta_posterior_list = []
             
-            for posterior in self._posterior_distribution_list:
+            for idx, posterior in enumerate(self._posterior_distribution_list):
 
-                theta_posterior = posterior.sample(sample_shape, x = x)
+                if x == None:
+                    theta_posterior = posterior.sample(sample_shape)
+
+                else:
+                    print('x', x)
+
+                    theta_posterior = posterior.sample(sample_shape, x = x[self.steps[idx]:self.steps[idx+1]])
 
 
                 #make sure that thetas are in the right shape; otherwise unsqueeze:
