@@ -173,8 +173,8 @@ def main(argv):
     # In[6]:
 
 
-    #num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
-    num_simulations_list = [200]
+    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    #num_simulations_list = [200]
 
 
 
@@ -316,13 +316,12 @@ def main(argv):
 
                 )
 
-                print('previous i and i', previous_i, i)
 
 
                 theta = theta[:, previous_i:i]
                 x = x[:, previous_i:i]
 
-                print('theta shape after', theta.shape)
+
 
                 
                 inf = inf.append_simulations(theta, x)
@@ -332,15 +331,11 @@ def main(argv):
 
                 obs_real2 = obs_real[previous_i:i]
 
-                print(obs_real2.shape)
 
-                print(posterior)
-
-                print(x.shape)
 
                 proposal1 = posterior.set_default_x(obs_real2)
 
-                print(proposal1.sample((1,)).shape, 'proposal shape')
+
 
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
@@ -367,7 +362,7 @@ def main(argv):
             else:
                 num_sim = num_simulations
 
-            print(proposal.sample((1,)))
+
 
             theta, x =  simulate_for_sbi(
                 simulator_stats,
@@ -377,14 +372,10 @@ def main(argv):
 
             )
 
-            print('previous i ', previous_i)
+
 
             theta = theta[:,previous_i:]
             x = x[:,previous_i:]
-
-            print(theta.shape)
-            print(x.shape)
-
 
 
 
@@ -394,9 +385,6 @@ def main(argv):
             posterior_incremental = inf.build_posterior(neural_dens)
 
             obs_real2 = obs_real[previous_i:]
-
-            print('pbs_real shape', obs_real2.shape)
-
 
 
             posterior_incremental.set_default_x(obs_real2)
