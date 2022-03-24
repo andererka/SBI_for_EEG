@@ -117,6 +117,8 @@ class Combined(Distribution):
 
                     print('steps', self.steps)
 
+                    print(posterior.sample(sample_shape).shape)
+
                     theta_posterior = posterior.sample(sample_shape, x = x[self.steps[idx]:self.steps[idx+1]])
 
                     print('theta posterior shape', theta_posterior.shape)
