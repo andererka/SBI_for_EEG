@@ -16,7 +16,7 @@ from torch import Tensor
 
 
 
-class Combined(NeuralPosterior):
+class Combined(Distribution):
     """
     Inherits from Torch Distribution class
 
