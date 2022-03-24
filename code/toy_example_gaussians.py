@@ -382,7 +382,7 @@ def main(argv):
 
             posterior_incremental = inf.build_posterior(neural_dens)
 
-            obs_real2 = obs_real[previous_i:i]
+            obs_real2 = obs_real[previous_i:]
 
             posterior_incremental.set_default_x(obs_real2)
 
