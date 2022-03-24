@@ -327,10 +327,8 @@ def main(argv):
 
                 posterior = inf.build_posterior(neural_dens)
 
-                obs_real2 = obs_real[previous_i:i]
 
-
-                proposal1 = posterior.set_default_x(obs_real2)
+                proposal1 = posterior.set_default_x(obs_real)
 
                 print(proposal1.sample((1,)).shape, 'proposal shape')
 
@@ -382,9 +380,8 @@ def main(argv):
 
             posterior_incremental = inf.build_posterior(neural_dens)
 
-            obs_real2 = obs_real[previous_i:]
 
-            posterior_incremental.set_default_x(obs_real2)
+            posterior_incremental.set_default_x(obs_real)
 
             print(posterior_incremental.sample((1,)).shape, 'proposal shape')
 
