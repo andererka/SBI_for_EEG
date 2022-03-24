@@ -314,8 +314,12 @@ def main(argv):
 
                 )
 
+                print('previous i and i', previous_i, i)
+
 
                 theta = theta[:, previous_i:i]
+
+                print('theta shape after', theta.shape)
 
                 
                 inf = inf.append_simulations(theta, x)
