@@ -332,7 +332,7 @@ def main(argv):
 
                 proposal_list.append(proposal1)
 
-                combined_prior = Combined(proposal_list, next_prior, steps=[0,2,4])
+                combined_prior = Combined(proposal_list, next_prior, steps=range_list)
 
 
                 ## here we only make inference on the next prior, not the whole set so far
@@ -378,7 +378,7 @@ def main(argv):
 
             posterior_incremental.set_default_x(obs_real)
 
-            combined_posterior = Combined(proposal_list, posterior_incremental, steps=[0,2,4])
+            combined_posterior = Combined(proposal_list, posterior_incremental, steps=range_list)
 
             posterior_incremental_list.append(combined_posterior)
             
