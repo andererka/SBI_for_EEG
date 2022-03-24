@@ -255,7 +255,7 @@ def main(argv):
 
     #combined_prior = Combined(proposal2, prior3, number_params_1=2)
 
-    combined_prior = Combined(proposal2, prior3, steps=[0, 2, 4])
+    combined_prior = Combined(proposal2, prior3, number_params_1=4)
 
     inf = SNPE_C(prior3, density_estimator="nsf")
 

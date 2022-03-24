@@ -66,12 +66,17 @@ class Combined(Distribution):
         ## for calculating the log probability, we have to add the log probabilities of the single (already inferred) posteriors
         ## with the priors.
 
-        log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
+        if number_rounds > 0:
 
-        for i in range(1, number_rounds):
-            log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+            log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
 
-        log_prob_prior = self._prior_distribution(x[0])
+            for i in range(1, number_rounds):
+                log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+        else:
+            log_prob_posterior = globals()['log_prob_posterior%s' % 0]
+
+
+        log_prob_prior = self._prior_distribution.log_prob(x[0])
 
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
