@@ -8,12 +8,15 @@ import numpy as np
 
 from torch.distributions.distribution import Distribution
 
+from sbi.inference.posteriors.base_posterior import NeuralPosterior
+
 from torch.distributions import constraints
 
-from numbers import Number
+from torch import Tensor
 
 
-class Combined(Distribution):
+
+class Combined(NeuralPosterior):
     """
     Inherits from Torch Distribution class
 
@@ -48,6 +51,8 @@ class Combined(Distribution):
         if type(self._posterior_distribution_list) != list:
             self._posterior_distribution_list = [self._posterior_distribution_list]
 
+        self.default_x = self._posterior_distribution_list[0].default_x
+
 
     def log_prob(self, x):
 
@@ -76,18 +81,20 @@ class Combined(Distribution):
             log_prob_posterior = globals()['log_prob_posterior%s' % 0]
 
 
-        log_prob_prior = self._prior_distribution.log_prob(x[0])
+        log_prob_prior = self._prior_distribution.log_prob(x[0][steps[number_rounds+1]:])
 
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
 
         return log_prob
 
-    def sample(self, sample_shape=torch.Size()):
+    def sample(self, x: Optional[Tensor] = None, sample_shape=torch.Size()):
 
         """
         samples from combined prior distribution
         """
+        if x == None:
+            x = self.default_x
 
         with torch.no_grad():
 
@@ -95,7 +102,7 @@ class Combined(Distribution):
             
             for posterior in self._posterior_distribution_list:
 
-                theta_posterior = posterior.sample(sample_shape)
+                theta_posterior = posterior.sample(sample_shape, x = x)
 
 
                 #make sure that thetas are in the right shape; otherwise unsqueeze:

@@ -84,6 +84,10 @@ def main(argv):
         experiment_name = argv[6]
     except:
         experiment_name = 'multi_round'
+    try:
+        set_proposal = bool(int(argv[7]))
+    except:
+        set_proposal = True
 
     sim_wrapper = SimulationWrapper(num_params=num_params)
 
@@ -211,6 +215,14 @@ def main(argv):
     os.chdir(file_writer.folder)
 
 
+    json_dict = {
+    "arguments:": str(argv)}
+    with open( "argument_list.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
+
+
 
     for i in range(3):
 
@@ -230,7 +242,10 @@ def main(argv):
         inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
 
-        inf = inf.append_simulations(theta, x, proposal=proposal)
+        if set_proposal:
+            inf = inf.append_simulations(theta, x, proposal=proposal)
+        else:
+            inf = inf.append_simulations(theta, x)
 
         neural_dens= inf.train()
 
