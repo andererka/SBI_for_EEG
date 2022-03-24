@@ -22,5 +22,5 @@ scontrol show job $SLURM_JOB_ID
 #python3 investigating_summary_features.py eval_features
 #python3 simulate_only.py 10000 sim_10000_3_params_non_seq2 63
 #python3 ERP_sim_inf_multi_round.py 10000 nsf 64 1000 17 multi_round_10000_17params_calc_temporal 
-python3 toy_example_gaussians.py mdn 20 1 toy_example_mdn_seperate_posteriors_setx_short4 1 0 0  
+python3 toy_example_gaussians.py mdn 20 1 toy_example_mdn_seperate_posteriors_setx_short5 1 0 0  
 #python3 run_thetas.py

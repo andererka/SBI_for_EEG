@@ -314,8 +314,12 @@ def main(argv):
 
                 )
 
+                print('previous i and i', previous_i, i)
+
 
                 theta = theta[:, previous_i:i]
+
+                print('theta shape after', theta.shape)
 
                 
                 inf = inf.append_simulations(theta, x)
@@ -323,10 +327,12 @@ def main(argv):
 
                 posterior = inf.build_posterior(neural_dens)
 
-                obs_real2 = obs_real[0:i]
+                obs_real2 = obs_real[previous_i:i]
 
 
                 proposal1 = posterior.set_default_x(obs_real2)
+
+                print(proposal1.sample((1,)).shape, 'proposal shape')
 
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
@@ -376,7 +382,11 @@ def main(argv):
 
             posterior_incremental = inf.build_posterior(neural_dens)
 
-            posterior_incremental.set_default_x(obs_real)
+            obs_real2 = obs_real[previous_i:i]
+
+            posterior_incremental.set_default_x(obs_real2)
+
+            print(posterior_incremental.sample((1,)).shape, 'proposal shape')
 
             proposal_list.append(posterior_incremental)
 

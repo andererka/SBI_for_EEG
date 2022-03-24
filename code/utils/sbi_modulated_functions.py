@@ -46,6 +46,16 @@ class Combined(Distribution):
         self._prior_distribution = prior_distribution
         self.steps = steps
 
+        try:
+
+            self.default_x = posterior_distribution.default_x
+            self._x_shape = self.default_x[self.steps[0]:self.steps[1]].shape
+            print('self x shape', self._x_shape)
+        except:
+            self.default_x = None
+
+        
+
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
 
         if type(self._posterior_distribution_list) != list:
@@ -113,11 +123,14 @@ class Combined(Distribution):
                     theta_posterior = posterior.sample(sample_shape)
 
                 else:
-                    print('x', x)
 
-                    print('steps', self.steps)
+                    x_step = x[self.steps[idx]:self.steps[idx+1]]
 
-                    theta_posterior = posterior.sample(sample_shape, x = x[self.steps[idx]:self.steps[idx+1]])
+                    print(x_step)
+
+                    theta_posterior = posterior.sample(sample_shape, x = x_step)
+
+                    print('theta posterior shape', theta_posterior.shape)
 
 
                 #make sure that thetas are in the right shape; otherwise unsqueeze:
