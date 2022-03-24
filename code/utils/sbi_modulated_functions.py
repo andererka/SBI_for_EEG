@@ -42,11 +42,14 @@ class Combined(Distribution):
     ):
         self._batch_shape = batch_shape
         self._event_shape = event_shape
-        self._posterior_distribution = posterior_distribution
+        self._posterior_distribution_list = posterior_distribution
         self._prior_distribution = prior_distribution
         self.steps = steps
 
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
+
+        if type(self._posterior_distribution_list) != list:
+            self._posterior_distribution_list = [self._posterior_distribution_list]
 
 
 
@@ -57,12 +60,31 @@ class Combined(Distribution):
         """
         steps = self.steps
         
-        log_prob_posterior = self._posterior_distribution.log_prob(x[0][steps[0]:steps[1]])
+        for i, posterior in enumerate(self._posterior_distribution_list):
 
+            globals()['log_prob_posterior%s' % i] = posterior.log_prob(x[0][steps[i]:steps[i+1]])
+
+            number_rounds = i
+
+
+        ## for calculating the log probability, we have to add the log probabilities of the single (already inferred) posteriors
+        ## with the priors.
+
+        if number_rounds > 0:
+
+            log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
+
+            for i in range(1, number_rounds):
+                log_prob_posterior_so_far = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+                print(log_prob_posterior_so_far)
+            log_prob_posterior = log_prob_posterior_so_far
+
+        else:
+            log_prob_posterior = globals()['log_prob_posterior%s' % 0]
 
 
         if self._prior_distribution != None:
-            log_prob_prior = self._prior_distribution.log_prob(x[0][steps[1]:])
+            log_prob_prior = self._prior_distribution.log_prob(x[0][steps[number_rounds+1]:])
 
             log_prob = torch.add(log_prob_posterior, log_prob_prior)
         else:
@@ -70,7 +92,6 @@ class Combined(Distribution):
 
 
         return log_prob
-        
 
     def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None, show_progress_bars: bool = True, sample_with: Optional[str] = None):
 
@@ -84,22 +105,30 @@ class Combined(Distribution):
 
         with torch.no_grad():
 
+            theta_posterior_list = []
             
+            for idx, posterior in enumerate(self._posterior_distribution_list):
 
-            if x == None:
-                theta_posterior = self._posterior_distribution.sample(sample_shape)
+                if x == None:
+                    theta_posterior = posterior.sample(sample_shape)
 
-            else:
+                else:
 
-                theta_posterior = self._posterior_distribution.sample(sample_shape, x = x[self.steps[0]:self.steps[1]])
+                    theta_posterior = posterior.sample(sample_shape, context = x[self.steps[idx]:self.steps[idx+1]])
 
-                print('theta posterior shape', theta_posterior.shape)
+                    print('theta posterior shape', theta_posterior.shape)
 
 
                 #make sure that thetas are in the right shape; otherwise unsqueeze:
                 if theta_posterior.dim()  == 1:
                     theta_posterior = torch.unsqueeze(theta_posterior, 0) 
 
+                theta_posterior_list.append(theta_posterior)  
+
+
+
+
+            theta_posterior = torch.cat(tuple(theta_posterior_list), dim = 1)
 
             if self._prior_distribution != None:
                 theta_prior = self._prior_distribution.sample(sample_shape)
