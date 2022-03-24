@@ -87,10 +87,12 @@ class Combined(Distribution):
 
         return log_prob
 
-    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None):
+    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None, show_progress_bars: bool = True, sample_with: Optional[str] = None):
 
         """
         samples from combined prior distribution
+
+        show_progress_bars and sample_with not used. only needed to conduct sbc
         """
 
 
