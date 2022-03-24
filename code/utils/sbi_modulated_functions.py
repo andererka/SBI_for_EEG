@@ -46,6 +46,12 @@ class Combined(Distribution):
         self._prior_distribution = prior_distribution
         self.steps = steps
 
+        try:
+
+            self.default_x = posterior_distribution.default_x
+        except:
+            self.default_x = None
+
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
 
         if type(self._posterior_distribution_list) != list:
@@ -114,7 +120,7 @@ class Combined(Distribution):
 
                 else:
 
-                    theta_posterior = posterior.sample(sample_shape, x = x[self.steps[idx]:self.steps[idx+1]])
+                    theta_posterior = posterior.sample(sample_shape, x = x)
 
                     print('theta posterior shape', theta_posterior.shape)
 
