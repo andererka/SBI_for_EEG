@@ -58,25 +58,21 @@ def main(argv):
         num_sim = int(argv[0])
     except:
         num_sim = 100
-    try:
-        num_samples = int(argv[1])
-    except:
-        num_samples = 20
 
     try:
-        num_workers = int(argv[2])
+        num_workers = int(argv[1])
     except:
         num_workers = 4
     try:
-        experiment_name = argv[3]
+        experiment_name = argv[2]
     except:
         experiment_name = "ERP_sequential"
     try:
-        slurm = bool(int(argv[4]))
+        slurm = bool(int(argv[3]))
     except:
         slurm = True
     try:
-        density_estimator = argv[5]
+        density_estimator = argv[4]
     except:
         density_estimator = 'nsf'
 
@@ -128,7 +124,6 @@ def main(argv):
     num_sim=num_sim,
     density_estimator='nsf',
     num_params=6,
-    num_samples=num_samples,
     slurm=slurm,
     )
 
@@ -205,7 +200,7 @@ def main(argv):
     prior2 = utils.torchutils.BoxUniform(low=prior_min[2:4], high=prior_max[2:4])
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
-    combined_prior = Combined(proposal1, prior2, number_params_1=2)
+    combined_prior = Combined(proposal1, prior2, steps=[0, 2, 4])
 
     inf = SNPE_C(prior2, density_estimator="nsf")
 

@@ -8,9 +8,12 @@ import numpy as np
 
 from torch.distributions.distribution import Distribution
 
+from sbi.inference.posteriors.base_posterior import NeuralPosterior
+
 from torch.distributions import constraints
 
-from numbers import Number
+from torch import Tensor
+
 
 
 class Combined(Distribution):
@@ -49,6 +52,7 @@ class Combined(Distribution):
             self._posterior_distribution_list = [self._posterior_distribution_list]
 
 
+
     def log_prob(self, x):
 
         """
@@ -66,31 +70,44 @@ class Combined(Distribution):
         ## for calculating the log probability, we have to add the log probabilities of the single (already inferred) posteriors
         ## with the priors.
 
-        log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
+        if number_rounds > 0:
 
-        for i in range(1, number_rounds):
-            log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+            log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
 
-        log_prob_prior = self._prior_distribution(x[0])
+            for i in range(1, number_rounds):
+                log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+        else:
+            log_prob_posterior = globals()['log_prob_posterior%s' % 0]
+
+
+        log_prob_prior = self._prior_distribution.log_prob(x[0][steps[number_rounds+1]:])
 
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
 
         return log_prob
 
-    def sample(self, sample_shape=torch.Size()):
+    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None):
 
         """
         samples from combined prior distribution
         """
 
+
+
         with torch.no_grad():
 
             theta_posterior_list = []
             
-            for posterior in self._posterior_distribution_list:
+            for idx, posterior in enumerate(self._posterior_distribution_list):
 
-                theta_posterior = posterior.sample(sample_shape)
+                if x == None:
+                    theta_posterior = posterior.sample(sample_shape)
+
+                else:
+                    print('x', x)
+
+                    theta_posterior = posterior.sample(sample_shape, x = x[self.steps[idx]:self.steps[idx+1]])
 
 
                 #make sure that thetas are in the right shape; otherwise unsqueeze:

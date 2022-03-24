@@ -45,6 +45,7 @@ import sys
 
 import os
 
+## gaussian function for simulator
 def Gaussian(thetas, normal_noise=1):
     
     np.random.seed(np.random.choice(1000))
@@ -65,8 +66,27 @@ def Gaussian(thetas, normal_noise=1):
     return gauss_obs
 
 
-
+## main function to compare nulti-round SNPE with NIPE approach
 def main(argv):
+    '''
+    takes the following arguments:
+
+    - density_estimator: can be 'maf', 'nsf' or 'mdn' (or other). Default is 'mdn'
+    - num_workers: number of cpus available. Default is 8
+    - slurm: takes 0 or 1. 0 if not on slurm. If 1, results get stored under specific result folder (specified in 'write_to_file.WriteToFile')
+    - experiment_name: defines name of result folder. If not defined, then it's 'toy_example_mdn'
+    - rounds: in order to get a valid comparison, multiple posteriors are calculated in multiple rounds. Default is 10. Argument defines how 
+            many posteriors are calculated for each approach. Later, KL divergence measures are calculated and mean and stddev of the KL div between 
+            inferred and analytic posteriors are plotted
+    - set_proposal: takes 0 or 1. If 1, proposal is set in 'append_simulations' for the multi-round approach. This is the 'proper' approach
+                    because then leakage correction can be applied. Without it tough, inference can be faster. 
+                    It's not working for mdn's (there is probably an issue with numerical instability -see https://github.com/mackelab/sbi/issues/669#issue-1177918978)
+    - ratio: depending on if the already inferred posteriors are taken ONLY for simulation, but thetas of these subsets are not inferred 
+                again in the nect round, it makes sense to use a smaller number of simulations in the first round and a larger number for the
+                last - then the quality of inference is not so different between subsets.
+                If inferred posteriors are only taken for simulation, this argument should be set to 0 (false).
+
+    '''
 
 
     try:
@@ -90,9 +110,17 @@ def main(argv):
     except:
         rounds = 10
     try:
+        set_proposal = bool(int(argv[5]))
+    except:
+        set_proposal = False
+
+    ## Ratio only makes sense if we do not make seperate inference on the subsets, but instead make inference again on the 
+    ## inferred posteriors such that it gets more and more restricted.
+    
+    try:
         ratio = bool(int(argv[2]))
     except:
-        ratio = True
+        ratio = False
 
 
     file_writer = write_to_file.WriteToFile(
@@ -143,8 +171,8 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
-    #num_simulations_list = [200, 400, 600]
+    #num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    num_simulations_list = [200]
 
 
 
@@ -185,8 +213,10 @@ def main(argv):
                     num_workers=num_workers,
                 )
                 
-
-                neural_dens = inf.append_simulations(theta, x).train()
+                if set_proposal:
+                    neural_dens = inf.append_simulations(theta, x, proposal).train()
+                else:
+                    neural_dens = inf.append_simulations(theta, x).train()
 
 
                 posterior = inf.build_posterior(neural_dens)
@@ -287,7 +317,7 @@ def main(argv):
 
                 theta = theta[:, previous_i:i]
 
-
+                
                 inf = inf.append_simulations(theta, x)
                 neural_dens = inf.train()
 
@@ -336,7 +366,7 @@ def main(argv):
             print(theta.shape)
             print(prior_i)
 
-            theta = theta[:,prior_i:]
+            theta = theta[:,previous_i:]
 
             print(theta.shape)
 
