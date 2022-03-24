@@ -75,14 +75,20 @@ class Combined(Distribution):
             log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
 
             for i in range(1, number_rounds):
-                log_prob_posterior = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+                log_prob_posterior_so_far = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
+                print(log_prob_posterior_so_far)
+            log_prob_posterior = log_prob_posterior_so_far
+
         else:
             log_prob_posterior = globals()['log_prob_posterior%s' % 0]
 
 
-        log_prob_prior = self._prior_distribution.log_prob(x[0][steps[number_rounds+1]:])
+        if self._prior_distribution != None:
+            log_prob_prior = self._prior_distribution.log_prob(x[0][steps[number_rounds+1]:])
 
-        log_prob = torch.add(log_prob_posterior, log_prob_prior)
+            log_prob = torch.add(log_prob_posterior, log_prob_prior)
+        else:
+            log_prob = log_prob_posterior
 
 
         return log_prob
@@ -122,14 +128,20 @@ class Combined(Distribution):
 
 
             theta_posterior = torch.cat(tuple(theta_posterior_list), dim = 1)
-            theta_prior = self._prior_distribution.sample(sample_shape)
 
-            if theta_prior.dim()  == 1:
+            if self._prior_distribution != None:
+                theta_prior = self._prior_distribution.sample(sample_shape)
 
-                theta_prior = torch.unsqueeze(theta_prior, 0) 
+                if theta_prior.dim()  == 1:
 
-            ### concatenates samples from posterior and prior:
-            theta = torch.cat((theta_posterior, theta_prior), 1)
+                    theta_prior = torch.unsqueeze(theta_prior, 0) 
+
+                ### concatenates samples from posterior and prior:
+                theta = torch.cat((theta_posterior, theta_prior), 1)
+
+                print('theta shape', theta.shape)
+            else:
+                theta = theta_posterior
 
         
             return theta

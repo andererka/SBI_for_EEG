@@ -378,7 +378,9 @@ def main(argv):
 
             posterior_incremental.set_default_x(obs_real)
 
-            combined_posterior = Combined(proposal_list, posterior_incremental, steps=range_list)
+            proposal_list.append(posterior_incremental)
+
+            combined_posterior = Combined(proposal_list, None, steps=range_list)
 
             posterior_incremental_list.append(combined_posterior)
             
