@@ -90,7 +90,6 @@ def main(argv):
     sim_wrapper = SimulationWrapper(num_params=17)
 
 
-
     prior_min = [0, 0, 0, 0, 0, 13.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
     prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
@@ -104,6 +103,13 @@ def main(argv):
      "t_dist", 
      "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_nmda_l2_pyr","prox2_nmda_l5_pyr",
      "t_prox2"]
+
+    obs_real = inference.run_only_sim(
+    true_params, sim_wrapper, num_workers=1)  # first output gives summary statistics, second without
+
+    obs_real_stat = calculate_summary_stats_temporal(obs_real[0], complete=True)
+
+
 
     ###### starting with P50 parameters/summary stats:
 
@@ -145,12 +151,6 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-    # artificial observation where we assume to know the true parameters
-    obs_real_complete = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:])]), 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
-    )
 
     
     try:
@@ -201,7 +201,7 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-    theta = theta[:,6:]
+    theta = theta[:,:6]
     x_without = x_without[:,:2700]
 
     x_P50 = calculate_summary_stats_temporal(x_without)
@@ -218,21 +218,13 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    #### either simulate 'fake observation' or load data from hnn 
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
-
-    print('obs real', obs_real)
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
-
-
-
-    proposal1 = posterior.set_default_x(obs_real_stat)
+    proposal1 = posterior.set_default_x(obs_real_stat[:,:10])
 
     ###### continuing with N100 parameters/summary stats:
     prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
-    combined_prior = Combined(proposal1, prior2, steps = [0, 6])
+    combined_prior = Combined([proposal1], prior2, steps = [0, 6, 12])
 
     inf = SNPE_C(prior2, density_estimator=density_estimator)
 
@@ -285,12 +277,8 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
-
-
-    proposal2 = posterior.set_default_x(obs_real_stat)
+    proposal2 = posterior.set_default_x(obs_real_stat[:,:13])
 
     ###### continuing with P200 parameters/summary stats:
 
@@ -298,7 +286,7 @@ def main(argv):
 
 
 
-    combined_prior = Combined(proposal2, prior3, steps = [0, 12])
+    combined_prior = Combined([proposal1, proposal2], prior3, steps = [0, 6, 12])
 
     inf = SNPE_C(prior3, density_estimator=density_estimator)
 
@@ -341,18 +329,16 @@ def main(argv):
     inf = inf.append_simulations(theta, x)
     neural_dens = inf.train()
 
-    posterior = inf.build_posterior(neural_dens)
+    proposal3 = inf.build_posterior(neural_dens)
 
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
+    proposal3.set_default_x(obs_real_stat)
 
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
-    posterior.set_default_x(obs_real_stat)
-   
+    posterior = Combined([proposal1, proposal2, proposal3], None, steps=[0, 6, 12])
+
 
     file_writer.save_posterior(posterior)
-    file_writer.save_obs_without(x_without)
     file_writer.save_prior(prior)
     file_writer.save_thetas(theta)
 
