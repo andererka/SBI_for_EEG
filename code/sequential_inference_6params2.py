@@ -232,7 +232,7 @@ def main(argv):
 
     x_N100 = calculate_summary_stats_temporal(x_without)
 
-    theta = theta[:,2:]
+    theta = theta[:,2:4]
 
     inf = inf.append_simulations(theta, x_N100)
     density_est = inf.train()
