@@ -200,7 +200,7 @@ def main(argv):
     prior2 = utils.torchutils.BoxUniform(low=prior_min[2:4], high=prior_max[2:4])
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
-    combined_prior = Combined(proposal1, prior2, steps=[0, 2, 4])
+    combined_prior = Combined([proposal1], prior2, steps=[0, 2, 4])
 
     inf = SNPE_C(prior2, density_estimator="nsf")
 
@@ -250,7 +250,7 @@ def main(argv):
 
     #combined_prior = Combined(proposal2, prior3, number_params_1=2)
 
-    combined_prior = Combined(proposal2, prior3, steps=[0, 2, 4])
+    combined_prior = Combined([proposal1, proposal2], prior3, steps=[0, 2, 4])
 
     inf = SNPE_C(prior3, density_estimator="nsf")
 
@@ -287,11 +287,15 @@ def main(argv):
     inf = inf.append_simulations(theta, x_P200)
     density_estimator = inf.train()
 
-    posterior = inf.build_posterior(density_estimator)
+    proposal3 = inf.build_posterior(density_estimator)
 
 
 
-    posterior.set_default_x(obs_real_stat)
+    proposal3.set_default_x(obs_real_stat)
+
+    posterior = Combined([proposal1, proposal2], prior3, steps=[0, 2, 4])
+
+    torch.save(posterior, 'posterior.pt')
 
     end = datetime.datetime.now()
 
