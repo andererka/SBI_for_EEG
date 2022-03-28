@@ -25,7 +25,12 @@ class Combined(Distribution):
     takes as arguments:
     - posterior distribution (list) of already inferred parameter set. Can be a list with several posteriors.
     - prior distribution of subsequent parameter set that is dependent on earlier parameter set
-    - steps: a list that holds information about how many parameters are inferred in each step.
+    - steps: a list that holds information about how many parameters are inferred in each step. Default is [0].
+    - validate_args, batch_shape and event_shape as in DirectPosterior class from sbi package
+
+    has the following functions:
+    - log_prob: calculates the log probability according to list of posteriors and prior (that all are allocated to
+    a specific number of thetas - acording to steps.)
     """
 
     has_rsample = False
@@ -45,21 +50,23 @@ class Combined(Distribution):
         self._posterior_distribution_list = posterior_distribution
         self._prior_distribution = prior_distribution
         self.steps = steps
-
-        try:
-
-            self.default_x = posterior_distribution.default_x
-            self._x_shape = self.default_x.shape
-
-        except:
-            self.default_x = None
-
         
 
         super(Combined, self).__init__(batch_shape, validate_args=validate_args)
 
         if type(self._posterior_distribution_list) != list:
             self._posterior_distribution_list = [self._posterior_distribution_list]
+
+        try:
+
+            self.default_x_list = [self._posterior_distribution_list[i].default_x for i in range(len(self._posterior_distribution_list))]
+            self._x_shape_list = [self._posterior_distribution_list[i].default_x.shape for i in range(len(self._posterior_distribution_list))]
+            self._x_shape = self._posterior_distribution_list[len(self._posterior_distribution_list)].default_x.shape
+            self.default_x = self._posterior_distribution_list[len(self._posterior_distribution_list)].default_x 
+
+        except:
+            self.default_x = None
+
 
 
 
@@ -69,7 +76,6 @@ class Combined(Distribution):
         calculates the log probability of the combined prior distribution based on some observation x
         """
 
-        print(x, 'x')
         steps = self.steps
         
         for i, posterior in enumerate(self._posterior_distribution_list):
@@ -130,12 +136,11 @@ class Combined(Distribution):
                     theta_posterior = posterior.sample(sample_shape)
 
                 else:
+                    ## in earlier rounds not all of the summary statistics are used such
+                    ## that we need this indix:
+                    x_shape = self._x_shape_list[idx]
 
-                    x_shape = posterior.sample((1,)).shape
-
-                    print('x shape')
-
-                    theta_posterior = posterior.sample(sample_shape, x = x[x_shape])
+                    theta_posterior = posterior.sample(sample_shape, x = x[:,:x_shape[1]])
 
                     print('theta posterior shape', theta_posterior.shape)
 
@@ -148,7 +153,7 @@ class Combined(Distribution):
 
 
 
-
+            ## concatenates the thetas from the different posteriors together
             theta_posterior = torch.cat(tuple(theta_posterior_list), dim = 1)
 
             if self._prior_distribution != None:
@@ -158,7 +163,7 @@ class Combined(Distribution):
 
                     theta_prior = torch.unsqueeze(theta_prior, 0) 
 
-                ### concatenates samples from posterior and prior:
+                ### concatenates thetas from posterior and prior:
                 theta = torch.cat((theta_posterior, theta_prior), 1)
 
                 print('theta shape', theta.shape)

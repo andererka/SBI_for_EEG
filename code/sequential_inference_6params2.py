@@ -78,6 +78,7 @@ def main(argv):
 
 
     start_time = get_time()
+    start = datetime.datetime.now()
 
 
     sim_wrapper = SimulationWrapper(6)
@@ -175,9 +176,12 @@ def main(argv):
         )
 
         step_time = get_time()
+        finish1 = datetime.datetime.now()
+        diff = finish1 -start
         json_dict = {
         "start time:": start_time,
-        "round 1 time": step_time}
+        "round 1 time": step_time,
+        "diff time": diff}
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -198,6 +202,7 @@ def main(argv):
     
     posteriors.append(posterior)
 
+
     proposal1 = posterior.set_default_x(obs_real_stat[:,:10])
 
     ###### continuing with N100 parameters/summary stats:
@@ -210,6 +215,7 @@ def main(argv):
     print('smapling')
 
     print('combined prior', combined_prior.sample((1,)))
+    print('combined prior', combined_prior.sample((1,), x=obs_real_stat[:,:]))
 
     inf = SNPE_C(prior2, density_estimator="nsf")
 
@@ -229,9 +235,12 @@ def main(argv):
         file_writer.save_thetas(theta, name='step2')
 
         step_time = get_time()
+        finish2 = datetime.datetime.now()
+        diff = finish2 - finish1
         json_dict = {
         "start time:": start_time,
-        "round 3 time": step_time}
+        "round 3 time": step_time,
+        "diff time": diff}
         with open( "step2/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -281,11 +290,14 @@ def main(argv):
         file_writer.save_thetas(theta, name='step3')
 
         step_time = get_time()
+        finish3 = datetime.datetime.now()
+        diff = finish3 - finish2
 
         json_dict = {
 
         "start time:": start_time,
         "round 3 time": step_time,
+        "diff time": diff
     }
         with open( "step3/meta.json", "a") as f:
             json.dump(json_dict, f)
