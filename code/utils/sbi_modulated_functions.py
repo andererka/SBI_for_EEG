@@ -49,8 +49,8 @@ class Combined(Distribution):
         try:
 
             self.default_x = posterior_distribution.default_x
-            self._x_shape = self.default_x[self.steps[0]:self.steps[1]].shape
-            print('self x shape', self._x_shape)
+            self._x_shape = self.default_x.shape
+
         except:
             self.default_x = None
 
@@ -68,9 +68,14 @@ class Combined(Distribution):
         """
         calculates the log probability of the combined prior distribution based on some observation x
         """
+
+        print(x, 'x')
         steps = self.steps
         
         for i, posterior in enumerate(self._posterior_distribution_list):
+
+            print(steps[i], steps[i+1])
+
 
             globals()['log_prob_posterior%s' % i] = posterior.log_prob(x[0][steps[i]:steps[i+1]])
 
@@ -80,18 +85,20 @@ class Combined(Distribution):
         ## for calculating the log probability, we have to add the log probabilities of the single (already inferred) posteriors
         ## with the priors.
 
+        if number_rounds == 0:
+            log_prob_posterior = globals()['log_prob_posterior%s' % 0]
+
         if number_rounds > 0:
 
             log_prob_posterior_so_far = torch.add(globals()['log_prob_posterior%s' % 0], globals()['log_prob_posterior%s' % 1])
 
-            for i in range(1, number_rounds):
-                log_prob_posterior_so_far = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % int(i+1)])
-                print(log_prob_posterior_so_far)
+            if number_rounds == 2:
+                    log_prob_posterior_so_far = torch.add(log_prob_posterior_so_far, globals()['log_prob_posterior%s' % 2])
+
             log_prob_posterior = log_prob_posterior_so_far
-
-        else:
-            log_prob_posterior = globals()['log_prob_posterior%s' % 0]
-
+            
+        print('log prob posterior', log_prob_posterior)
+            
 
         if self._prior_distribution != None:
             log_prob_prior = self._prior_distribution.log_prob(x[0][steps[number_rounds+1]:])
@@ -124,10 +131,11 @@ class Combined(Distribution):
 
                 else:
 
-                    x_step = x[self.steps[idx]:self.steps[idx+1]]
+                    x_shape = posterior.sample((1,)).shape
 
+                    print('x shape')
 
-                    theta_posterior = posterior.sample(sample_shape, x = x_step)
+                    theta_posterior = posterior.sample(sample_shape, x = x[x_shape])
 
                     print('theta posterior shape', theta_posterior.shape)
 

@@ -1,305 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-WARNING:root:Found 701 NaN simulations and 0 Inf simulations. They will be excluded from training.
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 1759it [00:00, 6671.45it/s]          Drawing 2 posterior samples: 1759it [00:00, 2673.11it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 1742it [00:00, 7939.05it/s]          Drawing 1 posterior samples: 1742it [00:00, 7926.97it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 1755it [00:00, 7937.55it/s]          Drawing 1 posterior samples: 1755it [00:00, 7922.90it/s]
-Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 1891it [00:00, 8891.25it/s]             Drawing 1000 posterior samples: 1891it [00:00, 8877.72it/s]
-/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks_utils.py:62: UserWarning: Prior is lacking mean attribute, estimating prior mean from samples.
-  UserWarning,
-Drawing 1000 posterior samples:   0%|          | 0/1000 [00:00<?, ?it/s]Drawing 1000 posterior samples: 1934it [00:00, 8079.99it/s]             Drawing 1000 posterior samples: 1934it [00:00, 8069.76it/s]
-/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/user_input_checks_utils.py:74: UserWarning: Prior is lacking variance attribute, estimating prior variance from
-                samples...
-  UserWarning,
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 1777it [00:00, 9807.78it/s]          Drawing 1 posterior samples: 1777it [00:00, 9789.79it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 1767it [00:00, 8152.83it/s]          Drawing 1 posterior samples: 1767it [00:00, 8137.08it/s]
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples: 1748it [00:00, 8780.98it/s]          Drawing 2 posterior samples: 1748it [00:00, 8766.23it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 1722it [00:00, 8798.04it/s]          Drawing 1 posterior samples: 1722it [00:00, 8782.18it/s]
-Drawing 1 posterior samples:   0%|          | 0/1 [00:00<?, ?it/s]Drawing 1 posterior samples: 1823it [00:00, 8769.50it/s]          Drawing 1 posterior samples: 1823it [00:00, 8754.89it/s]
-Drawing 10000 posterior samples:   0%|          | 0/10000 [00:00<?, ?it/s]Drawing 10000 posterior samples:  17%|█▋        | 1699/10000 [00:00<00:00, 8621.44it/s]Drawing 10000 posterior samples:  35%|███▍      | 3452/10000 [00:00<00:00, 9368.45it/s]Drawing 10000 posterior samples:  52%|█████▏    | 5197/10000 [00:00<00:00, 9519.86it/s]Drawing 10000 posterior samples:  70%|███████   | 7018/10000 [00:00<00:00, 9833.63it/s]Drawing 10000 posterior samples:  87%|████████▋ | 8670/10000 [00:00<00:00, 9767.16it/s]Drawing 10000 posterior samples: 10507it [00:01, 10041.17it/s]                         Drawing 10000 posterior samples: 10507it [00:01, 9778.52it/s] 
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]WARNING:root:Drawing samples from posterior to estimate the normalizing
-                        constant for `log_prob()`. However, only
-                        0% posterior samples are within the
-                        prior support. It may take a long time to collect the
-                        remaining 2 samples.
-                        Consider interrupting (Ctrl-C) and either basing the
-                        estimate of the normalizing constant on fewer samples (by
-                        calling `posterior.leakage_correction(x_o,
-                        num_rejection_samples=N)`, where `N` is the number of
-                        samples you want to base the
-                        estimate on (default N=10000), or not estimating the
-                        normalizing constant at all
-                        (`log_prob(..., norm_posterior=False)`. The latter will
-                        result in an unnormalized `log_prob()`.
-Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:00<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:01<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:01<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:01<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:01<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:01<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:02<?, ?it/s]Drawing 2 posterior samples:   0%|          | 0/2 [00:02<?, ?it/s]Drawing 2 posterior samples:  50%|█████     | 1/2 [00:02<00:00,  5.50it/s]Drawing 2 posterior samples: 100%|██████████| 2/2 [01:06<00:00, 37.99s/it]Drawing 2 posterior samples: 100%|██████████| 2/2 [01:06<00:00, 33.43s/it]
-WARNING:root:Drawing samples from posterior to estimate the normalizing
-                        constant for `log_prob()`. However, only
-                        0% posterior samples are within the
-                        prior support. It may take a long time to collect the
-                        remaining 10000 samples.
-                        Consider interrupting (Ctrl-C) and either basing the
-                        estimate of the normalizing constant on fewer samples (by
-                        calling `posterior.leakage_correction(x_o,
-                        num_rejection_samples=N)`, where `N` is the number of
-                        samples you want to base the
-                        estimate on (default N=10000), or not estimating the
-                        normalizing constant at all
-                        (`log_prob(..., norm_posterior=False)`. The latter will
-                        result in an unnormalized `log_prob()`.
-slurmstepd: error: *** JOB 1300551 ON slurm-bm-23 CANCELLED AT 2022-03-19T13:58:24 DUE TO TIME LIMIT ***

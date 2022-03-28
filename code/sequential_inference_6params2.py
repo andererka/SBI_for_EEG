@@ -82,6 +82,10 @@ def main(argv):
 
     sim_wrapper = SimulationWrapper(6)
 
+    ### save all single posteriors after each step without conditioning on observation (for later sbc analysis)
+    posteriors = []
+
+
     #prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
 
     #prior_max_fix = [30, 79.9,  152.96]
@@ -183,15 +187,16 @@ def main(argv):
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
-    print('x50 shape 0', x_P50.shape[0], x_P50.shape)
+    print('x50 shape 0',  x_P50.shape)
 
-    print('theta shape 0', theta.shape[0], theta.shape)
+    print('theta shape 0', theta.shape)
 
     inf = inf.append_simulations(theta, x_P50)
     density_est = inf.train()
 
     posterior = inf.build_posterior(density_est)
-
+    
+    posteriors.append(posterior)
 
     proposal1 = posterior.set_default_x(obs_real_stat[:,:10])
 
@@ -201,6 +206,10 @@ def main(argv):
 
     #combined_prior = Combined(proposal1, prior2, number_params_1=1)
     combined_prior = Combined([proposal1], prior2, steps=[0, 2, 4])
+
+    print('smapling')
+
+    print('combined prior', combined_prior.sample((1,)))
 
     inf = SNPE_C(prior2, density_estimator="nsf")
 
@@ -238,6 +247,8 @@ def main(argv):
     density_est = inf.train()
 
     posterior = inf.build_posterior(density_est)
+
+    posteriors.append(posterior)
 
 
 
@@ -289,6 +300,8 @@ def main(argv):
 
     proposal3 = inf.build_posterior(density_estimator)
 
+    posteriors.append(proposal3)
+
 
 
     proposal3.set_default_x(obs_real_stat)
@@ -311,6 +324,8 @@ def main(argv):
 
     torch.save(prior_min, 'prior_min.pt')
     torch.save(prior_max, 'prior_max.pt')
+
+    torch.save(posteriors, 'posteriors_for_each_step.pt')
 
 
 
