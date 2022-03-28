@@ -221,7 +221,7 @@ def main(argv):
         json.dump(json_dict, f)
         f.close()
 
-
+    inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
 
     for i in range(3):
@@ -237,9 +237,6 @@ def main(argv):
         )
 
         x = calculate_summary_stats_temporal(x_without)
-        
-
-        inf = SNPE_C(prior=prior, density_estimator = density_estimator)
 
 
         if set_proposal:
@@ -274,10 +271,8 @@ def main(argv):
 
 
 
-    #samples = posterior.sample((num_samples,), x=obs_real_stat, sample_with = sample_method)
-
-    #s_x = inference.run_only_sim(samples, simulation_wrapper = sim_wrapper, num_workers=num_workers)
-
+    ## save posteriors for each round without conditioning on observation
+    torch.save(posteriors, 'posteriors_each_round.pt')
 
     file_writer.save_posterior(posterior)
     file_writer.save_obs_without(x_without)
