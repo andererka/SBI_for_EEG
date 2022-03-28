@@ -206,6 +206,8 @@ def main(argv):
             
             proposal = prior
 
+            posteriors = []
+
             for j in range(3):
 
                 print('round: ', j)
@@ -225,11 +227,13 @@ def main(argv):
 
                 posterior = inf.build_posterior(neural_dens)
 
+                posteriors.append(posterior)
+
 
 
                 proposal = posterior.set_default_x(obs_real)
 
-    
+            torch.save(posteriors, 'posteriors_each_round.pt')
 
 
             posterior_snpe = posterior
