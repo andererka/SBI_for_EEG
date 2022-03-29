@@ -162,7 +162,7 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [200, 500, 750, 1000, 1500, 2000]
+    num_simulations_list = [200, 500, 1000, 1500, 2000, 3000]
 
     
     #num_simulations_list = [200]
