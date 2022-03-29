@@ -56,7 +56,9 @@ class SimulationWrapper:
         elif len(params.size()) == 1:
             param_size = int(params.size()[0])
 
-        if (param_size == 6 & self.num_params == 17):
+        print('param size', param_size)
+
+        if (param_size == 6 and self.num_params == 17):
             
             early_stop = 70.0
             print('6 params investigated')

@@ -1,23 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Running 600 simulations in 600 batches.:   0%|          | 0/600 [00:00<?, ?it/s]Running 600 simulations in 600 batches.:   0%|          | 1/600 [00:08<1:29:06,  8.93s/it]Running 600 simulations in 600 batches.:   4%|▎         | 21/600 [00:09<02:57,  3.26it/s] Running 600 simulations in 600 batches.:   6%|▌         | 37/600 [00:09<01:23,  6.70it/s]Running 600 simulations in 600 batches.:   9%|▉         | 53/600 [00:09<00:48, 11.34it/s]Running 600 simulations in 600 batches.:  13%|█▎        | 78/600 [00:09<00:24, 21.26it/s]Running 600 simulations in 600 batches.:  21%|██▏       | 128/600 [00:09<00:09, 47.98it/s]Running 600 simulations in 600 batches.:  35%|███▍      | 208/600 [00:09<00:03, 103.11it/s]Running 600 simulations in 600 batches.:  52%|█████▏    | 312/600 [00:09<00:01, 191.92it/s]Running 600 simulations in 600 batches.:  76%|███████▌  | 456/600 [00:09<00:00, 339.55it/s]Running 600 simulations in 600 batches.:  92%|█████████▏| 550/600 [00:09<00:00, 424.78it/s]Running 600 simulations in 600 batches.: 100%|██████████| 600/600 [00:10<00:00, 58.48it/s] 
-Drawing 600 posterior samples:   0%|          | 0/600 [00:00<?, ?it/s]Drawing 600 posterior samples: 3266it [00:00, 38787.32it/s]           
-Running 600 simulations in 600 batches.:   0%|          | 0/600 [00:00<?, ?it/s]Running 600 simulations in 600 batches.:   1%|          | 6/600 [00:00<00:10, 57.77it/s]Running 600 simulations in 600 batches.:   3%|▎         | 16/600 [00:00<00:07, 80.26it/s]Running 600 simulations in 600 batches.:   8%|▊         | 46/600 [00:00<00:03, 175.12it/s]Running 600 simulations in 600 batches.:  17%|█▋        | 100/600 [00:00<00:01, 311.04it/s]Running 600 simulations in 600 batches.:  29%|██▉       | 176/600 [00:00<00:00, 464.09it/s]Running 600 simulations in 600 batches.:  45%|████▌     | 272/600 [00:00<00:00, 621.51it/s]Running 600 simulations in 600 batches.:  69%|██████▉   | 416/600 [00:00<00:00, 851.11it/s]Running 600 simulations in 600 batches.:  84%|████████▍ | 503/600 [00:00<00:00, 853.70it/s]Running 600 simulations in 600 batches.:  98%|█████████▊| 588/600 [00:01<00:00, 304.31it/s]Running 600 simulations in 600 batches.: 100%|██████████| 600/600 [00:01<00:00, 373.66it/s]
-Traceback (most recent call last):
-  File "toy_example_gaussians.py", line 711, in <module>
-    main(sys.argv[1:])
-  File "toy_example_gaussians.py", line 169, in main
-    neural_dens = inf.append_simulations(theta, x, proposal).train()
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/snpe/snpe_c.py", line 187, in train
-    return super().train(**kwargs)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/snpe/snpe_base.py", line 287, in train
-    theta_batch, x_batch, masks_batch, proposal, calibration_kernel
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/snpe/snpe_base.py", line 466, in _loss
-    log_prob = self._log_prob_proposal_posterior(theta, x, masks, proposal)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/snpe/snpe_c.py", line 285, in _log_prob_proposal_posterior
-    return self._log_prob_proposal_posterior_mog(theta, x, proposal)
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/inference/snpe/snpe_c.py", line 422, in _log_prob_proposal_posterior_mog
-    utils.assert_all_finite(log_prob_proposal_posterior, "proposal posterior eval")
-  File "/home/macke/kanderer29/.conda/envs/sbi/lib/python3.7/site-packages/sbi/utils/torchutils.py", line 350, in assert_all_finite
-    assert torch.isfinite(quantity).all(), msg
-AssertionError: NaN/Inf present in proposal posterior eval.

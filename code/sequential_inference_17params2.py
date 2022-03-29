@@ -151,6 +151,9 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
+    ### save all single posteriors after each step without conditioning on observation (for later sbc analysis)
+    posteriors = []
+
 
     
     try:
@@ -202,7 +205,7 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     theta = theta[:,:6]
-    x_without = x_without[:,:2700]
+
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
@@ -217,9 +220,12 @@ def main(argv):
 
     posterior = inf.build_posterior(neural_dens)
 
+    posteriors.append(posterior)
 
 
-    proposal1 = posterior.set_default_x(obs_real_stat[:,:10])
+    posterior.set_default_x(obs_real_stat[:,:10])
+
+    proposal1 = posterior
 
     ###### continuing with N100 parameters/summary stats:
     prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
@@ -276,7 +282,7 @@ def main(argv):
 
     posterior = inf.build_posterior(neural_dens)
 
-
+    posteriors.append(posterior)
 
     proposal2 = posterior.set_default_x(obs_real_stat[:,:13])
 
@@ -331,12 +337,15 @@ def main(argv):
 
     proposal3 = inf.build_posterior(neural_dens)
 
+    posteriors.append(proposal3)
+
 
     proposal3.set_default_x(obs_real_stat)
 
 
     posterior = Combined([proposal1, proposal2, proposal3], None, steps=[0, 6, 12])
 
+    torch.save(posteriors, 'posteriors_each_step.pt')
 
     file_writer.save_posterior(posterior)
     file_writer.save_prior(prior)
