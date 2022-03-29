@@ -181,7 +181,7 @@ def main(argv):
         json_dict = {
         "start time:": start_time,
         "round 1 time": step_time,
-        "diff time": diff}
+        "diff time": str(diff)}
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -240,7 +240,7 @@ def main(argv):
         json_dict = {
         "start time:": start_time,
         "round 3 time": step_time,
-        "diff time": diff}
+        "diff time": str(diff)}
         with open( "step2/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -297,7 +297,7 @@ def main(argv):
 
         "start time:": start_time,
         "round 3 time": step_time,
-        "diff time": diff
+        "diff time": str(diff)
     }
         with open( "step3/meta.json", "a") as f:
             json.dump(json_dict, f)
