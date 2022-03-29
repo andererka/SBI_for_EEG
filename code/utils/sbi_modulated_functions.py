@@ -50,12 +50,6 @@ class Combined(Distribution):
         self._posterior_distribution_list = posterior_distribution
         self._prior_distribution = prior_distribution
         self.steps = steps
-        
-
-        super(Combined, self).__init__(batch_shape, validate_args=validate_args)
-
-        if type(self._posterior_distribution_list) != list:
-            self._posterior_distribution_list = [self._posterior_distribution_list]
 
         try:
 
@@ -66,6 +60,13 @@ class Combined(Distribution):
 
         except:
             self.default_x = None
+        
+
+        super(Combined, self).__init__(batch_shape, validate_args=validate_args)
+
+        if type(self._posterior_distribution_list) != list:
+            self._posterior_distribution_list = [self._posterior_distribution_list]
+
 
 
 
