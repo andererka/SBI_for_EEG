@@ -3,7 +3,6 @@ from scipy.stats import moment
 import numpy as np
 from scipy.signal import argrelextrema
 import torch
-import tsfel
 from numpy import trapz
 
 

@@ -182,7 +182,8 @@ def main(argv):
         json_dict = {
         "start time:": start_time_str,
         "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
+        "CPU time for step:": str(diff_time),
+        }
         with open( "step1/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
@@ -246,6 +247,7 @@ def main(argv):
             num_simulations=num_sim,
             num_workers=num_workers
         )
+
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
@@ -259,8 +261,9 @@ def main(argv):
         json_dict = {
         "start time:": start_time_str,
         "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
+        "CPU time for step:": str(diff_time),
+        }
+        with open( "step2/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
 
@@ -322,8 +325,9 @@ def main(argv):
         json_dict = {
         "start time:": start_time_str,
         "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
+        "CPU time for step:": str(diff_time)
+        }
+        with open( "step3/meta.json", "a") as f:
             json.dump(json_dict, f)
             f.close()
 
