@@ -220,7 +220,7 @@ class Combined1(Distribution):
         self._prior_distribution = prior_distribution
         self.number_params = number_params_1
 
-        super(Combined, self).__init__(batch_shape, validate_args=validate_args)
+        super(Combined1, self).__init__(batch_shape, validate_args=validate_args)
 
     def log_prob(self, x):
 
