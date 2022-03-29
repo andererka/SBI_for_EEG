@@ -1,17 +1,13 @@
-import os.path as op
-import tempfile
+'''
+samples prior thetas and simulates observations xs for these (in order to run on slurm and afterwards 
+use for SBC)
+'''
 
 import matplotlib.pyplot as plt
 
 
-import hnn_core
-from hnn_core import simulate_dipole, jones_2009_model
-from hnn_core.viz import plot_dipole
-
-
 import sys
 sys.path.append('../code/')
-
 
 
 import numpy as np
@@ -24,36 +20,22 @@ import matplotlib.pyplot as plt
 
 import os
 
-#work_dir = '/home/ubuntu/sbi_for_eeg_data/code/'
 
-#os.chdir(work_dir)
-
-#from utils.plot import cov, compare_vars, plot_varchanges
-#from utils.plot import compare_KLs, plot_KLs
-#from sbi.inference import potentials
 import utils.sbi_modulated_functions
 
 # sbi
 from sbi import utils as utils
 from sbi import analysis as analysis
-from sbi.inference.base import infer
-from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
+from sbi.inference import SNPE
 
-from sbi.analysis import conditional_pairplot, conditional_corrcoeff
-
-
-
-# import the summary statistics that you want to investigate
-from summary_features.calculate_summary_features import calculate_summary_statistics_alternative as alternative_sumstats
-from summary_features.calculate_summary_features import calculate_summary_stats_temporal as temporal_sumstats
-from summary_features.calculate_summary_features import calculate_summary_stats_number as number_sumstats
-from summary_features.calculate_summary_features import calculate_summary_stats_temporal
 
 
 from utils import inference
-## defining neuronal network model
+
+from utils.simulation_wrapper import SimulationWrapper
+
+
 num_params = 17
-from utils.simulation_wrapper import set_network_default, SimulationWrapper
 sim_wrapper = SimulationWrapper(num_params)
 
 

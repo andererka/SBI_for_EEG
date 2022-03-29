@@ -15,6 +15,7 @@ class SimulationWrapper:
     - change_order: default False; if True, calls a simulation wrapper that takes another 
                     inference order. Could test if the inference order plays a role or if
                     inference is robust
+    - noise: noise can be added to observation to induce more stochasticity. Default is set to True
     
     """
 
@@ -32,7 +33,7 @@ class SimulationWrapper:
                 return self.simulation_wrapper_all(params)
             
         elif (self.num_params == 25):
-            return self.simulation_wrapper_all_small_steps(params)
+            return self.simulation_wrapper_25(params)
 
 
 
@@ -43,7 +44,8 @@ class SimulationWrapper:
         according to the drawn parameters
 
         simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
-        are changed and stops also earlier if distal weights are changed (~120ms)
+        are changed and stops also earlier if the weights for the first proximal drive + the weights
+        for the distal drive are changed, but not the ones for the second proximal drive (~120ms).
 
         Output [torch.tensor]: observation of simulated ERP
         """
@@ -88,6 +90,7 @@ class SimulationWrapper:
         if (self.num_params == 17):
             net = set_network_weights(params)
         else:
+            ## this is for inferring 6 parameters in total in steps of 2 at a time:
             net = set_network_weights_2_per_step(params)
 
         window_len, scaling_factor = 30, 3000
@@ -111,28 +114,28 @@ class SimulationWrapper:
         return torch.from_numpy(obs)
 
 
-    def simulation_wrapper_all_small_steps(self, params):  # input possibly array of 1 or more params
+    def simulation_wrapper_25(self, params):  # input possibly array of 1 or more params
         """
-        Input: Parameter list; can be of different size: 2, 4, 6, 8, 9, 11, 13, 15, 16, 18, 20, 22, 24 or 25
-
-        simulation wrapper where wrapper can take 
+        simulation wrapper for the neural incremental approach where wrapper can take 
         different number of parameters and then sets weights for hnn simulator
         according to the drawn parameters
 
-        simulation stops earlier (after ~70ms) if number of parameters smaller
-        than 10 and stops also earlier if number of parameters smaller than 17 (~120ms)
+        simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
+        are changed and stops also earlier if the weights for the first proximal drive + the weights
+        for the distal drive are changed, but not the ones for the second proximal drive (~120ms).
 
         Output [torch.tensor]: observation of simulated ERP
-        
         """
 
         early_stop = 200.0
   
-        print(params.size())
+  
         if len(params.size()) == 2:
-            print('dim=1')
+          
             param_size = int(params.size()[1])
+
         elif len(params.size()) == 1:
+
             param_size = int(params.size()[0])
 
         if (param_size < 10):
@@ -151,18 +154,9 @@ class SimulationWrapper:
 
         params = params.tolist()
 
-        # add more stochasticity to params:
-        #noise = np.random.normal(0, 0.1, param_size)
-
-        #params += noise
-
-        #print(params)
-
     
-        if self.change_order == False:
-            net = set_network_weights_small_steps(params)
-        else:
-            net = set_weights_small_steps_changed_order(params)
+        net = set_network_weights_steps_for_25(params)
+
 
 
         window_len, scaling_factor = 30, 3000
@@ -261,7 +255,7 @@ def set_network_default(params=None):
 
 
 
-def set_network_weights_small_steps(params=None):
+def set_network_weights_steps_for_25(params=None):
 
     """
     description: sets network to default values for an ERP as described in hnn tutorial
@@ -273,67 +267,9 @@ def set_network_weights_small_steps(params=None):
         num_params = len(params[0])
     else:
         num_params = len(params)
-    #num_params = num
-
-    print('set network params:', params)
-
-
-    weights_ampa_p1 = {
-        "L2_basket": params[0],
-    }
-
-    weights_nmda_p1 = {
-       "L2_basket": params[1],
-    }
-
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-    }
-
-    if (num_params==2):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-        return net
-
-    weights_ampa_p1 = {
-        "L2_basket": params[0],
-        "L2_pyramidal": params[2],
-    }
-
-    weights_nmda_p1 = {
-       "L2_basket": params[1],
-        "L2_pyramidal":params[3],
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-    }
-
-    if (num_params==4):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-        return net
-
-    weights_ampa_p1 = {
-        "L2_basket": params[0],
-        "L2_pyramidal": params[2],
-        "L5_basket": params[4],
  
-    }
 
-    weights_nmda_p1 = {
-       "L2_basket": params[1],
-        "L2_pyramidal":params[3],
-        "L5_basket": params[5],
 
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-    }
-
-    if (num_params==6):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-        return net
 
     weights_ampa_p1 = {
         "L2_basket": params[0],
@@ -356,10 +292,6 @@ def set_network_weights_small_steps(params=None):
         "L5_pyramidal": 1.0,
     }
 
-    if (num_params==8):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-
-        return net
 
     set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, mu=params[8])
 
@@ -367,39 +299,7 @@ def set_network_weights_small_steps(params=None):
 
         return net
 
-    weights_ampa_d1 = {
-        "L2_basket": params[9],
-    }
-    weights_nmda_d1 = {
-        "L2_basket": params[10],
 
-    }
-    synaptic_delays_d1 = {
-        "L2_basket": 0.1}
-    
- 
-    if (num_params==11):
-        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-        return net
-
-    weights_ampa_d1 = {
-        "L2_basket": params[9],
-        "L2_pyramidal": params[11],
-
-    }
-    weights_nmda_d1 = {
-        "L2_basket": params[10],
-        "L2_pyramidal": params[12],
-
-    }
-
-    synaptic_delays_d1 = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1}
-
-    if (num_params==13):
-        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-        return net
         
     weights_ampa_d1 = {
         "L2_basket": params[9],
@@ -419,13 +319,6 @@ def set_network_weights_small_steps(params=None):
     "L2_pyramidal": 0.1,
     "L5_pyramidal": 1.0}
 
-    
-
-    if (num_params==15):
-
-        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-
-        return net
 
 
     set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu = params[15])
@@ -436,72 +329,7 @@ def set_network_weights_small_steps(params=None):
         return net
 
     # Second proximal evoked drive. NB: only AMPA weights differ from first
-    weights_ampa_p2 = {
-        "L2_basket": params[16],
-    }
 
-    weights_nmda_p2 = {
-        "L2_basket": params[17],
-
-    }
-
-
-    synaptic_delays_p2 = {
-        "L2_basket": 0.1,
-    }
-
-    if (num_params==18):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
-    weights_ampa_p2 = {
-        "L2_basket": params[16],
-        "L2_pyramidal": params[18],
-    }
-
-    weights_nmda_p2 = {
-        "L2_basket": params[17],
-        "L2_pyramidal": params[19],
-
-    }
-
-
-    synaptic_delays_p2 = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-    }
-
-    if (num_params==20):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
-    weights_ampa_p2 = {
-        "L2_basket": params[16],
-        "L2_pyramidal": params[18],
-        "L5_basket": params[20],
-
-    }
-
-    weights_nmda_p2 = {
-        "L2_basket": params[17],
-        "L2_pyramidal": params[19],
-        "L5_basket": params[21],
-    }
-
-
-    synaptic_delays_p2 = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-
-    }
-
-    if (num_params==22):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
 
     weights_ampa_p2 = {
         "L2_basket": params[16],
@@ -525,11 +353,6 @@ def set_network_weights_small_steps(params=None):
         "L5_pyramidal": 1.0,
     }
 
-    if (num_params==24):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
     set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=params[24])
 
     if (num_params == 25):
@@ -538,301 +361,6 @@ def set_network_weights_small_steps(params=None):
         print('number of parameters not implemneted')
         exit()
 
-def set_weights_small_steps_changed_order(params=None, num=2):
-
-    """
-    description: sets network to default values for an ERP as described in hnn tutorial
-    """
-
-    net = jones_2009_model()
-
-    num_params = num
-
-    weights_ampa_p1 = {
-
-        "L5_pyramidal": params[0],
-    }
-
-    weights_nmda_p1 = {
-
-        "L5_pyramidal": params[1],
-    }
-
-    synaptic_delays_prox = {
-
-        "L5_pyramidal": 1.0,
-    }
-
-
-    if (num_params==2):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-        return net
-
-    weights_ampa_p1 = {
-
-        "L5_basket": params[2],
-        "L5_pyramidal": params[0],
-    }
-
-    weights_nmda_p1 = {
-
-        "L5_basket": params[3],
-        "L5_pyramidal": params[1],
-    }
-
-    synaptic_delays_prox = {
-        "L5_basket": 0.1,
-        "L5_pyramidal": 0.1,
-
-    }
-
-    if (num_params==4):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-        return net
-
-    weights_ampa_p1 = {
-
-        "L2_pyramidal": params[4],
-        "L5_basket": params[2],
-        "L5_pyramidal": params[0],
-    }
-
-    weights_nmda_p1 = {
-
-        "L2_pyramidal":params[5],
-        "L5_basket": params[3],
-        "L5_pyramidal": params[1],
-    }
-
-    synaptic_delays_prox = {
-
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    if (num_params==6):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-        return net
-
-    weights_ampa_p1 = {
-        "L2_basket": params[6],
-        "L2_pyramidal": params[4],
-        "L5_basket": params[2],
-        "L5_pyramidal": params[0],
-    }
-
-    weights_nmda_p1 = {
-       "L2_basket": params[7],
-        "L2_pyramidal":params[5],
-        "L5_basket": params[3],
-        "L5_pyramidal": params[1],
-    }
-
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    if (num_params==8):
-        set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox)
-
-        return net
-
-    print(params)
-
-    set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, mu=params[8])
-
-    if (num_params ==9):
-
-        return net
-
-    weights_ampa_d1 = {
-
-        "L5_pyramidal": params[9],
-
-    }
-    weights_nmda_d1 = {
-
-        "L5_pyramidal": params[10],
-
-    }
-
-    synaptic_delays_d1 = {
-
-    "L5_pyramidal": 1.0}
-
-    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-
-    
- 
-    if (num_params ==11):
-
-        return net
-
-    weights_ampa_d1 = {
-
-        "L2_pyramidal": params[11],
-        "L5_pyramidal": params[9],
-
-    }
-    weights_nmda_d1 = {
-
-        "L2_pyramidal": params[12],
-        "L5_pyramidal": params[10],
-
-    }
-
-    synaptic_delays_d1 = {
-        "L2_pyramidal": 0.1,
-        "L5_pyramidal": 1.0}
-
-
-    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-
-    if (num_params ==13):
-
-        return net
-        
-    weights_ampa_d1 = {
-        "L2_basket": params[13],
-        "L2_pyramidal": params[11],
-        "L5_pyramidal": params[9],
-
-    }
-    weights_nmda_d1 = {
-        "L2_basket": params[14],
-        "L2_pyramidal": params[12],
-        "L5_pyramidal": params[10],
-
-    }
-
-    synaptic_delays_d1 = {
-    "L2_basket": 0.1,
-    "L2_pyramidal": 0.1,
-    "L5_pyramidal": 1.0}
-
-    
-
-    if (num_params ==15):
-
-        set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1)
-
-        return net
-
-
-    set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu = params[15])
-
-
-    if (num_params == 16):
-
-        return net
-
-    weights_ampa_p2 = {
-
-        "L5_pyramidal": params[16],
-    }
-
-    weights_nmda_p2 = {
- 
-        "L5_pyramidal": params[17],
-    }
-
-
-    synaptic_delays_p2 = {
-
-        "L5_pyramidal": 1.0,
-    }
-
-
-    if (num_params ==18):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
-    weights_ampa_p2 = {
-
-        "L5_basket": params[18],
-        "L5_pyramidal": params[16],
-    }
-
-    weights_nmda_p2 = {
-
-        "L5_basket": params[19],
-        "L5_pyramidal": params[17],
-    }
-
-
-    synaptic_delays_p2 = {
-
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-    if (num_params ==20):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
-    weights_ampa_p2 = {
-
-        "L2_pyramidal": params[20],
-        "L5_basket": params[18],
-        "L5_pyramidal": params[16],
-    }
-
-    weights_nmda_p2 = {
-
-        "L2_pyramidal": params[21],
-        "L5_basket": params[19],
-        "L5_pyramidal": params[17],
-    }
-
-
-    synaptic_delays_p2 = {
-
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    if (num_params ==22):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
-    weights_ampa_p2 = {
-        "L2_basket": params[22],
-        "L2_pyramidal": params[20],
-        "L5_basket": params[18],
-        "L5_pyramidal": params[16],
-    }
-
-    weights_nmda_p2 = {
-        "L2_basket": params[23],
-        "L2_pyramidal": params[21],
-        "L5_basket": params[19],
-        "L5_pyramidal": params[17],
-    }
-
-
-    synaptic_delays_p2 = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    if (num_params == 24):
-        set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2)
-
-        return net
-
-    set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=params[24])
-
-
-    return net
 
 
 def set_network_weights_2_per_step(params=None):
