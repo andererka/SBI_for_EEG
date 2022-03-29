@@ -22,8 +22,7 @@ class SimulationWrapper:
 
     def __call__(self, params):
         if (self.num_params == 17 or self.num_params == 6):
-            if (self.change_order == False):
-                return self.simulation_wrapper_all(params)
+            return self.simulation_wrapper_all(params)
             
         elif (self.num_params == 25):
             return self.simulation_wrapper_25(params)
