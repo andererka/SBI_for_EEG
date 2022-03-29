@@ -111,8 +111,6 @@ def main(argv):
 
 
 
-    ###### starting with P50 parameters/summary stats:
-
     prior = utils.torchutils.BoxUniform(low=prior_min, high=prior_max)
 
     prior1 = utils.torchutils.BoxUniform(low=prior_min[0:6], high=prior_max[0:6])
@@ -210,10 +208,6 @@ def main(argv):
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
-    print('x_P50',x_P50)
-
-    print('x without', x_without.shape)
-
 
 
     inf = inf.append_simulations(theta, x_P50)
@@ -274,7 +268,7 @@ def main(argv):
     start_time = datetime.datetime.now()
 
     theta = theta[:,6:12]
-    x_without = x_without[:,:4200]
+    #x_without = x_without[:,:4200]
 
     x_N100 = calculate_summary_stats_temporal(x_without)
 
@@ -320,7 +314,7 @@ def main(argv):
         diff_time = finish_time - start_time
 
 
-
+        ## save meta data about time
         step_time_str = get_time()
         json_dict = {
         "start time:": start_time_str,
@@ -334,6 +328,7 @@ def main(argv):
 
     x = calculate_summary_stats_temporal(x_without)
 
+    ## inference only on parameters 12 to 17 (but simulation was for all!)
     theta = theta[:,12:]
 
     inf = inf.append_simulations(theta, x)
@@ -349,6 +344,7 @@ def main(argv):
 
     posterior = Combined([proposal1, proposal2, proposal3], None, steps=[0, 6, 12])
 
+    ## save list of separate posteriors:
     torch.save(posteriors, 'posteriors_each_step.pt')
 
     file_writer.save_posterior(posterior)
