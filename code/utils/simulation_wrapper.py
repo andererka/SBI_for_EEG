@@ -1,8 +1,6 @@
-import hnn_core
+
 from hnn_core import simulate_dipole, jones_2009_model
-from summary_features.calculate_summary_features import (
-    calculate_summary_stats_number
-)
+
 import torch
 
 import numpy as np
@@ -12,19 +10,14 @@ class SimulationWrapper:
     """
     Class in order to select and call a simulation wrapper according to:
     - num_params: number of parameters that are to be inferred in total
-    - change_order: default False; if True, calls a simulation wrapper that takes another 
-                    inference order. Could test if the inference order plays a role or if
-                    inference is robust
     - noise: noise can be added to observation to induce more stochasticity. Default is set to True
     
     """
 
-    def __init__(self, num_params = 17, change_order = False, noise = True):
+    def __init__(self, num_params = 17,  noise = True):
         self.num_params = num_params
         self.noise = noise
 
-        # not implemented so far in simulation function
-        self.change_order = change_order
     
 
     def __call__(self, params):
