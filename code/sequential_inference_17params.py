@@ -11,8 +11,7 @@ from summary_features.calculate_summary_features import (
 import numpy as np
 import torch
 import json
-import pandas as pd
-import seaborn as sns
+
 
 import shutil
 
@@ -260,7 +259,7 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape])
+    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape[1]])
 
 
     finish_time = datetime.datetime.now()
