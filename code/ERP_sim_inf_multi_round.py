@@ -31,6 +31,7 @@ from utils.helpers import get_time
 
 from utils import inference
 import sys
+import pandas as pd
 
 ##sbi
 from sbi.inference import SNPE_C
@@ -51,6 +52,9 @@ def main(argv):
     arg 2: density estimator; default is maf
     arg 3: number of workers; should be set to the number of available cpus; default is 8
     arg 4: number of samples that should be drawn from posterior; default is 100
+
+    arg 7: observation: can be 'fake' from chosen 'true parameters' or 'supra' for data from an experimental paradigm where 100% of stimuli were detected, or 'threshold' were only 50% were detected.
+        See: https://jonescompneurolab.github.io/hnn-tutorials/optimization/optimization for further explanation of the data.
     
     """
 
@@ -67,27 +71,27 @@ def main(argv):
         num_workers = int(argv[2])
     except:
         num_workers = 8
-    try:
-        num_samples = int(argv[3])
-    except:
-        num_samples = 100
 
     try:
-        num_params = int(argv[4])
+        num_params = int(argv[3])
     except:
         num_params = 6
     try:
-        slurm = bool(int(argv[5]))
+        slurm = bool(int(argv[4]))
     except:
         slurm = True
     try:
-        experiment_name = argv[6]
+        experiment_name = argv[5]
     except:
         experiment_name = 'multi_round'
     try:
-        set_proposal = bool(int(argv[7]))
+        set_proposal = bool(int(argv[6]))
     except:
         set_proposal = True
+    try:
+        observation = argv[7]
+    except:
+        observation = 'fake'
 
     sim_wrapper = SimulationWrapper(num_params=num_params)
 
@@ -174,15 +178,6 @@ def main(argv):
 
     print(torch.tensor([list(true_params[0])]))
 
-    obs_real_complete = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:])]), 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
-    )
-
-    obs_real = obs_real_complete[0]
-
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
     posteriors = []
     proposal = prior
@@ -194,9 +189,10 @@ def main(argv):
     true_params=true_params,
     density_estimator=density_estimator,
     num_params=num_params,
-    num_samples=num_samples,
     slurm=slurm
 )
+    print(os.getcwd())
+    print(file_writer.folder)
 
 
     try:
@@ -211,8 +207,33 @@ def main(argv):
 
     shutil.copyfile(str(os.getcwd() + '/ERP_sim_inf_multi_round.py'), str(file_writer.folder+ '/ERP_sim_inf_multi_round.py'))
 
+    os.chdir(file_writer.folder)
+
+    if observation == 'fake':
+
+        obs_real_complete = inference.run_only_sim(
+            torch.tensor([list(true_params[0][0:])]), 
+            simulation_wrapper = sim_wrapper, 
+            num_workers=1
+        )
+
+        obs_real = obs_real_complete[0]
+
+    if observation == 'supra':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+
+    if observation == 'threshold':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
 
     os.chdir(file_writer.folder)
+
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
 
     json_dict = {
