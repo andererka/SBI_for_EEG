@@ -269,7 +269,7 @@ def main(argv):
 
         posterior = inf.build_posterior(neural_dens)
 
-        posteriors.append(posterior)
+        posteriors.append(posterior.set_default_x(obs_real_stat))
         proposal = posterior.set_default_x(obs_real_stat)
 
         finish_time_str = get_time()
