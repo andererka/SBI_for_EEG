@@ -146,11 +146,12 @@ def main(argv):
     os.chdir(file_writer.folder)
 
     # artificial observation where we assume to know the true parameters
-    obs_real_complete = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:])]), 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
-    )
+    obs_real = inference.run_only_sim(
+    true_params, sim_wrapper, num_workers=1)  # first output gives summary statistics, second without
+
+    obs_real_stat = calculate_summary_stats_temporal(obs_real[0], complete=True)
+
+
 
     
     try:
@@ -201,8 +202,6 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-    print(x_without.shape)
-    x_without = x_without[:,:2700]
 
     x_P50 = calculate_summary_stats_temporal(x_without)
 
@@ -218,21 +217,12 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    #### either simulate 'fake observation' or load data from hnn 
-
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
-
-    print('obs real', obs_real)
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
-
-
-
-    proposal1 = posterior.set_default_x(obs_real_stat)
+    proposal1 = posterior.set_default_x(obs_real_stat[:,:x_P50.shape[1]])
 
     ###### continuing with N100 parameters/summary stats:
     prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
-    combined_prior = Combined(proposal1, prior2, steps = [0, 6])
+    combined_prior = Combined(proposal1, prior2, number_params_1=6)
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
@@ -250,21 +240,6 @@ def main(argv):
         )
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
-
-        finish_time = datetime.datetime.now()
-
-        diff_time = finish_time - start_time
-
-
-
-        step_time_str = get_time()
-        json_dict = {
-        "start time:": start_time_str,
-        "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
 
 
 
@@ -285,12 +260,23 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
+    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape])
+
+
+    finish_time = datetime.datetime.now()
+
+    diff_time = finish_time - start_time
 
 
 
-    proposal2 = posterior.set_default_x(obs_real_stat)
+    step_time_str = get_time()
+    json_dict = {
+    "start time:": start_time_str,
+    "round 1 time": step_time_str,
+    "CPU time for step:": str(diff_time)}
+    with open( "step2/meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
     ###### continuing with P200 parameters/summary stats:
 
@@ -298,7 +284,7 @@ def main(argv):
 
 
 
-    combined_prior = Combined(proposal2, prior3, steps = [0, 12])
+    combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
@@ -318,20 +304,6 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
 
-        finish_time = datetime.datetime.now()
-
-        diff_time = finish_time - start_time
-
-
-
-        step_time_str = get_time()
-        json_dict = {
-        "start time:": start_time_str,
-        "round 1 time": step_time_str,
-        "CPU time for step:": str(diff_time)}
-        with open( "step1/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
 
 
     x = calculate_summary_stats_temporal(x_without)
@@ -344,11 +316,22 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    obs_real = obs_real_complete[0][:x_without.shape[1]]
-
-    obs_real_stat = calculate_summary_stats_temporal(obs_real)
-
     posterior.set_default_x(obs_real_stat)
+
+    finish_time = datetime.datetime.now()
+
+    diff_time = finish_time - start_time
+
+
+
+    step_time_str = get_time()
+    json_dict = {
+    "start time:": start_time_str,
+    "round 1 time": step_time_str,
+    "CPU time for step:": str(diff_time)}
+    with open( "step3/meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
    
 
     file_writer.save_posterior(posterior)

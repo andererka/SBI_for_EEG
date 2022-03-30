@@ -1,4 +1,5 @@
-from utils.simulation_wrapper import simulation_wrapper_all, simulation_wrapper_obs
+import datetime
+from utils.simulation_wrapper import SimulationWrapper
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
@@ -33,6 +34,7 @@ import pickle
 import sys
 
 import os
+import shutil
 
 ## defining neuronal network model
 
@@ -55,54 +57,36 @@ def main(argv):
         num_sim = int(argv[0])
     except:
         num_sim = 100
-    try:
-        num_samples = int(argv[1])
-    except:
-        num_samples = 20
 
     try:
-        num_workers = int(argv[2])
+        num_workers = int(argv[1])
     except:
         num_workers = 4
     try:
-        experiment_name = argv[3]
+        experiment_name = argv[2]
     except:
         experiment_name = "ERP_sequential"
     try:
-        slurm = int(argv[4])
+        slurm = bool(int(argv[3]))
     except:
-        slurm = 1
-
-    if (slurm==0):
         slurm = True
-    else:
-        slurm = False
+    try:
+        density_estimator = argv[4]
+    except:
+        density_estimator = 'nsf'
+
 
     ## using a density estimator with only 1 transform (which should be enough for the 1D case)
     #dens_estimator = posterior_nn(model='nsf', hidden_features=60, num_transforms=1)
 
 
-    start_time = get_time()
-
     #sim_wrapper = simulation_wrapper_obs
-    sim_wrapper = simulation_wrapper_all
+    sim_wrapper = SimulationWrapper(6)
 
-    #prior_min_fix = [7.9, 43.8, 89.49]  # 't_evprox_1', 't_evdist_1', 't_evprox_2'
-
-    #prior_max_fix = [30, 79.9,  152.96]
-
-    #prior_min = [7.9, 43.8,  89.49] 
-
-    #prior_max = [30, 79.9, 152.96]
-
-    ### for also inferring connection weights etc.:
-
-    prior_min_fix = [0.0, 11.3, 0.0, 43.8, 0.0, 89.491]
-    prior_max_fix = [0.160, 35.9, 0.821, 79.0, 8.104, 162.110]
 
     prior_min = [0.0, 11.3, 0.0, 43.8, 0.0, 89.491]
     prior_max = [0.160, 35.9, 0.821, 79.0, 8.104, 162.110]
-    #true_params = torch.tensor([[26.61, 63.53,  137.12]])
+
     true_params = torch.tensor([[0.0274, 19.01, 0.1369, 61.89, 0.1435, 120.86]])
 
     
@@ -120,16 +104,20 @@ def main(argv):
 
     prior1 = utils.torchutils.BoxUniform(low=prior_min[0:2], high=prior_max[0:2])
 
-    inf = SNPE_C(prior1, density_estimator='nsf')
+    inf = SNPE_C(prior1, density_estimator=density_estimator)
+
+    obs_real = inference.run_only_sim(
+    true_params, sim_wrapper, num_workers=1)  # first output gives summary statistics, second without
+
+    obs_real_stat = calculate_summary_stats_temporal(obs_real[0], complete=True)
 
 
 
     file_writer = write_to_file.WriteToFile(
     experiment=experiment_name,
     num_sim=num_sim,
-    density_estimator='nsf',
-    num_params=6,
-    num_samples=num_samples,
+    density_estimator=density_estimator,
+    num_params=len(prior_max),
     slurm=slurm,
     )
 
@@ -149,11 +137,19 @@ def main(argv):
     except:
         print('step files exist')
 
+
+    # stores the running file into the result folder for later reference:
+    open('{}/sequential_inference_6params.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + '/sequential_inference_6params.py'), str(file_writer.folder+ '/sequential_inference_6params.py'))
+
+
+
     os.chdir(file_writer.folder)
 
         
 
-
+    start_time0 = datetime.datetime.now()
+    start_time = get_time()
 
     
     try:
@@ -168,13 +164,6 @@ def main(argv):
             num_workers=num_workers
         )
 
-        step_time = get_time()
-        json_dict = {
-        "start time:": start_time,
-        "round 1 time": step_time}
-        with open( "step1/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
 
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
@@ -186,33 +175,33 @@ def main(argv):
     print('theta shape 0', theta.shape[0], theta.shape)
 
     inf = inf.append_simulations(theta, x_P50)
-    density_estimator = inf.train()
+    neural_dens = inf.train()
 
-    posterior = inf.build_posterior(density_estimator)
+    posterior = inf.build_posterior(neural_dens)
 
-    #obs_real = inference.run_only_sim(
-    #torch.tensor([list([true_params[0][0]])]), simulation_wrapper = sim_wrapper, num_workers=num_workers
-#)  
 
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:2])]), simulation_wrapper = simulation_wrapper_all, num_workers=num_workers
-    )  # first output gives summary statistics, second without
+    proposal1 = posterior.set_default_x(obs_real_stat[:,:x_P50.shape[1]])
 
-    print("obs real", obs_real)
-    obs_real = calculate_summary_stats_temporal(obs_real)
+    start_time1 = datetime.datetime.now()
+    diff = start_time1 - start_time0
 
-    samples = posterior.sample((num_samples,), x=obs_real)
-
-    proposal1 = posterior.set_default_x(obs_real)
+    step_time = get_time()
+    json_dict = {
+    "start time:": start_time,
+    "round 1 time": step_time,
+    "diff": str(diff), }
+    with open( "step1/meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
     ###### continuing with N100 parameters/summary stats:
-    #prior2 = utils.torchutils.BoxUniform(low=[prior_min[1]], high=[prior_max[1]])
+
     prior2 = utils.torchutils.BoxUniform(low=prior_min[2:4], high=prior_max[2:4])
 
-    #combined_prior = Combined(proposal1, prior2, number_params_1=1)
+
     combined_prior = Combined(proposal1, prior2, number_params_1=2)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
 
     try:
@@ -229,13 +218,6 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
-        step_time = get_time()
-        json_dict = {
-        "start time:": start_time,
-        "round 3 time": step_time}
-        with open( "step2/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
 
 
     print("second round completed")
@@ -243,28 +225,24 @@ def main(argv):
     x_N100 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_N100)
-    density_estimator = inf.train()
+    neural_dens = inf.train()
 
-    posterior = inf.build_posterior(density_estimator)
+    posterior = inf.build_posterior(neural_dens)
 
-    #obs_real = inference.run_only_sim(
-    #    torch.tensor([list(true_params[0][0:1])]),
-    #    sim_wrapper,
-    #    num_workers=num_workers
-    #)
-    obs_real = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:4])]),
-        simulation_wrapper_all,
-        num_workers=num_workers
-    )  # first output gives summary statistics, second without
 
-    obs_real = calculate_summary_stats_temporal(obs_real)
+    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape[1]])
 
-    print("obs real", obs_real.size())
+    start_time2 = datetime.datetime.now()
+    step_time2 = get_time()
 
-    samples = posterior.sample((num_samples,), x=obs_real)
+    diff = start_time2 -start_time1
 
-    proposal2 = posterior.set_default_x(obs_real)
+    json_dict = {
+    "start time:": start_time,
+    "round 3 time": step_time2}
+    with open( "step2/meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
     ###### continuing with P200 parameters/summary stats:
     #prior3 = utils.torchutils.BoxUniform(low=[prior_min[2]], high=[prior_max[2]])
@@ -275,7 +253,7 @@ def main(argv):
 
     combined_prior = Combined(proposal2, prior3, number_params_1=4)
 
-    inf = SNPE_C(combined_prior, density_estimator="nsf")
+    inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
     try:
         theta = torch.load('step3/thetas.pt')
@@ -292,77 +270,35 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
 
-        step_time = get_time()
-
-        json_dict = {
-
-        "start time:": start_time,
-        "round 3 time": step_time,
-    }
-        with open( "step3/meta.json", "a") as f:
-            json.dump(json_dict, f)
-            f.close()
 
     x_P200 = calculate_summary_stats_temporal(x_without)
 
     inf = inf.append_simulations(theta, x_P200)
-    density_estimator = inf.train()
+    neural_dens = inf.train()
 
-    posterior = inf.build_posterior(density_estimator)
-
-    obs_real = inference.run_only_sim(
-        true_params, sim_wrapper, num_workers=num_workers
-    )  # first output gives summary statistics, second without
-
-    obs_real = calculate_summary_stats_temporal(obs_real)
-
-    samples = posterior.sample((num_samples,), x=obs_real)
-
-    limits = [list(tup) for tup in zip(prior_min_fix, prior_max_fix)]
-
-    fig, axes = analysis.pairplot(
-        samples,
-        limits=limits,
-        ticks=limits,
-        figsize=(5, 5),
-        points=true_params,
-        points_offdiag={"markersize": 6},
-        points_colors="r",
-        labels=parameter_names,
-    )
-
-    
-    fig.savefig('posterior_dens.png')
-
-    finish_time = get_time()
+    posterior = inf.build_posterior(neural_dens)
 
 
-    s_x = inference.run_only_sim(samples, simulation_wrapper=sim_wrapper, num_workers=num_workers)
+    posterior.set_default_x(obs_real_stat)
 
-    fig3, ax = plt.subplots(1, 1)
-    ax.set_title("Simulating from proposal")
-    for x in x_without:
-        plt.plot(x)
-    plt.show()
+    step_time = get_time()
 
+    diff = datetime.datetime.now() - start_time2
 
-    fig4, ax = plt.subplots(1, 1)
-    ax.set_title("Simulating from posterior")
-    for s in s_x:
-        plt.plot(s)
-    plt.show()
+    json_dict = {
 
+    "start time:": start_time,
+    "round 3 time": step_time,
+    "diff": str(diff),
+}
+    with open( "step3/meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
-    fig3.savefig('from_prior.png')
-    fig4.savefig('from_posterior_dens.png')
+    torch.save(posterior, 'posterior.pt')
 
-    #file_writer.save_posterior(posterior)
-    #file_writer.save_prior(combined_prior)
-
-    file_writer.save_all(
-        start_time=start_time,
-        finish_time=finish_time,
-        source='sequential_inference')
+    torch.save(obs_real, 'obs_real.pt')
+    torch.save(obs_real_stat, 'obs_real_stat.pt')
 
 if __name__ == "__main__":
     main(sys.argv[1:])
