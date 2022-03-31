@@ -81,6 +81,11 @@ def main(argv):
     except:
         experiment_name = "ERP_sequential"
 
+    try:
+        prop = bool(int(argv[4]))
+    except:
+        prop = False
+
 
     file_writer = write_to_file.WriteToFile(
     experiment=experiment_name,
@@ -170,9 +175,12 @@ def main(argv):
                     num_workers=num_workers,
                 )
                 
-                print('x', x)
 
-                neural_dens = inf.append_simulations(theta, x).train()
+                if prop:
+                    neural_dens = inf.append_simulations(theta, x, proposal=proposal).train()
+                else:
+
+                    neural_dens = inf.append_simulations(theta, x).train()
 
 
                 posterior = inf.build_posterior(neural_dens)
