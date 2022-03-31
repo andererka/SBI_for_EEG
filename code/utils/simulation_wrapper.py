@@ -501,6 +501,8 @@ def set_network_weights(params=None):
     else:
         num_params = len(params)
 
+    print('num_params', num_params)
+
 
     weights_ampa_p1 = {
         "L2_basket": params[0],

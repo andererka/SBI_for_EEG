@@ -330,15 +330,15 @@ def calculate_summary_stats_temporal(x, complete=False):
         total_steps_ms = batch.size(dim=0) / time_window
 
 
-        arg200ms = int(200 * 30)
+        #arg200ms = int(200 * 30)
 
-        arg120ms = int(120 * 30)
+        #arg120ms = int(120 * 30)
 
-        arg_p50 = torch.argmax(batch[0:arg120ms])
+        arg_p50 = torch.argmax(batch[0:2000])
 
 
         print('batch shape', batch.shape)
-        p50 = torch.max(batch[0:arg120ms])
+        p50 = torch.max(batch[0:2000])
 
         p50_moment1 = torch.mean(batch[arg_p50-10*time_window:arg_p50+10*time_window])  # mean
 
@@ -396,8 +396,8 @@ def calculate_summary_stats_temporal(x, complete=False):
         arg_N100 = torch.argmin(batch)
 
         N100 = torch.min(batch)
-        N100_moment1 = torch.mean(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # mean
-        N100_moment2 = torch.var(batch[arg_N100-10*time_window:arg200ms+10*time_window])  # variance
+        N100_moment1 = torch.mean(batch[arg_N100-10*time_window:arg_N100+10*time_window])  # mean
+        N100_moment2 = torch.var(batch[arg_N100-10*time_window:arg_N100+10*time_window])  # variance
 
 
         #x_t = batch[90*30:160*30]
@@ -440,7 +440,7 @@ def calculate_summary_stats_temporal(x, complete=False):
 
         arg_P200 = torch.argmax(batch)
 
-        P200 = torch.max(batch[arg120ms:])
+        P200 = torch.max(batch[4000:])
 
         P200_moment1 = torch.mean(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # mean
         P200_moment2 = torch.var(batch[arg_P200-10*time_window:arg_P200+10*time_window])  # variance
