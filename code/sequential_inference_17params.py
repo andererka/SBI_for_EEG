@@ -86,7 +86,7 @@ def main(argv):
     start_time = datetime.datetime.now()
 
     # defining simulation wrapper with the SimulationWrapper class. Takes number of parameters as argument
-    sim_wrapper = SimulationWrapper(num_params=17)
+    sim_wrapper = SimulationWrapper(num_params=17, noise=False)
 
 
 
@@ -164,7 +164,7 @@ def main(argv):
             prior1, 
             sim_wrapper,
             num_simulations=int(num_sim*(1/10)),
-            num_simulations = num_sim,
+            #num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -298,7 +298,7 @@ def main(argv):
             combined_prior,
             sim_wrapper,
             num_simulations=int(num_sim*(19/10)),
-            num_simulations = num_sim,
+            #num_simulations = num_sim,
             num_workers = num_workers
         )
 
