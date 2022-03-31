@@ -1,8 +1,12 @@
-from random import gauss
 from utils.simulation_wrapper import SimulationWrapper
 from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
+
+from summary_features.calculate_summary_features import (
+    calculate_summary_stats_temporal, calculate_summary_statistics_alternative
+
+)
 
 import numpy as np
 import torch
@@ -10,9 +14,11 @@ import json
 import pandas as pd
 import seaborn as sns
 
+import shutil
+
 import datetime
 
-import shutil
+from utils.helpers import get_time
 
 from utils.sbi_modulated_functions import Combined
 
@@ -24,8 +30,7 @@ import matplotlib.pyplot as plt
 from sbi import utils as utils
 from sbi import analysis as analysis
 from sbi.inference import SNPE, prepare_for_sbi, simulate_for_sbi
-
-from sbi.utils import RestrictionEstimator
+from sbi.utils.get_nn_models import posterior_nn
 
 from utils import inference
 
@@ -35,14 +40,13 @@ import sys
 
 import os
 
-## gaussian function for simulator
 def Gaussian(thetas, normal_noise=1):
     
     np.random.seed(np.random.choice(1000))
     
     gauss_list = []
     
-    for i, theta in enumerate(thetas):
+    for theta in thetas:
     
         mu, sigma = theta, normal_noise # mean and standard deviation
 
@@ -50,34 +54,14 @@ def Gaussian(thetas, normal_noise=1):
     
         
         gauss_list.append(s[0])
-
         
     gauss_obs = torch.tensor(gauss_list)
     
     return gauss_obs
 
 
-## main function to compare nulti-round SNPE with NIPE approach
+
 def main(argv):
-    '''
-    takes the following arguments:
-
-    - density_estimator: can be 'maf', 'nsf' or 'mdn' (or other). Default is 'mdn'
-    - num_workers: number of cpus available. Default is 8
-    - slurm: takes 0 or 1. 0 if not on slurm. If 1, results get stored under specific result folder (specified in 'write_to_file.WriteToFile')
-    - experiment_name: defines name of result folder. If not defined, then it's 'toy_example_mdn'
-    - rounds: in order to get a valid comparison, multiple posteriors are calculated in multiple rounds. Default is 10. Argument defines how 
-            many posteriors are calculated for each approach. Later, KL divergence measures are calculated and mean and stddev of the KL div between 
-            inferred and analytic posteriors are plotted
-    - set_proposal: takes 0 or 1. If 1, proposal is set in 'append_simulations' for the multi-round approach. This is the 'proper' approach
-                    because then leakage correction can be applied. Without it tough, inference can be faster. 
-                    It's not working for mdn's (there is probably an issue with numerical instability -see https://github.com/mackelab/sbi/issues/669#issue-1177918978)
-    - ratio: depending on if the already inferred posteriors are taken ONLY for simulation, but thetas of these subsets are not inferred 
-                again in the nect round, it makes sense to use a smaller number of simulations in the first round and a larger number for the
-                last - then the quality of inference is not so different between subsets.
-                If inferred posteriors are only taken for simulation, this argument should be set to 0 (false).
-
-    '''
 
 
     try:
@@ -95,23 +79,7 @@ def main(argv):
     try:
         experiment_name = argv[3]
     except:
-        experiment_name = "toy_example_mdn"
-    try:
-        rounds = int(argv[4])
-    except:
-        rounds = 10
-    try:
-        set_proposal = bool(int(argv[5]))
-    except:
-        set_proposal = False
-
-    ## Ratio only makes sense if we do not make seperate inference on the subsets, but instead make inference again on the 
-    ## inferred posteriors such that it gets more and more restricted.
-    
-    try:
-        ratio = bool(int(argv[2]))
-    except:
-        ratio = False
+        experiment_name = "ERP_sequential"
 
 
     file_writer = write_to_file.WriteToFile(
@@ -133,12 +101,6 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
-    json_dict = {
-    "arguments:": str(argv)}
-    with open( "argument_list.json", "a") as f:
-        json.dump(json_dict, f)
-        f.close()
-
         
 
 
@@ -148,6 +110,7 @@ def main(argv):
 
     # ### starting with multi-round snpe
 
+    # In[5]:
 
     import torch
 
@@ -162,26 +125,27 @@ def main(argv):
     # In[6]:
 
 
-    num_simulations_list = [200, 500, 1000, 1500, 2000, 3000]
-
-    
-    #num_simulations_list = [200]
+    num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
 
 
+    # In[7]:
 
 
     obs_real = Gaussian(true_thetas[0])
 
+    obs_real
 
-    torch.manual_seed(4)
+
+    # In[ ]:
 
 
     list_collection = []
 
+    obs_real = Gaussian(true_thetas[0])
 
-    start = datetime.datetime.now()
+    start_time = datetime.datetime.now()
 
-    for _ in range(rounds):
+    for i in range(10):
         
 
         posterior_snpe_list = []
@@ -195,8 +159,6 @@ def main(argv):
             
             proposal = prior
 
-            posteriors = []
-
             for j in range(3):
 
                 print('round: ', j)
@@ -208,21 +170,18 @@ def main(argv):
                     num_workers=num_workers,
                 )
                 
-                if set_proposal:
-                    neural_dens = inf.append_simulations(theta, x, proposal).train()
-                else:
-                    neural_dens = inf.append_simulations(theta, x).train()
+                print('x', x)
+
+                neural_dens = inf.append_simulations(theta, x).train()
 
 
                 posterior = inf.build_posterior(neural_dens)
-
-                posteriors.append(posterior)
 
 
 
                 proposal = posterior.set_default_x(obs_real)
 
-            torch.save(posteriors, 'posteriors_each_round.pt')
+    
 
 
             posterior_snpe = posterior
@@ -231,16 +190,17 @@ def main(argv):
             
         list_collection.append(posterior_snpe_list)
 
-        
-    end = datetime.datetime.now()
 
-    diff  = end - start
+    # In[ ]:
+    end_time = datetime.datetime.now()
 
-    print(diff)
 
+    diff_time = end_time - start_time
+
+    import json
 
     json_dict = {
-    "CPU time for step:": str(diff)}
+    "CPU time for step:": str(diff_time)}
     with open( "time_snpe_nsf.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
@@ -254,8 +214,18 @@ def main(argv):
     list_collection = torch.load('list_collection.pt')
 
 
+    # In[9]:
 
-    range_list = [5, 10, 15]
+
+    list_collection
+
+
+    # ### For incremental approach: 
+
+    # In[ ]:
+
+
+    range_list = [5,10, 15]
 
 
 
@@ -263,8 +233,9 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for _ in range(rounds):
+    for i in range(10):
         
+        np.random.seed(i)
 
         posterior_incremental_list = []
 
@@ -282,9 +253,6 @@ def main(argv):
 
             start_num = 1
 
-            previous_i = 0
-            proposal_list = []
-
             for index in range(len(range_list)-1):
 
                 ## i defines number of parameters to be inferred, j indicates how many parameters 
@@ -294,70 +262,53 @@ def main(argv):
 
                 print(i, j)
 
-                if ratio == True:
+                num_sim = int(num_simulations * (start_num / 10))
 
-                    num_sim = int(num_simulations * (start_num / 10))
+                start_num += 9
 
-                    start_num += 9
-                else:
-                    num_sim = num_simulations
-
+                start_time = datetime.datetime.now()
 
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
-                    num_simulations=num_sim,
+                    num_simulations=num_simulations,
                     num_workers=num_workers,
 
                 )
 
-
-
-                theta = theta[:, previous_i:i]
-                x = x[:, previous_i:i]
-
-
-
-                
                 inf = inf.append_simulations(theta, x)
                 neural_dens = inf.train()
 
                 posterior = inf.build_posterior(neural_dens)
 
-                obs_real2 = obs_real[previous_i:i]
+                if i < 2:
+                    obs_real = Gaussian([true_thetas[0, 0:i]])
+
+                else:
+                    obs_real = Gaussian(true_thetas[0, 0:i])
 
 
-
-                proposal1 = posterior.set_default_x(obs_real2)
-
-
+                proposal1 = posterior.set_default_x(obs_real)
 
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
-                proposal_list.append(proposal1)
-
-                combined_prior = Combined(proposal_list, next_prior, steps=[0,5,10,15])
+                combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
 
-                ## here we only make inference on the next prior, not the whole set so far
-                inf = SNPE(next_prior, density_estimator=density_estimator)
+                ## set inf for next round:
+                inf = SNPE(combined_prior, density_estimator=density_estimator)
 
 
-                ## set combined prior to be the new proposal:
+                ## set combined prior to be the new prior_i:
                 proposal= combined_prior
 
-                previous_i = i
+                finish_time = datetime.datetime.now()
 
+                diff = finish_time - start_time
 
+                print('took ', diff, ' for this step')
 
-            if ratio == True:
-
-                num_sim = int(num_simulations * (start_num / 10))
-
-            else:
-                num_sim = num_simulations
-
-
+            num_sim = int(num_simulations * (start_num / 10))
 
             theta, x =  simulate_for_sbi(
                 simulator_stats,
@@ -367,33 +318,17 @@ def main(argv):
 
             )
 
-
-
-            theta = theta[:,previous_i:]
-            x = x[:,previous_i:]
-
-
-
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
-            posterior_incremental = inf.build_posterior(neural_dens)
+            posterior_incremental = inf.build_posterior(neural_dens) 
 
-            obs_real2 = obs_real[previous_i:]
-
-
-            posterior_incremental.set_default_x(obs_real2)
-
-
-            proposal_list.append(posterior_incremental)
-
-            combined_posterior = Combined(proposal_list, None, steps=[0,5,10,15])
-
-            posterior_incremental_list.append(combined_posterior)
+            posterior_incremental_list.append(posterior_incremental)
             
         list_collection_inc.append(posterior_incremental_list)
 
 
+    # In[50]:
 
     end_time = datetime.datetime.now()
 
@@ -411,13 +346,43 @@ def main(argv):
     torch.save(list_collection_inc, 'list_collection_inc.pt')
 
 
+    # In[46]:
 
 
     list_collection_inc = torch.load('list_collection_inc.pt')
 
 
+    # In[ ]:
+
+
     import torch.nn.functional as F
 
+
+    #out = F.kl_div(analytic_sample, posterior_sample)
+
+
+
+    # In[ ]:
+
+
+    def calc_KL_1d(posterior):
+        
+        sample = posterior.sample((10000,))
+        
+        analytic = torch.distributions.normal.Normal(true_thetas, 0.1)
+        
+        analytic_sample = analytic.sample((10000,)).squeeze(1)
+        
+        out_list = []
+        for i in range(len(posterior)):
+            
+            out = F.kl_div(analytic_sample[:,i], sample[:,i])
+            out_list.append(out)
+        
+        return out_list
+
+
+    # In[11]:
 
 
     def KL_Gauss(X, Y):
@@ -507,6 +472,14 @@ def main(argv):
 
 
         
+        
+
+
+    # In[51]:
+
+
+    obs_real = Gaussian(true_thetas[0, 0:])
+
 
 
     analytic = torch.distributions.normal.Normal(true_thetas, 1)
@@ -520,9 +493,15 @@ def main(argv):
 
         for posterior_incremental in posterior_incremental_list:
 
+            posterior_incremental.set_default_x(obs_real)
 
+            #KL = KLdivergence(posterior_incremental, sample_y)
 
             KL = KL_Gauss(posterior_incremental, analytic)
+
+            #KL_1d = calc_KL_1d(posterior_incremental, analytic)
+
+            #KL_incremental_1d.append(KL_1d)
 
 
             KL_incremental.append(KL)
@@ -533,14 +512,22 @@ def main(argv):
         
 
 
+    # In[37]:
+
+
+    len(overall_incremental_list)
+
+
+    # In[65]:
+
 
     mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
     stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 
-    lower_incremental = mean_incremental - [element * 0.5 for element in stdev_incremental]
+    lower_incremental = mean_incremental - [element for element in stdev_incremental]
 
-    upper_incremental = mean_incremental + [element * 0.5 for element in stdev_incremental]
+    upper_incremental = mean_incremental + [element for element in stdev_incremental]
 
 
     # In[66]:
@@ -550,9 +537,9 @@ def main(argv):
 
     stdev_snpe = np.std(np.array(overall_snpe_list), axis=0)
 
-    lower_snpe = mean_snpe - [element * 0.5 for element in stdev_snpe]
+    lower_snpe = mean_snpe - [element for element in stdev_snpe]
 
-    upper_snpe = mean_snpe + [element * 0.5 for element in stdev_snpe]
+    upper_snpe = mean_snpe + [element for element in stdev_snpe]
 
 
     # ### Compare KL-divergence of snpe approach with incremental approach in a plot:
