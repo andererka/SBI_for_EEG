@@ -85,6 +85,10 @@ def main(argv):
         prop = bool(int(argv[4]))
     except:
         prop = False
+    try:
+        ratio = bool(int(argv[5]))
+    except:
+        ratio = True
 
 
     file_writer = write_to_file.WriteToFile(
@@ -270,7 +274,11 @@ def main(argv):
 
                 print(i, j)
 
-                num_sim = int(num_simulations * (start_num / 10))
+                if ratio:
+
+                    num_sim = int(num_simulations * (start_num / 10))
+                else:
+                    num_sim = num_simulations
 
                 start_num += 9
 
@@ -279,7 +287,7 @@ def main(argv):
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
-                    num_simulations=num_simulations,
+                    num_simulations=num_sim,
                     num_workers=num_workers,
 
                 )
@@ -316,7 +324,12 @@ def main(argv):
 
                 print('took ', diff, ' for this step')
 
-            num_sim = int(num_simulations * (start_num / 10))
+            if ratio:
+
+                num_sim = int(num_simulations * (start_num / 10))
+
+            else:
+                num_sim = num_simulations
 
             theta, x =  simulate_for_sbi(
                 simulator_stats,
