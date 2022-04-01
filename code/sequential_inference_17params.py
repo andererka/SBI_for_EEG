@@ -147,6 +147,7 @@ def main(argv):
     open('{}/sequential_inference_17params.py'.format(file_writer.folder), 'a').close()
     shutil.copyfile(str(os.getcwd() + '/sequential_inference_17params.py'), str(file_writer.folder+ '/sequential_inference_17params.py'))
 
+    os.chdir(file_writer.folder)
 
     if observation == 'fake':
 
@@ -170,7 +171,6 @@ def main(argv):
         trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
         obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
 
-    os.chdir(file_writer.folder)
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
