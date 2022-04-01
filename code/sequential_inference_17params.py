@@ -80,13 +80,18 @@ def main(argv):
     except:
         density_estimator = 'maf'
 
+    try:
+        observation = argv[5]
+    except:
+        observation = 'fake'
+
 
 
     start_time_str = get_time()
     start_time = datetime.datetime.now()
 
     # defining simulation wrapper with the SimulationWrapper class. Takes number of parameters as argument
-    sim_wrapper = SimulationWrapper(num_params=17, noise=False)
+    sim_wrapper = SimulationWrapper(num_params=17, noise=True)
 
 
 
@@ -142,16 +147,31 @@ def main(argv):
     shutil.copyfile(str(os.getcwd() + '/sequential_inference_17params.py'), str(file_writer.folder+ '/sequential_inference_17params.py'))
 
 
+    if observation == 'fake':
+
+        obs_real_complete = inference.run_only_sim(
+            torch.tensor([list(true_params[0][0:])]), 
+            simulation_wrapper = sim_wrapper, 
+            num_workers=1
+        )
+
+        obs_real = obs_real_complete[0]
+
+    if observation == 'supra':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+
+    if observation == 'threshold':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+
     os.chdir(file_writer.folder)
 
-    # artificial observation where we assume to know the true parameters
-    obs_real = inference.run_only_sim(
-    true_params, sim_wrapper, num_workers=1)  # first output gives summary statistics, second without
-
-    obs_real_stat = calculate_summary_stats_temporal(obs_real[0], complete=True)
-
-    print('obs_real_stat', obs_real_stat)
-
+    obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
 
     
