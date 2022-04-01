@@ -133,7 +133,7 @@ def main(argv):
 
     # In[6]:
 
-
+    #num_simulations_list = [750]
     num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
 
 
@@ -151,6 +151,8 @@ def main(argv):
     list_collection = []
 
     obs_real = Gaussian(true_thetas[0])
+
+    print('obs_real', obs_real)
 
     start_time = datetime.datetime.now()
 
@@ -284,6 +286,8 @@ def main(argv):
 
                 start_time = datetime.datetime.now()
 
+                print('num sim', num_sim)
+
                 theta, x =  simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
@@ -297,14 +301,7 @@ def main(argv):
 
                 posterior = inf.build_posterior(neural_dens)
 
-                if i < 2:
-                    obs_real = Gaussian([true_thetas[0, 0:i]])
-
-                else:
-                    obs_real = Gaussian(true_thetas[0, 0:i])
-
-
-                proposal1 = posterior.set_default_x(obs_real)
+                proposal1 = posterior.set_default_x(obs_real[0:i])
 
                 next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
 
@@ -331,6 +328,9 @@ def main(argv):
             else:
                 num_sim = num_simulations
 
+
+            print('num sim', num_sim)
+
             theta, x =  simulate_for_sbi(
                 simulator_stats,
                 proposal=proposal,
@@ -343,6 +343,8 @@ def main(argv):
             neural_dens = inf.train()
 
             posterior_incremental = inf.build_posterior(neural_dens) 
+
+            posterior_incremental.set_default_x(obs_real)
 
             posterior_incremental_list.append(posterior_incremental)
             
@@ -451,16 +453,6 @@ def main(argv):
 
     analytic = torch.distributions.normal.Normal(true_thetas, 1)
 
-    analytic.stddev
-
-
-    # In[12]:
-
-
-
-
-
-    analytic = torch.distributions.normal.Normal(true_thetas, 1)
 
 
     overall_snpe_list = []
