@@ -11,8 +11,7 @@ from summary_features.calculate_summary_features import (
 import numpy as np
 import torch
 import json
-import pandas as pd
-import seaborn as sns
+
 
 import shutil
 
@@ -87,7 +86,7 @@ def main(argv):
     start_time = datetime.datetime.now()
 
     # defining simulation wrapper with the SimulationWrapper class. Takes number of parameters as argument
-    sim_wrapper = SimulationWrapper(num_params=17)
+    sim_wrapper = SimulationWrapper(num_params=17, noise=False)
 
 
 
@@ -151,6 +150,8 @@ def main(argv):
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real[0], complete=True)
 
+    print('obs_real_stat', obs_real_stat)
+
 
 
     
@@ -162,8 +163,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            #num_simulations=int(num_sim*(1/10)),
-            num_simulations = num_sim,
+            num_simulations=int(num_sim*(1/10)),
+            #num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -260,7 +261,7 @@ def main(argv):
     posterior = inf.build_posterior(neural_dens)
 
 
-    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape])
+    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape[1]])
 
 
     finish_time = datetime.datetime.now()
@@ -296,8 +297,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            #num_simulations=int(num_sim*(19/10)),
-            num_simulations = num_sim,
+            num_simulations=int(num_sim*(19/10)),
+            #num_simulations = num_sim,
             num_workers = num_workers
         )
 

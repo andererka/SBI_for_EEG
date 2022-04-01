@@ -53,17 +53,20 @@ class Combined(Distribution):
         """
         index = self.number_params
 
+        print('x shape', x.shape)
+        print('index', index)
+
         log_prob_posterior = self._posterior_distribution.log_prob(x[0][:index])
         log_prob_prior = self._prior_distribution.log_prob(x[0][index:])
 
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
-        print(log_prob)
+        print('log prob', log_prob)
 
 
         return log_prob
 
-    def sample(self, sample_shape=torch.Size()):
+    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None, show_progress_bars: bool = True, sample_with: Optional[str] = None):
 
         """
         samples from combined prior distribution
@@ -71,7 +74,15 @@ class Combined(Distribution):
 
         with torch.no_grad():
 
-            theta_posterior = self._posterior_distribution.sample(sample_shape)
+            if x == None:
+                theta_posterior = self._posterior_distribution.sample(sample_shape)
+
+            else:
+
+                theta_posterior = self._posterior_distribution.sample(sample_shape, x = x[:,:x.shape[1]])
+
+            print('theta posterior shape', theta_posterior.shape)
+
             theta_prior = self._prior_distribution.sample(sample_shape)
     
             #make sure that thetas are in the right shape; otherwise unsqueeze:
@@ -86,7 +97,7 @@ class Combined(Distribution):
 
             theta = torch.cat((theta_posterior, theta_prior), 1)
 
-            print(theta.shape)
+            print('theta shape', theta.shape)
 
 
         
