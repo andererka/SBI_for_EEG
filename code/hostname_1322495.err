@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "toy_example_gaussians.py", line 676, in <module>
-    main(sys.argv[1:])
-  File "toy_example_gaussians.py", line 120, in main
-    json.dump(json_dict, f)
-UnboundLocalError: local variable 'json' referenced before assignment

@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "toy_example_gaussians.py", line 721, in <module>
-    main(sys.argv[1:])
-  File "toy_example_gaussians.py", line 201, in main
-    for num_simulations in num_simulations_list:
-NameError: name 'num_simulations_list' is not defined

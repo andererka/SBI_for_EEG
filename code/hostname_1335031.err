@@ -1,8 +1,0 @@
-Warning: no DISPLAY environment variable.
---No graphics will be displayed.
-Traceback (most recent call last):
-  File "sequential_inference_17params.py", line 374, in <module>
-    main(sys.argv[1:])
-  File "sequential_inference_17params.py", line 163, in main
-    trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
-NameError: name 'pd' is not defined
