@@ -149,6 +149,12 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
+    json_dict = {
+    "arguments:": str(argv)}
+    with open( "argument_list.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
     if observation == 'fake':
 
         obs_real_complete = inference.run_only_sim(

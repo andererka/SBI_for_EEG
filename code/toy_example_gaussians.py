@@ -106,6 +106,12 @@ def main(argv):
 
     os.chdir(file_writer.folder)
 
+    json_dict = {
+    "arguments:": str(argv)}
+    with open( "argument_list.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
     # ### Larger comparison with KL-divergence between analytic and inferred posterior
 
     # ### Calculate posterior for different number of simulations: 1k,  3k, 5k, 10k
