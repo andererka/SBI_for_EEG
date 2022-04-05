@@ -1,0 +1,4 @@
+  File "toy_example_gaussians.py", line 193
+    fo mple_gaussians.py_ in range(rounds):
+                    ^
+SyntaxError: invalid syntax

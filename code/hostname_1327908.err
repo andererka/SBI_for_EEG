@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "toy_example_gaussians.py", line 2, in <module>
+    from utils.simulation_wrapper import SimulationWrapper
+  File "/mnt/qb/home/macke/kanderer29/sbi_for_eeg_data/code/utils/simulation_wrapper.py", line 1, in <module>
+    import hnn_core
+ModuleNotFoundError: No module named 'hnn_core'
