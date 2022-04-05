@@ -99,6 +99,8 @@ def main(argv):
     except:
         print('file exists')
 
+    import json
+
     # stores the running file into the result folder for later reference:
     open('{}/toy_example_gaussians.py'.format(file_writer.folder), 'a').close()
     shutil.copyfile(str(os.getcwd() + '/toy_example_gaussians.py'),
@@ -112,13 +114,7 @@ def main(argv):
         json.dump(json_dict, f)
         f.close()
 
-    # ### Larger comparison with KL-divergence between analytic and inferred posterior
 
-    # ### Calculate posterior for different number of simulations: 1k,  3k, 5k, 10k
-
-    # ### starting with multi-round snpe
-
-    # In[5]:
 
     import torch
 
