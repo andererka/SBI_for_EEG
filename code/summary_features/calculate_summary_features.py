@@ -303,7 +303,7 @@ def calculate_summary_stats_number(x, number_stats):
 ### these are the summary functions for the sequential approach:
 
 
-def calculate_summary_stats_temporal(x, complete=False):
+def calculate_summary_stats_temporal(x):
     """
     Input: observations or simulations
     Returns summary statistics 
@@ -376,8 +376,6 @@ def calculate_summary_stats_temporal(x, complete=False):
                     p50,
                     p50_moment1,
                     p50_moment2,
-                    #area_pos1,
-                    #area_neg1,
                     mean1000,
                     mean1500,
                     mean1700,
@@ -389,8 +387,8 @@ def calculate_summary_stats_temporal(x, complete=False):
 
             batch_list.append(sum_stats_vec)
 
-            if complete==False:
-                continue
+            continue
+
 
         ## search for N100
         arg_N100 = torch.argmin(batch)
@@ -409,29 +407,31 @@ def calculate_summary_stats_temporal(x, complete=False):
         #area_pos2 = torch.trapz(x_t[index_pos])
         #area_neg2 = torch.trapz(x_t[index_neg])
 
-        if (total_steps_ms<170):
+        if (total_steps_ms > 90 and total_steps_ms<170):
             sum_stats_vec = torch.stack(
                 [
+
                     arg_p50,
-                    arg_N100,
                     p50,
-                    N100,
                     p50_moment1,
-                    N100_moment1,
-                    N100_moment2,
+                    p50_moment2,
                     mean1000,
                     mean1500,
                     mean1700,
                     mean1900,
                     mean2100,
                     mean2300,
+                    arg_N100,
+                    N100,
+                    N100_moment1,
+                    N100_moment2,
                 ]
             )
 
             batch_list.append(sum_stats_vec)
 
-            if complete == False:
-                continue
+            continue
+
 
         mean4000 = torch.mean(batch[4000:4500])
 
@@ -457,23 +457,23 @@ def calculate_summary_stats_temporal(x, complete=False):
         sum_stats_vec = torch.stack(
                 [
                     arg_p50,
-                    arg_N100,
-                    arg_P200,
                     p50,
-                    N100,
-                    P200,
                     p50_moment1,
-                    N100_moment1,
-                    P200_moment1,
                     p50_moment2,
-                    N100_moment2,
-                    P200_moment2,
                     mean1000,
                     mean1500,
                     mean1700,
                     mean1900,
                     mean2100,
                     mean2300,
+                    arg_N100,
+                    N100,
+                    N100_moment1,
+                    N100_moment2,
+                    arg_P200,
+                    P200,
+                    P200_moment1,
+                    P200_moment2,
                     mean4000,
                     mean5000,
                     mean5500,

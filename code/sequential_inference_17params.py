@@ -174,6 +174,8 @@ def main(argv):
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
+    print('obs real stat', obs_real_stat.shape)
+
     os.chdir(file_writer.folder)
 
 
@@ -186,8 +188,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            num_simulations=int(num_sim*(1/10)),
-            #num_simulations = num_sim,
+            #num_simulations=int(num_sim*(1/10)),
+            num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -243,6 +245,8 @@ def main(argv):
 
     proposal1 = posterior.set_default_x(obs_real_stat[:,:x_P50.shape[1]])
 
+    print('sample from proposal', proposal1.sample((1,)))
+
     ###### continuing with N100 parameters/summary stats:
     prior2 = utils.torchutils.BoxUniform(low=prior_min[6:12], high=prior_max[6:12])
 
@@ -286,6 +290,8 @@ def main(argv):
 
     proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape[1]])
 
+    print('sample from proposal', proposal2.sample((1,)))
+
 
     finish_time = datetime.datetime.now()
 
@@ -320,8 +326,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=int(num_sim*(19/10)),
-            #num_simulations = num_sim,
+            #num_simulations=int(num_sim*(19/10)),
+            num_simulations = num_sim,
             num_workers = num_workers
         )
 

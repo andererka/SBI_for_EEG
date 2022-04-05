@@ -24,5 +24,5 @@ scontrol show job $SLURM_JOB_ID
 #python3 ERP_sim_inf_multi_round.py 10000 maf 64 17 1 multi_round_10000_17params_maf_supra 1 supra 
 #python3 toy_example_gaussians.py maf 20 1 toy_example_maf_01_04 0 0   
 #python3 run_thetas.py
-#python3 sequential_inference_6params2.py 10000 64 10000sims_6params_28_03_sequential_nsf 1 nsf
-python3 sequential_inference_17params.py 10000 64 10000sims_17params_01_04_maf_ratio_supra 1 maf supra
+#python3 sequential_inference_17params.py 10000 64 10000sims_17params_05_04_nsf_fake 1 nsf fake
+
