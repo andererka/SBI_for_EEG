@@ -374,16 +374,14 @@ def calculate_summary_stats_temporal(x):
                                 [
                     arg_p50,
                     p50,
-                    #p50_moment1,
-                    #p50_moment2,
-                    #area_pos1,
-                    #area_neg1,
-                    #mean1000,
-                    #mean1500,
-                    #mean1700,
-                    #mean1900,
-                    #mean2100,
-                    #mean2300
+                    p50_moment1,
+                    p50_moment2,
+                    mean1000,
+                    mean1500,
+                    mean1700,
+                    mean1900,
+                    mean2100,
+                    mean2300
                 ]
             )
 
@@ -412,19 +410,21 @@ def calculate_summary_stats_temporal(x):
         if (total_steps_ms > 90 and total_steps_ms<170):
             sum_stats_vec = torch.stack(
                 [
+
                     arg_p50,
-                    arg_N100,
                     p50,
-                    N100,
                     p50_moment1,
-                    N100_moment1,
-                    N100_moment2,
+                    p50_moment2,
                     mean1000,
                     mean1500,
                     mean1700,
                     mean1900,
                     mean2100,
                     mean2300,
+                    arg_N100,
+                    N100,
+                    N100_moment1,
+                    N100_moment2,
                 ]
             )
 
@@ -457,23 +457,23 @@ def calculate_summary_stats_temporal(x):
         sum_stats_vec = torch.stack(
                 [
                     arg_p50,
-                    arg_N100,
-                    arg_P200,
                     p50,
-                    N100,
-                    P200,
                     p50_moment1,
-                    N100_moment1,
-                    P200_moment1,
                     p50_moment2,
-                    N100_moment2,
-                    P200_moment2,
                     mean1000,
                     mean1500,
                     mean1700,
                     mean1900,
                     mean2100,
                     mean2300,
+                    arg_N100,
+                    N100,
+                    N100_moment1,
+                    N100_moment2,
+                    arg_P200,
+                    P200,
+                    P200_moment1,
+                    P200_moment2,
                     mean4000,
                     mean5000,
                     mean5500,

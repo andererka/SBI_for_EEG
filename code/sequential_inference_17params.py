@@ -174,6 +174,8 @@ def main(argv):
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
+    print('obs real stat', obs_real_stat.shape)
+
     os.chdir(file_writer.folder)
 
 
