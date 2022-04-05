@@ -326,8 +326,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=int(num_sim*(19/10)),
-            #num_simulations = num_sim,
+            #num_simulations=int(num_sim*(19/10)),
+            num_simulations = num_sim,
             num_workers = num_workers
         )
 
