@@ -130,7 +130,7 @@ def main(argv):
 
     #num_simulations_list = [750]
     #num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    num_simulations_list = [1000]
+    num_simulations_list = [2000]
 
 
     # In[ ]:
@@ -143,7 +143,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(10):
+    for i in range(5):
 
         posterior_snpe_list = []
 
@@ -215,7 +215,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(10):
+    for i in range(5):
 
         np.random.seed(i)
 
@@ -247,7 +247,7 @@ def main(argv):
 
                     num_sim = int(num_simulations * (start_num / 10))
                 else:
-                    num_sim = num_simulations
+                    num_sim = num_simulations * (3/4)
 
                 start_num += 9
 
@@ -294,7 +294,7 @@ def main(argv):
                 num_sim = int(num_simulations * (start_num / 10))
 
             else:
-                num_sim = num_simulations
+                num_sim = num_simulations * (3/4)
 
             print('num sim', num_sim)
 
@@ -315,6 +315,13 @@ def main(argv):
 
     
             ### extra round
+
+            if ratio:
+
+                num_sim = int(num_simulations * (start_num / 10))
+
+            else:
+                num_sim = num_simulations * (3/4)
 
             theta, x = simulate_for_sbi(
                 simulator_stats,
