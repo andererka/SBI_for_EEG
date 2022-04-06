@@ -130,7 +130,7 @@ def main(argv):
 
     #num_simulations_list = [750]
     #num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    num_simulations_list = [10000]
+    num_simulations_list = [1000]
 
 
     # In[ ]:
@@ -170,6 +170,7 @@ def main(argv):
                 if prop:
                     neural_dens = inf.append_simulations(
                         theta, x, proposal=proposal).train()
+                    print('here')
                 else:
 
                     neural_dens = inf.append_simulations(theta, x).train()
@@ -275,6 +276,7 @@ def main(argv):
                 combined_prior = Combined(
                     proposal1, next_prior, number_params_1=i)
 
+
                 # set inf for next round:
                 inf = SNPE(combined_prior, density_estimator=density_estimator)
 
@@ -309,7 +311,23 @@ def main(argv):
 
             posterior_incremental = inf.build_posterior(neural_dens)
 
-            posterior_incremental.set_default_x(obs_real)
+            proposal = posterior_incremental.set_default_x(obs_real)
+
+    
+            ### extra round
+
+            theta, x = simulate_for_sbi(
+                simulator_stats,
+                proposal=proposal,
+                num_simulations=num_sim,
+                num_workers=num_workers,
+
+            )
+
+            inf = inf.append_simulations(theta, x)
+            neural_dens = inf.train()
+
+            posterior_incremental = inf.build_posterior(neural_dens)
 
             posterior_incremental_list.append(posterior_incremental)
 
