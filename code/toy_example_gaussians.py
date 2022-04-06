@@ -130,7 +130,7 @@ def main(argv):
 
     #num_simulations_list = [750]
     #num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    num_simulations = [10000]
+    num_simulations_list = [10000]
 
 
     # In[ ]:
@@ -250,9 +250,9 @@ def main(argv):
 
                 start_num += 9
 
-                start_time = datetime.datetime.now()
+                #start_time = datetime.datetime.now()
 
-                print('num sim', num_sim)
+                #print('num sim', num_sim)
 
                 theta, x = simulate_for_sbi(
                     simulator_stats,
@@ -281,11 +281,11 @@ def main(argv):
                 # set combined prior to be the new prior_i:
                 proposal = combined_prior
 
-                finish_time = datetime.datetime.now()
+                #finish_time = datetime.datetime.now()
 
-                diff = finish_time - start_time
+                #diff = finish_time - start_time
 
-                print('took ', diff, ' for this step')
+                #print('took ', diff, ' for this step')
 
             if ratio:
 
