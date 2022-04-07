@@ -130,7 +130,7 @@ def main(argv):
 
     #num_simulations_list = [750]
     num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    #num_simulations_list = [1000]
+    #num_simulations_list = [100]
 
 
     # In[ ]:
@@ -143,7 +143,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(5):
+    for i in range(10):
 
         posterior_snpe_list = []
 
@@ -215,7 +215,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(5):
+    for i in range(10):
 
         np.random.seed(i)
 
@@ -245,11 +245,13 @@ def main(argv):
 
                 if ratio:
 
-                    num_sim = int(num_simulations * (start_num / 10) * (3/4))
+                    num_sim = int(num_simulations * (start_num / 20) )
                 else:
-                    num_sim = int(num_simulations * (3/4))
+                    num_sim = int(num_simulations )
 
-                start_num += 9
+                print(num_sim)
+
+                start_num += 19
 
                 #start_time = datetime.datetime.now()
 
@@ -291,10 +293,10 @@ def main(argv):
 
             if ratio:
 
-                num_sim = int(num_simulations * (start_num / 10) * (3/4))
+                num_sim = int(num_simulations * (start_num / 10) )
 
             else:
-                num_sim = int(num_simulations * (3/4))
+                num_sim = int(num_simulations)
 
             print('num sim', num_sim)
 
@@ -311,33 +313,13 @@ def main(argv):
 
             posterior_incremental = inf.build_posterior(neural_dens)
 
-            proposal = posterior_incremental.set_default_x(obs_real)
-
-    
-            ### extra round
-
-            if ratio:
-
-                num_sim = int(num_simulations * (start_num / 10) * (3/4))
-
-            else:
-                num_sim = int(num_simulations * (3/4))
-
-            theta, x = simulate_for_sbi(
-                simulator_stats,
-                proposal=proposal,
-                num_simulations=num_sim,
-                num_workers=num_workers,
-
-            )
-
-            inf = inf.append_simulations(theta, x)
-            neural_dens = inf.train()
-
-            posterior_incremental = inf.build_posterior(neural_dens)
-            proposal = posterior_incremental.set_default_x(obs_real)
+            posterior_incremental = posterior_incremental.set_default_x(obs_real)
 
             posterior_incremental_list.append(posterior_incremental)
+
+
+
+
 
         list_collection_inc.append(posterior_incremental_list)
 
