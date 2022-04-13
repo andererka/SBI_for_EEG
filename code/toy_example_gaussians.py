@@ -245,13 +245,13 @@ def main(argv):
 
                 if ratio:
 
-                    num_sim = int(num_simulations * (start_num / 7) )
+                    num_sim = int(num_simulations * (start_num / 15) )
                 else:
                     num_sim = int(num_simulations )
 
                 print(num_sim)
 
-                start_num += 6
+                start_num += 14
 
                 #start_time = datetime.datetime.now()
 
@@ -293,7 +293,7 @@ def main(argv):
 
             if ratio:
 
-                num_sim = int(num_simulations * (start_num / 7) )
+                num_sim = int(num_simulations * (start_num / 15) )
 
             else:
                 num_sim = int(num_simulations)
