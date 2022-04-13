@@ -170,12 +170,20 @@ def main(argv):
         print(os.getcwd())
         trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
         obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        print(obs_real.shape[0])
+        plt.plot(obs_real)
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
+        plt.plot(obs_real)
+        plt.savefig('obs_real_noise')
 
     if observation == 'threshold':
         os.chdir('..')
         print(os.getcwd())
         trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
         obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
 
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
@@ -221,7 +229,6 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
 
-    start_time = datetime.datetime.now()
 
     os.chdir('..')
     os.chdir('..')
@@ -260,6 +267,16 @@ def main(argv):
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
+    inf_time1 = datetime.datetime.now()
+
+    json_dict = {
+    "inference time for last step:": str(inf_time1-finish_time)}
+    with open( "inference_time.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
+    start_time = datetime.datetime.now()
+
 
     try:
         theta = torch.load('step2/thetas.pt')
@@ -275,11 +292,23 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
 
+    finish_time = datetime.datetime.now()
 
+    diff_time = finish_time - start_time
+
+
+
+    step_time_str = get_time()
+    json_dict = {
+    "start time:": start_time_str,
+    "round 1 time": step_time_str,
+    "CPU time for step:": str(diff_time)}
+    with open( "step2/meta.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
 
     print("second round completed")
 
-    start_time = datetime.datetime.now()
 
     print(x_without.shape)
     x_without = x_without[:,:4200]
@@ -299,20 +328,6 @@ def main(argv):
     print('sample from proposal', proposal2.sample((1,)))
 
 
-    finish_time = datetime.datetime.now()
-
-    diff_time = finish_time - start_time
-
-
-
-    step_time_str = get_time()
-    json_dict = {
-    "start time:": start_time_str,
-    "round 1 time": step_time_str,
-    "CPU time for step:": str(diff_time)}
-    with open( "step2/meta.json", "a") as f:
-        json.dump(json_dict, f)
-        f.close()
 
     ###### continuing with P200 parameters/summary stats:
 
@@ -323,6 +338,17 @@ def main(argv):
     combined_prior = Combined(proposal2, prior3, number_params_1=12)
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
+
+    inf_time2 = datetime.datetime.now()
+
+    json_dict = {
+    "inference time for last step:": str(inf_time2-finish_time)}
+    with open( "inference_time.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
+
+    start_time = datetime.datetime.now()
 
     try:
         theta = torch.load('step3/thetas.pt')
@@ -340,20 +366,6 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
 
-
-
-    x = calculate_summary_stats_temporal(x_without)
-
-    print('x shape', x.shape)
-
-    inf = inf.append_simulations(theta, x)
-    neural_dens = inf.train()
-
-    posterior = inf.build_posterior(neural_dens)
-
-
-    posterior.set_default_x(obs_real_stat)
-
     finish_time = datetime.datetime.now()
 
     diff_time = finish_time - start_time
@@ -368,6 +380,29 @@ def main(argv):
     with open( "step3/meta.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
+
+
+
+    x = calculate_summary_stats_temporal(x_without)
+
+    print('x shape', x.shape)
+
+    inf = inf.append_simulations(theta, x)
+    neural_dens = inf.train()
+
+    posterior = inf.build_posterior(neural_dens)
+
+
+    posterior.set_default_x(obs_real_stat)
+
+    end_time = datetime.datetime.now()
+
+    json_dict = {
+    "inference time for last step:": str(end_time-finish_time)}
+    with open( "inference_time.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
    
 
     file_writer.save_posterior(posterior)
