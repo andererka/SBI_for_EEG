@@ -337,6 +337,8 @@ def main(argv):
 
     torch.save(list_collection_inc, 'list_collection_inc.pt')
 
+    torch.save(obs_real, 'obs_real.pt')
+
     # In[46]:
 
     list_collection_inc = torch.load('list_collection_inc.pt')
