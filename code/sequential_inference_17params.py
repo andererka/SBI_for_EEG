@@ -157,11 +157,19 @@ def main(argv):
 
     if observation == 'fake':
 
+        start = datetime.datetime.now()
+
         obs_real_complete = inference.run_only_sim(
             torch.tensor([list(true_params[0][0:])]), 
             simulation_wrapper = sim_wrapper, 
             num_workers=1
         )
+
+        finish = datetime.datetime.now()
+
+        time = finish - start
+
+        print('took: ', time)
 
         obs_real = obs_real_complete[0]
 
