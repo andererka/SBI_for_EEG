@@ -6,6 +6,17 @@ import torch
 import numpy as np
 
 
+
+
+def event_seed():
+    """
+    description: makes sure that one does not take the same random seed for each simulation as it would be the default in the hnn core code;
+    permalink to the hnn code location: https://github.com/jonescompneurolab/hnn-core/blob/0406ed1a2b2335b786e83eb1698f27a5c3dcdadc/hnn_core/drives.py#L262
+    """
+    seed = randrange(2000)
+    return seed
+
+
 class SimulationWrapper:
     """
     Class in order to select and call a simulation wrapper according to:
@@ -192,6 +203,7 @@ def set_network_default(params=None):
         mu=63.53,
         sigma=3.85,
         numspikes=1,
+        event_seed= event_seed(),
         weights_ampa=weights_ampa_d1,
         weights_nmda=weights_nmda_d1,
         location="distal",
@@ -457,6 +469,7 @@ def set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, m
     mu=mu,
     sigma=3.68,
     numspikes=1,
+    event_seed = event_seed(),
     weights_ampa=weights_ampa_p1,
     weights_nmda=weights_nmda_p1,
     location="proximal",
@@ -469,6 +482,7 @@ def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.
     mu=mu,
     sigma=3.85,
     numspikes=1,
+    event_seed = event_seed(),
     weights_ampa=weights_ampa_d1,
     weights_nmda=weights_nmda_d1,
     location="distal",
@@ -481,6 +495,7 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
     mu=mu,
     sigma=10.3,
     numspikes=1,
+    event_seed = event_seed(),
     weights_ampa=weights_ampa_p2,
     weights_nmda = weights_nmda_p2,
     location="proximal",
@@ -532,6 +547,7 @@ def set_network_weights(params=None):
         mu=params[5],
         sigma=2.47,
         numspikes=1,
+        event_seed = event_seed(),
         weights_ampa=weights_ampa_p1,
         weights_nmda=weights_nmda_p1,
         location="proximal",
@@ -560,6 +576,7 @@ def set_network_weights(params=None):
         "evdist1",
         mu=params[11],
         sigma=3.85,
+        event_seed = event_seed(),
         numspikes=1,
         weights_ampa=weights_ampa_d1,
         weights_nmda=weights_nmda_d1,
@@ -601,6 +618,7 @@ def set_network_weights(params=None):
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         weights_nmda = weights_nmda_p2,
+        event_seed = event_seed(),
         location="proximal",
         synaptic_delays=synaptic_delays_prox2,
     )
