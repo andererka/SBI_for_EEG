@@ -202,7 +202,7 @@ def set_network_default(params=None):
     net.add_evoked_drive(
         "evdist1",
         mu=63.53,
-        sigma=2,
+        sigma=0.01,
         numspikes=1,
         event_seed= event_seed(),
         weights_ampa=weights_ampa_d1,
@@ -400,7 +400,7 @@ def set_network_weights_2_per_step(params=None):
     net.add_evoked_drive(
         "evprox1",
         mu=params[1],
-        sigma=2,
+        sigma=0.01,
         numspikes=1,
         weights_ampa=weights_ampa_p1,
         weights_nmda=None,
@@ -430,7 +430,7 @@ def set_network_weights_2_per_step(params=None):
     net.add_evoked_drive(
         "evdist1",
         mu=params[3],
-        sigma=2,
+        sigma=0.01,
         numspikes=1,
         weights_ampa=weights_ampa_d1,
         weights_nmda=weights_nmda_d1,
@@ -453,7 +453,7 @@ def set_network_weights_2_per_step(params=None):
     net.add_evoked_drive(
         "evprox2",
         mu=params[5],
-        sigma=2,
+        sigma=0.01,
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         location="proximal",
@@ -468,7 +468,7 @@ def set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, m
     net.add_evoked_drive(
     "evprox1",
     mu=mu,
-    sigma=2,
+    sigma=0.01,
     numspikes=1,
     event_seed = event_seed(),
     weights_ampa=weights_ampa_p1,
@@ -481,7 +481,7 @@ def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.
     net.add_evoked_drive(
     "evdist1",
     mu=mu,
-    sigma=2,
+    sigma=0.01,
     numspikes=1,
     event_seed = event_seed(),
     weights_ampa=weights_ampa_d1,
@@ -494,7 +494,7 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
     net.add_evoked_drive(
     "evprox2",
     mu=mu,
-    sigma=2,
+    sigma=0.01,
     numspikes=1,
     event_seed = event_seed(),
     weights_ampa=weights_ampa_p2,
@@ -546,7 +546,7 @@ def set_network_weights(params=None):
     net.add_evoked_drive(
         "evprox1",
         mu=params[5],
-        sigma=2,
+        sigma=0.01,
         numspikes=1,
         event_seed = event_seed(),
         weights_ampa=weights_ampa_p1,
@@ -576,7 +576,7 @@ def set_network_weights(params=None):
     net.add_evoked_drive(
         "evdist1",
         mu=params[11],
-        sigma=2,
+        sigma=0.01,
         event_seed = event_seed(),
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -615,7 +615,7 @@ def set_network_weights(params=None):
     net.add_evoked_drive(
         "evprox2",
         mu=params[16],
-        sigma=2,
+        sigma=0.01,
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         weights_nmda = weights_nmda_p2,
