@@ -165,11 +165,6 @@ def main(argv):
             num_workers=1
         )
 
-        finish = datetime.datetime.now()
-
-        time = finish - start
-
-        print('took: ', time)
 
         obs_real = obs_real_complete[0]
 
@@ -199,7 +194,6 @@ def main(argv):
     print('obs real stat', obs_real_stat.shape)
 
     os.chdir(file_writer.folder)
-
 
     
     try:
@@ -237,6 +231,7 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
 
+    start_inference_time = datetime.datetime.now()
 
     os.chdir('..')
     os.chdir('..')
@@ -278,7 +273,7 @@ def main(argv):
     inf_time1 = datetime.datetime.now()
 
     json_dict = {
-    "inference time for last step:": str(inf_time1-finish_time)}
+    "inference time for last step:": str(inf_time1-start_inference_time)}
     with open( "inference_time.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
@@ -339,7 +334,7 @@ def main(argv):
 
     ###### continuing with P200 parameters/summary stats:
 
-    prior3 = utils.torchutils.BoxUniform(low=prior_min[13:], high=prior_max[14:])
+    prior3 = utils.torchutils.BoxUniform(low=prior_min[14:], high=prior_max[14:])
 
 
 
