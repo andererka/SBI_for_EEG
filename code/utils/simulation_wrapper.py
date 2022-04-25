@@ -1,5 +1,6 @@
 
 from hnn_core import simulate_dipole, jones_2009_model
+from pyro import param
 
 import torch
 import numpy as np
@@ -32,8 +33,9 @@ class SimulationWrapper:
     
 
     def __call__(self, params):
-        if (self.num_params == 17):
+        if (self.num_params == 17 or self.num_params == 20):
             return self.simulation_wrapper_all(params)
+
             
         elif (self.num_params == 25):
             return self.simulation_wrapper_25(params)
@@ -88,8 +90,12 @@ class SimulationWrapper:
 
 
         params = params.tolist()
+
+        if param_size==17:
     
-        net = set_network_weights(params)
+            net = set_network_weights(params)
+        if param_size == 20:
+            net = set_network_weights_std(params)
 
 
         window_len, scaling_factor = 30, 3000
@@ -437,6 +443,136 @@ def set_network_weights(params=None):
         mu=params[16],
         #sigma=0.01,
         sigma = 0,
+        numspikes=1,
+        weights_ampa=weights_ampa_p2,
+        weights_nmda = weights_nmda_p2,
+        event_seed = event_seed(),
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox2,
+    )
+
+    return net
+
+
+
+def set_network_weights_std(params=None):
+
+    """
+    description: sets network for the drives for an ERP as described in hnn tutorial https://jonescompneurolab.github.io/hnn-tutorials/
+    """
+
+    net = jones_2009_model()
+
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
+
+    print('num_params', num_params)
+
+
+    weights_ampa_p1 = {
+        "L2_basket": params[0],
+        "L2_pyramidal": params[1],
+        "L5_basket": params[2],
+        "L5_pyramidal": 0.00865,
+    }
+
+    weights_nmda_p1 = {
+       "L2_basket": 0.08831,
+        "L2_pyramidal": 0.01525,
+        "L5_basket": params[3],
+        "L5_pyramidal": params[4],
+    }
+
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    # all NMDA weights are zero; pass None explicitly
+
+    net.add_evoked_drive(
+        "evprox1",
+        mu=params[5],
+        #sigma=0.01,
+        #sigma = 0,
+        sigma = params[6],
+        numspikes=1,
+        event_seed = event_seed(),
+        weights_ampa=weights_ampa_p1,
+        weights_nmda=weights_nmda_p1,
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox,
+    )
+
+
+    if (num_params==6):
+
+        return net
+
+    weights_ampa_d1 = {
+        "L2_basket": params[8],
+        "L2_pyramidal": params[7],
+        "L5_pyramidal": 0.142300,
+        #"L5_basket": params[7],
+    }
+    weights_nmda_d1 = {
+        "L2_basket": params[11],
+        "L2_pyramidal": params[9],
+        "L5_pyramidal": params[10],
+        #"L5_basket": params[10],
+    }
+    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
+    net.add_evoked_drive(
+        "evdist1",
+        mu=params[12],
+        #sigma=0.01,
+        #sigma = 0,
+        sigma = params[13],
+        event_seed = event_seed(),
+        numspikes=1,
+        weights_ampa=weights_ampa_d1,
+        weights_nmda=weights_nmda_d1,
+        location="distal",
+        synaptic_delays=synaptic_delays_d1,
+    )
+
+    if (num_params==12):
+
+        return net
+
+    # Second proximal evoked drive. NB: only AMPA weights differ from first
+    weights_ampa_p2 = {
+        #"L2_basket": params[12],
+        "L2_pyramidal": params[14],
+        #"L5_basket": params[13],
+        "L5_pyramidal": params[15],
+    }
+
+    weights_nmda_p2 = {
+        #"L2_basket": params[12],
+        "L2_pyramidal": params[16],
+        #"L5_basket": params[16],
+        "L5_pyramidal": params[17],
+    }
+
+    synaptic_delays_prox2 = {
+        "L2_pyramidal": 0.1,
+        #"L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    # all NMDA weights are zero; omit weights_nmda (defaults to None)
+
+    net.add_evoked_drive(
+        "evprox2",
+        mu=params[18],
+        #sigma=0.01,
+        #sigma = 0,
+        sigma = params[19],
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         weights_nmda = weights_nmda_p2,
