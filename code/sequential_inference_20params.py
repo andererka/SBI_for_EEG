@@ -92,7 +92,7 @@ def main(argv):
     start_time = datetime.datetime.now()
 
     # defining simulation wrapper with the SimulationWrapper class. Takes number of parameters as argument
-    sim_wrapper = SimulationWrapper(num_params=20, noise=True)
+    sim_wrapper = SimulationWrapper(num_params=20, noise=True, set_std=True)
 
 
 

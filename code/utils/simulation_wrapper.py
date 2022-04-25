@@ -26,9 +26,10 @@ class SimulationWrapper:
     
     """
 
-    def __init__(self, num_params = 17,  noise = True):
+    def __init__(self, num_params = 17,  noise = True, set_std = False):
         self.num_params = num_params
         self.noise = noise
+        self.set_std = set_std
 
     
 
@@ -64,7 +65,7 @@ class SimulationWrapper:
 
         print('param size', param_size)
 
-        if (param_size == 6 and self.num_params == 17):
+        if (param_size == 6 and (self.num_params == 17 or self.num_params == 20)):
             
             early_stop = 70.0
             print('6 params investigated')
@@ -74,7 +75,7 @@ class SimulationWrapper:
             early_stop = 70.0
             print('2 params investigated')
 
-        if (param_size == 12):
+        if (param_size == 12 or param_size == 13):
             print('12 params investigated')
 
             early_stop = 120.0
@@ -91,10 +92,11 @@ class SimulationWrapper:
 
         params = params.tolist()
 
-        if param_size==17:
+        if self.set_std == False:
     
             net = set_network_weights(params)
-        if param_size == 20:
+
+        else:
             net = set_network_weights_std(params)
 
 
