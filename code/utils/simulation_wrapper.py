@@ -511,7 +511,7 @@ def set_network_weights_std(params=None):
     )
 
 
-    if (num_params==6):
+    if (num_params==7):
 
         return net
 
@@ -542,7 +542,7 @@ def set_network_weights_std(params=None):
         synaptic_delays=synaptic_delays_d1,
     )
 
-    if (num_params==12):
+    if (num_params==13):
 
         return net
 
