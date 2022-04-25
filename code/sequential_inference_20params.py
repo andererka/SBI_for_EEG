@@ -269,7 +269,7 @@ def main(argv):
     print('sample from proposal', proposal1.sample((1,)))
 
     ###### continuing with N100 parameters/summary stats:
-    prior2 = utils.torchutils.BoxUniform(low=prior_min[7:13], high=prior_max[7:13])
+    prior2 = utils.torchutils.BoxUniform(low=prior_min[7:14], high=prior_max[7:14])
 
     combined_prior = Combined(proposal1, prior2, number_params_1=7)
 
@@ -339,11 +339,11 @@ def main(argv):
 
     ###### continuing with P200 parameters/summary stats:
 
-    prior3 = utils.torchutils.BoxUniform(low=prior_min[13:], high=prior_max[13:])
+    prior3 = utils.torchutils.BoxUniform(low=prior_min[13:], high=prior_max[14:])
 
 
 
-    combined_prior = Combined(proposal2, prior3, number_params_1=13)
+    combined_prior = Combined(proposal2, prior3, number_params_1=14)
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
