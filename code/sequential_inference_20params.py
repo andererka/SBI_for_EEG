@@ -168,7 +168,7 @@ def main(argv):
 
         obs_real = obs_real_complete[0]
 
-    if observation == 'supra':
+    if observation == 'threshold':
         os.chdir('..')
         print(os.getcwd())
         trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
@@ -180,10 +180,18 @@ def main(argv):
         plt.plot(obs_real)
         plt.savefig('obs_real_noise')
 
-    if observation == 'threshold':
+    if observation == 'default':
         os.chdir('..')
         print(os.getcwd())
         trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
+
+    if observation == 'No':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/ERPNo100Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
         obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
         noise = np.random.normal(0, 1, obs_real.shape[0])
         obs_real += noise
