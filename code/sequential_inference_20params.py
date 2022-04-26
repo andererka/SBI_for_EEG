@@ -171,7 +171,7 @@ def main(argv):
     if observation == 'threshold':
         os.chdir('..')
         print(os.getcwd())
-        trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        trace = pd.read_csv('data/ERPYes3Trials/dpl_1.txt', sep='\t', header=None, dtype= np.float32)
         obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
         print(obs_real.shape[0])
         plt.plot(obs_real)
