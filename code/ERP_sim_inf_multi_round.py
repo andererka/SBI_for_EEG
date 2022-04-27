@@ -154,6 +154,13 @@ def main(argv):
 
         true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 2.55, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 6.02, 4.6729, 2.33, 0.016733, 0.0679, 120.86, 10.57]])
 
+        parameter_names = ["prox1_ampa_l2_bas","prox1_ampa_l2_pyr","prox1_ampa_l5_bas","prox1_nmda_l5_bas", "prox1_nmda_l5_pyr",
+            "t_prox1",
+            "dist_ampa_l2_pyr","dist_ampa_l2_bas","dist_nmda_l2_pyr",
+            "dist_nmda_l5_pyr","dist_nmda_l2_bas",
+            "t_dist", 
+            "prox2_ampa_l2_pyr","prox2_ampa_l5_pyr","prox2_nmda_l2_pyr","prox2_nmda_l5_pyr",
+            "t_prox2"]
 
     elif num_params == 25:
         prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 17.3,    # prox1 weights
@@ -300,7 +307,8 @@ def main(argv):
         proposal = posterior.set_default_x(obs_real_stat)
 
         inf_end = datetime.datetime.now()
-        
+
+        # time needed for the inference part of the pipeline:
         inf_diff = inf_end - inf_start
 
         finish_time_str = get_time()
