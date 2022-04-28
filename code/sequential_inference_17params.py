@@ -155,25 +155,7 @@ def main(argv):
         json.dump(json_dict, f)
         f.close()
 
-    if observation == 'fake':
-
-        start = datetime.datetime.now()
-
-        obs_real_complete = inference.run_only_sim(
-            torch.tensor([list(true_params[0][0:])]), 
-            simulation_wrapper = sim_wrapper, 
-            num_workers=1
-        )
-
-        finish = datetime.datetime.now()
-
-        time = finish - start
-
-        print('took: ', time)
-
-        obs_real = obs_real_complete[0]
-
-    if observation == 'supra':
+    if observation == 'threshold':
         os.chdir('..')
         print(os.getcwd())
         trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
@@ -185,13 +167,34 @@ def main(argv):
         plt.plot(obs_real)
         plt.savefig('obs_real_noise')
 
-    if observation == 'threshold':
+    if observation == 'default':
         os.chdir('..')
         print(os.getcwd())
         trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
         obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
         noise = np.random.normal(0, 1, obs_real.shape[0])
         obs_real += noise
+
+    if observation == 'No':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/ERPNo100Trials/dpl_1.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
+
+    if observation == 'fake':
+
+        start = datetime.datetime.now()
+
+        obs_real_complete = inference.run_only_sim(
+            torch.tensor([list(true_params[0][0:])]), 
+            simulation_wrapper = sim_wrapper, 
+            num_workers=1
+        )
+
+
+        obs_real = obs_real_complete[0]
 
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
