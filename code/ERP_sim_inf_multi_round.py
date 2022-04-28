@@ -93,7 +93,12 @@ def main(argv):
     except:
         observation = 'fake'
 
-    sim_wrapper = SimulationWrapper(num_params=num_params)
+
+    set_std = False
+    if num_params == 20:
+        set_std = True
+
+    sim_wrapper = SimulationWrapper(num_params=num_params, noise=True, set_std=set_std)
 
    
     ##defining the prior lower and upper bounds
