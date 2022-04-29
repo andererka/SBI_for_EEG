@@ -297,12 +297,10 @@ class Combined2(Distribution):
 class Combine_List(Distribution):
     """
     Inherits from Torch Distribution class
-    implements own log_prob() and sample() for two different prior distributions such that parameter sets can be inferred sequentially - one posterior is based on another
-   
+    implements own log_prob() and sample() 
     takes as arguments:
-    - posterior distribution of already inferred parameter set
-    - prior distribution of subsequent parameter set that is dependent on earlier parameter set
-    - number_params_1: number of parameters that was inferred already (in posterior distribution)
+    - posterior list with posteriors from separate steps
+    - steps: specifies how many thetas should be taken from the separate priors
     """
 
     has_rsample = False
@@ -311,7 +309,7 @@ class Combine_List(Distribution):
     def __init__(
         self,
         posterior_list,
-        range_list,
+        steps = [0],
         validate_args={},
         batch_shape=torch.Size(),
         event_shape=torch.Size(),
@@ -321,9 +319,11 @@ class Combine_List(Distribution):
 
         self.posterior_list = posterior_list
 
-        self.steps = range_list
+        self.steps = steps
 
-        super(Combined, self).__init__(batch_shape, validate_args=validate_args)
+        super(Combine_List, self).__init__(batch_shape, validate_args=validate_args)
+
+
 
 
 
@@ -379,13 +379,18 @@ class Combine_List(Distribution):
                 if theta_posterior.dim()  == 1:
                     theta_posterior = torch.unsqueeze(theta_posterior, 0) 
 
+                ## select only the subset that was last inferred in a particular posterior:
+                theta_posterior = theta_posterior[:,self.steps[idx]:self.steps[idx+1]]
+
+                print('theta posteriorrr', theta_posterior, theta_posterior.shape)
+
                 theta_posterior_list.append(theta_posterior)  
 
 
 
             ## concatenates the thetas from the different posteriors together
             theta_posterior = torch.cat(tuple(theta_posterior_list), dim = 1)
-            
+
         
             return theta_posterior
 

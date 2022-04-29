@@ -143,7 +143,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(5):
+    for i in range(1):
 
         posterior_snpe_list = []
 
@@ -215,7 +215,7 @@ def main(argv):
 
     start_time = datetime.datetime.now()
 
-    for i in range(5):
+    for i in range(1):
 
         np.random.seed(i)
 
