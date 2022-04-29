@@ -294,6 +294,122 @@ class Combined2(Distribution):
         return torch.var(self.sample((1000,)),dim = 0)
 
 
+class Combine_List(Distribution):
+    """
+    Inherits from Torch Distribution class
+    implements own log_prob() and sample() for two different prior distributions such that parameter sets can be inferred sequentially - one posterior is based on another
+   
+    takes as arguments:
+    - posterior distribution of already inferred parameter set
+    - prior distribution of subsequent parameter set that is dependent on earlier parameter set
+    - number_params_1: number of parameters that was inferred already (in posterior distribution)
+    """
+
+    has_rsample = False
+    support = constraints.real
+
+    def __init__(
+        self,
+        posterior_list,
+        range_list,
+        validate_args={},
+        batch_shape=torch.Size(),
+        event_shape=torch.Size(),
+    ):
+        self._batch_shape = batch_shape
+        self._event_shape = event_shape
+
+        self.posterior_list = posterior_list
+
+        self.steps = range_list
+
+        super(Combined, self).__init__(batch_shape, validate_args=validate_args)
+
+
+
+    def log_prob(self, x):
+
+        """
+        calculates the log probability of the combined prior distribution based on some observation x
+        """
+
+        steps = self.steps
+
+        log_prob_posterior = 0
+        
+        for i, posterior in enumerate(self.posterior_list):
+
+
+            globals()['log_prob_posterior%s' % i] = posterior.log_prob(x[0][steps[i]:steps[i+1]])
+
+            log_prob_posterior += globals()['log_prob_posterior%s' % i]
+
+
+        return log_prob_posterior
+
+
+    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None, show_progress_bars: bool = True, sample_with: Optional[str] = None):
+
+        """
+        samples from combined prior distribution
+
+        show_progress_bars and sample_with not used. only needed to conduct sbc
+        """
+
+
+
+        with torch.no_grad():
+
+            theta_posterior_list = []
+            
+            for idx, posterior in enumerate(self.posterior_list):
+
+                if x == None:
+                    theta_posterior = posterior.sample(sample_shape)
+
+                else:
+                    ## in earlier rounds not all of the summary statistics are used such
+                    ## that we need this indix:
+                    x_shape = self._x_shape_list[idx]
+
+                    theta_posterior = posterior.sample(sample_shape, x = x[:,:x_shape[1]])
+
+
+                #make sure that thetas are in the right shape; otherwise unsqueeze:
+                if theta_posterior.dim()  == 1:
+                    theta_posterior = torch.unsqueeze(theta_posterior, 0) 
+
+                theta_posterior_list.append(theta_posterior)  
+
+
+
+            ## concatenates the thetas from the different posteriors together
+            theta_posterior = torch.cat(tuple(theta_posterior_list), dim = 1)
+            
+        
+            return theta_posterior
+
+    @property
+    def mean(self):
+        """
+        Returns the mean of the distribution.
+        """
+        return torch.mean(self.sample((1000,)),dim = 0)
+
+    @property
+    def variance(self):
+        """
+        Returns the mean of the distribution.
+        """
+        return torch.var(self.sample((1000,)),dim = 0)
+
+
+
+
+
+
+
+
 
 
 

@@ -20,7 +20,7 @@ import datetime
 
 from utils.helpers import get_time
 
-from utils.sbi_modulated_functions import Combined
+from utils.sbi_modulated_functions import Combined, Combine_List
 
 # visualization
 import matplotlib as mpl
@@ -234,6 +234,8 @@ def main(argv):
 
             start_num = 1
 
+            posterior_list = []
+
             for index in range(len(range_list)-1):
 
                 # i defines number of parameters to be inferred, j indicates how many parameters
@@ -272,6 +274,8 @@ def main(argv):
 
                 proposal1 = posterior.set_default_x(obs_real[0:i])
 
+                posterior_list.append(proposal1)
+
                 next_prior = utils.torchutils.BoxUniform(
                     low=prior_min[i:j], high=prior_max[i:j])
 
@@ -285,11 +289,6 @@ def main(argv):
                 # set combined prior to be the new prior_i:
                 proposal = combined_prior
 
-                #finish_time = datetime.datetime.now()
-
-                #diff = finish_time - start_time
-
-                #print('took ', diff, ' for this step')
 
             if ratio:
 
@@ -311,9 +310,15 @@ def main(argv):
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
-            posterior_incremental = inf.build_posterior(neural_dens)
+            last_posterior = inf.build_posterior(neural_dens)
 
-            posterior_incremental = posterior_incremental.set_default_x(obs_real)
+            last_posterior = last_posterior.set_default_x(obs_real)
+
+            posterior_list.append(last_posterior)
+
+            ## combine the posterior from the different steps now:
+
+            posterior_incremental = Combine_List(posterior_list, steps = [0, 5, 10, 15])
 
             posterior_incremental_list.append(posterior_incremental)
 
