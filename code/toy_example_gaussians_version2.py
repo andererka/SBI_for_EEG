@@ -232,7 +232,6 @@ def main(argv):
 
             proposal = prior_i
 
-            start_num = 1
 
             posterior_list = []
 
@@ -247,18 +246,10 @@ def main(argv):
 
                 num_sim = int(num_simulations )
 
-                print(num_sim)
-
-                start_num += 29
-
-                #start_time = datetime.datetime.now()
-
-                #print('num sim', num_sim)
-
                 theta, x = simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
-                    num_simulations=int(num_sim * (1/4)),
+                    num_simulations=int(num_sim * (3/4)),
                     num_workers=num_workers,
 
                 )
@@ -293,7 +284,7 @@ def main(argv):
             theta, x = simulate_for_sbi(
                 simulator_stats,
                 proposal=proposal,
-                num_simulations=int(num_sim * (1/4)),
+                num_simulations=int(num_sim * (3/4)),
                 num_workers=num_workers,
 
             )
@@ -314,7 +305,7 @@ def main(argv):
             theta, x = simulate_for_sbi(
                 simulator_stats,
                 proposal=proposal_last,
-                num_simulations=  int(num_sim * (1/4)),
+                num_simulations=  int(num_sim * (3/4)),
                 num_workers=num_workers,
 
             )
