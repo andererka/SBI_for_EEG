@@ -20,7 +20,7 @@ import datetime
 
 from utils.helpers import get_time
 
-from utils.sbi_modulated_functions import Combined
+from utils.sbi_modulated_functions import Combined, Combine_List
 
 # visualization
 import matplotlib as mpl
@@ -85,6 +85,15 @@ def main(argv):
         observation = argv[5]
     except:
         observation = 'fake'
+    try:
+        extraround = bool(int(argv[6]))
+    except:
+        extraround = True
+
+
+    if extraround:
+
+        num_sim = int(num_sim * (3/4))
 
 
 
@@ -373,7 +382,6 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            #num_simulations=int(num_sim*(59/30)),
             num_simulations = num_sim,
             num_workers = num_workers
         )
@@ -409,6 +417,30 @@ def main(argv):
 
 
     posterior.set_default_x(obs_real_stat)
+
+
+    ### extra round option:
+
+    if extraround:
+
+        proposal_last = Combine_List([proposal1, proposal2, posterior], steps = [0, 6, 12, 17])
+
+        theta, x_without = inference.run_sim_theta_x(
+                    combined_prior,
+                    sim_wrapper,
+                    num_simulations = num_sim,
+                    num_workers = num_workers
+                )
+
+        file_writer.save_obs_without(x_without, name='extraround')
+        file_writer.save_thetas(theta, name='extraround')
+
+
+        inf = inf.append_simulations(theta, x, proposal=proposal_last)
+
+        posterior_incremental = inf.build_posterior(neural_dens)
+
+        posterior_incremental = posterior_incremental.set_default_x(obs_real)
 
     end_time = datetime.datetime.now()
 
