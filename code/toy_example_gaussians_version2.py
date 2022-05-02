@@ -179,7 +179,7 @@ def main(argv):
 
                 proposal = posterior.set_default_x(obs_real)
 
-            posterior_snpe = posterior
+            posterior_snpe = proposal
 
             posterior_snpe_list.append(posterior_snpe)
 
@@ -199,10 +199,6 @@ def main(argv):
         f.close()
 
     torch.save(list_collection, 'list_collection.pt')
-
-    # In[8]:
-
-    list_collection = torch.load('list_collection.pt')
 
 
 
@@ -339,9 +335,7 @@ def main(argv):
 
     torch.save(obs_real, 'obs_real.pt')
 
-    # In[46]:
 
-    list_collection_inc = torch.load('list_collection_inc.pt')
 
     # In[ ]:
 
