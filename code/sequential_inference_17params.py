@@ -426,7 +426,7 @@ def main(argv):
         proposal_last = Combine_List([proposal1, proposal2, posterior], steps = [0, 6, 12, 17])
 
         theta, x_without = inference.run_sim_theta_x(
-                    combined_prior,
+                    proposal_last,
                     sim_wrapper,
                     num_simulations = num_sim,
                     num_workers = num_workers
