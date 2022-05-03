@@ -43,8 +43,6 @@ import os
 
 def Gaussian(thetas, normal_noise=1):
 
-    np.random.seed(np.random.choice(1000))
-
     gauss_list = []
 
     for theta in thetas:
@@ -129,8 +127,8 @@ def main(argv):
     # In[6]:
 
     #num_simulations_list = [750]
-    num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    #num_simulations_list = [100]
+    #num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
+    num_simulations_list = [1000]
 
 
     # In[ ]:
@@ -314,13 +312,13 @@ def main(argv):
 
             last_posterior = last_posterior.set_default_x(obs_real)
 
-            posterior_list.append(last_posterior)
+            #posterior_list.append(last_posterior)
 
             ## combine the posterior from the different steps now:
 
-            posterior_incremental = Combine_List(posterior_list, steps = [0, 5, 10, 15])
+            #posterior_incremental = Combine_List(posterior_list, steps = [0, 5, 10, 15])
 
-            posterior_incremental_list.append(posterior_incremental)
+            posterior_incremental_list.append(last_posterior)
 
 
 
