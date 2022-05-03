@@ -323,7 +323,9 @@ def main(argv):
 
                 posterior = inf.build_posterior(neural_dens)
 
-            posterior = posterior.set_default_x(obs_real)
+                proposal_last = posterior
+
+            posterior = proposal_last.set_default_x(obs_real)
 
             posterior_incremental_list.append(posterior)
 
