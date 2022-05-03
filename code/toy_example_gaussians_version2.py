@@ -88,6 +88,13 @@ def main(argv):
     except:
         ratio = True
 
+    try:
+        extra = bool(int(argv[6]))
+    except:
+        extra = True
+
+
+
     file_writer = write_to_file.WriteToFile(
         experiment=experiment_name,
         density_estimator=density_estimator,
@@ -102,9 +109,9 @@ def main(argv):
     import json
 
     # stores the running file into the result folder for later reference:
-    open('{}/toy_example_gaussians.py'.format(file_writer.folder), 'a').close()
-    shutil.copyfile(str(os.getcwd() + '/toy_example_gaussians.py'),
-                    str(file_writer.folder + '/toy_example_gaussians.py'))
+    open('{}/toy_example_gaussians_version2.py'.format(file_writer.folder), 'a').close()
+    shutil.copyfile(str(os.getcwd() + '/toy_example_gaussians_version2.py'),
+                    str(file_writer.folder + '/toy_example_gaussians_version2.py'))
 
     os.chdir(file_writer.folder)
 
@@ -218,6 +225,7 @@ def main(argv):
         posterior_incremental_list = []
 
         for num_simulations in num_simulations_list:
+            
 
             prior_i = utils.torchutils.BoxUniform(
                 low=prior_min[0:range_list[0]], high=prior_max[0:range_list[0]])
@@ -231,6 +239,10 @@ def main(argv):
 
             posterior_list = []
 
+            num_sim = int(num_simulations )
+            if extra: 
+                num_sim =  int((3/4)*num_sim)
+
             for index in range(len(range_list)-1):
 
                 # i defines number of parameters to be inferred, j indicates how many parameters
@@ -240,12 +252,11 @@ def main(argv):
 
                 print(i, j)
 
-                num_sim = int(num_simulations )
 
                 theta, x = simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
-                    num_simulations=int(num_sim * (3/4)),
+                    num_simulations= num_sim,
                     num_workers=num_workers,
 
                 )
@@ -280,7 +291,7 @@ def main(argv):
             theta, x = simulate_for_sbi(
                 simulator_stats,
                 proposal=proposal,
-                num_simulations=int(num_sim * (3/4)),
+                num_simulations= num_sim,
                 num_workers=num_workers,
 
             )
@@ -298,22 +309,24 @@ def main(argv):
 
             proposal_last = Combine_List(posterior_list, steps = [0, 5, 10, 15])
 
-            theta, x = simulate_for_sbi(
-                simulator_stats,
-                proposal=proposal_last,
-                num_simulations=  int(num_sim * (3/4)),
-                num_workers=num_workers,
+            if extra:
 
-            )
+                theta, x = simulate_for_sbi(
+                    simulator_stats,
+                    proposal=proposal_last,
+                    num_simulations=  num_sim,
+                    num_workers=num_workers,
+
+                )
 
 
-            inf = inf.append_simulations(theta, x, proposal=proposal_last)
+                inf = inf.append_simulations(theta, x, proposal=proposal_last)
 
-            posterior_incremental = inf.build_posterior(neural_dens)
+                posterior = inf.build_posterior(neural_dens)
 
-            posterior_incremental = posterior_incremental.set_default_x(obs_real)
+            posterior = posterior.set_default_x(obs_real)
 
-            posterior_incremental_list.append(posterior_incremental)
+            posterior_incremental_list.append(posterior)
 
 
 

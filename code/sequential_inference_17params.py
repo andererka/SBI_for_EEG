@@ -85,15 +85,6 @@ def main(argv):
         observation = argv[5]
     except:
         observation = 'fake'
-    try:
-        extraround = bool(int(argv[6]))
-    except:
-        extraround = True
-
-
-    if extraround:
-
-        num_sim = int(num_sim * (3/4))
 
 
 
@@ -106,7 +97,7 @@ def main(argv):
 
 
     prior_min = [0, 0, 0, 0, 0, 13.3,  0, 0, 0, 0, 0, 51.980, 0, 0, 0, 0, 112.13]
-    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 44.9, 3.0, 7.0, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
+    prior_max = [0.927, 0.160, 2.093, 1.0, 1.0, 35.9, 0.000042, 0.039372, 0.025902,  0.480, 0.117, 75.08, 8.633, 4.104, 1.0, 1.0, 162.110]
 
     true_params = torch.tensor([[0.277, 0.0399, 0.6244, 0.3739, 0.0, 18.977, 0.000012, 0.0115, 0.0134,  0.0767, 0.06337, 63.08, 4.6729, 2.33, 0.016733, 0.0679, 120.86]])
 
@@ -418,29 +409,6 @@ def main(argv):
 
     posterior.set_default_x(obs_real_stat)
 
-
-    ### extra round option:
-
-    if extraround:
-
-        proposal_last = Combine_List([proposal1, proposal2, posterior], steps = [0, 6, 12, 17])
-
-        theta, x_without = inference.run_sim_theta_x(
-                    proposal_last,
-                    sim_wrapper,
-                    num_simulations = num_sim,
-                    num_workers = num_workers
-                )
-
-        file_writer.save_obs_without(x_without, name='extraround')
-        file_writer.save_thetas(theta, name='extraround')
-
-
-        inf = inf.append_simulations(theta, x, proposal=proposal_last)
-
-        posterior_incremental = inf.build_posterior(neural_dens)
-
-        posterior_incremental = posterior_incremental.set_default_x(obs_real)
 
     end_time = datetime.datetime.now()
 
