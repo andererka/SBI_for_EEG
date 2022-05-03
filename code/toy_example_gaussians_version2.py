@@ -43,7 +43,6 @@ import os
 
 def Gaussian(thetas, normal_noise=1):
 
-    np.random.seed(np.random.choice(1000))
 
     gauss_list = []
 
