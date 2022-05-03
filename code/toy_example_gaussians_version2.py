@@ -325,9 +325,9 @@ def main(argv):
 
                 proposal_last = posterior
 
-            posterior = proposal_last.set_default_x(obs_real)
+                proposal_last= proposal_last.set_default_x(obs_real)
 
-            posterior_incremental_list.append(posterior)
+            posterior_incremental_list.append(proposal_last)
 
 
 
