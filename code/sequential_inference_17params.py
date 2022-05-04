@@ -185,8 +185,6 @@ def main(argv):
 
     if observation == 'fake':
 
-        start = datetime.datetime.now()
-
         obs_real_complete = inference.run_only_sim(
             torch.tensor([list(true_params[0][0:])]), 
             simulation_wrapper = sim_wrapper, 
@@ -213,8 +211,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            #num_simulations=int(num_sim*(1/30)),
-            num_simulations = num_sim,
+            num_simulations=5000,
+            #num_simulations = num_sim,
             num_workers=num_workers
         )
 
@@ -299,7 +297,7 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=num_sim,
+            num_simulations=10000,
             num_workers=num_workers
         )
         file_writer.save_obs_without(x_without, name='step2')
@@ -373,7 +371,8 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations = num_sim,
+            #num_simulations = num_sim,
+            num_simulations = 15000,
             num_workers = num_workers
         )
 
