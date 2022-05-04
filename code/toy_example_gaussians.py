@@ -85,6 +85,10 @@ def main(argv):
         ratio = bool(int(argv[5]))
     except:
         ratio = True
+    try:
+        extra = bool(int(argv[5]))
+    except:
+        extra = False
 
     file_writer = write_to_file.WriteToFile(
         experiment=experiment_name,
@@ -292,6 +296,9 @@ def main(argv):
 
                 num_sim = int(num_simulations * (start_num / 30) )
 
+                if extra: 
+                    num_sim = int(num_simulations * (start_num / 60) )
+
             else:
                 num_sim = int(num_simulations)
 
@@ -311,6 +318,25 @@ def main(argv):
             last_posterior = inf.build_posterior(neural_dens)
 
             last_posterior = last_posterior.set_default_x(obs_real)
+
+            if extra:
+
+                theta, x = simulate_for_sbi(
+                simulator_stats,
+                proposal= last_posterior,
+                num_simulations=num_sim,
+                num_workers=num_workers,
+
+                )
+
+                inf = inf.append_simulations(theta, x, proposal=last_posterior)
+                neural_dens = inf.train()
+
+                last_posterior = inf.build_posterior(neural_dens)
+
+                last_posterior = last_posterior.set_default_x(obs_real)
+
+
 
             #posterior_list.append(last_posterior)
 
