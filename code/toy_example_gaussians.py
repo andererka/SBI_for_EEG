@@ -329,7 +329,7 @@ def main(argv):
 
                 )
 
-                inf = inf.append_simulations(theta, x, proposal=last_posterior)
+                inf = inf.append_simulations(theta, x)
                 neural_dens = inf.train()
 
                 last_posterior = inf.build_posterior(neural_dens)
