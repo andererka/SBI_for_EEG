@@ -131,8 +131,8 @@ def main(argv):
     # In[6]:
 
     #num_simulations_list = [750]
-    #num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    num_simulations_list = [1000]
+    num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
+    #num_simulations_list = [1000]
 
 
     # In[ ]:
@@ -329,7 +329,7 @@ def main(argv):
 
                 )
 
-                inf = inf.append_simulations(theta, x)
+                inf = inf.append_simulations(theta, x, proposal=last_posterior)
                 neural_dens = inf.train()
 
                 last_posterior = inf.build_posterior(neural_dens)
@@ -337,12 +337,6 @@ def main(argv):
                 last_posterior = last_posterior.set_default_x(obs_real)
 
 
-
-            #posterior_list.append(last_posterior)
-
-            ## combine the posterior from the different steps now:
-
-            #posterior_incremental = Combine_List(posterior_list, steps = [0, 5, 10, 15])
 
             posterior_incremental_list.append(last_posterior)
 
