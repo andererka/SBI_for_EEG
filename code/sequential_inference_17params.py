@@ -145,7 +145,7 @@ def main(argv):
     
     # stores the running file into the result folder for later reference:
     open('{}/sequential_inference_17params.py'.format(file_writer.folder), 'a').close()
-    shutil.copyfile(str(os.getcwd() + '/sequential_inference_17params_only_once.py'), str(file_writer.folder+ '/sequential_inference_17params_only_once.py'))
+    shutil.copyfile(str(os.getcwd() + '/sequential_inference_17params.py'), str(file_writer.folder+ '/sequential_inference_17params.py'))
 
     os.chdir(file_writer.folder)
 
