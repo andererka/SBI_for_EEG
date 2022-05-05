@@ -238,6 +238,7 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
 
+    finish_time = datetime.datetime.now()
 
     os.chdir('..')
     os.chdir('..')
