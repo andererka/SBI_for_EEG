@@ -86,7 +86,7 @@ def main(argv):
     except:
         ratio = True
     try:
-        extra = bool(int(argv[5]))
+        extra = bool(int(argv[6]))
     except:
         extra = False
 
