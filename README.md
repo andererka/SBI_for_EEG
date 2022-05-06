@@ -63,16 +63,46 @@ Some of the main results were:
 ### Code structure:
 
 - **utils**
+  
   - helpers.py: small helper functions, not specific
   - inference.py: functions that either only simulate theta and x, or infer posteriors, or both
   - plot.py: plotting functions, mostly adapted from the sbi toolbox
   - sbi_modulated_functions.py
   - simulation_wrapper: functions that take different number of parameters that are varied for simulations
+  
 - **summary_features**
   - calculate_summary_features.py: different functions to calculate a certain number of summary statistics. different functions can be compared against each other
+  
 - **data_load_writer**
   - load_from_file
+  
   - write_to_file: defines a class that can store e.g. posteriors, priors, thetas, observations and meta data
+  
+    
+
+### Result files
+
+
+
+##### Toy example:
+
+- ***toy_example_maf_03_05***: Results for NIPE and SNPE comparison of Gaussian toy example. Can be used to compare KL divergence and estimated posterior variances of the marginals.
+- ***toy_example_maf_03_05_ratio:*** Results for NIPE-BUDGET (with reallocation of simulation budget) and SNPE comparison of Gaussian toy example. Can be used to compare estimated posterior variances of the marginals.
+- ***toy_example_maf_05_05_ratio:*** Results for NIPE-BUDGET (with reallocation of simulation budget) and SNPE comparison of Gaussian toy example. Can be used to compare KL divergence and estimated posterior variances of the marginals. Contains more number of simulations in order to compare KL divergences for different number of simulations. 
+
+
+
+
+
+##### ERP:
+
+
+
+- ***10000sims_17params_05_04_nsf_threshold:*** Stores posterior, thetas, x, meta data and Co. about the simulations for the threshold condition. NIPE approach.
+- ***10000sims_17params_11_04_nsf_fake_ratio***: Stores posterior, thetas, x, meta data and Co. about the simulations for the simulated data. Simulation budget was reallocated such that not 10000 simulations were done each step, but (1/7)* 10000 in the first round, 10000 in the second, and (13/7) simulations in the last round. NIPE approach.
+- ***10000sims_17params_13_04_nsf_threshold_ratio***: Stores posterior, thetas, x, meta data and Co. about the simulations for the threshold condition, but with reallocation of simulation budget ( (1/7)* 10000 in the first round, 10000 in the second, and (13/7) simulations in the last round). NIPE approach.
+- ***10000sims_17params_28_04_nsf_No***: Stores posterior, thetas, x, meta data and Co. about the simulations for the No condition ( (1/10)* 10000 in the first round, 10000 in the second, and (19/0) simulations in the last round). NIPE approach.
+- ***multi_round_17params***: Stores posterior, thetas, x, meta data and Co. about the simulations for the the simulated data. SNPE approach.
 
 
 
