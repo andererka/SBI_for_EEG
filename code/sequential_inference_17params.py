@@ -20,7 +20,7 @@ import datetime
 
 from utils.helpers import get_time
 
-from utils.sbi_modulated_functions import Combined
+from utils.sbi_modulated_functions import Combined, Combine_List
 
 # visualization
 import matplotlib as mpl
@@ -155,6 +155,34 @@ def main(argv):
         json.dump(json_dict, f)
         f.close()
 
+    if observation == 'threshold':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        print(obs_real.shape[0])
+        plt.plot(obs_real)
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
+        plt.plot(obs_real)
+        plt.savefig('obs_real_noise')
+
+    if observation == 'default':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
+
+    if observation == 'No':
+        os.chdir('..')
+        print(os.getcwd())
+        trace = pd.read_csv('data/ERPNo100Trials/dpl_1.txt', sep='\t', header=None, dtype= np.float32)
+        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
+        noise = np.random.normal(0, 1, obs_real.shape[0])
+        obs_real += noise
+
     if observation == 'fake':
 
         obs_real_complete = inference.run_only_sim(
@@ -163,19 +191,8 @@ def main(argv):
             num_workers=1
         )
 
+
         obs_real = obs_real_complete[0]
-
-    if observation == 'supra':
-        os.chdir('..')
-        print(os.getcwd())
-        trace = pd.read_csv('data/ERPYes3Trials/dpl.txt', sep='\t', header=None, dtype= np.float32)
-        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
-
-    if observation == 'threshold':
-        os.chdir('..')
-        print(os.getcwd())
-        trace = pd.read_csv('data/default/dpl.txt', sep='\t', header=None, dtype= np.float32)
-        obs_real = torch.tensor(trace.values, dtype = torch.float32)[:,1]
 
 
     obs_real_stat = calculate_summary_stats_temporal(obs_real)
@@ -194,7 +211,7 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             prior1, 
             sim_wrapper,
-            num_simulations=int(num_sim*(1/7)),
+            num_simulations=5000,
             #num_simulations = num_sim,
             num_workers=num_workers
         )
@@ -221,7 +238,7 @@ def main(argv):
         file_writer.save_obs_without(x_without, name='step1')
         file_writer.save_thetas(theta, name='step1')
 
-    start_time = datetime.datetime.now()
+    finish_time = datetime.datetime.now()
 
     os.chdir('..')
     os.chdir('..')
@@ -251,6 +268,8 @@ def main(argv):
 
     proposal1 = posterior.set_default_x(obs_real_stat[:,:x_P50.shape[1]])
 
+    torch.save(proposal1, 'posterior1.pt')
+
     print('sample from proposal', proposal1.sample((1,)))
 
     ###### continuing with N100 parameters/summary stats:
@@ -259,6 +278,16 @@ def main(argv):
     combined_prior = Combined(proposal1, prior2, number_params_1=6)
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
+
+    inf_time1 = datetime.datetime.now()
+
+    json_dict = {
+    "inference time for last step:": str(inf_time1-finish_time)}
+    with open( "inference_time.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
+    start_time = datetime.datetime.now()
 
 
     try:
@@ -269,35 +298,11 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=num_sim,
+            num_simulations=10000,
             num_workers=num_workers
         )
         file_writer.save_obs_without(x_without, name='step2')
         file_writer.save_thetas(theta, name='step2')
-
-
-
-    print("second round completed")
-
-    start_time = datetime.datetime.now()
-
-    print(x_without.shape)
-    x_without = x_without[:,:4200]
-
-    x_N100 = calculate_summary_stats_temporal(x_without)
-
-    print('x:N100 shape', x_N100.shape)
-
-    inf = inf.append_simulations(theta, x_N100)
-    neural_dens = inf.train()
-
-    posterior = inf.build_posterior(neural_dens)
-
-
-    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape[1]])
-
-    print('sample from proposal', proposal2.sample((1,)))
-
 
     finish_time = datetime.datetime.now()
 
@@ -314,6 +319,30 @@ def main(argv):
         json.dump(json_dict, f)
         f.close()
 
+    print("second round completed")
+
+
+    print(x_without.shape)
+    x_without = x_without[:,:4200]
+
+    x_N100 = calculate_summary_stats_temporal(x_without)
+
+    print('x:N100 shape', x_N100.shape)
+
+    inf = inf.append_simulations(theta, x_N100)
+    neural_dens = inf.train()
+
+    posterior = inf.build_posterior(neural_dens)
+
+
+    proposal2 = posterior.set_default_x(obs_real_stat[:,:x_N100.shape[1]])
+
+    torch.save(proposal2, 'posterior2.pt')
+
+    print('sample from proposal', proposal2.sample((1,)))
+
+
+
     ###### continuing with P200 parameters/summary stats:
 
     prior3 = utils.torchutils.BoxUniform(low=prior_min[12:], high=prior_max[12:])
@@ -324,6 +353,17 @@ def main(argv):
 
     inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
+    inf_time2 = datetime.datetime.now()
+
+    json_dict = {
+    "inference time for last step:": str(inf_time2-finish_time)}
+    with open( "inference_time.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
+
+    start_time = datetime.datetime.now()
+
     try:
         theta = torch.load('step3/thetas.pt')
         x_without = torch.load('step3/obs_without.pt')
@@ -332,27 +372,13 @@ def main(argv):
         theta, x_without = inference.run_sim_theta_x(
             combined_prior,
             sim_wrapper,
-            num_simulations=int(num_sim*(13/7)),
             #num_simulations = num_sim,
+            num_simulations = 15000,
             num_workers = num_workers
         )
 
         file_writer.save_obs_without(x_without, name='step3')
         file_writer.save_thetas(theta, name='step3')
-
-
-
-    x = calculate_summary_stats_temporal(x_without)
-
-    print('x shape', x.shape)
-
-    inf = inf.append_simulations(theta, x)
-    neural_dens = inf.train()
-
-    posterior = inf.build_posterior(neural_dens)
-
-
-    posterior.set_default_x(obs_real_stat)
 
     finish_time = datetime.datetime.now()
 
@@ -368,6 +394,30 @@ def main(argv):
     with open( "step3/meta.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
+
+
+
+    x = calculate_summary_stats_temporal(x_without)
+
+    print('x shape', x.shape)
+
+    inf = inf.append_simulations(theta, x)
+    neural_dens = inf.train()
+
+    posterior = inf.build_posterior(neural_dens)
+
+
+    posterior.set_default_x(obs_real_stat)
+
+
+    end_time = datetime.datetime.now()
+
+    json_dict = {
+    "inference time for last step:": str(end_time-finish_time)}
+    with open( "inference_time.json", "a") as f:
+        json.dump(json_dict, f)
+        f.close()
+
    
 
     file_writer.save_posterior(posterior)

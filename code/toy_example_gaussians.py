@@ -20,7 +20,7 @@ import datetime
 
 from utils.helpers import get_time
 
-from utils.sbi_modulated_functions import Combined
+from utils.sbi_modulated_functions import Combined, Combine_List
 
 # visualization
 import matplotlib as mpl
@@ -42,8 +42,6 @@ import os
 
 
 def Gaussian(thetas, normal_noise=1):
-
-    np.random.seed(np.random.choice(1000))
 
     gauss_list = []
 
@@ -87,6 +85,10 @@ def main(argv):
         ratio = bool(int(argv[5]))
     except:
         ratio = True
+    try:
+        extra = bool(int(argv[6]))
+    except:
+        extra = False
 
     file_writer = write_to_file.WriteToFile(
         experiment=experiment_name,
@@ -129,8 +131,8 @@ def main(argv):
     # In[6]:
 
     #num_simulations_list = [750]
-    num_simulations_list = [1000, 1500, 2000, 3000]
-    #num_simulations_list = [100]
+    num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
+    #num_simulations_list = [1000]
 
 
     # In[ ]:
@@ -234,6 +236,8 @@ def main(argv):
 
             start_num = 1
 
+            posterior_list = []
+
             for index in range(len(range_list)-1):
 
                 # i defines number of parameters to be inferred, j indicates how many parameters
@@ -245,13 +249,13 @@ def main(argv):
 
                 if ratio:
 
-                    num_sim = int(num_simulations * (start_num / 7) )
+                    num_sim = int(num_simulations * (start_num / 30) )
                 else:
                     num_sim = int(num_simulations )
 
                 print(num_sim)
 
-                start_num += 6
+                start_num += 29
 
                 #start_time = datetime.datetime.now()
 
@@ -272,6 +276,8 @@ def main(argv):
 
                 proposal1 = posterior.set_default_x(obs_real[0:i])
 
+                posterior_list.append(proposal1)
+
                 next_prior = utils.torchutils.BoxUniform(
                     low=prior_min[i:j], high=prior_max[i:j])
 
@@ -285,15 +291,13 @@ def main(argv):
                 # set combined prior to be the new prior_i:
                 proposal = combined_prior
 
-                #finish_time = datetime.datetime.now()
-
-                #diff = finish_time - start_time
-
-                #print('took ', diff, ' for this step')
 
             if ratio:
 
-                num_sim = int(num_simulations * (start_num / 7) )
+                num_sim = int(num_simulations * (start_num / 30) )
+
+                if extra: 
+                    num_sim = int(num_simulations * (start_num / 60) )
 
             else:
                 num_sim = int(num_simulations)
@@ -311,11 +315,30 @@ def main(argv):
             inf = inf.append_simulations(theta, x)
             neural_dens = inf.train()
 
-            posterior_incremental = inf.build_posterior(neural_dens)
+            last_posterior = inf.build_posterior(neural_dens)
 
-            posterior_incremental = posterior_incremental.set_default_x(obs_real)
+            last_posterior = last_posterior.set_default_x(obs_real)
 
-            posterior_incremental_list.append(posterior_incremental)
+            if extra:
+
+                theta, x = simulate_for_sbi(
+                simulator_stats,
+                proposal= last_posterior,
+                num_simulations=num_sim,
+                num_workers=num_workers,
+
+                )
+
+                inf = inf.append_simulations(theta, x, proposal=last_posterior)
+                neural_dens = inf.train()
+
+                last_posterior = inf.build_posterior(neural_dens)
+
+                last_posterior = last_posterior.set_default_x(obs_real)
+
+
+
+            posterior_incremental_list.append(last_posterior)
 
 
 
@@ -336,6 +359,8 @@ def main(argv):
         f.close()
 
     torch.save(list_collection_inc, 'list_collection_inc.pt')
+
+    torch.save(obs_real, 'obs_real.pt')
 
     # In[46]:
 

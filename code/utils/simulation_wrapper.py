@@ -1,8 +1,8 @@
 
 from hnn_core import simulate_dipole, jones_2009_model
+from pyro import param
 
 import torch
-
 import numpy as np
 
 
@@ -25,15 +25,17 @@ class SimulationWrapper:
     
     """
 
-    def __init__(self, num_params = 17,  noise = True):
+    def __init__(self, num_params = 17,  noise = True, set_std = False):
         self.num_params = num_params
         self.noise = noise
+        self.set_std = set_std
 
     
 
     def __call__(self, params):
-        if (self.num_params == 17 or self.num_params == 6):
+        if (self.num_params == 17 or self.num_params == 20):
             return self.simulation_wrapper_all(params)
+
             
         elif (self.num_params == 25):
             return self.simulation_wrapper_25(params)
@@ -42,9 +44,8 @@ class SimulationWrapper:
 
     def simulation_wrapper_all(self, params):  # input possibly array of 1 or more params
         """
-        simulation wrapper for the neural incremental approach where wrapper can take 
-        different number of parameters and then sets weights for hnn simulator
-        according to the drawn parameters
+        simulation wrapper for up to 17 params
+        -sets weights for hnn simulator according to the drawn parameters
 
         simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
         are changed and stops also earlier if the weights for the first proximal drive + the weights
@@ -63,7 +64,7 @@ class SimulationWrapper:
 
         print('param size', param_size)
 
-        if (param_size == 6 and self.num_params == 17):
+        if (param_size == 6 and (self.num_params == 17 or self.num_params == 20)):
             
             early_stop = 70.0
             print('6 params investigated')
@@ -73,7 +74,7 @@ class SimulationWrapper:
             early_stop = 70.0
             print('2 params investigated')
 
-        if (param_size == 12):
+        if (param_size == 12 or param_size == 13):
             print('12 params investigated')
 
             early_stop = 120.0
@@ -89,12 +90,14 @@ class SimulationWrapper:
 
 
         params = params.tolist()
+
+        if self.set_std == False:
     
-        if (self.num_params == 17):
             net = set_network_weights(params)
+
         else:
-            ## this is for inferring 6 parameters in total in steps of 2 at a time:
-            net = set_network_weights_2_per_step(params)
+            net = set_network_weights_std(params)
+
 
         window_len, scaling_factor = 30, 3000
 
@@ -119,9 +122,7 @@ class SimulationWrapper:
 
     def simulation_wrapper_25(self, params):  # input possibly array of 1 or more params
         """
-        simulation wrapper for the neural incremental approach where wrapper can take 
-        different number of parameters and then sets weights for hnn simulator
-        according to the drawn parameters
+        simulation wrapper for 25 parameters
 
         simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
         are changed and stops also earlier if the weights for the first proximal drive + the weights
@@ -179,90 +180,10 @@ class SimulationWrapper:
 
 
 
-
-def set_network_default(params=None):
-
-    """
-    description: sets network to default values for an ERP as described in hnn tutorial
-    """
-
-    net = jones_2009_model()
-    weights_ampa_d1 = {
-        "L2_basket": 0.006562,
-        "L2_pyramidal": 0.000007,
-        "L5_pyramidal": 0.142300,
-    }
-    weights_nmda_d1 = {
-        "L2_basket": 0.019482,
-        "L2_pyramidal": 0.004317,
-        "L5_pyramidal": 0.080074,
-    }
-    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
-    net.add_evoked_drive(
-        "evdist1",
-        mu=63.53,
-        sigma=3.85,
-        numspikes=1,
-        event_seed= event_seed(),
-        weights_ampa=weights_ampa_d1,
-        weights_nmda=weights_nmda_d1,
-        location="distal",
-        synaptic_delays=synaptic_delays_d1,
-    )
-
-    weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": 0.01525,
-        "L5_basket": 0.19934,
-        "L5_pyramidal": 0.00865,
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-    # all NMDA weights are zero; pass None explicitly
-    net.add_evoked_drive(
-        "evprox1",
-        mu=26.61,
-        sigma=2.47,
-        numspikes=1,
-        weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-    )
-
-    # Second proximal evoked drive. NB: only AMPA weights differ from first
-    weights_ampa_p2 = {
-        "L2_basket": 0.000003,
-        "L2_pyramidal": 1.438840,
-        "L5_basket": 0.008958,
-        "L5_pyramidal": 0.684013,
-    }
-    # all NMDA weights are zero; omit weights_nmda (defaults to None)
-    net.add_evoked_drive(
-        "evprox2",
-        mu=137.12,
-        sigma=8.33,
-        numspikes=1,
-        weights_ampa=weights_ampa_p2,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-    )
-
-    return net
-
-
-
-
-
 def set_network_weights_steps_for_25(params=None):
 
     """
-    description: sets network to default values for an ERP as described in hnn tutorial
+    description: sets parameters for proximal and distal drive. more details can be found in the hnn tutorial https://jonescompneurolab.github.io/hnn-tutorials/
     """
 
     net = jones_2009_model()
@@ -367,107 +288,12 @@ def set_network_weights_steps_for_25(params=None):
 
 
 
-def set_network_weights_2_per_step(params=None):
-
-    """
-    description: sets network to default values for an ERP as described in hnn tutorial
-    """
-
-    net = jones_2009_model()
-
-    if any(isinstance(el, list) for el in params):
-        num_params = len(params[0])
-    else:
-        num_params = len(params)
-
-    weights_ampa_p1 = {
-        "L2_basket": 0.08831,
-        "L2_pyramidal": params[0],
-        "L5_basket": 0.19934,
-        "L5_pyramidal": 0.00865,
-    }
-    synaptic_delays_prox = {
-        "L2_basket": 0.1,
-        "L2_pyramidal": 0.1,
-        "L5_basket": 1.0,
-        "L5_pyramidal": 1.0,
-    }
-
-
-    # all NMDA weights are zero; pass None explicitly
-
-    net.add_evoked_drive(
-        "evprox1",
-        mu=params[1],
-        sigma=2.47,
-        numspikes=1,
-        weights_ampa=weights_ampa_p1,
-        weights_nmda=None,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-    )
-
-
-    if (num_params ==2):
-       
-        return net
-
-
-    weights_ampa_d1 = {
-        "L2_basket": 0.006562,
-        "L2_pyramidal": 0.000007,
-        "L5_pyramidal": 0.142300,
-    }
-    weights_nmda_d1 = {
-        "L2_basket": 0.019482,
-        "L2_pyramidal": params[2],
-        "L5_pyramidal": 0.080074,
-    }
-
-
-    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
-    net.add_evoked_drive(
-        "evdist1",
-        mu=params[3],
-        sigma=3.85,
-        numspikes=1,
-        weights_ampa=weights_ampa_d1,
-        weights_nmda=weights_nmda_d1,
-        location="distal",
-        synaptic_delays=synaptic_delays_d1,
-    )
-
-    if (num_params ==4):
-        return net
-    # Second proximal evoked drive. NB: only AMPA weights differ from first
-
-    weights_ampa_p2 = {
-        "L2_basket": 0.000003,
-        "L2_pyramidal": 1.438840,
-        "L5_basket": 0.008958,
-        "L5_pyramidal": params[4],
-    }
-
-    # all NMDA weights are zero; omit weights_nmda (defaults to None)
-    net.add_evoked_drive(
-        "evprox2",
-        mu=params[5],
-        sigma=8.33,
-        numspikes=1,
-        weights_ampa=weights_ampa_p2,
-        location="proximal",
-        synaptic_delays=synaptic_delays_prox,
-    )
-
-    return net
-
-
 
 def set_proximal1(net, weights_ampa_p1, weights_nmda_p1, synaptic_delays_prox, mu=18.98):
     net.add_evoked_drive(
     "evprox1",
     mu=mu,
-    sigma=3.68,
+    sigma=0.01,
     numspikes=1,
     event_seed = event_seed(),
     weights_ampa=weights_ampa_p1,
@@ -480,7 +306,7 @@ def set_distal(net, weights_ampa_d1, weights_nmda_d1, synaptic_delays_d1, mu=63.
     net.add_evoked_drive(
     "evdist1",
     mu=mu,
-    sigma=3.85,
+    sigma=0.01,
     numspikes=1,
     event_seed = event_seed(),
     weights_ampa=weights_ampa_d1,
@@ -493,7 +319,7 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
     net.add_evoked_drive(
     "evprox2",
     mu=mu,
-    sigma=10.3,
+    sigma=0.01,
     numspikes=1,
     event_seed = event_seed(),
     weights_ampa=weights_ampa_p2,
@@ -506,7 +332,7 @@ def set_proximal2(net, weights_ampa_p2, weights_nmda_p2, synaptic_delays_p2, mu=
 def set_network_weights(params=None):
 
     """
-    description: sets network to default values for an ERP as described in hnn tutorial
+    description: sets network for the drives for an ERP as described in hnn tutorial https://jonescompneurolab.github.io/hnn-tutorials/
     """
 
     net = jones_2009_model()
@@ -545,7 +371,8 @@ def set_network_weights(params=None):
     net.add_evoked_drive(
         "evprox1",
         mu=params[5],
-        sigma=2.47,
+        #sigma=0.01,
+        sigma = 5,
         numspikes=1,
         event_seed = event_seed(),
         weights_ampa=weights_ampa_p1,
@@ -575,7 +402,8 @@ def set_network_weights(params=None):
     net.add_evoked_drive(
         "evdist1",
         mu=params[11],
-        sigma=3.85,
+        #sigma=0.01,
+        sigma = 10,
         event_seed = event_seed(),
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -614,7 +442,138 @@ def set_network_weights(params=None):
     net.add_evoked_drive(
         "evprox2",
         mu=params[16],
-        sigma=8.33,
+        #sigma=0.01,
+        sigma = 15,
+        numspikes=1,
+        weights_ampa=weights_ampa_p2,
+        weights_nmda = weights_nmda_p2,
+        event_seed = event_seed(),
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox2,
+    )
+
+    return net
+
+
+
+def set_network_weights_std(params=None):
+
+    """
+    description: sets network for the drives for an ERP as described in hnn tutorial https://jonescompneurolab.github.io/hnn-tutorials/
+    """
+
+    net = jones_2009_model()
+
+    if any(isinstance(el, list) for el in params):
+        num_params = len(params[0])
+    else:
+        num_params = len(params)
+
+    print('num_params', num_params)
+
+
+    weights_ampa_p1 = {
+        "L2_basket": params[0],
+        "L2_pyramidal": params[1],
+        "L5_basket": params[2],
+        "L5_pyramidal": 0.00865,
+    }
+
+    weights_nmda_p1 = {
+       "L2_basket": 0.08831,
+        "L2_pyramidal": 0.01525,
+        "L5_basket": params[3],
+        "L5_pyramidal": params[4],
+    }
+
+    synaptic_delays_prox = {
+        "L2_basket": 0.1,
+        "L2_pyramidal": 0.1,
+        "L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    # all NMDA weights are zero; pass None explicitly
+
+    net.add_evoked_drive(
+        "evprox1",
+        mu=params[5],
+        #sigma=0.01,
+        #sigma = 0,
+        sigma = params[6],
+        numspikes=1,
+        event_seed = event_seed(),
+        weights_ampa=weights_ampa_p1,
+        weights_nmda=weights_nmda_p1,
+        location="proximal",
+        synaptic_delays=synaptic_delays_prox,
+    )
+
+
+    if (num_params==7):
+
+        return net
+
+    weights_ampa_d1 = {
+        "L2_basket": params[8],
+        "L2_pyramidal": params[7],
+        "L5_pyramidal": 0.142300,
+        #"L5_basket": params[7],
+    }
+    weights_nmda_d1 = {
+        "L2_basket": params[11],
+        "L2_pyramidal": params[9],
+        "L5_pyramidal": params[10],
+        #"L5_basket": params[10],
+    }
+    synaptic_delays_d1 = {"L2_basket": 0.1, "L2_pyramidal": 0.1, "L5_pyramidal": 0.1}
+    net.add_evoked_drive(
+        "evdist1",
+        mu=params[12],
+        #sigma=0.01,
+        #sigma = 0,
+        sigma = params[13],
+        event_seed = event_seed(),
+        numspikes=1,
+        weights_ampa=weights_ampa_d1,
+        weights_nmda=weights_nmda_d1,
+        location="distal",
+        synaptic_delays=synaptic_delays_d1,
+    )
+
+    if (num_params==14):
+
+        return net
+
+    # Second proximal evoked drive. NB: only AMPA weights differ from first
+    weights_ampa_p2 = {
+        #"L2_basket": params[12],
+        "L2_pyramidal": params[14],
+        #"L5_basket": params[13],
+        "L5_pyramidal": params[15],
+    }
+
+    weights_nmda_p2 = {
+        #"L2_basket": params[12],
+        "L2_pyramidal": params[16],
+        #"L5_basket": params[16],
+        "L5_pyramidal": params[17],
+    }
+
+    synaptic_delays_prox2 = {
+        "L2_pyramidal": 0.1,
+        #"L5_basket": 1.0,
+        "L5_pyramidal": 1.0,
+    }
+
+    # all NMDA weights are zero; omit weights_nmda (defaults to None)
+
+    net.add_evoked_drive(
+        "evprox2",
+        mu=params[18],
+        #sigma=0.01,
+        #sigma = 0,
+        sigma = params[19],
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         weights_nmda = weights_nmda_p2,
