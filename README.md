@@ -1,6 +1,6 @@
-# Inferring neural microscale parameters from EEG-signals
+# Inferring microscale parameters from EEG-data with the help of simulation-based inference
 
-My thesis project about extracting microscale parameters from the (macroscale) signal of an EEG or MEG with the help of simulation-based inference.
+My thesis project about extracting microscale parameters from an EEG or MEG with the help of simulation-based inference.
 
 The simulations are based on the HNN-simulator: https://hnn.brown.edu/
 
