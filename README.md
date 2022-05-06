@@ -84,7 +84,7 @@ Some of the main results were:
 
 
 
-##### Toy example:
+##### Gaussian toy example:
 
 - ***toy_example_maf_03_05***: Results for NIPE and SNPE comparison of Gaussian toy example. Can be used to compare KL divergence and estimated posterior variances of the marginals.
 - ***toy_example_maf_03_05_ratio:*** Results for NIPE-BUDGET (with reallocation of simulation budget) and SNPE comparison of Gaussian toy example. Can be used to compare estimated posterior variances of the marginals.
