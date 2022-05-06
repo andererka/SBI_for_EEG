@@ -26,17 +26,17 @@ Some of the main results were:
 
 - Later inferred subsets were more over-dispersed for NIPE, while early inferred subsets seemed to be a bit under-dispersed. This could be partially resolved by reallocating simulation budget towards more simulations in the last step and less in the first step
 
-![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/final_figures/toy_example_maf_03_05_ratio_notebook.png)
+![](final_figures/toy_example_maf_03_05_ratio_notebook.png)
 
 - Compensation mechanisms could be discovered with both methods (SNPE and NIPE), which we investigated with kde density plots and (conditional) correlation matrices. 
 
 - Differences between experimental conditions on the micro-scale level can be revealed with our approach. These were, besides other methods, shown by contour plots of the 2d marginals of the parameter posteriors, which is shown below. For more details, please be referred to my thesis. 
 
-  ![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/final_figures/contour_plots_threshold_versus_no_green_blue4.png)
+  ![](final_figures/contour_plots_threshold_versus_no_green_blue4.png)
 
 - Posterior predictive checks further showed that the method was able to predict observations of a certain condition.
 
-![](/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/final_figures/ppc_threshold_versus_No_nipe.png)
+![](final_figures/ppc_threshold_versus_No_nipe.png)
 
 ### Code structure:
 
