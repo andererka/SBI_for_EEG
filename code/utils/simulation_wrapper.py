@@ -44,7 +44,7 @@ class SimulationWrapper:
 
     def simulation_wrapper_all(self, params):  # input possibly array of 1 or more params
         """
-        simulation wrapper for up to 17 params
+        simulation wrapper for 17 (without std) or 20 params (with std)
         -sets weights for hnn simulator according to the drawn parameters
 
         simulation stops earlier (after ~70ms) if only the weights for the first proximal drive 
