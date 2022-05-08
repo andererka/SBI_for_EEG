@@ -13,7 +13,7 @@ def event_seed():
     description: makes sure that one does not take the same random seed for each simulation as it would be the default in the hnn core code;
     permalink to the hnn code location: https://github.com/jonescompneurolab/hnn-core/blob/0406ed1a2b2335b786e83eb1698f27a5c3dcdadc/hnn_core/drives.py#L262
     """
-    seed = randrange(2000)
+    seed = randrange(20000)
     return seed
 
 
@@ -372,7 +372,7 @@ def set_network_weights(params=None):
         "evprox1",
         mu=params[5],
         #sigma=0.01,
-        sigma = 5,
+        sigma = 3.6,
         numspikes=1,
         event_seed = event_seed(),
         weights_ampa=weights_ampa_p1,
@@ -403,7 +403,7 @@ def set_network_weights(params=None):
         "evdist1",
         mu=params[11],
         #sigma=0.01,
-        sigma = 10,
+        sigma = 3.85,
         event_seed = event_seed(),
         numspikes=1,
         weights_ampa=weights_ampa_d1,
@@ -443,7 +443,7 @@ def set_network_weights(params=None):
         "evprox2",
         mu=params[16],
         #sigma=0.01,
-        sigma = 15,
+        sigma = 10.3,
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         weights_nmda = weights_nmda_p2,
@@ -502,7 +502,7 @@ def set_network_weights_std(params=None):
         #sigma = 0,
         sigma = params[6],
         numspikes=1,
-        event_seed = event_seed(),
+        #event_seed = event_seed(),
         weights_ampa=weights_ampa_p1,
         weights_nmda=weights_nmda_p1,
         location="proximal",
@@ -533,7 +533,7 @@ def set_network_weights_std(params=None):
         #sigma=0.01,
         #sigma = 0,
         sigma = params[13],
-        event_seed = event_seed(),
+        #event_seed = event_seed(),
         numspikes=1,
         weights_ampa=weights_ampa_d1,
         weights_nmda=weights_nmda_d1,
@@ -577,7 +577,7 @@ def set_network_weights_std(params=None):
         numspikes=1,
         weights_ampa=weights_ampa_p2,
         weights_nmda = weights_nmda_p2,
-        event_seed = event_seed(),
+        #event_seed = event_seed(),
         location="proximal",
         synaptic_delays=synaptic_delays_prox2,
     )
