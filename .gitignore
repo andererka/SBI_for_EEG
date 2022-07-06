@@ -1,9 +1,5 @@
 test.py
 
-results/
-
-**/code/results/
-
 
 .git/
 **/.git/
@@ -11,4 +7,4 @@ results/
 
 .gitattributes
 
-**/code/data/
+
