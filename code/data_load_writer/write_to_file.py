@@ -29,8 +29,7 @@ class WriteToFile(object):
         density_estimator="maf",
         num_params=None,
         num_samples=None,
-        slurm = True,
-       
+        slurm=True,
     ):
         self.date = datetime.datetime.now().strftime("%m-%d-%Y_%H:%M:%S")
         self.path_parent = path_parent
@@ -41,15 +40,17 @@ class WriteToFile(object):
         self.num_params = num_params
         self.num_samples = num_samples
 
-        save_to = '/mnt/qb/work/macke/kanderer29/'
+        save_to = "/mnt/qb/work/macke/kanderer29/"
 
-        if (slurm== False):
-            self.folder = '/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/code/' + path_parent + self.experiment 
-            
+        if slurm == False:
+            self.folder = (
+                "/home/kathi/Documents/Master_thesis/sbi_for_eeg_data/code/"
+                + path_parent
+                + self.experiment
+            )
+
         else:
-            self.folder = save_to + path_parent + self.experiment 
-
-
+            self.folder = save_to + path_parent + self.experiment
 
     def save_posterior(self, posterior):
 
@@ -59,61 +60,58 @@ class WriteToFile(object):
 
     def save_prior(self, prior):
 
-
         torch.save(prior, "prior.pt")
 
-
-    def save_proposal(self, prop, name='default'):
+    def save_proposal(self, prop, name="default"):
 
         file_name = "proposal.pt"
         file_name = make_file_name(file_name)
 
-        if (name=='default'):
+        if name == "default":
             torch.save(prop, file_name)
         else:
             torch.save(prop, "{}/{}".format(name, file_name))
 
-    def save_observations(self, x, name='default'):
+    def save_observations(self, x, name="default"):
 
         file_name = "obs.pt"
         file_name = make_file_name(file_name)
 
-        if (name=='default'):
+        if name == "default":
             torch.save(x, file_name)
         else:
             torch.save(x, "{}/{}".format(name, file_name))
 
-    def save_obs_without(self, x_without, name='default'):
+    def save_obs_without(self, x_without, name="default"):
 
         file_name = "obs_without.pt"
         file_name = make_file_name(file_name)
         print(file_name)
 
-        if (name=='default'):
+        if name == "default":
             torch.save(x_without, file_name)
         else:
             torch.save(x_without, "{}/{}".format(name, file_name))
 
-    def save_thetas(self, thetas, name='default'):
+    def save_thetas(self, thetas, name="default"):
 
         file_name = "thetas.pt"
         file_name = make_file_name(file_name)
         print(file_name)
 
-        if (name=='default'):
+        if name == "default":
             torch.save(thetas, file_name)
         else:
             torch.save(thetas, "{}/{}".format(name, file_name))
 
     def save_fig(self, fig, figname=None):
 
-        file_name = figname     
-        if file_name== None:
+        file_name = figname
+        if file_name == None:
             file_name = "{}/fig.png".format(self.folder)
 
-
         else:
-            file_name = make_file_name(file_name) 
+            file_name = make_file_name(file_name)
             file_name = "{}/figure{}.png".format(self.folder, file_name)
 
         fig.savefig(file_name)
@@ -132,19 +130,15 @@ class WriteToFile(object):
             "finish_time": finish_time,
         }
 
-        file_name = make_file_name('meta') 
+        file_name = make_file_name("meta")
 
         with open(self.folder + "/" + file_name, "a") as f:
             json.dump(json_dict, f)
             f.close()
 
     def save_all(
-        self,
-        start_time=None,
-        finish_time=None,
-        source=__file__,
+        self, start_time=None, finish_time=None, source=__file__,
     ):
-
 
         self.save_meta(start_time, finish_time)
 

@@ -57,20 +57,25 @@ class Combined(Distribution):
         """
         index = self.number_params
 
-        print('x shape', x.shape)
-        print('index', index)
+        print("x shape", x.shape)
+        print("index", index)
 
         log_prob_posterior = self._posterior_distribution.log_prob(x[0][:index])
         log_prob_prior = self._prior_distribution.log_prob(x[0][index:])
 
         log_prob = torch.add(log_prob_posterior, log_prob_prior)
 
-        print('log prob', log_prob)
-
+        print("log prob", log_prob)
 
         return log_prob
 
-    def sample(self, sample_shape=torch.Size(), x: Optional[Tensor] = None, show_progress_bars: bool = True, sample_with: Optional[str] = None):
+    def sample(
+        self,
+        sample_shape=torch.Size(),
+        x: Optional[Tensor] = None,
+        show_progress_bars: bool = True,
+        sample_with: Optional[str] = None,
+    ):
 
         """
         samples from combined prior distribution
@@ -83,47 +88,39 @@ class Combined(Distribution):
 
             else:
 
-                theta_posterior = self._posterior_distribution.sample(sample_shape, x = x[:,:x.shape[1]])
+                theta_posterior = self._posterior_distribution.sample(
+                    sample_shape, x=x[:, : x.shape[1]]
+                )
 
-            print('theta posterior shape', theta_posterior.shape)
+            print("theta posterior shape", theta_posterior.shape)
 
             theta_prior = self._prior_distribution.sample(sample_shape)
-    
-            #make sure that thetas are in the right shape; otherwise unsqueeze:
+
+            # make sure that thetas are in the right shape; otherwise unsqueeze:
             if theta_posterior.dim() == 1:
-                
+
                 theta_posterior = torch.unsqueeze(theta_posterior, 0)
 
             if theta_prior.dim() == 1:
 
                 theta_prior = torch.unsqueeze(theta_prior, 0)
 
-
             theta = torch.cat((theta_posterior, theta_prior), 1)
 
-            print('theta shape', theta.shape)
+            print("theta shape", theta.shape)
 
-
-        
             return theta
-
 
     @property
     def mean(self):
         """
         Returns the mean of the distribution.
         """
-        return torch.mean(self.sample((1000,)),dim = 0)
+        return torch.mean(self.sample((1000,)), dim=0)
 
     @property
     def variance(self):
         """
         Returns the mean of the distribution.
         """
-        return torch.var(self.sample((1000,)),dim = 0)
-
-
-
-
-
-
+        return torch.var(self.sample((1000,)), dim=0)

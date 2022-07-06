@@ -3,10 +3,7 @@ from data_load_writer import load_from_file as lf
 from data_load_writer import write_to_file
 
 
-from summary_features.calculate_summary_features import (
-    calculate_summary_stats_temporal
-
-)
+from summary_features.calculate_summary_features import calculate_summary_stats_temporal
 
 import numpy as np
 import torch
@@ -81,127 +78,284 @@ def main(argv):
     try:
         density_estimator = argv[5]
     except:
-        density_estimator = 'nsf'
+        density_estimator = "nsf"
     try:
-        #if argument input is 0, bool is giving False, if 1 bool is returning True
+        # if argument input is 0, bool is giving False, if 1 bool is returning True
         changed_order = bool(int(argv[6]))
     except:
         changed_order = False
 
-
     sim_wrapper = SimulationWrapper(num_params=25)
 
+    prior_min = [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        13.3,  # prox1 weights
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        51.980,  # distal weights
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        112.13,
+    ]  # prox2 weights
 
+    # ampa, nmda [0.927, 0.160, 2.093, 0.0519,        1.0, 1.0, 1.0, 1.0, 35.9,
+    #           0.0394, 0.000042, 0.039372,           0.854, 0.117,  0.480, 75.08,
+    #            0.000018, 8.633, 0.05375, 4.104,     1.0, 1.0, 1.0, 1.0, 162.110]
 
-    prior_min = [0, 0, 0, 0, 0, 0, 0, 0, 13.3,    # prox1 weights
-                0, 0, 0, 0, 0, 0, 51.980,            # distal weights
-                0, 0, 0, 0, 0, 0, 0, 0, 112.13]       # prox2 weights
-  
+    prior_max = [
+        0.927,
+        1.0,
+        0.160,
+        1.0,
+        2.093,
+        1.0,
+        0.0519,
+        1.0,
+        35.9,
+        0.0394,
+        0.117,
+        0.000042,
+        0.025902,
+        0.854,
+        0.480,
+        75.08,
+        0.000018,
+        1.0,
+        8.633,
+        1.0,
+        0.05375,
+        1.0,
+        4.104,
+        1.0,
+        162.110,
+    ]
 
-# ampa, nmda [0.927, 0.160, 2.093, 0.0519,        1.0, 1.0, 1.0, 1.0, 35.9, 
-#           0.0394, 0.000042, 0.039372,           0.854, 0.117,  0.480, 75.08, 
-#            0.000018, 8.633, 0.05375, 4.104,     1.0, 1.0, 1.0, 1.0, 162.110]
+    true_params = torch.tensor(
+        [
+            [
+                0.277,
+                0.3739,
+                0.0399,
+                0.0,
+                0.6244,
+                0.3739,
+                0.034,
+                0.0,
+                18.977,
+                0.011467,
+                0.06337,
+                0.000012,
+                0.013407,
+                0.466095,
+                0.0767,
+                63.08,
+                0.000005,
+                0.116706,
+                4.6729,
+                0.016733,
+                0.011468,
+                0.061556,
+                2.33,
+                0.0679,
+                120.86,
+            ]
+        ]
+    )
 
-
-
-    prior_max = [0.927, 1.0, 0.160, 1.0,  2.093, 1.0, 0.0519, 1.0, 35.9,
-                0.0394, 0.117, 0.000042, 0.025902, 0.854, 0.480, 75.08, 
-                0.000018, 1.0, 8.633, 1.0, 0.05375, 1.0, 4.104,  1.0, 162.110]
-
-    true_params = torch.tensor([[0.277, 0.3739, 0.0399, 0.0, 0.6244, 0.3739, 0.034, 0.0, 18.977, 
-                    0.011467, 0.06337, 0.000012, 0.013407, 0.466095, 0.0767, 63.08, 
-                    0.000005, 0.116706, 4.6729, 0.016733, 0.011468, 0.061556, 2.33, 0.0679, 120.86]])
-
-    parameter_names = ["prox1_ampa_l2_bas","prox1_nmda_l2_bas","prox1_ampa_l2_pyr", "prox1_nmda_l2_pyr", "prox1_ampa_l5_bas", "prox1_nmda_l5_bas", "prox1_ampa_l5_pyr", "prox1_nmda_l5_pyr",
-     "t_prox1",
-     "dist_ampa_l2_bas", "dist_nmda_l2_bas", "dist_ampa_l2_pyr", "dist_nmda_l2_pyr", "dist_ampa_l5_pyr","dist_nmda_l5_pyr",
-     "t_dist", 
-     "prox2_ampa_l2_bas","prox2_nmda_l2_bas","prox2_ampa_l2_pyr", "prox2_nmda_l2_pyr", "prox2_ampa_l5_bas", "prox2_nmda_l5_bas", "prox2_ampa_l5_pyr", "prox2_nmda_l5_pyr",
-     "t_prox2"]
+    parameter_names = [
+        "prox1_ampa_l2_bas",
+        "prox1_nmda_l2_bas",
+        "prox1_ampa_l2_pyr",
+        "prox1_nmda_l2_pyr",
+        "prox1_ampa_l5_bas",
+        "prox1_nmda_l5_bas",
+        "prox1_ampa_l5_pyr",
+        "prox1_nmda_l5_pyr",
+        "t_prox1",
+        "dist_ampa_l2_bas",
+        "dist_nmda_l2_bas",
+        "dist_ampa_l2_pyr",
+        "dist_nmda_l2_pyr",
+        "dist_ampa_l5_pyr",
+        "dist_nmda_l5_pyr",
+        "t_dist",
+        "prox2_ampa_l2_bas",
+        "prox2_nmda_l2_bas",
+        "prox2_ampa_l2_pyr",
+        "prox2_nmda_l2_pyr",
+        "prox2_ampa_l5_bas",
+        "prox2_nmda_l5_bas",
+        "prox2_ampa_l5_pyr",
+        "prox2_nmda_l5_pyr",
+        "t_prox2",
+    ]
 
     if changed_order:
 
-        prior_max = [0.0519, 1.0, 2.093, 1.0, 0.160, 1.0, 0.927, 1.0, 35.9,
-            0.854, 0.480, 0.000042, 0.025902, 0.0394, 0.117, 75.08, 
-            4.104,  1.0, 0.05375, 1.0,  8.633, 1.0, 0.000018, 1.0, 162.110]
+        prior_max = [
+            0.0519,
+            1.0,
+            2.093,
+            1.0,
+            0.160,
+            1.0,
+            0.927,
+            1.0,
+            35.9,
+            0.854,
+            0.480,
+            0.000042,
+            0.025902,
+            0.0394,
+            0.117,
+            75.08,
+            4.104,
+            1.0,
+            0.05375,
+            1.0,
+            8.633,
+            1.0,
+            0.000018,
+            1.0,
+            162.110,
+        ]
 
-        true_params = torch.tensor([[0.034, 0.0, 0.6244, 0.3739, 0.0399, 0.0, 0.277, 0.3739, 18.977, 
-                        0.466095, 0.0767, 0.000012, 0.013407, 0.011467, 0.06337, 63.08, 
-                        2.33, 0.0679, 0.011468, 0.061556, 4.6729, 0.016733, 0.000005, 0.116706, 120.86]])
+        true_params = torch.tensor(
+            [
+                [
+                    0.034,
+                    0.0,
+                    0.6244,
+                    0.3739,
+                    0.0399,
+                    0.0,
+                    0.277,
+                    0.3739,
+                    18.977,
+                    0.466095,
+                    0.0767,
+                    0.000012,
+                    0.013407,
+                    0.011467,
+                    0.06337,
+                    63.08,
+                    2.33,
+                    0.0679,
+                    0.011468,
+                    0.061556,
+                    4.6729,
+                    0.016733,
+                    0.000005,
+                    0.116706,
+                    120.86,
+                ]
+            ]
+        )
 
-
-        parameter_names = ["prox1_ampa_l5_pyr", "prox1_nmda_l5_pyr", "prox1_ampa_l5_bas", "prox1_nmda_l5_bas",  "prox1_ampa_l2_pyr", "prox1_nmda_l2_pyr", "prox1_ampa_l2_bas","prox1_nmda_l2_bas",
-        "t_prox1",
-        "dist_ampa_l5_pyr","dist_nmda_l5_pyr", "dist_ampa_l2_pyr", "dist_nmda_l2_pyr", "dist_ampa_l2_bas", "dist_nmda_l2_bas", 
-        "t_dist", 
-        "prox2_ampa_l5_pyr", "prox2_nmda_l5_pyr", "prox2_ampa_l5_bas", "prox2_nmda_l5_bas", "prox2_ampa_l2_pyr", "prox2_nmda_l2_pyr", "prox2_ampa_l2_bas","prox2_nmda_l2_bas", 
-        "t_prox2"]
-
+        parameter_names = [
+            "prox1_ampa_l5_pyr",
+            "prox1_nmda_l5_pyr",
+            "prox1_ampa_l5_bas",
+            "prox1_nmda_l5_bas",
+            "prox1_ampa_l2_pyr",
+            "prox1_nmda_l2_pyr",
+            "prox1_ampa_l2_bas",
+            "prox1_nmda_l2_bas",
+            "t_prox1",
+            "dist_ampa_l5_pyr",
+            "dist_nmda_l5_pyr",
+            "dist_ampa_l2_pyr",
+            "dist_nmda_l2_pyr",
+            "dist_ampa_l2_bas",
+            "dist_nmda_l2_bas",
+            "t_dist",
+            "prox2_ampa_l5_pyr",
+            "prox2_nmda_l5_pyr",
+            "prox2_ampa_l5_bas",
+            "prox2_nmda_l5_bas",
+            "prox2_ampa_l2_pyr",
+            "prox2_nmda_l2_pyr",
+            "prox2_ampa_l2_bas",
+            "prox2_nmda_l2_bas",
+            "t_prox2",
+        ]
 
     file_writer = write_to_file.WriteToFile(
-    experiment=experiment_name,
-    num_sim=num_sim,
-    density_estimator=density_estimator,
-    num_params=len(prior_max),
-    num_samples=num_samples,
-    slurm=slurm,
+        experiment=experiment_name,
+        num_sim=num_sim,
+        density_estimator=density_estimator,
+        num_params=len(prior_max),
+        num_samples=num_samples,
+        slurm=slurm,
     )
 
     print(file_writer.folder)
 
-
     try:
         os.mkdir(file_writer.folder)
     except:
-        print('file exists')
-    
+        print("file exists")
 
     # stores the running file into the result folder for later reference:
-    open('{}/sequential_inference_allparams.py'.format(file_writer.folder), 'a').close()
-    shutil.copyfile(str(os.getcwd() + '/sequential_inference_allparams.py'), str(file_writer.folder+ '/sequential_inference_allparams.py'))
-
+    open("{}/sequential_inference_allparams.py".format(file_writer.folder), "a").close()
+    shutil.copyfile(
+        str(os.getcwd() + "/sequential_inference_allparams.py"),
+        str(file_writer.folder + "/sequential_inference_allparams.py"),
+    )
 
     ##define list of number of parameters inferred in each incremental round:
-    #range_list = [4,6,9,11,13,16,18,20,25]
+    # range_list = [4,6,9,11,13,16,18,20,25]
     range_list = [9, 16, 25]
 
-    prior_i = utils.torchutils.BoxUniform(low=prior_min[0:range_list[0]], high=prior_max[0:range_list[0]])
+    prior_i = utils.torchutils.BoxUniform(
+        low=prior_min[0 : range_list[0]], high=prior_max[0 : range_list[0]]
+    )
 
     inf = SNPE_C(prior_i, density_estimator=density_estimator)
 
-
     obs_real_complete = inference.run_only_sim(
-        torch.tensor([list(true_params[0][0:])]), 
-        simulation_wrapper = sim_wrapper, 
-        num_workers=1
+        torch.tensor([list(true_params[0][0:])]),
+        simulation_wrapper=sim_wrapper,
+        num_workers=1,
     )
 
-    for index in range(len(range_list)-1):
+    for index in range(len(range_list) - 1):
 
-        ## i defines number of parameters to be inferred, j indicates how many parameters 
-        #to come in the next round
+        ## i defines number of parameters to be inferred, j indicates how many parameters
+        # to come in the next round
         i = range_list[index]
-        j = range_list[index+1]
+        j = range_list[index + 1]
 
         print(i, j)
-
-
 
         start_time = datetime.datetime.now()
 
         theta, x_without = inference.run_sim_theta_x(
-            prior_i, 
-            sim_wrapper,
-            num_simulations=num_sim,
-            num_workers=num_workers
+            prior_i, sim_wrapper, num_simulations=num_sim, num_workers=num_workers
         )
 
         print(x_without.shape)
         print(obs_real_complete[0].shape)
-        obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+        obs_real = [obs_real_complete[0][: x_without.shape[1]]]
 
         print(obs_real[0].shape)
-
 
         x = calculate_summary_stats_temporal(x_without)
         inf = inf.append_simulations(theta, x)
@@ -211,19 +365,19 @@ def main(argv):
 
         obs_real_stat = calculate_summary_stats_temporal(obs_real)
 
-        print('obs real stat', obs_real_stat)
+        print("obs real stat", obs_real_stat)
 
         proposal1 = posterior.set_default_x(obs_real_stat)
 
-        next_prior = utils.torchutils.BoxUniform(low=prior_min[i:j], high=prior_max[i:j])
+        next_prior = utils.torchutils.BoxUniform(
+            low=prior_min[i:j], high=prior_max[i:j]
+        )
 
         combined_prior = Combined(proposal1, next_prior, number_params_1=i)
-
 
         ## set inf for next round:
         inf = SNPE_C(combined_prior, density_estimator=density_estimator)
 
-    
         ## set combined prior to be the new prior_i:
         prior_i = combined_prior
 
@@ -231,30 +385,24 @@ def main(argv):
 
         diff_time = finish_time - start_time
 
-        json_dict = {
-        "CPU time for step:": str(diff_time),
-	    'thetas used': i}
-        with open( "meta_{}.json".format(i), "a") as f:
+        json_dict = {"CPU time for step:": str(diff_time), "thetas used": i}
+        with open("meta_{}.json".format(i), "a") as f:
             json.dump(json_dict, f)
             f.close()
 
-        torch.save(x_without, 'x_without{}.pt'.format(i))
-        torch.save(theta, 'thetas{}.pt'.format(i))
+        torch.save(x_without, "x_without{}.pt".format(i))
+        torch.save(theta, "thetas{}.pt".format(i))
 
     start_time = datetime.datetime.now()
 
-
     theta, x_without = inference.run_sim_theta_x(
-        prior_i, 
-        sim_wrapper,
-        num_simulations= num_sim,
-        num_workers=num_workers
+        prior_i, sim_wrapper, num_simulations=num_sim, num_workers=num_workers
     )
 
     file_writer.save_obs_without(x_without)
     file_writer.save_thetas(theta)
 
-    obs_real = [obs_real_complete[0][:x_without.shape[1]]]
+    obs_real = [obs_real_complete[0][: x_without.shape[1]]]
 
     x = calculate_summary_stats_temporal(x_without)
     inf = inf.append_simulations(theta, x)
@@ -266,18 +414,16 @@ def main(argv):
 
     posterior.set_default_x(obs_real_stat)
 
-
     file_writer.save_posterior(posterior)
 
     ## tries to store posterior without torch.save as there is a known bug that torch.save cannot save attributes of class
-    with open('posterior2.pt', 'rb') as f:
+    with open("posterior2.pt", "rb") as f:
         pickle.dump(posterior, f)
-
 
     file_writer.save_prior(prior_i)
 
-    torch.save(combined_prior, 'combined_prior.pt')
-    torch.save(neural_dens, 'neural_dens.pt')
+    torch.save(combined_prior, "combined_prior.pt")
+    torch.save(neural_dens, "neural_dens.pt")
 
     os.chdir(file_writer.folder)
 
@@ -290,25 +436,25 @@ def main(argv):
     diff_time = finish_time - start_time
 
     json_dict = {
-    "CPU time for step:": str(diff_time),
-    "parameter names:": str(parameter_names),
-    'change order:': str(changed_order),
-    'true parameters:': str(true_params),
-    'number of simulations:': str(num_sim),
+        "CPU time for step:": str(diff_time),
+        "parameter names:": str(parameter_names),
+        "change order:": str(changed_order),
+        "true parameters:": str(true_params),
+        "number of simulations:": str(num_sim),
+        "range list:": str(range_list),
+    }
 
-    'range list:': str(range_list)}
-
-    with open( "meta_overview.json".format(i), "a") as f:
+    with open("meta_overview.json".format(i), "a") as f:
         json.dump(json_dict, f)
         f.close()
 
-    torch.save(obs_real, 'obs_real.pt')
+    torch.save(obs_real, "obs_real.pt")
 
 
 if __name__ == "__main__":
     torch.manual_seed(3)
     np.random.seed(3)
-    #print(os.getcwd())
-    #os.chdir('code')
+    # print(os.getcwd())
+    # os.chdir('code')
     main(sys.argv[1:])
-    #main(['20', '20', '4', 'try', '0'])
+    # main(['20', '20', '4', 'try', '0'])

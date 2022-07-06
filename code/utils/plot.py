@@ -15,7 +15,6 @@ from scipy import spatial
 import cycler
 
 
-
 import collections
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -32,7 +31,6 @@ from torch import Tensor
 from sbi.utils import eval_conditional_density
 
 
-
 try:
     collectionsAbc = collections.abc
 except:
@@ -42,11 +40,12 @@ except:
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 
 color_theme = plt.cm.Greens(torch.linspace(0, 1, 2))
-color_theme[1] = torch.tensor([225, 0, 0, 255]).numpy() / 255 
-color_theme[0] = torch.tensor([31, 119, 180, 255]).numpy() / 255  
+color_theme[1] = torch.tensor([225, 0, 0, 255]).numpy() / 255
+color_theme[0] = torch.tensor([31, 119, 180, 255]).numpy() / 255
 
 mpl.rcParams["axes.prop_cycle"] = cycler.cycler("color", color_theme)
 mpl.rc("image", cmap="Blues")
+
 
 def cov(X: Tensor, rowvar: bool = False):
     """Estimate a covariance matrix given data.
@@ -72,11 +71,12 @@ def cov(X: Tensor, rowvar: bool = False):
         X = X.view(1, -1)
     if not rowvar and X.size(0) != 1:
         X = X.t()
-    
+
     fact = 1.0 / (X.size(1) - 1)
     X -= torch.mean(X, dim=1, keepdim=True)
-    Xt = X.t()  
+    Xt = X.t()
     return fact * X.matmul(Xt).squeeze()
+
 
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 def compare_vars(samples: List[Tensor], base_sample: Tensor) -> Tensor:
@@ -100,7 +100,8 @@ def compare_vars(samples: List[Tensor], base_sample: Tensor) -> Tensor:
         var_ratios.append(var_sample / var_base)
     return torch.vstack(var_ratios).T
 
-#taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
+
+# taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 def sample_KL(X: Tensor, Y: Tensor) -> float:
     """Uses nearest neighbour search to estimate the KL divergence of X and Y
     coming from 2 distributions P and Q.
@@ -179,6 +180,7 @@ def compare_KLs(
     KLs = torch.hstack(KLs)
     return KLs
 
+
 # taken from mackelab/Identifying-informative-features-of-HH-models-using-SBI
 def plot_varchanges(
     samples: List[Tensor],
@@ -204,7 +206,7 @@ def plot_varchanges(
     Returns:
         ax: plot axes.
     """
-   
+
     if batchsize > 0:
         # TODO: IF BASESAMPLE ALSO HAS BATCHES -> split and align them!
         batched_samples = samples
@@ -224,11 +226,7 @@ def plot_varchanges(
 
     ax = plt.gca()
     cmap = cm.get_cmap("coolwarm", 10)
-    im = ax.imshow(
-        Vars_agg.numpy(),
-        cmap=cmap,
-        norm=LogNorm(vmin=1, vmax=zlims[1])
-    )
+    im = ax.imshow(Vars_agg.numpy(), cmap=cmap, norm=LogNorm(vmin=1, vmax=zlims[1]))
     ax.set_title(plot_label)
     if xticklabels != None:
         xrange = range(len(samples))
@@ -317,7 +315,6 @@ def plot_KLs(
                 positions=(torch.arange(N) + idx / (N) - 1 / (N + 1)).numpy(),
                 widths=1 / (N),
                 patch_artist=True,
-
                 medianprops={"color": "black"},
             )
             for patch in ax["boxes"]:
@@ -356,10 +353,9 @@ def conditional_pairplot_comparison(
     fig=None,
     axes=None,
     color_map=None,
-    alpha1 = 1,
-    alpha2 = 1,
-    color_contours = ['red', 'blue'],
-
+    alpha1=1,
+    alpha2=1,
+    color_contours=["red", "blue"],
     **kwargs,
 ):
     r"""
@@ -405,48 +401,40 @@ def conditional_pairplot_comparison(
     # Setting these is required because _pairplot_scaffold will check if opts['diag'] is
     # `None`. This would break if opts has no key 'diag'. Same for 'upper'.
 
-    print('check')
+    print("check")
     diag = "cond"
     upper = "cond"
 
     opts = _get_default_opts()
-
 
     # update the defaults dictionary by the current values of the variables (passed by
     # the user)
     opts = _update(opts, locals())
     opts = _update(opts, kwargs)
 
-    opts['density'] = density
-    opts['condition'] = condition
+    opts["density"] = density
+    opts["condition"] = condition
 
- 
     opts2 = _get_default_opts()
-
 
     opts2 = _update(opts2, locals())
     opts2 = _update(opts2, kwargs)
 
- 
-    opts2['density'] = density2
-    opts2['condition'] = condition2
-
+    opts2["density"] = density2
+    opts2["condition"] = condition2
 
     if color_map == None:
-        opts["samples_colors"] = ['viridis', 'plasma']
+        opts["samples_colors"] = ["viridis", "plasma"]
     else:
-        opts["samples_colors"] = color_map 
+        opts["samples_colors"] = color_map
 
-    opts['samples_colors2'] = color_contours
-
-
+    opts["samples_colors2"] = color_contours
 
     dim, limits, eps_margins = prepare_for_conditional_plot(condition, opts)
 
-    #dim, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
+    # dim, limits2, eps_margins2 = prepare_for_conditional_plot(condition2, opts2)
 
-    #diag_func = get_conditional_diag_func(opts, opts2, limits, eps_margins,  resolution)
-
+    # diag_func = get_conditional_diag_func(opts, opts2, limits, eps_margins,  resolution)
 
     def diag_func(row, **kwargs):
         p_vector = (
@@ -480,26 +468,17 @@ def conditional_pairplot_comparison(
             .numpy()
         )
         h = plt.plot(
-            np.linspace(
-                limits[row, 0],
-                limits[row, 1],
-                resolution,
-            ),
+            np.linspace(limits[row, 0], limits[row, 1], resolution,),
             p_vector,
-            c=opts['samples_colors2'][0],
+            c=opts["samples_colors2"][0],
         )
         h2 = plt.plot(
-            np.linspace(
-                limits[row, 0],
-                limits[row, 1],
-                resolution,
-            ),
+            np.linspace(limits[row, 0], limits[row, 1], resolution,),
             p_vector2,
-            c=opts['samples_colors2'][1],
+            c=opts["samples_colors2"][1],
         )
 
-    opts['lower'] = None
-
+    opts["lower"] = None
 
     def upper_func(row, col, **kwargs):
         p_image = (
@@ -528,51 +507,32 @@ def conditional_pairplot_comparison(
                 eps_margins1=eps_margins[row],
                 eps_margins2=eps_margins[col],
                 warn_about_deprecation=False,
-                
             )
             .to("cpu")
             .numpy()
         )
 
-
         h = plt.imshow(
             p_image.T,
             origin="lower",
-            extent=[
-                limits[col, 0],
-                limits[col, 1],
-                limits[row, 0],
-                limits[row, 1],
-            ],
+            extent=[limits[col, 0], limits[col, 1], limits[row, 0], limits[row, 1],],
             aspect="auto",
             cmap=opts["samples_colors"][0],
-            alpha = alpha1
-
+            alpha=alpha1,
         )
 
         h2 = plt.imshow(
             p_image2.T,
             origin="lower",
-            extent=[
-                limits[col, 0],
-                limits[col, 1],
-                limits[row, 0],
-                limits[row, 1],
-                
-            ],
+            extent=[limits[col, 0], limits[col, 1], limits[row, 0], limits[row, 1],],
             aspect="auto",
             cmap=opts["samples_colors"][1],
-            alpha=alpha2
+            alpha=alpha2,
         )
 
-
-
-
-
     return _arrange_plots(
-        diag_func, upper_func, dim, limits,  points, opts,  fig=fig, axes=axes
+        diag_func, upper_func, dim, limits, points, opts, fig=fig, axes=axes
     )
-
 
 
 def _arrange_plots(
@@ -751,7 +711,7 @@ def _arrange_plots(
             # Diagonals       diag_func2(row=col, limits=limits)
 
             if current == "diag":
-              
+
                 diag_func(row=col, limits=limits)
 
                 if len(points) > 0:
@@ -766,12 +726,8 @@ def _arrange_plots(
 
             # Off-diagonals
             else:
-           
-                upper_func(
-                    row=row,
-                    col=col
 
-                )
+                upper_func(row=row, col=col)
 
                 if len(points) > 0:
 
@@ -807,7 +763,6 @@ def _arrange_plots(
                     )
 
     return fig, axes
-
 
 
 def ensure_numpy(t: Union[np.ndarray, torch.Tensor]) -> np.ndarray:
@@ -885,7 +840,7 @@ def _get_default_opts():
         "labels_samples": [],  # for samples
         # colors
         "samples_colors": plt.rcParams["axes.prop_cycle"].by_key()["color"],
-        "samples_cmap": ['Blues', 'Reds'],
+        "samples_cmap": ["Blues", "Reds"],
         # ticks
         "tickformatter": mpl.ticker.FormatStrFormatter("%g"),
         "tick_labels": None,
@@ -899,36 +854,24 @@ def _get_default_opts():
         "hist_offdiag_alpha": 0.5,
         # options for kde
         "kde_diag": {"bw_method": "scott", "bins": 50, "color": "black"},
-        "kde_offdiag": {"bw_method": "scott", "bins": 50, 'alpha':0.5},
+        "kde_offdiag": {"bw_method": "scott", "bins": 50, "alpha": 0.5},
         # options for contour
         "contour_offdiag": {"levels": [0.68], "percentile": True},
         # options for scatter
-        "scatter_offdiag": {
-            "alpha": 0.5,
-            "edgecolor": "none",
-            "rasterized": False,
-        },
+        "scatter_offdiag": {"alpha": 0.5, "edgecolor": "none", "rasterized": False,},
         "scatter_diag": {},
         # options for plot
         "plot_offdiag": {},
         # formatting points (scale, markers)
         "points_diag": {},
-        "points_offdiag": {
-            "marker": ".",
-            "markersize": 20,
-        },
+        "points_offdiag": {"marker": ".", "markersize": 20,},
         # other options
         "fig_bg_colors": {"upper": None, "diag": None, "lower": None},
-        "fig_subplots_adjust": {
-            "top": 0.9,
-        },
+        "fig_subplots_adjust": {"top": 0.9,},
         "subplots": {},
-        "despine": {
-            "offset": 5,
-        },
+        "despine": {"offset": 5,},
         "title_format": {"fontsize": 16},
     }
-
 
 
 def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
@@ -969,27 +912,19 @@ def get_conditional_diag_func(opts, opts2, limits, eps_margins, resolution):
             .numpy()
         )
         h = plt.plot(
-            np.linspace(
-                limits[row, 0],
-                limits[row, 1],
-                resolution,
-            ),
-            p_vector,
-            c='red',
+            np.linspace(limits[row, 0], limits[row, 1], resolution,), p_vector, c="red",
         )
         h2 = plt.plot(
-            #np.linspace(
+            # np.linspace(
             ##    limits[row, 0],
             #    limits[row, 1],
             #    resolution,
-            #),
+            # ),
             p_vector2,
-            c='blue',
+            c="blue",
         )
-        
 
     return diag_func
-
 
 
 def _update(d, u):
@@ -1003,7 +938,6 @@ def _update(d, u):
         else:
             d[k] = v
     return d
-
 
 
 def pairplot_comparison(
@@ -1026,8 +960,7 @@ def pairplot_comparison(
     points_colors: List[str] = plt.rcParams["axes.prop_cycle"].by_key()["color"],
     fig=None,
     axes=None,
-    color_map = ['viridis', 'Greys'],
-
+    color_map=["viridis", "Greys"],
     **kwargs,
 ):
     """
@@ -1079,15 +1012,13 @@ def pairplot_comparison(
     #    opts['lower'] = [opts['lower'] for _ in range(len(samples))]
     opts["lower"] = None
 
-    #diag_func = get_diag_func2(samples, samples2, limits, opts, **kwargs)
+    # diag_func = get_diag_func2(samples, samples2, limits, opts, **kwargs)
 
     def diag_func(row, **kwargs):
         if len(samples) > 0:
             for n, v in enumerate(samples):
                 if opts["diag"][n] == "hist":
-                    h = plt.hist(
-                        v[:, row], color='red', **opts["hist_diag"]
-                    )
+                    h = plt.hist(v[:, row], color="red", **opts["hist_diag"])
                 elif opts["diag"][n] == "kde":
                     density = gaussian_kde(
                         v[:, row], bw_method=opts["kde_diag"]["bw_method"]
@@ -1096,26 +1027,18 @@ def pairplot_comparison(
                         limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
                     )
                     ys = density(xs)
-                    h = plt.plot(
-                        xs,
-                        ys,
-                        color='red',
-                    )
+                    h = plt.plot(xs, ys, color="red",)
                 elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
                     for single_sample in v:
                         plt.axvline(
-                            single_sample[row],
-                            color='red',
-                            **opts["scatter_diag"],
+                            single_sample[row], color="red", **opts["scatter_diag"],
                         )
                 else:
                     pass
 
             for n, v in enumerate(samples2):
                 if opts["diag"][n] == "hist":
-                    h = plt.hist(
-                        v[:, row], color='blue', **opts["hist_diag"]
-                    )
+                    h = plt.hist(v[:, row], color="blue", **opts["hist_diag"])
                 elif opts["diag"][n] == "kde":
                     density = gaussian_kde(
                         v[:, row], bw_method=opts["kde_diag"]["bw_method"]
@@ -1124,21 +1047,14 @@ def pairplot_comparison(
                         limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
                     )
                     ys = density(xs)
-                    h = plt.plot(
-                        xs,
-                        ys,
-                        color='blue',
-                    )
+                    h = plt.plot(xs, ys, color="blue",)
                 elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
                     for single_sample in v:
                         plt.axvline(
-                            single_sample[row],
-                            color='blue',
-                            **opts["scatter_diag"],
+                            single_sample[row], color="blue", **opts["scatter_diag"],
                         )
                 else:
                     pass
-
 
     def upper_func(row, col, **kwargs):
         if len(samples) > 0:
@@ -1151,26 +1067,24 @@ def pairplot_comparison(
                             [limits[col][0], limits[col][1]],
                             [limits[row][0], limits[row][1]],
                         ],
-                        bins = 50
-                
+                        bins=50,
                     )
                     h = plt.imshow(
                         hist.T,
-                        alpha = opts["hist_offdiag"][0]['alpha'],
+                        alpha=opts["hist_offdiag"][0]["alpha"],
                         origin="lower",
-                        extent=[
-                            xedges[0],
-                            xedges[-1],
-                            yedges[0],
-                            yedges[-1],
-                        ],
+                        extent=[xedges[0], xedges[-1], yedges[0], yedges[-1],],
                         aspect="auto",
                         cmap=color_map[0],
-                        
                     )
 
-                if "contour" in opts["upper"][n] or "kde" in opts["upper"][n] or "contourf" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
-  
+                if (
+                    "contour" in opts["upper"][n]
+                    or "kde" in opts["upper"][n]
+                    or "contourf" in opts["upper"][n]
+                    or "kde2d" in opts["upper"][n]
+                ):
+
                     density = gaussian_kde(
                         v[:, [col, row]].T,
                         bw_method=opts["kde_offdiag"][0]["bw_method"],
@@ -1193,7 +1107,7 @@ def pairplot_comparison(
                     if "kde" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
                         h2 = plt.imshow(
                             Z,
-                            cmap = opts["kde_offdiag"][0]['cmap'],
+                            cmap=opts["kde_offdiag"][0]["cmap"],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
@@ -1202,7 +1116,6 @@ def pairplot_comparison(
                             ],
                             origin="lower",
                             aspect="auto",
-                          
                         )
                     if "contour" in opts["upper"][n]:
                         if opts["contour_offdiag"]["percentile"]:
@@ -1220,10 +1133,9 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            alpha =  opts["contour_offdiag"]["alpha1"],
+                            alpha=opts["contour_offdiag"]["alpha1"],
                             colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
-                            
                         )
                     if "contourf" in opts["upper"][n]:
                         if opts["contour_offdiag"]["percentile"]:
@@ -1241,31 +1153,28 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            alpha =  opts["contour_offdiag"]["alpha1"],
-                            cmap = opts["contour_offdiag"]["cmap1"],
+                            alpha=opts["contour_offdiag"]["alpha1"],
+                            cmap=opts["contour_offdiag"]["cmap1"],
                             levels=opts["contour_offdiag"]["levels"],
                         )
                     else:
                         pass
-                if "scatter" in opts["upper"][n] :
+                if "scatter" in opts["upper"][n]:
                     h4 = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color='blue',
+                        color="blue",
                         **opts["scatter_offdiag"][0],
-                        zorder = 3
+                        zorder=3,
                     )
-                if "plot" in opts["upper"][n] :
+                if "plot" in opts["upper"][n]:
                     h5 = plt.plot(
-                        v[:, col],
-                        v[:, row],
-                        color='blue',
-                        **opts["plot_offdiag"][0],
+                        v[:, col], v[:, row], color="blue", **opts["plot_offdiag"][0],
                     )
                 else:
                     pass
 
-            for n, v in enumerate(samples2): 
+            for n, v in enumerate(samples2):
                 if "hist" in opts["upper"][n] or "hist2d" in opts["upper"][n]:
                     hist, xedges, yedges = np.histogram2d(
                         v[:, col],
@@ -1274,25 +1183,23 @@ def pairplot_comparison(
                             [limits[col][0], limits[col][1]],
                             [limits[row][0], limits[row][1]],
                         ],
-                        bins = 50
-                        
+                        bins=50,
                     )
                     h6 = plt.imshow(
                         hist.T,
-                        alpha = opts["hist_offdiag"][0]['alpha'],
+                        alpha=opts["hist_offdiag"][0]["alpha"],
                         origin="lower",
-                        extent=[
-                            xedges[0],
-                            xedges[-1],
-                            yedges[0],
-                            yedges[-1],
-                        ],
+                        extent=[xedges[0], xedges[-1], yedges[0], yedges[-1],],
                         aspect="auto",
                         cmap=color_map[1],
-                        
                     )
 
-                if "contour" in opts["upper"][n] or "kde" in opts["upper"][n] or "contourf" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
+                if (
+                    "contour" in opts["upper"][n]
+                    or "kde" in opts["upper"][n]
+                    or "contourf" in opts["upper"][n]
+                    or "kde2d" in opts["upper"][n]
+                ):
 
                     density = gaussian_kde(
                         v[:, [col, row]].T,
@@ -1302,7 +1209,8 @@ def pairplot_comparison(
                         np.linspace(
                             limits[col][0],
                             limits[col][1],
-                            opts["kde_offdiag"][1]["bins"],"plot"
+                            opts["kde_offdiag"][1]["bins"],
+                            "plot",
                         ),
                         np.linspace(
                             limits[row][0],
@@ -1316,17 +1224,15 @@ def pairplot_comparison(
                     if "kde" in opts["upper"][n] or "kde2d" in opts["upper"][n]:
                         h7 = plt.imshow(
                             Z,
-                            cmap = opts["kde_offdiag"][1]['cmap'],
+                            cmap=opts["kde_offdiag"][1]["cmap"],
                             extent=[
                                 limits[col][0],
                                 limits[col][1],
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            
                             origin="lower",
                             aspect="auto",
-                            
                         )
                     if "contour" in opts["upper"][n]:
                         if opts["contour_offdiag"]["percentile"]:
@@ -1344,8 +1250,8 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            alpha = opts["contour_offdiag"]["alpha2"],
-                            colors='red',
+                            alpha=opts["contour_offdiag"]["alpha2"],
+                            colors="red",
                             levels=opts["contour_offdiag"]["levels"],
                         )
 
@@ -1365,27 +1271,24 @@ def pairplot_comparison(
                                 limits[row][0],
                                 limits[row][1],
                             ],
-                            alpha =  opts["contour_offdiag"]["alpha2"],
-                            #colors="blue",
+                            alpha=opts["contour_offdiag"]["alpha2"],
+                            # colors="blue",
                             levels=opts["contour_offdiag"]["levels"],
-                            cmap = opts["contour_offdiag"]["cmap2"]
+                            cmap=opts["contour_offdiag"]["cmap2"],
                         )
                     else:
                         pass
-                if "scatter" in opts["upper"][n] :
+                if "scatter" in opts["upper"][n]:
                     h9 = plt.scatter(
                         v[:, col],
                         v[:, row],
-                        color='red',
+                        color="red",
                         **opts["scatter_offdiag"][1],
-                        zorder = 3,
+                        zorder=3,
                     )
-                if "plot" in opts["upper"][n] :
+                if "plot" in opts["upper"][n]:
                     h10 = plt.plot(
-                        v[:, col],
-                        v[:, row],
-                        color='red',
-                        **opts["plot_offdiag"][1],
+                        v[:, col], v[:, row], color="red", **opts["plot_offdiag"][1],
                     )
                 else:
                     pass
@@ -1416,11 +1319,7 @@ def get_diag_func2(samples, samples2, limits, opts, **kwargs):
                         limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
                     )
                     ys = density(xs)
-                    h = plt.plot(
-                        xs,
-                        ys,
-                        color='red',
-                    )
+                    h = plt.plot(xs, ys, color="red",)
                 elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
                     for single_sample in v:
                         plt.axvline(
@@ -1444,11 +1343,7 @@ def get_diag_func2(samples, samples2, limits, opts, **kwargs):
                         limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
                     )
                     ys = density(xs)
-                    h = plt.plot(
-                        xs,
-                        ys,
-                        color='blue',
-                    )
+                    h = plt.plot(xs, ys, color="blue",)
                 elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
                     for single_sample in v:
                         plt.axvline(
@@ -1549,7 +1444,6 @@ def prepare_for_plot(samples, limits):
     return samples, dim, limits
 
 
-
 def pairplot(
     samples: Union[
         List[np.ndarray], List[torch.Tensor], np.ndarray, torch.Tensor
@@ -1635,14 +1529,9 @@ def pairplot(
                     h = plt.imshow(
                         hist.T,
                         origin="lower",
-                        extent=[
-                            xedges[0],
-                            xedges[-1],
-                            yedges[0],
-                            yedges[-1],
-                        ],
+                        extent=[xedges[0], xedges[-1], yedges[0], yedges[-1],],
                         aspect="auto",
-                        alpha = opts['hist_offdiag_alpha']
+                        alpha=opts["hist_offdiag_alpha"],
                     )
 
                 elif opts["upper"][n] in [
@@ -1652,19 +1541,14 @@ def pairplot(
                     "contourf",
                 ]:
                     density = gaussian_kde(
-                        v[:, [col, row]].T,
-                        bw_method=opts["kde_offdiag"]["bw_method"],
+                        v[:, [col, row]].T, bw_method=opts["kde_offdiag"]["bw_method"],
                     )
                     X, Y = np.meshgrid(
                         np.linspace(
-                            limits[col][0],
-                            limits[col][1],
-                            opts["kde_offdiag"]["bins"],
+                            limits[col][0], limits[col][1], opts["kde_offdiag"]["bins"],
                         ),
                         np.linspace(
-                            limits[row][0],
-                            limits[row][1],
-                            opts["kde_offdiag"]["bins"],
+                            limits[row][0], limits[row][1], opts["kde_offdiag"]["bins"],
                         ),
                     )
                     positions = np.vstack([X.ravel(), Y.ravel()])
@@ -1681,8 +1565,8 @@ def pairplot(
                             ],
                             origin="lower",
                             aspect="auto",
-                            alpha = opts["kde_offdiag"]['alpha'][n],
-                            cmap = opts["samples_cmap"][n],
+                            alpha=opts["kde_offdiag"]["alpha"][n],
+                            cmap=opts["samples_cmap"][n],
                         )
                     elif opts["upper"][n] == "contour":
                         if opts["contour_offdiag"]["percentile"]:
@@ -1748,11 +1632,7 @@ def get_diag_func(samples, limits, opts, **kwargs):
                         limits[row, 0], limits[row, 1], opts["kde_diag"]["bins"]
                     )
                     ys = density(xs)
-                    h = plt.plot(
-                        xs,
-                        ys,
-                        color=opts["samples_colors"][n],
-                    )
+                    h = plt.plot(xs, ys, color=opts["samples_colors"][n],)
                 elif "upper" in opts.keys() and opts["upper"][n] == "scatter":
                     for single_sample in v:
                         plt.axvline(
@@ -1764,6 +1644,7 @@ def get_diag_func(samples, limits, opts, **kwargs):
                     pass
 
     return diag_func
+
 
 def marginal_plot(
     samples: Union[

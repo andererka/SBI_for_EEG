@@ -4,8 +4,8 @@ from data_load_writer import write_to_file
 
 
 from summary_features.calculate_summary_features import (
-    calculate_summary_stats_temporal, calculate_summary_statistics_alternative
-
+    calculate_summary_stats_temporal,
+    calculate_summary_statistics_alternative,
 )
 
 import numpy as np
@@ -63,7 +63,7 @@ def main(argv):
     try:
         density_estimator = argv[0]
     except:
-        density_estimator = 'mdn'
+        density_estimator = "mdn"
     try:
         num_workers = int(argv[1])
     except:
@@ -91,49 +91,79 @@ def main(argv):
         extra = False
 
     file_writer = write_to_file.WriteToFile(
-        experiment=experiment_name,
-        density_estimator=density_estimator,
-        slurm=slurm,
+        experiment=experiment_name, density_estimator=density_estimator, slurm=slurm,
     )
 
     try:
         os.mkdir(file_writer.folder)
     except:
-        print('file exists')
+        print("file exists")
 
     import json
 
     # stores the running file into the result folder for later reference:
-    open('{}/toy_example_gaussians.py'.format(file_writer.folder), 'a').close()
-    shutil.copyfile(str(os.getcwd() + '/toy_example_gaussians.py'),
-                    str(file_writer.folder + '/toy_example_gaussians.py'))
+    open("{}/toy_example_gaussians.py".format(file_writer.folder), "a").close()
+    shutil.copyfile(
+        str(os.getcwd() + "/toy_example_gaussians.py"),
+        str(file_writer.folder + "/toy_example_gaussians.py"),
+    )
 
     os.chdir(file_writer.folder)
 
-    json_dict = {
-    "arguments:": str(argv)}
-    with open( "argument_list.json", "a") as f:
+    json_dict = {"arguments:": str(argv)}
+    with open("argument_list.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
-
-
 
     import torch
 
     true_thetas = torch.tensor(
-        [[3.0, 6.0, 20.0, 10.0, 90.0, 55.0, 27.0, 27.0, 4.0, 70.0, 5.0, 66.0, 99.0, 40.0, 45.0]])
-    parameter_names = ['t1', 't2', 't3', 't4', 't5', 't6', 't7',
-                       't8', 't9', 't10', 't11', 't12', 't13', 't14', 't15']
+        [
+            [
+                3.0,
+                6.0,
+                20.0,
+                10.0,
+                90.0,
+                55.0,
+                27.0,
+                27.0,
+                4.0,
+                70.0,
+                5.0,
+                66.0,
+                99.0,
+                40.0,
+                45.0,
+            ]
+        ]
+    )
+    parameter_names = [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7",
+        "t8",
+        "t9",
+        "t10",
+        "t11",
+        "t12",
+        "t13",
+        "t14",
+        "t15",
+    ]
 
     prior_max = [100.0] * 15
     prior_min = [1.0] * 15
 
     # In[6]:
 
-    #num_simulations_list = [750]
+    # num_simulations_list = [750]
     num_simulations_list = [500, 750, 1000, 1500, 2000, 3000]
-    #num_simulations_list = [1000]
-
+    # num_simulations_list = [1000]
 
     # In[ ]:
 
@@ -141,7 +171,7 @@ def main(argv):
 
     obs_real = Gaussian(true_thetas[0])
 
-    print('obs_real', obs_real)
+    print("obs_real", obs_real)
 
     start_time = datetime.datetime.now()
 
@@ -160,7 +190,7 @@ def main(argv):
 
             for j in range(3):
 
-                print('round: ', j)
+                print("round: ", j)
 
                 theta, x = simulate_for_sbi(
                     simulator_stats,
@@ -171,8 +201,9 @@ def main(argv):
 
                 if prop:
                     neural_dens = inf.append_simulations(
-                        theta, x, proposal=proposal).train()
-                    print('here')
+                        theta, x, proposal=proposal
+                    ).train()
+                    print("here")
                 else:
 
                     neural_dens = inf.append_simulations(theta, x).train()
@@ -194,22 +225,18 @@ def main(argv):
 
     import json
 
-    json_dict = {
-        "CPU time for step:": str(diff_time)}
+    json_dict = {"CPU time for step:": str(diff_time)}
     with open("time_snpe_nsf.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
 
-    torch.save(list_collection, 'list_collection.pt')
+    torch.save(list_collection, "list_collection.pt")
 
     # In[8]:
 
-    list_collection = torch.load('list_collection.pt')
-
-
+    list_collection = torch.load("list_collection.pt")
 
     # ### For incremental approach:
-
 
     range_list = [5, 10, 15]
 
@@ -226,7 +253,8 @@ def main(argv):
         for num_simulations in num_simulations_list:
 
             prior_i = utils.torchutils.BoxUniform(
-                low=prior_min[0:range_list[0]], high=prior_max[0:range_list[0]])
+                low=prior_min[0 : range_list[0]], high=prior_max[0 : range_list[0]]
+            )
 
             simulator_stats, prior_i = prepare_for_sbi(Gaussian, prior_i)
 
@@ -238,35 +266,34 @@ def main(argv):
 
             posterior_list = []
 
-            for index in range(len(range_list)-1):
+            for index in range(len(range_list) - 1):
 
                 # i defines number of parameters to be inferred, j indicates how many parameters
                 # to come in the next round
                 i = range_list[index]
-                j = range_list[index+1]
+                j = range_list[index + 1]
 
                 print(i, j)
 
                 if ratio:
 
-                    num_sim = int(num_simulations * (start_num / 30) )
+                    num_sim = int(num_simulations * (start_num / 30))
                 else:
-                    num_sim = int(num_simulations )
+                    num_sim = int(num_simulations)
 
                 print(num_sim)
 
                 start_num += 29
 
-                #start_time = datetime.datetime.now()
+                # start_time = datetime.datetime.now()
 
-                #print('num sim', num_sim)
+                # print('num sim', num_sim)
 
                 theta, x = simulate_for_sbi(
                     simulator_stats,
                     proposal=proposal,
                     num_simulations=num_sim,
                     num_workers=num_workers,
-
                 )
 
                 inf = inf.append_simulations(theta, x)
@@ -279,11 +306,10 @@ def main(argv):
                 posterior_list.append(proposal1)
 
                 next_prior = utils.torchutils.BoxUniform(
-                    low=prior_min[i:j], high=prior_max[i:j])
+                    low=prior_min[i:j], high=prior_max[i:j]
+                )
 
-                combined_prior = Combined(
-                    proposal1, next_prior, number_params_1=i)
-
+                combined_prior = Combined(proposal1, next_prior, number_params_1=i)
 
                 # set inf for next round:
                 inf = SNPE(combined_prior, density_estimator=density_estimator)
@@ -291,25 +317,23 @@ def main(argv):
                 # set combined prior to be the new prior_i:
                 proposal = combined_prior
 
-
             if ratio:
 
-                num_sim = int(num_simulations * (start_num / 30) )
+                num_sim = int(num_simulations * (start_num / 30))
 
-                if extra: 
-                    num_sim = int(num_simulations * (start_num / 60) )
+                if extra:
+                    num_sim = int(num_simulations * (start_num / 60))
 
             else:
                 num_sim = int(num_simulations)
 
-            print('num sim', num_sim)
+            print("num sim", num_sim)
 
             theta, x = simulate_for_sbi(
                 simulator_stats,
                 proposal=proposal,
                 num_simulations=num_sim,
                 num_workers=num_workers,
-
             )
 
             inf = inf.append_simulations(theta, x)
@@ -322,11 +346,10 @@ def main(argv):
             if extra:
 
                 theta, x = simulate_for_sbi(
-                simulator_stats,
-                proposal= last_posterior,
-                num_simulations=num_sim,
-                num_workers=num_workers,
-
+                    simulator_stats,
+                    proposal=last_posterior,
+                    num_simulations=num_sim,
+                    num_workers=num_workers,
                 )
 
                 inf = inf.append_simulations(theta, x, proposal=last_posterior)
@@ -336,13 +359,7 @@ def main(argv):
 
                 last_posterior = last_posterior.set_default_x(obs_real)
 
-
-
             posterior_incremental_list.append(last_posterior)
-
-
-
-
 
         list_collection_inc.append(posterior_incremental_list)
 
@@ -352,24 +369,22 @@ def main(argv):
 
     diff_time = end_time - start_time
 
-    json_dict = {
-        "CPU time for step:": str(diff_time)}
+    json_dict = {"CPU time for step:": str(diff_time)}
     with open("time_incremental_nsf.json", "a") as f:
         json.dump(json_dict, f)
         f.close()
 
-    torch.save(list_collection_inc, 'list_collection_inc.pt')
+    torch.save(list_collection_inc, "list_collection_inc.pt")
 
-    torch.save(obs_real, 'obs_real.pt')
+    torch.save(obs_real, "obs_real.pt")
 
     # In[46]:
 
-    list_collection_inc = torch.load('list_collection_inc.pt')
+    list_collection_inc = torch.load("list_collection_inc.pt")
 
     # In[ ]:
 
     import torch.nn.functional as F
-
 
     # In[11]:
 
@@ -383,7 +398,11 @@ def main(argv):
 
         mu_y = Y.mean
 
-        return torch.mean(np.log(var_y/var_x) + (var_x**2 + (mu_x - mu_y)**2)/(2*var_y**2) - (1/2))
+        return torch.mean(
+            np.log(var_y / var_x)
+            + (var_x ** 2 + (mu_x - mu_y) ** 2) / (2 * var_y ** 2)
+            - (1 / 2)
+        )
 
     def calc_KL_1d(X, Y):
 
@@ -401,10 +420,17 @@ def main(argv):
         print(mu_y)
         print(var_y)
 
-        print(np.log(var_y/var_x) + (var_x**2 +
-              (mu_x - mu_y)**2)/(2*var_y**2) - (1/2))
+        print(
+            np.log(var_y / var_x)
+            + (var_x ** 2 + (mu_x - mu_y) ** 2) / (2 * var_y ** 2)
+            - (1 / 2)
+        )
 
-        return np.log(var_y/var_x) + (var_x**2 + (mu_x - mu_y)**2)/(2*var_y**2) - (1/2)
+        return (
+            np.log(var_y / var_x)
+            + (var_x ** 2 + (mu_x - mu_y) ** 2) / (2 * var_y ** 2)
+            - (1 / 2)
+        )
 
     import torch
 
@@ -421,7 +447,7 @@ def main(argv):
         # for number of simulations
         for posterior_snpe in posterior_snpe_list:
 
-            #KL = KLdivergence(posterior_snpe, sample_y)
+            # KL = KLdivergence(posterior_snpe, sample_y)
             KL = KL_Gauss(posterior_snpe, analytic)
 
             KL_1d = calc_KL_1d(posterior_snpe, analytic)
@@ -434,8 +460,6 @@ def main(argv):
 
         overall_snpe_list.append(KL_snpe)
 
-
-
     analytic = torch.distributions.normal.Normal(true_thetas, 1)
 
     overall_incremental_list = []
@@ -446,25 +470,19 @@ def main(argv):
 
         for posterior_incremental in posterior_incremental_list:
 
-
             KL = KL_Gauss(posterior_incremental, analytic)
-
 
             KL_incremental.append(KL)
 
         overall_incremental_list.append(KL_incremental)
 
-
-
     mean_incremental = np.mean(np.array(overall_incremental_list), axis=0)
 
     stdev_incremental = np.std(np.array(overall_incremental_list), axis=0)
 
-    lower_incremental = mean_incremental - \
-        [element for element in stdev_incremental]
+    lower_incremental = mean_incremental - [element for element in stdev_incremental]
 
-    upper_incremental = mean_incremental + \
-        [element for element in stdev_incremental]
+    upper_incremental = mean_incremental + [element for element in stdev_incremental]
 
     # In[66]:
 
@@ -489,59 +507,76 @@ def main(argv):
 
     fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
 
-    axes['B'].plot(num_simulations_list, mean_incremental, '-o', color='blue')
-    axes['A'].plot(num_simulations_list, mean_snpe, '-o',  color='orange')
+    axes["B"].plot(num_simulations_list, mean_incremental, "-o", color="blue")
+    axes["A"].plot(num_simulations_list, mean_snpe, "-o", color="orange")
 
-    axes['B'].plot(num_simulations_list, upper_incremental, '--', color='blue')
-    axes['A'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+    axes["B"].plot(num_simulations_list, upper_incremental, "--", color="blue")
+    axes["A"].plot(num_simulations_list, upper_snpe, "--", color="orange")
 
-    axes['B'].plot(num_simulations_list, lower_incremental, '--', color='blue')
-    axes['A'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+    axes["B"].plot(num_simulations_list, lower_incremental, "--", color="blue")
+    axes["A"].plot(num_simulations_list, lower_snpe, "--", color="orange")
 
-    axes['C'].plot(num_simulations_list, mean_incremental,
-                   '-o', label='incremental', color='blue')
-    axes['C'].plot(num_simulations_list, mean_snpe,
-                   '-o', label='snpe', color='orange')
+    axes["C"].plot(
+        num_simulations_list, mean_incremental, "-o", label="incremental", color="blue"
+    )
+    axes["C"].plot(num_simulations_list, mean_snpe, "-o", label="snpe", color="orange")
 
-    axes['C'].plot(num_simulations_list, upper_incremental, '--', color='blue')
-    axes['C'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+    axes["C"].plot(num_simulations_list, upper_incremental, "--", color="blue")
+    axes["C"].plot(num_simulations_list, upper_snpe, "--", color="orange")
 
-    axes['C'].plot(num_simulations_list,
-                   lower_incremental, '--',  color='blue')
-    axes['C'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+    axes["C"].plot(num_simulations_list, lower_incremental, "--", color="blue")
+    axes["C"].plot(num_simulations_list, lower_snpe, "--", color="orange")
 
-    axes['C'].fill_between(x=num_simulations_list, y1=lower_incremental,
-                           y2=upper_incremental, color='blue', alpha=0.2)
-    axes['C'].fill_between(x=num_simulations_list, y1=lower_snpe,
-                           y2=upper_snpe, color='orange', alpha=0.2)
+    axes["C"].fill_between(
+        x=num_simulations_list,
+        y1=lower_incremental,
+        y2=upper_incremental,
+        color="blue",
+        alpha=0.2,
+    )
+    axes["C"].fill_between(
+        x=num_simulations_list, y1=lower_snpe, y2=upper_snpe, color="orange", alpha=0.2
+    )
 
-    axes['B'].fill_between(x=num_simulations_list, y1=lower_incremental,
-                           y2=upper_incremental, color='blue', alpha=0.2)
-    axes['A'].fill_between(x=num_simulations_list, y1=lower_snpe,
-                           y2=upper_snpe, color='orange', alpha=0.2)
+    axes["B"].fill_between(
+        x=num_simulations_list,
+        y1=lower_incremental,
+        y2=upper_incremental,
+        color="blue",
+        alpha=0.2,
+    )
+    axes["A"].fill_between(
+        x=num_simulations_list, y1=lower_snpe, y2=upper_snpe, color="orange", alpha=0.2
+    )
 
-    axes['B'].fill_between(x=num_simulations_list, y1=lower_incremental,
-                           y2=upper_incremental, color='blue', alpha=0.2)
-    axes['A'].fill_between(x=num_simulations_list, y1=lower_snpe,
-                           y2=upper_snpe, color='orange', alpha=0.2)
+    axes["B"].fill_between(
+        x=num_simulations_list,
+        y1=lower_incremental,
+        y2=upper_incremental,
+        color="blue",
+        alpha=0.2,
+    )
+    axes["A"].fill_between(
+        x=num_simulations_list, y1=lower_snpe, y2=upper_snpe, color="orange", alpha=0.2
+    )
 
-    #plt.title('KL loss')
-    axes['A'].legend()
-    axes['B'].legend()
-    axes['C'].legend()
+    # plt.title('KL loss')
+    axes["A"].legend()
+    axes["B"].legend()
+    axes["C"].legend()
 
-    plt.xlabel('simulations per round')
-    plt.ylabel('KL divergence')
+    plt.xlabel("simulations per round")
+    plt.ylabel("KL divergence")
 
-    axes['A'].set_title('SNPE')
-    axes['B'].set_title('Incremental')
+    axes["A"].set_title("SNPE")
+    axes["B"].set_title("Incremental")
 
-    plt.savefig('Gauss_plot_1stddev.png')
+    plt.savefig("Gauss_plot_1stddev.png")
 
-    #axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
-    #axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
-    #axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
-    #plt.xticks(['1k', '3k', '5k', '10k'])
+    # axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+    # axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+    # axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+    # plt.xticks(['1k', '3k', '5k', '10k'])
 
     mean_incremental = np.log(mean_incremental)
 
@@ -566,61 +601,78 @@ def main(argv):
 
     fig, axes = plt.subplot_mosaic(mosaic=figure_mosaic, figsize=(11, 8))
 
-    axes['B'].plot(num_simulations_list, mean_incremental, '-o', color='blue')
-    axes['A'].plot(num_simulations_list, mean_snpe, '-o',  color='orange')
+    axes["B"].plot(num_simulations_list, mean_incremental, "-o", color="blue")
+    axes["A"].plot(num_simulations_list, mean_snpe, "-o", color="orange")
 
-    axes['B'].plot(num_simulations_list, upper_incremental, '--', color='blue')
-    axes['A'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+    axes["B"].plot(num_simulations_list, upper_incremental, "--", color="blue")
+    axes["A"].plot(num_simulations_list, upper_snpe, "--", color="orange")
 
-    axes['B'].plot(num_simulations_list, lower_incremental, '--', color='blue')
-    axes['A'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+    axes["B"].plot(num_simulations_list, lower_incremental, "--", color="blue")
+    axes["A"].plot(num_simulations_list, lower_snpe, "--", color="orange")
 
-    axes['C'].plot(num_simulations_list, mean_incremental,
-                   '-o', label='incremental', color='blue')
-    axes['C'].plot(num_simulations_list, mean_snpe,
-                   '-o', label='snpe', color='orange')
+    axes["C"].plot(
+        num_simulations_list, mean_incremental, "-o", label="incremental", color="blue"
+    )
+    axes["C"].plot(num_simulations_list, mean_snpe, "-o", label="snpe", color="orange")
 
-    axes['C'].plot(num_simulations_list, upper_incremental, '--', color='blue')
-    axes['C'].plot(num_simulations_list, upper_snpe, '--',  color='orange')
+    axes["C"].plot(num_simulations_list, upper_incremental, "--", color="blue")
+    axes["C"].plot(num_simulations_list, upper_snpe, "--", color="orange")
 
-    axes['C'].plot(num_simulations_list,
-                   lower_incremental, '--',  color='blue')
-    axes['C'].plot(num_simulations_list, lower_snpe, '--',  color='orange')
+    axes["C"].plot(num_simulations_list, lower_incremental, "--", color="blue")
+    axes["C"].plot(num_simulations_list, lower_snpe, "--", color="orange")
 
-    axes['C'].fill_between(x=num_simulations_list, y1=lower_incremental,
-                           y2=upper_incremental, color='blue', alpha=0.2)
-    axes['C'].fill_between(x=num_simulations_list, y1=lower_snpe,
-                           y2=upper_snpe, color='orange', alpha=0.2)
+    axes["C"].fill_between(
+        x=num_simulations_list,
+        y1=lower_incremental,
+        y2=upper_incremental,
+        color="blue",
+        alpha=0.2,
+    )
+    axes["C"].fill_between(
+        x=num_simulations_list, y1=lower_snpe, y2=upper_snpe, color="orange", alpha=0.2
+    )
 
-    axes['B'].fill_between(x=num_simulations_list, y1=lower_incremental,
-                           y2=upper_incremental, color='blue', alpha=0.2)
-    axes['A'].fill_between(x=num_simulations_list, y1=lower_snpe,
-                           y2=upper_snpe, color='orange', alpha=0.2)
+    axes["B"].fill_between(
+        x=num_simulations_list,
+        y1=lower_incremental,
+        y2=upper_incremental,
+        color="blue",
+        alpha=0.2,
+    )
+    axes["A"].fill_between(
+        x=num_simulations_list, y1=lower_snpe, y2=upper_snpe, color="orange", alpha=0.2
+    )
 
-    axes['B'].fill_between(x=num_simulations_list, y1=lower_incremental,
-                           y2=upper_incremental, color='blue', alpha=0.2)
-    axes['A'].fill_between(x=num_simulations_list, y1=lower_snpe,
-                           y2=upper_snpe, color='orange', alpha=0.2)
+    axes["B"].fill_between(
+        x=num_simulations_list,
+        y1=lower_incremental,
+        y2=upper_incremental,
+        color="blue",
+        alpha=0.2,
+    )
+    axes["A"].fill_between(
+        x=num_simulations_list, y1=lower_snpe, y2=upper_snpe, color="orange", alpha=0.2
+    )
 
-    #plt.title('KL loss')
-    axes['A'].legend()
-    axes['B'].legend()
-    axes['C'].legend()
+    # plt.title('KL loss')
+    axes["A"].legend()
+    axes["B"].legend()
+    axes["C"].legend()
 
-    plt.xlabel('simulations per round')
-    plt.ylabel('KL divergence')
+    plt.xlabel("simulations per round")
+    plt.ylabel("KL divergence")
 
-    axes['A'].set_title('SNPE')
-    axes['B'].set_title('Incremental')
+    axes["A"].set_title("SNPE")
+    axes["B"].set_title("Incremental")
 
-    #axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
-    #axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
-    #axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
-    #plt.xticks(['1k', '3k', '5k', '10k'])
+    # axes['B'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+    # axes['A'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+    # axes['C'].set_xticklabels(['0k','2k', '4k', '6k', '8k', '10k'])
+    # plt.xticks(['1k', '3k', '5k', '10k'])
 
     # In[44]:
 
-    plt.savefig('Gauss_plot_1stddev_log.png')
+    plt.savefig("Gauss_plot_1stddev_log.png")
 
 
 if __name__ == "__main__":
