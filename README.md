@@ -62,18 +62,26 @@ Some of the main results were:
 
 ### Code structure:
 
-- **utils**
+- **code/utils**
   
   - helpers.py: small helper functions, not specific
+  
   - inference.py: functions that either only simulate theta and x, or infer posteriors, or both
+  
   - plot.py: plotting functions, mostly adapted from the sbi toolbox
-  - sbi_modulated_functions.py
+  
+  - sbi_modulated_functions.py: implements a distribution class that combines a prior and a posterior such that samples can be drawn from each.
+  
+    Please refer to the folder **thesis** and the methods section there for background on this.
+  
   - simulation_wrapper: functions that take different number of parameters that are varied for simulations
   
-- **summary_features**
+- **code/summary_features**
+  
   - calculate_summary_features.py: different functions to calculate a certain number of summary statistics. different functions can be compared against each other
   
-- **data_load_writer**
+- **code/data_load_writer**
+  
   - load_from_file
   
   - write_to_file: defines a class that can store e.g. posteriors, priors, thetas, observations and meta data

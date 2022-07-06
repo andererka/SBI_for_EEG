@@ -16,6 +16,14 @@ sim_wrapper = SimulationWrapper()
 
 def run_only_sim(samples, simulation_wrapper=sim_wrapper, num_workers=1):
 
+    """
+    implements a method that takes as input parameter samples und a simulator that then simulates    observations, given these parameter values.
+    The observations are given as output
+
+    input: parameter samples
+    output: simulations
+    """
+
     obs_real = Parallel(
         n_jobs=num_workers,
         verbose=100,
@@ -28,6 +36,12 @@ def run_only_sim(samples, simulation_wrapper=sim_wrapper, num_workers=1):
 
 def run_sim_theta_x(
     prior, simulation_wrapper=sim_wrapper, num_simulations=1000, num_workers=8):
+    """
+    implements a method that takes as input a prior distribution from which parameter values can be sampled from
+
+    input: prior distribution
+    output: parameter values (theta) and the simulated data (x_without) belonging to it
+    """
 
     simulator_stats, prior = prepare_for_sbi(simulation_wrapper, prior)
 
